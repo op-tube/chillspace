@@ -1,0 +1,3926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChillSpace</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #f0f2f5;
+    color: #1c1e21;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: 1px solid #dddfe2;
+  }
+  .header-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    height: 60px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-weight: 800;
+    font-size: 26px;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, #1877f2, #7c3aed 60%, #06b6d4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  #shareBtn {
+    background: #1877f2;
+    color: white;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(24,119,242,0.3);
+    transition: transform .08s ease, background .2s ease, box-shadow .2s;
+  }
+  #shareBtn:hover { background: #166fe5; box-shadow: 0 4px 12px rgba(24,119,242,0.35); }
+  #shareBtn:active { transform: scale(0.97); }
+
+  main { padding: 20px 0 60px; }
+  #feed {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 12px;
+  }
+  .post {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.03);
+    padding: 14px 0 10px;
+    margin-bottom: 16px;
+    animation: in .4s ease both;
+  }
+  @keyframes in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .pinned-post {
+    border: 1px solid rgba(24,119,242,0.35);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 4px 14px rgba(24,119,242,0.12);
+  }
+  .pinned-post .time { color: #1877f2; font-weight: 600; }
+
+  .post-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 16px;
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #e4e6eb;
+    object-fit: cover;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .meta { min-width: 0; }
+  .name {
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .time {
+    font-size: 13px;
+    color: #65676b;
+    margin-top: 2px;
+  }
+  .post-content {
+    padding: 0 16px 12px;
+    display: block;
+    margin: 12px 0 0;
+    font-size: 15.5px;
+    line-height: 1.5;
+    word-wrap: break-word;
+  }
+  .actions {
+    display: flex;
+    border-top: 1px solid #e4e6eb;
+    margin-top: 8px;
+    padding: 6px 12px 0;
+    gap: 4px;
+  }
+  .actions button {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 8px 4px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #65676b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background .15s;
+    user-select: none;
+  }
+  .actions button:hover { background: #f2f3f5; }
+  .actions button:active { background: #e7e9ed; }
+  .actions button.liked { color: #21a366; }
+  .actions button.ai-btn {
+    color: #7c3aed;
+    font-size: 13px;
+  }
+  .actions button.ai-btn:hover { background: #f3f0ff; }
+
+  /* ---- Notification bell ---- */
+  #bell-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  #bellBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 50%;
+    transition: background .15s;
+    position: relative;
+  }
+  #bellBtn:hover { background: #f0f2f5; }
+  #bell-badge {
+    position: absolute;
+    top: 0; right: 0;
+    background: #e41e3f;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    pointer-events: none;
+  }
+  #notif-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: min(340px, 92vw);
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.16);
+    z-index: 500;
+    overflow: hidden;
+    animation: popIn .18s ease both;
+  }
+  #notif-panel.open { display: block; }
+  .notif-header {
+    padding: 12px 16px 8px;
+    font-weight: 700;
+    font-size: 16px;
+    border-bottom: 1px solid #e4e6eb;
+  }
+  .notif-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid #f0f2f5;
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+  .notif-item:last-child { border-bottom: none; }
+  .notif-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#1877f2,#7c3aed);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 14px;
+  }
+  .notif-text { color: #1c1e21; }
+  .notif-text strong { font-weight: 700; }
+  .notif-post-preview {
+    margin-top: 3px;
+    font-style: italic;
+    color: #65676b;
+    font-size: 12.5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ---- Story/question posts ---- */
+  .post-question { font-size: 18px; font-weight: 700; color: #1c1e21; padding: 12px 16px 8px; }
+  .show-comments-btn, .share-comments-btn {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 4px 16px 10px;
+    padding: 9px;
+    background: #f0f2f5;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1877f2;
+    cursor: pointer;
+    transition: background .15s;
+    text-align: center;
+  }
+  .show-comments-btn:hover, .share-comments-btn:hover { background: #e4e6eb; }
+  /* .share-comments-btn lives inside .comments-section, which already has its
+     own 16px left/right padding, so it doesn't need the extra side margins */
+  .share-comments-btn {
+    width: 100%;
+    margin: 6px 0 2px;
+  }
+  .story-comments { display: none; padding: 0 16px 4px; border-top: 1px solid #f0f2f5; margin-top: 4px; }
+  .story-comments.open { display: block; }
+  .story-comment-item {
+    display: flex; gap: 8px; margin: 10px 0;
+  }
+  .story-comment-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg,#f97316,#ec4899);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 13px;
+  }
+  .story-comment-bubble {
+    background: #f0f2f5; border-radius: 12px; padding: 7px 11px;
+    font-size: 13.5px; line-height: 1.4; max-width: calc(100% - 42px);
+  }
+  .story-comment-name { font-weight: 700; font-size: 12.5px; margin-bottom: 2px; }
+  .full-story-btn {
+    display: inline-block;
+    margin: 2px 0 8px 40px;
+    padding: 5px 11px;
+    background: linear-gradient(135deg, #1877f2, #7c3aed);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  .full-story-btn:hover { opacity: 0.85; }
+
+  .number-game-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 9px 18px;
+    background: linear-gradient(135deg, #1877f2, #7c3aed);
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 999px;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  .number-game-btn:hover { opacity: 0.85; }
+
+  /* ---- Political polls ---- */
+  .poll-wrap {
+    padding: 10px 16px 4px;
+  }
+  .poll-question {
+    font-size: 16px; font-weight: 700; color: #1c1e21; margin-bottom: 10px;
+  }
+  .poll-options { display: flex; flex-direction: column; gap: 8px; }
+  .poll-option {
+    position: relative; overflow: hidden;
+    border: 1.5px solid #e4e6eb; border-radius: 8px;
+    padding: 9px 14px; font-size: 14px; font-weight: 600;
+    cursor: pointer; background: #fff; text-align: left;
+    transition: border-color .15s;
+  }
+  .poll-option:hover { border-color: #1877f2; }
+  .poll-option.voted { cursor: default; border-color: #1877f2; color: #1877f2; }
+  .poll-bar {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: #e7f0fd; z-index: 0; border-radius: 6px;
+    transition: width .5s ease;
+  }
+  .poll-option-inner { position: relative; z-index: 1; display: flex; justify-content: space-between; }
+  .poll-pct { font-weight: 400; color: #65676b; font-size: 13px; }
+  .poll-total { font-size: 12px; color: #65676b; margin-top: 6px; padding-bottom: 4px; }
+  .poll-comments { display: none; padding: 8px 16px 4px; border-top: 1px solid #f0f2f5; }
+  .poll-comments.open { display: block; }
+  .show-poll-comments-btn {
+    display: block; width: calc(100% - 32px); margin: 4px 16px 10px;
+    padding: 8px; background: #f0f2f5; border: none; border-radius: 8px;
+    font-size: 13px; font-weight: 600; color: #1877f2; cursor: pointer;
+    transition: background .15s; text-align: center;
+  }
+  .show-poll-comments-btn:hover { background: #e4e6eb; }
+  .post-ad .name { color: #1877f2; }
+  .post-ad-label {
+    font-size: 11px; color: #65676b; font-weight: 400;
+    margin-left: 4px; background: #e4e6eb;
+    padding: 1px 5px; border-radius: 4px; vertical-align: middle;
+  }
+  .ad-video {
+    width: 100%; margin-top: 10px;
+    display: block; background: #000;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  /* ---- Live Debates ---- */
+  .live-badge {
+    color: #fff;
+    background: #e41e3f;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .03em;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: middle;
+    animation: livePulse 1.4s infinite;
+  }
+  @keyframes livePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .55; }
+  }
+  .debate-post .post-head, .debate-post .post-content {
+    transition: opacity .15s ease;
+  }
+  .debate-post.swapping .post-head,
+  .debate-post.swapping .post-content {
+    opacity: 0;
+  }
+  .debate-join-btn { color: #e41e3f !important; font-weight: 700; }
+  .comments-section {
+    border-top: 1px solid #e4e6eb;
+    padding: 8px 16px 4px;
+  }
+  .comment-item {
+    margin-bottom: 10px;
+    animation: in .25s ease both;
+  }
+  .comment-row {
+    display: flex;
+    gap: 8px;
+  }
+  .comment-replies {
+    margin: 8px 0 0 38px;
+    padding-left: 10px;
+    border-left: 2px solid #e4e6eb;
+  }
+  .comment-replies .comment-item { margin-bottom: 8px; }
+  .comment-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1877f2, #7c3aed);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #fff;
+    font-weight: 700;
+  }
+  .comment-bubble {
+    background: #f0f2f5;
+    border-radius: 12px;
+    padding: 7px 11px;
+    font-size: 14px;
+    line-height: 1.4;
+    max-width: calc(100% - 42px);
+  }
+  .comment-bubble .comment-name {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+  .comment-bubble .comment-text { color: #1c1e21; }
+  .comment-likes {
+    font-size: 12px;
+    color: #65676b;
+    margin-top: 3px;
+    padding-left: 38px;
+  }
+  .comment-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 3px;
+    padding-left: 38px;
+  }
+  .comment-meta-row .comment-likes { margin-top: 0; padding-left: 0; }
+  .comment-reply-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 12px;
+    font-weight: 700;
+    color: #65676b;
+    cursor: pointer;
+  }
+  .comment-reply-btn:hover { color: #1877f2; text-decoration: underline; }
+
+  /* ---- ChillSpace personalities ---- */
+  .personality-row {
+    position: relative;
+    padding: 0 16px 10px;
+  }
+  .personality-btn {
+    width: 100%;
+    background: #f0f2f5;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #7c3aed;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .personality-btn:hover { background: #e4e6eb; }
+  .personality-menu {
+    position: fixed;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    padding: 6px;
+    z-index: 9999;
+  }
+  .personality-menu-empty {
+    font-size: 13px;
+    color: #65676b;
+    padding: 8px 10px 2px;
+  }
+  .personality-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 13.5px;
+    color: #1c1e21;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .personality-menu-item:hover { background: #f0f2f5; }
+  .personality-menu-item.personality-menu-create {
+    color: #fff;
+    font-weight: 700;
+    background: #1877f2;
+    justify-content: center;
+    margin-top: 6px;
+    padding-top: 8px;
+  }
+  .personality-menu-item.personality-menu-create:hover { background: #166fe5; }
+  .personality-trait-tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: #65676b;
+    background: #f0f2f5;
+    padding: 2px 8px;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+  .trait-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 4px;
+  }
+  .trait-option {
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1.5px solid #e4e6eb;
+    background: #f9fafb;
+    font-size: 13px;
+    font-weight: 600;
+    color: #65676b;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .trait-option.selected {
+    border-color: #7c3aed;
+    background: #f3e8ff;
+    color: #7c3aed;
+  }
+  .personality-name-input {
+    width: 100%;
+    border: 1.5px solid #e4e6eb;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    box-sizing: border-box;
+  }
+  .personality-name-input:focus { border-color: #1877f2; }
+
+  /* ---- "What's on your mind?" composer ---- */
+  #composer-wrap {
+    max-width: 680px;
+    margin: 0 auto 16px;
+    padding: 0 12px;
+  }
+  #composer {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.03);
+    padding: 14px 16px 12px;
+  }
+  #composer-name-row {
+    margin-bottom: 10px;
+  }
+  #composer-name-input {
+    width: 100%;
+    border: 1.5px solid #e4e6eb;
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #65676b;
+    outline: none;
+    background: #f9fafb;
+    cursor: text;
+    transition: border-color .15s, background .15s, color .15s;
+  }
+  #composer-name-input:focus {
+    border-color: #1877f2;
+    background: #fff;
+    color: #1c1e21;
+  }
+  #composer-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  #composer-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1877f2, #7c3aed);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 17px;
+  }
+  #composer-input {
+    flex: 1;
+    border: 1.5px solid #e4e6eb;
+    border-radius: 999px;
+    padding: 9px 16px;
+    font-size: 15px;
+    font-family: inherit;
+    color: #1c1e21;
+    outline: none;
+    background: #f0f2f5;
+    cursor: text;
+    transition: border-color .15s, background .15s;
+  }
+  #composer-input:focus {
+    border-color: #1877f2;
+    background: #fff;
+  }
+  #composer-post-row {
+    display: none;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+  #composer-post-row.visible { display: flex; }
+  #composer-post-btn {
+    background: #1877f2;
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  #composer-post-btn:hover { background: #166fe5; }
+  #composer-post-btn:disabled { background: #b0c4e8; cursor: default; }
+
+  #composer-image-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  #composer-image-input {
+    flex: 1;
+    border: 1.5px solid #e4e6eb;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 13.5px;
+    font-family: inherit;
+    color: #1c1e21;
+    outline: none;
+    background: #f9fafb;
+    cursor: text;
+    transition: border-color .15s, background .15s;
+  }
+  #composer-image-input:focus {
+    border-color: #1877f2;
+    background: #fff;
+  }
+  #composer-image-help-btn {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1.5px solid #d8dadf;
+    background: #f0f2f5;
+    color: #65676b;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #composer-image-help-btn:hover { background: #e4e6eb; }
+  #composer-video-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  #composer-video-input {
+    flex: 1;
+    border: 1.5px solid #e4e6eb;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 13.5px;
+    font-family: inherit;
+    color: #1c1e21;
+    outline: none;
+    background: #f9fafb;
+    cursor: text;
+    transition: border-color .15s, background .15s;
+  }
+  #composer-video-input:focus {
+    border-color: #1877f2;
+    background: #fff;
+  }
+  #composer-video-help-btn {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1.5px solid #d8dadf;
+    background: #f0f2f5;
+    color: #65676b;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #composer-video-help-btn:hover { background: #e4e6eb; }
+  .post-image {
+    display: block;
+    width: 100%;
+    max-height: 460px;
+    object-fit: cover;
+    margin-top: 8px;
+  }
+  .post-video-wrap {
+    position: relative;
+    width: 100%;
+    margin-top: 8px;
+    padding-top: 56.25%; /* 16:9 */
+    background: #000;
+  }
+  .post-video-wrap iframe.post-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  video.post-video {
+    display: block;
+    width: 100%;
+    max-height: 460px;
+    margin-top: 8px;
+    background: #000;
+  }
+
+  /* user's own post in feed - no extra label needed */
+
+  .ai-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: linear-gradient(135deg, #1877f2, #7c3aed);
+    color: #fff;
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+    opacity: 0;
+    transition: opacity .25s ease, transform .25s ease;
+    z-index: 1100;
+    max-width: min(90%, 420px);
+    text-align: center;
+    line-height: 1.45;
+  }
+  .ai-toast .ai-toast-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    opacity: .8;
+    margin-bottom: 5px;
+  }
+  .ai-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+    animation: fadeIn .15s ease both;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal-box {
+    background: #fff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 420px;
+    padding: 18px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    animation: popIn .15s ease both;
+  }
+  @keyframes popIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: none; } }
+  .modal-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  .modal-textarea {
+    width: 100%;
+    min-height: 90px;
+    border: 1px solid #dddfe2;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14.5px;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+  }
+  .modal-textarea:focus { border-color: #1877f2; }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .modal-actions button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+  }
+  .modal-cancel { background: #e4e6eb; color: #1c1e21; }
+  .modal-cancel:hover { background: #d8dadf; }
+  .modal-post { background: #1877f2; color: #fff; }
+  .modal-post:hover { background: #166fe5; }
+
+  /* ---- TikTok/Reddit-story style AI video modal ---- */
+  .story-video-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 16px;
+    animation: fadeIn .15s ease both;
+  }
+  .story-video-box {
+    position: relative;
+    width: min(380px, 100%);
+    height: min(680px, 88vh);
+    border-radius: 18px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: popIn .18s ease both;
+  }
+  .story-bg-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .story-video-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+      rgba(0,0,0,0.45) 0%,
+      rgba(0,0,0,0.05) 22%,
+      rgba(0,0,0,0.05) 55%,
+      rgba(0,0,0,0.65) 100%);
+    pointer-events: none;
+  }
+  .story-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 5;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .story-close-btn:hover { background: rgba(0,0,0,0.65); }
+  .story-video-header {
+    position: absolute;
+    top: 14px;
+    left: 16px;
+    z-index: 5;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .story-caption-wrap {
+    position: absolute;
+    left: 0; right: 0;
+    top: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 70px 22px 90px;
+    z-index: 4;
+  }
+  .story-caption {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.35;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.85), 0 0 2px rgba(0,0,0,0.6);
+    word-wrap: break-word;
+  }
+  .story-caption span { transition: color .1s ease, opacity .1s ease; opacity: 0.78; }
+  .story-word-active {
+    color: #ffe066;
+    opacity: 1 !important;
+  }
+  .story-controls {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+  }
+  .story-play-btn {
+    background: rgba(255,255,255,0.16);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.35);
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 13.5px;
+    cursor: pointer;
+  }
+  .story-play-btn:hover { background: rgba(255,255,255,0.28); }
+  .story-quote-tag {
+    position: absolute;
+    top: 44px;
+    left: 16px;
+    right: 16px;
+    z-index: 5;
+    color: rgba(255,255,255,0.85);
+    font-size: 12.5px;
+    font-style: italic;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: #1c1e21;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    opacity: 0;
+    transition: opacity .25s ease, transform .25s ease;
+    z-index: 1100;
+    max-width: 90%;
+    text-align: center;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .load-more {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background: #e4e6eb;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #1c1e21;
+    font-size: 14px;
+    transition: background .15s, transform .08s;
+  }
+  .load-more:hover { background: #d8dadf; }
+  .load-more:active { transform: scale(0.97); }
+
+  #loadMore { display: none !important; }
+  #sentinel { height: 1px; }
+  .loader {
+    text-align: center;
+    padding: 16px;
+    color: #65676b;
+    font-size: 14px;
+    font-weight: 500;
+    display: none;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .loader.show { display: block; }
+  .loader::after {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 8px;
+    border: 2px solid #ccd0d5;
+    border-top-color: #1877f2;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: -2px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .disclaimer {
+    max-width: 680px;
+    margin: 32px auto 0;
+    padding: 0 16px;
+    text-align: center;
+    font-size: 13px;
+    color: #8a8d91;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 420px) {
+    .header-inner { height: 54px; padding: 0 12px; }
+    .logo { font-size: 23px; }
+    #shareBtn { padding: 8px 14px; font-size: 13.5px; }
+    .post { padding: 12px 0 8px; border-radius: 10px; }
+    .post-head { padding: 0 12px; }
+    .post-content { font-size: 15px; padding: 0 12px 10px; }
+    .actions button { font-size: 13px; gap: 4px; }
+    .actions { padding: 6px 8px 0; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">ChillSpace</div>
+    <div id="bell-wrap">
+      <button id="bellBtn" aria-label="Notifications">🔔<span id="bell-badge"></span></button>
+      <div id="notif-panel">
+        <div class="notif-header">Notifications</div>
+        <div id="notif-list"></div>
+      </div>
+      <button id="shareBtn" aria-label="Share ChillSpace">Share</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="composer-wrap">
+    <div id="composer">
+      <div id="composer-name-row">
+        <input id="composer-name-input" type="text" placeholder="Enter your name" autocomplete="off" maxlength="40">
+      </div>
+      <div id="composer-top">
+        <div id="composer-avatar">Y</div>
+        <input id="composer-input" type="text" placeholder="What's on your mind?" autocomplete="off">
+      </div>
+      <div id="composer-image-row">
+        <input id="composer-image-input" type="url" placeholder="Paste image link (optional)" autocomplete="off">
+        <button type="button" id="composer-image-help-btn" aria-label="How to get an image link">?</button>
+      </div>
+      <div id="composer-video-row">
+        <input id="composer-video-input" type="url" placeholder="Paste video link — .mp4 or YouTube (optional)" autocomplete="off">
+        <button type="button" id="composer-video-help-btn" aria-label="About video links">?</button>
+      </div>
+      <div id="composer-post-row">
+        <button id="composer-post-btn" disabled>Post</button>
+      </div>
+    </div>
+  </div>
+  <div id="feed" aria-live="polite"></div>
+  <div id="sentinel"></div>
+  <div id="loader" class="loader">Loading more...</div>
+  <button id="loadMore" class="load-more">Load more</button>
+  <div class="disclaimer">This is a demo for fun. Likes, comments and reposts don't actually post anywhere real.</div>
+</main>
+
+<script>
+  const firstNames = ["Alex","Jordan","Casey","Taylor","Morgan","Riley","Jamie","Avery","Drew","Quinn","Sam","Blake","Charlie","Finley","Rowan","Min-jun","Yuki","Aisha","Hana","Kenji","Layla","Soo-jin","Hiro","Amir","Mei","Arjun","Priya","Dmitri","Anastasia","Somchai","Niran"];
+  const lastNames = ["Smith","Chen","Patel","Garcia","Kim","Johnson","Brown","Jones","Miller","Davis","Wilson","Lee","Nguyen","Thompson","Rivera","Kim","Tanaka","Ahmed","Sato","Hassan","Park","Yamamoto","Ali","Chen","Nguyen","Sharma","Ivanov","Petrova","Srisawat","Wong","Singh"];
+
+  const rand = a => a[Math.floor(Math.random()*a.length)];
+
+  // Read once, up front - the ad post's autoplaying video is heavy enough
+  // that it causes noticeable jank while ?autoscroll=on is continuously
+  // scrolling, so loadFeed() below skips it entirely in that case.
+  const autoscrollOn = new URLSearchParams(window.location.search).get('autoscroll') === 'on';
+
+  const politicians = [
+    "Keir Starmer","Rishi Sunak","Emmanuel Macron","Olaf Scholz","Joe Biden",
+    "Kamala Harris","Justin Trudeau","Giorgia Meloni","Pedro Sánchez","Mark Rutte",
+    "Anthony Albanese","Jacinda Ardern","Narendra Modi","Luiz Lula da Silva",
+    "Yoon Suk-yeol","Fumio Kishida","Ursula von der Leyen","Marine Le Pen",
+    "Nigel Farage","Alexandria Ocasio-Cortez","Bernie Sanders","Ron DeSantis",
+    "Javier Milei","Volodymyr Zelensky","Viktor Orbán","Recep Tayyip Erdoğan",
+    "Scott Morrison","Jeremy Corbyn","Liz Truss","Yvette Cooper"
+  ];
+  const politicalTopics = [
+    "economic","tax","welfare","AI","social media","education",
+    "work-life balance","agricultural","environmental","housing"
+  ];
+  const politicalJudgements = [
+    "amazing","terrible","unnecessary","crazy","fantastic","saddening","worrying","perfect"
+  ];
+  const politicalBeneficiaries = [
+    "workers","people","farmers","my town","me","everyone","Big Tech","you","the rich"
+  ];
+
+  const starters = ["I love","I absolutely detest","I don't understand the hype about","I just discovered how much I enjoy","I would recommend","I'm obsessed with","I could never get into","I secretly enjoy","I finally tried","I think everyone should try"];
+  const topics = ["cats","coding","K-pop","fidget spinners","shopping","gardening","board games","minimalism","sourdough baking","VR gaming","thrift flipping","birdwatching"];
+  const endings = ["travel","anime","food","football","going to the cafe","old movies","sunsets","mountain hikes","poetry","true crime podcasts","tea ceremonies","retro tech"];
+
+  const linesB = ["Just discovered this app and wow, I actually put my phone down after 5 minutes",
+    "Spent my morning outside instead of doomscrolling. Weird but nice?",
+    "No notifications, no stress. Is this what peace feels like",
+    "Finally a social app that doesn't hijack my dopamine",
+    "Posted once today and didn't feel the need to check for likes. Revolutionary",
+    "My screen time is down 80% since joining. My plants are thriving too",
+    "Actually talked to a human IRL today instead of posting about it",
+    "The algorithm shows me 3 posts and says 'go touch grass'. 10/10",
+"<a class=\"number-game-btn\" href=\"/numbers\">🔢 GO to Number Game</a>",
+"<a class=\"number-game-btn\" href=\"/numbers\">🔢 GO to Number Game</a>",
+"<a class=\"number-game-btn\" href=\"/numbers\">🔢 GO to Number Game</a>",
+"<a class=\"number-game-btn\" href=\"/numbers\">🔢 GO to Number Game</a>",
+"<a class=\"number-game-btn\" href=\"/numbers\">🔢 GO to Number Game</a>",
+"<a class=\"number-game-btn\" href=\"/numbers\">🔢 GO to Number Game</a>",
+"<a class=\"number-game-btn\" href=\"/numbers\">🔢 GO to Number Game</a>",
+"<a class=\"number-game-btn\" href=\"/numbers\">🔢 GO to Number Game</a>"
+  ];
+
+  const ko_starters = ["정말 좋아해요","완전히 빠졌어요","이해가 안 돼요","방금 발견했어요","추천해요","집착 중이에요","몰래 즐겨요","모두 해봤으면"];
+  const ko_topics = ["고양이","코딩","K-pop","피젯스피너","쇼핑","정원 가꾸기","보드게임","미니멀리즘","빵 굽기","VR게임","중고거래","새 관찰"];
+  const ko_endings = ["여행","애니","음식","축구","카페","옛영화","일몰","등산","시","범죄팟캐","차","레트로"];
+
+  const ja_starters = ["大好き","ハマってる","理解できない","最近見つけた","おすすめ","夢中","こっそり好き","みんな試すべき"];
+  const ja_topics = ["猫","コーディング","K-pop","ハンドスピナー","買い物","ガーデニング","ボードゲーム","ミニマリズム","パン作り","VRゲーム","古着","野鳥観察"];
+  const ja_endings = ["旅行","アニメ","食べ物","サッカー","カフェ","古い映画","夕日","登山","詩","犯罪ポッド","お茶","レトロ"];
+
+  const qWords = ["Why","How"];
+  const qThings = ["bubble tea","pickleball","K-drama","cottagecore","sourdough baking","silent walking","vinyl collecting","cold plunging","fan fiction","mukbang","houseplant collecting","retro gaming","matcha","thrifting","longboarding"];
+  const qDescriptors = ["so popular","so underrated"];
+  const qPlaces = ["Japan","Brazil","Scandinavia","South Korea","the Middle East","Eastern Europe","Southeast Asia","the Balkans","West Africa","the Pacific Northwest","Latin America","the UK"];
+  const qTimes = ["at the moment","right now","recently"];
+
+  function makeQuestion() {
+    const w = rand(qWords);
+    const t = rand(qThings);
+    const d = rand(qDescriptors);
+    const p = rand(qPlaces);
+    const ti = rand(qTimes);
+    return `${w} is ${t} ${d} in ${p} ${ti}?`;
+  }
+
+  const ar_starters = ["أحب","أكره تماماً","لا أفهم","اكتشفت للتو","أنصح بـ","مهووس بـ","أستمتع سراً بـ","يجب على الجميع تجربة"];
+  const ar_topics = ["القطط","البرمجة","الكيبوب","السبينر","التسوق","الزراعة","ألعاب الطاولة","البساطة","خبز العجين","ألعاب الواقع الافتراضي","إعادة البيع","مراقبة الطيور"];
+  const ar_endings = ["السفر","الأنمي","الطعام","كرة القدم","المقهى","الأفلام القديمة","الغروب","تسلق الجبال","الشعر","بودكاست الجريمة","الشاي","التقنية القديمة"];
+
+  const hi_starters = ["मुझे पसंद है","बिल्कुल नफरत है","समझ नहीं आता","अभी खोजा","सिफारिश करूंगा","जुनून है","चुपके से पसंद है","सबको आज़माना चाहिए"];
+  const hi_topics = ["बिल्लियाँ","कोडिंग","के-पॉप","फ़िजेट स्पिनर","शॉपिंग","बागवानी","बोर्ड गेम","मिनिमलिज़्म","ब्रेड बनाना","वीआर गेम","थ्रिफ्टिंग","पक्षी देखना"];
+  const hi_endings = ["यात्रा","एनीमे","खाना","फुटबॉल","कैफ़े","पुरानी फिल्में","सूर्यास्त","पहाड़","कविता","क्राइम पॉडकास्ट","चाय","रेट्रो"];
+
+  const ru_starters = ["Обожаю","Терпеть не могу","Не понимаю","Только открыл","Рекомендую","Одержим","Тайно люблю","Всем стоит попробовать"];
+  const ru_topics = ["котов","кодинг","K-pop","спиннеры","шопинг","садоводство","настолки","минимализм","выпечку","VR-игры","секонд-хенд","наблюдение за птицами"];
+  const ru_endings = ["путешествия","аниме","еду","футбол","кафе","старые фильмы","закаты","походы","поэзию","тру-крайм подкасты","чай","ретро-технику"];
+
+  const th_starters = ["ฉันรัก","ฉันเกลียด","ไม่เข้าใจ","เพิ่งค้นพบ","แนะนำ","หมกมุ่น","แอบชอบ","ทุกคนควรลอง"];
+  const th_topics = ["แมว","เขียนโค้ด","เคป็อป","ฟิดเจ็ตสปินเนอร์","ช้อปปิ้ง","ทำสวน","บอร์ดเกม","มินิมอล","อบขนมปัง","เกมVR","ของมือสอง","ดูนก"];
+  const th_endings = ["การเดินทาง","อนิเมะ","อาหาร","ฟุตบอล","คาเฟ่","หนังเก่า","พระอาทิตย์ตก","ปีนเขา","บทกวี","พอดแคสต์อาชญากรรม","ชา","เทคโนโลยีเรโทร"];
+
+  const avatars = [
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg==',
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP4z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg==',
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPj/HwADBwESl7YBbwAAAABJRU5ErkJggg=='
+  ];
+  // Human-readable labels for each avatar, in the same order as `avatars` above.
+  const avatarLabels = ['grey','red','green','purple','blue'];
+
+  // Matching gradients for comment avatars, which are plain colour circles
+  // rather than the base64 post avatars above - keyed by the same labels
+  // used in the profile_picture / comment_profile_picture URL parameters.
+  const avatarColorGradients = {
+    grey: 'linear-gradient(135deg, #9ca3af, #6b7280)',
+    red: 'linear-gradient(135deg, #ef4444, #f97316)',
+    green: 'linear-gradient(135deg, #10b981, #22c55e)',
+    purple: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+    blue: 'linear-gradient(135deg, #1877f2, #06b6d4)'
+  };
+  function gradientForColorLabel(label) {
+    return avatarColorGradients[(label || '').toLowerCase()] || avatarColorGradients.grey;
+  }
+
+  // Only the plain text lines (no embedded number-game button) are eligible
+  // to be picked deterministically for a pinned/shared post.
+  const pinnableLines = linesB.filter(l => !l.includes('number-game-btn'));
+
+  // ---- Story question posts ----
+  const storyOpeners = ["Guys","People","ChillSpacers","Friends"];
+  const storyAdjs = ["craziest","most insane","funniest","most shocking"];
+
+  const storyVerbs = ["broke up with","got with","had an argument with","got engaged to","fell in love with","first met after a discussion with","left","remembered"];
+  const storyRelations = ["wife","husband","boyfriend","girlfriend","best friend","babe","lover","dream girl","dream boy","childhood crush"];
+  const storyTopics = ["painting","a kid's film","music","a video game","a trip to Japan","fast food","a short-form video online","the local park"];
+
+  // Classifies each storyVerbs entry as a happy/positive relationship moment
+  // or a negative/dramatic one, so generateLocalStory() below can pick a
+  // tonally-matching set of templates instead of always writing a breakup.
+  // storyVerbs itself is left untouched (order and length matter - it's
+  // indexed into by decodePostParam() for share-link decoding).
+  const negativeStoryVerbs = new Set(["broke up with", "had an argument with", "left"]);
+  function isNegativeStoryVerb(verb) {
+    return negativeStoryVerbs.has(verb.trim().toLowerCase());
+  }
+
+  const eventTypes = ["party","wedding","trip","honeymoon","family gathering","favourite band's concert","favourite team's match","night out","medical appointment","first date","sweet 16"];
+  const travelDestinations = ["Italy","Japan","Thailand","New York","the Maldives","Greece","Bali","Portugal","Mexico","New Zealand","Scotland","Dubai","South Korea","Brazil","Morocco"];
+  const eventOutcomes = ["cancelled because of","postponed because of","ruined by","full of arguments because of","made perfect by"];
+  const eventCulprits = ["my friend from primary school","a film I watched 4 years ago","a random influencer","the elections","ChillSpace","a band I liked as a kid","the hot weather"];
+
+  function makeEventComment() {
+    const event = rand(eventTypes);
+    const useHappened = Math.random() < 0.17;
+    const outcome = useHappened ? "happened because of" : rand(eventOutcomes);
+    const culprit = rand(eventCulprits);
+    const needsDestination = event === 'trip' || event === 'honeymoon';
+    const destination = needsDestination ? ` to ${rand(travelDestinations)}` : '';
+    const wasWord = useHappened ? '' : ' was';
+    return `My ${event}${destination}${wasWord} ${outcome} ${culprit}.`;
+  }
+
+  const knowSomeoneRelations = ["friend","brother","sister","grandad","grandma","girlfriend","boyfriend","cousin","old school friend","ex","old online friend","old teacher","old coworker"];
+  const wasRelations = new Set(["grandad","grandma"]);
+  const isNowRelations = new Set(["old school friend","ex","old online friend","old teacher","old coworker"]);
+  const knowSomeoneRoles = ["billionaire","celeb","footballer","singer","actor","entrepreneur","influencer","politician"];
+
+  function makeKnowSomeoneComment() {
+    const rel = rand(knowSomeoneRelations);
+    const role = rand(knowSomeoneRoles);
+    let verb;
+    if (wasRelations.has(rel)) verb = "was a";
+    else if (isNowRelations.has(rel)) verb = "is now a";
+    else verb = "is a";
+    return `My ${rel} ${verb} ${role}.`;
+  }
+
+  function makeStoryComment() {
+    const r = Math.random();
+    if (r < 0.34) {
+      const verb = rand(storyVerbs);
+      const rel = rand(storyRelations);
+      const topic = rand(storyTopics);
+      return `I ${verb} my ${rel} over ${topic}.`;
+    } else if (r < 0.67) {
+      return makeEventComment();
+    } else {
+      return makeKnowSomeoneComment();
+    }
+  }
+
+  // ---- "See the full story" data ----
+  const fullStories = {
+    // --- Original stories ---
+    "My old school friend is now a billionaire.": "In high school, Leo was the guy who traded his sandwich for a shiny holographic Charizard card, which everyone thought was a terrible deal. Ten years later, OP bumped into him at a diner. It turned out Leo had kept trading up — from cards, to vintage sneakers, to a tech startup domain name he bought for $12. He casually paid for OP's $8 pancakes by pulling a black card out of a wallet that probably cost more than OP's car.",
+    "I left my husband over a video game.": "It wasn't just any video game; it was a high-stakes co-op puzzle game. They were on the final level, needing perfect coordination to open the escape hatch. OP's husband accidentally dropped a digital boulder on their character, laughed hysterically, and then saved the game, trapping OP forever. Looking at him sitting on the couch, totally unbothered by his betrayal, they realised: if he won't save me from a digital boulder, how can I trust him in real life? They packed their bags that night.",
+    "My ex is now a celeb.": "OP used to date a guy who wore mismatched socks and spent three hours a day trying to teach his golden retriever how to skateboard. They broke up because he \"needed to find his true purpose.\" Last week, OP turned on the TV to find him starring as the rugged, brooding lead in a massive new fantasy trilogy on Netflix. His signature brooding face? It was the exact same face he used to make when he forgot where he parked his car.",
+    "I got with my dream boy over fast food.": "OP had been crushing on Leo from accounting for months but was too nervous to say a word. One rainy midnight, they both happened to end up at the same 24-hour drive-thru. When the machine broke down, leaving them trapped in the queue for an hour, Leo rolled down his window and offered OP a rogue mozzarella stick through the car window. They ended up eating lukewarm fries on the hood of the car, talking until sunrise.",
+    "My sweet 16 was postponed because of a film I watched 4 years ago.": "When OP was twelve, she watched a horror movie about a cursed sweet sixteen party where a ghostly clown wreaked havoc. She was so traumatised she made her parents sign a written contract stating they wouldn't have a party until she turned seventeen to \"confuse the spirits.\" Four years later, her parents actually held her to it to save money, postponing her party and leaving her to spend her sixteenth birthday watching comedies instead.",
+    "My honeymoon to Japan happened because of a trip to Japan.": null,
+    "I got engaged to my childhood crush over a trip to Japan.": "OP and their fiancé were technically just platonic travel buddies who booked a cheap holiday to Tokyo. But after getting hopelessly lost in Shibuya, accidentally ordering raw horsemeat, and surviving a sudden torrential downpour under a tiny convenience store umbrella, things changed. By the time they reached a quiet temple in Kyoto, OP's fiancé realised they never wanted to get lost with anyone else, and OP realised they were completely smitten. OP's fiancé bought a souvenir ring on the spot.",
+    "My first date was made perfect by a random influencer.": "OP's date at a fancy bistro was going terribly — the food was delayed, the conversation was awkward, and the atmosphere was dead. Suddenly, a famous food influencer burst through the doors with a camera crew, mistakenly thinking OP and their date were a couple celebrating a 10-year anniversary. To save face on camera, they had to fake a deeply romantic, laughing interaction. The forced acting actually broke the ice, they started genuinely laughing, and the influencer ended up paying for their entire meal.",
+    "My grandma was a celeb.": "OP always knew their grandma was cool because she drove a motorcycle, but they didn't know how cool until they cleared out her attic. Hidden in an old trunk were glamorous black-and-white photos of her as a famous lounge singer in 1960s Saigon, complete with a stage name and fan mail. She had given it all up to become a quiet librarian, never mentioning to her grandkids that she once opened for international jazz legends.",
+    "My party was cancelled because of ChillSpace.": "OP threw a massive virtual reality birthday party inside the ChillSpace app, inviting fifty people. Everyone logged in, but within five minutes, the app's AI went rogue, mistook the virtual birthday cake for a hostile entity, and began spawning infinite random posts across the screen, blocking everyone's vision. The servers crashed, the headsets overheated, and the entire party had to be relocated to a very low-tech, real-world backyard with a supermarket cake.",
+    "I got engaged to my dream girl over a trip to Japan.": "OP and their fiancée were technically just platonic travel buddies who booked a cheap holiday to Tokyo. But after getting hopelessly lost in Shibuya, accidentally ordering raw horsemeat, and surviving a sudden torrential downpour under a tiny convenience store umbrella, things changed. By the time they reached a quiet temple in Kyoto, OP's fiancée realised they never wanted to get lost with anyone else, and OP realised they were completely smitten. OP's fiancée bought a souvenir ring on the spot.",
+    // --- Argument & event disruptions ---
+    "My night out was full of arguments because of a film I watched 4 years ago.": "OP went out for drinks with friends, intending to have a relaxing evening. However, someone brought up a controversial psychological thriller that OP had watched four years prior. OP passionately defended the twist ending, while their friends insisted it was a plot hole, leading to a loud, night-long debate that completely ruined the vibe.",
+    "My sweet 16 was full of arguments because of a band I liked as a kid.": "For their sixteenth birthday, OP insisted on playing a playlist filled with a cheesy pop-punk band they loved in primary school. Their sibling took control of the auxiliary cord, calling the music embarrassing, which sparked a massive family shouting match right over the birthday cake.",
+    "My first date was full of arguments because of the hot weather.": "OP and their date decided to go to an outdoor food market during a record-breaking heatwave. The sweltering heat made both of them incredibly cranky. Before the appetizers even arrived, they found themselves bickering over trivial things like who forgot to bring a water bottle and the best path to the shade.",
+    "I had an argument with my dream girl over a trip to Japan.": "OP thought they had found the perfect partner until they started planning a future vacation to Japan. OP wanted a strict, fast-paced itinerary to see Tokyo and Kyoto anime hotspots, while she wanted a slow, rural wellness retreat. The fundamental mismatch in their travel styles led to an intense disagreement.",
+    "My medical appointment was postponed because of a random influencer.": "A major internet personality decided to stage a massive, unannounced public stunt right in the middle of a busy downtown intersection. The resulting gridlock and crowds blocked traffic for miles, forcing OP to miss their critical doctor's appointment.",
+    "My family gathering was postponed because of a random influencer.": "A major internet personality decided to stage a massive, unannounced public stunt right in the middle of a busy downtown intersection. The resulting gridlock blocked traffic for miles, delaying everyone trying to get to a family dinner.",
+    "My sweet 16 was postponed because of ChillSpace.": "OP had spent weeks organizing a massive virtual gathering and watch party hosted entirely through the social media platform. Just as the event was scheduled to begin, the app suffered a massive global server outage, leaving all their friends unable to log in and forcing OP to call the whole thing off.",
+    "My night out was cancelled because of ChillSpace.": "OP had spent weeks organizing a massive virtual gathering and watch party hosted entirely through the social media platform. Just as the event was scheduled to begin, the app suffered a massive global server outage, leaving all their friends unable to log in and forcing OP to call the whole thing off.",
+    "My night out was ruined by the elections.": "OP's celebration coincided with a highly contentious local election night. Road closures around town for political rallies made traveling impossible, and half the guests ended up glued to the live news broadcasts on their phones anyway, entirely dampening the party atmosphere.",
+    "My sweet 16 was postponed because of the elections.": "OP's birthday fell on election night. Road closures around town for political rallies made traveling impossible, and half the guests ended up glued to the live news broadcasts on their phones, entirely dampening the party atmosphere.",
+    // --- Relationship milestones ---
+    "I first met my best friend after a discussion over a kid's film.": "OP was standing in line at a café, loudly debating the deeper philosophical themes of an animated children's movie with their best friend. A stranger overheard, laughed, and chimed in with a brilliant counterargument. That stranger ended up sitting with them, sparking a brand-new friendship.",
+    "I fell in love with my childhood crush over a kid's film.": "OP reconnected with someone they had a crush on years ago. While hanging out, they decided to watch a nostalgic movie from their childhood. Reminiscing about the old days shifted the energy completely, making OP realise their feelings had never truly faded, eventually leading to a beautiful proposal.",
+    "I got engaged to my husband over a kid's film.": "OP reconnected with someone they had a crush on years ago. While hanging out, they decided to watch a nostalgic movie from their childhood. Reminiscing about the old days shifted the energy completely, making OP realise their feelings had never truly faded, eventually leading to a beautiful proposal.",
+    "I got engaged to my husband over a short-form video online.": "OP's partner decided to ditch a traditional proposal. Instead, he filmed a creative, viral-style short video compilation of their relationship milestones, ending with him holding up a ring. He sent it to OP while they were sitting right next to each other on the couch.",
+    "I broke up with my lover over fast food.": "The relationship was already on thin ice, but the final straw came during a late-night drive-thru run. OP's partner refused to share their fries, threw a tantrum when the order was slightly incorrect, and treated the service worker incredibly rudely. OP drove them straight home and ended it right there.",
+    "I left my childhood crush over fast food.": "The relationship was already on thin ice, but the final straw came during a late-night drive-thru run. OP's partner refused to share their fries, threw a tantrum when the order was slightly incorrect, and treated the service worker incredibly rudely. OP drove them straight home and ended it right there.",
+    "I left my babe over painting.": "OP and their partner decided to spend a weekend repainting their living room. What was supposed to be a fun DIY project turned into a battleground over colour swatches, roller techniques, and a ruined hardwood floor, ultimately exposing deeper communication issues that led to a breakup.",
+    "I had an argument with my babe over painting.": "OP and their partner decided to spend a weekend repainting their living room. What was supposed to be a fun DIY project turned into a battleground over colour swatches, roller techniques, and a ruined hardwood floor, ultimately exposing deeper communication issues that led to a breakup.",
+    "I got with my husband over painting.": "OP decided to take an introductory art class to try a new hobby. They ended up sharing an easel station with a fellow beginner. Laughing at how terrible their initial landscapes looked helped them bond instantly, kickstarting a romance that eventually led to marriage.",
+    "I remembered my girlfriend over the local park.": "While walking through a neighbourhood park they hadn't visited in years, OP saw a specific bench near a willow tree. The sight instantly triggered a wave of nostalgia about their girlfriend and the quiet, peaceful afternoons they used to spend talking there.",
+    // --- Glitz, glamour & high status ---
+    "My ex is now an influencer.": "OP broke up with someone who used to constantly complain about social media. A year later, OP was scrolling through their feed only to find their ex's profile completely transformed, sporting hundreds of thousands of followers, sponsored brand deals, and a highly curated lifestyle.",
+    "My grandad was an influencer.": "Long before modern social media existed, OP's grandfather was a visionary local business owner who knew exactly how to market himself. He ran quirky radio ads, printed bold flyers, and built a local empire from scratch, essentially acting as the town's original trendsetter.",
+    "My grandad was an entrepreneur.": "Long before modern social media existed, OP's grandfather was a visionary local business owner who knew exactly how to market himself. He ran quirky radio ads, printed bold flyers, and built a local empire from scratch, essentially acting as the town's original trendsetter.",
+    "My cousin is a billionaire.": "OP grew up sharing toys and playing video games with their cousin who was always obsessed with coding. Years later, that cousin developed a groundbreaking tech platform that took the world by storm, instantly rocketing them into extreme wealth while OP watched in absolute disbelief.",
+    "My brother is a billionaire.": "OP grew up sharing toys and playing video games with their brother who was always obsessed with coding. Years later, their brother developed a groundbreaking tech platform that took the world by storm, instantly rocketing him into extreme wealth while OP watched in absolute disbelief.",
+    "My cousin is a footballer.": "OP used to get regular life advice from their cousin who always emphasised discipline and fitness. Then their cousin made a sudden leap to a professional sports club, and OP now watches them play on national television.",
+    "My old teacher is now a footballer.": "OP used to get regular life advice from their PE teacher who always emphasised discipline and fitness. Then their teacher made a sudden leap to a professional sports club, and OP now watches them play on national television.",
+    "My old coworker is now an actor.": "OP used to work a mundane, nine-to-five retail job alongside someone who spent every break rehearsing lines under their breath. OP eventually found out they quit to move to the city, and just last week, OP spotted their face plastered across a massive billboard for a major streaming series.",
+    "My old coworker is now a celeb.": "OP used to work a mundane, nine-to-five retail job alongside someone who spent every break rehearsing lines under their breath. OP eventually found out they quit to move to the city, and just last week, OP spotted their face plastered across a massive billboard for a major streaming series.",
+    // --- New stories from screenshots ---
+    "I had an argument with my girlfriend over a trip to Japan.": "OP had been meticulously planning a dream vacation to Tokyo for months, saving every extra bit of income. However, when they finally presented the itinerary to their girlfriend, she admitted she was terrified of long-haul flights and preferred a local beach getaway instead. OP felt frustrated that their effort wasn't appreciated, leading to a heated argument about compromise, fear, and what making shared memories really meant to them.",
+    "My friend is a entrepreneur.": "OP watched their close friend risk everything to start a small, independent eco-friendly clothing line from a tiny garage. While OP initially worried about the financial stability of the venture, seeing their friend's relentless dedication and eventual success inspired OP to start rethinking their own career path and creative passions.",
+    "I left my wife over the local park.": "It wasn't actually the park itself that caused the split, but what happened there. OP had spent months organising a community project to restore the neglected local park for neighbourhood children. When OP's wife refused to support the project and openly mocked OP's dedication to the community, OP realised that their core values and visions for the future were completely incompatible, leading to the final decision to end the marriage.",
+    "My honeymoon to Scotland was cancelled because of my friend from primary school.": "OP and their new spouse were all packed for a romantic getaway to the Scottish Highlands when an urgent call came in. OP's closest friend from primary school had been involved in a serious accident abroad and needed immediate emergency assistance. Without hesitation, OP and their spouse chose to cancel the trip and forfeit the bookings to be there for the person who had been like family for decades.",
+    "I left my dream girl over a video game.": "OP thought they had found the perfect partner until a highly anticipated competitive video game launched. Over the course of a single week, the girl revealed a side OP had never seen before — shouting aggressive insults, exhibiting extreme toxicity to strangers online, and throwing a controller through the television in a fit of rage. Realising this reflected a deeper issue with anger management, OP decided to walk away.",
+    "My honeymoon to Thailand was postponed because of a film I watched 4 years ago.": "Four years prior, OP had watched a powerful documentary about a critically endangered marine ecosystem in Thailand. When booking their honeymoon, OP realised the resort they chose was actively contributing to the destruction highlighted in that exact film. Unwilling to support the venue, OP postponed the entire trip until they could find a fully sustainable, eco-certified alternative.",
+    "My wedding was made perfect by the elections.": "OP's outdoor wedding happened to fall on the exact same weekend as a major national election. Because of the voting crowds, local traffic was completely blocked and the catering truck couldn't reach the venue. Instead of disaster, the local community kitchen stepped in and nearby campaign volunteers helped set up tables, turning OP's intimate ceremony into a massive, unforgettable neighbourhood celebration.",
+    "My family gathering happened because of ChillSpace.": "OP's extended family had been scattered across different continents for over a decade, losing touch due to busy schedules and time zones. After OP created a dedicated group page on ChillSpace, relatives began sharing old photos and memories daily. The digital rekindling was so successful that it prompted everyone to coordinate their schedules and fly in for a massive, emotional in-person reunion.",
+    "My sister is a entrepreneur.": "OP always knew their sister had a sharp mind for business, but they were still amazed when she successfully launched her own tech consulting firm at a young age. OP took great pride in watching her navigate difficult investor meetings and build a diverse team from the ground up, proving that her ambition was truly limitless.",
+    "My old teacher is now a politician.": "OP was scrolling through the local news when they recognised a familiar face running for city council — their former high school history teacher. Remembering how passionate and fair that teacher had always been in the classroom, OP immediately volunteered to help manage the local campaign headquarters.",
+    "My trip to Mexico was ruined by the hot weather.": "OP had been looking forward to exploring ruins and walking through vibrant outdoor markets during their vacation to Mexico. However, an unprecedented heatwave hit the region the exact week they arrived. With temperatures soaring to unbearable heights, OP spent almost the entire trip trapped inside an air-conditioned hotel room.",
+    "I had an argument with my boyfriend over music.": "OP was put in charge of the playlist for a long road trip with their boyfriend. When OP started playing their favourite experimental indie tracks, their boyfriend complained loudly, calling it unlistenable noise and demanding they switch to mainstream radio. What started as a simple disagreement over a song quickly escalated into a tense argument about respecting each other's individual tastes.",
+    "My medical appointment was full of arguments because of a band I liked as a kid.": "OP went in for a routine check-up and noticed the clinic nurse was wearing a lanyard featuring a classic pop-punk band OP had obsessed over during middle school. When OP pointed it out, a nearby doctor overheard and loudly claimed the band's later albums were total garbage. The nurse fiercely defended the band's entire discography, turning OP's quiet appointment into a comical, high-energy debate about music history.",
+    "My old school friend is now a actor.": "OP was casually watching a popular new streaming series when a familiar face appeared on screen. It turned out to be their closest friend from middle school, who had moved away years ago to pursue theatre. Seeing their old friend successfully land a major television role brought back a wave of nostalgia and immense pride.",
+    "I fell in love with my childhood crush over painting.": "OP reconnected with their childhood crush after accidentally signing up for the exact same community art class. Tasked with collaborating on a large canvas project, they spent weeks talking, laughing, and sharing stories while mixing colours. Working side-by-side every week made OP realise that their old playground crush had blossomed into genuine, deep feelings.",
+    "My family gathering was full of arguments because of a band I liked as a kid.": "During a large family dinner, OP's older cousins unearthed an old home video of OP performing an incredibly embarrassing choreographed dance routine to a boy band they loved as a child. While half the family found the nostalgia hilarious, the other half began arguing intensely over whether that specific era of pop music was iconic or completely terrible, completely derailing the dinner conversation.",
+    "My wedding was full of arguments because of the hot weather.": "OP had planned a beautiful, formal outdoor summer wedding, but a sudden humidity spike caused temperatures to skyrocket. As guests began to melt in their heavy attire, family members started arguing over whether to move everything into a cramped indoor backup room or push through the heat, leaving OP to manage the conflicting opinions on their big day.",
+    "My boyfriend is a actor.": "OP's boyfriend finally landed a recurring role on a popular daytime drama, which meant his daily schedule completely shifted to intense, early-morning call times. While OP was incredibly proud to see his hard work pay off, they both had to adjust to navigating the chaotic world of scripts, rehearsals, and the sudden lack of free time in their relationship.",
+    "My cousin is a celeb.": "OP used to spend every summer vacation playing video games and riding bikes with their cousin. Now, that same cousin has become a viral pop star with millions of followers. OP finds it incredibly surreal to see their childhood companion's face on massive city billboards and to hear their voice blasting on the radio while running errands.",
+    "My ex is now a politician.": "OP opened the local morning newspaper only to see their ex-partner's face plastered across the front page announcing a run for city council. Seeing someone they used to share a quiet, everyday life with now delivering polished public speeches and campaigning for votes felt completely bizarre.",
+    "I got with my childhood crush over painting.": "OP had been secretly fond of a neighbourhood friend for years but never found the right moment to say anything. When they both ended up volunteering to paint a massive new community mural downtown, the long hours spent working closely together finally gave OP the courage to speak up, sparking a relationship right there by the paint palettes.",
+    "I left my wife over music.": "OP spent years trying to build a career as a professional classical cellist, practising long hours every day. However, OP's wife deeply resented the noise and the financial uncertainty of the arts, eventually giving OP an ultimatum to either sell the instrument or end the marriage. Realising they couldn't stay with someone who asked them to abandon their core passion and identity, OP made the difficult decision to leave.",
+    "I left my dream boy over a trip to Japan.": "OP had won an exclusive, year-long study abroad fellowship in Tokyo — an opportunity they had worked toward for a decade. When OP shared the news, the boy they thought was perfect refused to support them, demanding OP turn down the fellowship to stay home with him instead. Realising his love was conditional and restrictive, OP prioritised their future and left him behind.",
+    "My grandma was a actor.": "OP loved listening to their grandma's vibrant stories about her youth spent on the stage. Long before modern television took over, she had been a prominent theatre actor travelling with a local troupe across the country, and she still kept a trunk full of vintage costumes and faded scripts in her attic for OP to explore.",
+    "My old coworker is now a singer.": "OP used to work a mundane data-entry job alongside someone who spent every lunch break quietly writing lyrics in a worn notebook. OP was thrilled to discover that their former desk partner had recently signed with an indie record label and released a breakout track that was climbing the streaming charts.",
+    "My grandma was a politician.": "Growing up, OP's grandma was a towering figure of inspiration, having served as one of the first female mayors of their city. She taught OP everything about community organising, civic duty, and standing up for the underrepresented, leaving a powerful legacy that OP strives to carry on today.",
+    "I remembered my childhood crush over a video game.": "While downloading a newly remastered classic retro RPG, OP was suddenly hit with a wave of nostalgia. They vividly remembered sitting on the living room floor a decade earlier, taking turns trying to beat the hardest levels alongside their childhood crush, prompting OP to look them up online to see how they were doing.",
+    "My first date was made perfect by a film I watched 4 years ago.": "Four years prior, OP had watched an obscure, quirky indie film about a couple who spent their first date visiting a late-night botanical greenhouse. When OP's date surprised them by planning that exact same unique activity, OP knew instantly that the chemistry was real and that the evening was going to be unforgettable.",
+    "My grandma was a billionaire.": "OP's grandma had built an international logistics empire from scratch through decades of grit and savvy investments. Despite her immense wealth, she lived a surprisingly modest life and focused her later years entirely on philanthropy, teaching OP that true success lies in how much you can give back to the world.",
+    "I broke up with my lover over music.": "OP and their lover had been drifting apart for months, but the final straw came when they attempted to collaborate on a creative music project together. The creative differences quickly turned into deep personal insults, forcing OP to realise that if they couldn't communicate with kindness and mutual respect over art, the relationship couldn't survive.",
+    "My wedding was made perfect by the hot weather.": "Everyone warned OP that an outdoor wedding in peak summer would be a sweaty disaster, but the day turned out to be an absolute dream. The bright, clear sunshine kept guests in high spirits, and as night fell, the lingering balmy warmth created the perfect ambient atmosphere for a lively, outdoor dance party under the stars.",
+    "My party was full of arguments because of my friend from primary school.": "OP threw a relaxed housewarming party, inviting a mix of current colleagues and an old friend from primary school. Unfortunately, the childhood friend brought up an ancient, embarrassing misunderstanding from their playground days, loudly arguing about it with guests who had no context, which completely ruined the evening's easygoing vibe.",
+    "My sweet 16 happened because of the hot weather.": "OP originally wanted a small, indoor movie marathon night for their sixteenth birthday, but a massive summer heatwave caused a city-wide power outage. With the indoor AC down, OP's family quickly moved the party outside to the backyard, fired up the grill, and invited the whole neighbourhood for an impromptu pool and ice cream party that turned out to be way better than the original plan.",
+    "I had an argument with my best friend over a kid's film.": "OP and their best friend were feeling nostalgic and decided to rewatch an animated movie from their childhood. Afterwards, they got into a surprisingly intense, passionate debate about whether the main villain actually had a point or was just completely evil, resulting in a funny but stubborn argument that lasted all evening.",
+    "I got with my babe over a trip to Japan.": "OP and their partner had both independently signed up for a guided group tour of Kyoto and Tokyo. Being the only two solo travellers from the same hometown, they naturally gravitated toward each other while exploring temples and trying local food, building a deep connection that turned into a beautiful relationship by the time the flight landed back home.",
+    "My favourite band's concert was postponed because of a band I liked as a kid.": "OP was devastated to hear that their favourite rock group had to delay their tour kickoff. As it turned out, the opening act — which happened to be an old pop-punk band OP had obsessed over in elementary school — had experienced a massive travel delay, forcing the venue to push the entire concert back a month.",
+    "My cousin is a influencer.": "OP always found it funny to go out to dinner with their cousin, who couldn't eat a meal without taking a dozen perfectly styled photos first. Over the last year, that dedication paid off, and their cousin's lifestyle channel completely blew up online, turning them into a recognisable internet personality with a massive following.",
+    "My honeymoon to Italy was postponed because of ChillSpace.": "OP and their new spouse were all set for their trip to Rome when they saw a massive, viral warning trending on the ChillSpace app showing that the local airline they booked with was abruptly grounding all flights due to a system glitch. Thanks to the early heads-up on the app, OP managed to postpone their reservations just in time before losing any money.",
+    "My girlfriend is a billionaire.": "OP's girlfriend is a brilliant tech innovator who built an incredibly successful software company completely from scratch. Despite her massive financial success, OP loves that she remains completely grounded, preferring quiet nights in cooking diner-style food at home rather than attending fancy galas.",
+    "My honeymoon to Greece was made perfect by a band I liked as a kid.": "While vacationing on a beautiful Greek island for their honeymoon, OP and their spouse stumbled upon a small, open-air beach pavilion. To OP's absolute shock, the legendary indie band they had constantly listened to as a kid was playing an intimate, unannounced acoustic reunion set, giving them the perfect soundtrack to an unforgettable night.",
+    "My friend is a footballer.": "OP had grown up playing casual matches in the local park with their best friend, who always had an incredible work ethic. Years of intense training finally paid off when their friend was scouted by a professional academy and officially signed with a major league team, making OP their biggest fan in the stadium seats.",
+    "My favourite team's match was ruined by the hot weather.": "OP had saved up for months to get front-row tickets to see their favourite sports team play in the championship match. However, an extreme, record-breaking summer heatwave caused the stadium turf to become unsafe, forcing the officials to call off the game mid-way through and leaving OP thoroughly disappointed.",
+    "My friend is a actor.": "OP always knew their friend had a flair for drama and performance, but it became real when they were invited to a local indie film premiere. Seeing their close friend confidently lighting up the big screen as the lead character was a surreal experience that made OP incredibly proud.",
+    "My sweet 16 was cancelled because of my friend from primary school.": "OP was entirely prepared to celebrate their sixteenth birthday with a big venue party, but their absolute closest friend from primary school suddenly fell severely ill and had to be hospitalised. Choosing loyalty over a party, OP cancelled the big event entirely so they could spend the weekend supporting their friend's family instead.",
+    "My trip to New York was postponed because of the hot weather.": "OP had been counting down the days until their summer vacation to New York City to explore the museums and parks. Right before departure, a severe heat dome settled over the East Coast, causing massive power grid failures and travel delays, which forced OP to push the entire trip back to the cooler autumn months.",
+    "I first met after a discussion with my husband over a kid's film.": "OP and their husband were having a lighthearted debate at a local bookstore about the hidden philosophical themes in a classic animated movie. Another patron overheard and playfully chimed in with their own opinion, sparking an entirely new friendship that OP still cherishes to this day.",
+    "My friend is a influencer.": "OP used to think it was silly when their friend spent hours editing short videos and setting up perfect lighting in their bedroom. However, after one of those videos went viral globally, their friend quickly built a massive online community, turning a fun hobby into a full-time digital career.",
+    "My medical appointment was made perfect by a band I liked as a kid.": "OP was feeling incredibly nervous sitting in the waiting room for a stressful medical procedure. Just as the anxiety was peaking, the clinic's overhead speakers began playing an instrumental version of an iconic song by a pop-punk band OP had absolutely obsessed over as a kid, instantly calming their nerves and putting a smile on their face.",
+    "I broke up with my childhood crush over a kid's film.": "OP finally got the chance to date their long-time childhood crush, but the illusion shattered during a movie night. While watching a classic, heartwarming family film, the crush spent the entire time making incredibly mean-spirited remarks about the characters and mocking the emotional ending, showing OP a cynical side to their personality that they simply couldn't tolerate.",
+    "I had an argument with my girlfriend over a trip to Japan.": "OP had spent weeks building a highly detailed, fast-paced itinerary to explore every corner of Tokyo and Osaka. However, their girlfriend wanted a slow, relaxing vacation spent entirely at a quiet countryside hot spring, leading to a massive argument about how they completely differed when it came to travelling and compromising.",
+    "I got engaged to my dream girl over music.": "OP and their dream girl first met at a vinyl record store, bonding over an obscure indie rock band. Two years later, OP organised a private rooftop gathering and hired a local acoustic duo to play that exact same song. As the music reached its crescendo, OP dropped to one knee and proposed, receiving a joyful yes under the stars.",
+    "My party was full of arguments because of ChillSpace.": "OP threw what was supposed to be a tight-knit housewarming party, but a few guests kept checking a viral drama thread on the ChillSpace app. Instead of mingling and dancing, the attendees split into opposing factions, fiercely debating the online rumours all night and completely derailing the party's fun atmosphere.",
+    "My boyfriend is a singer.": "OP's boyfriend is the lead vocalist for a rising local jazz band. While OP absolutely loves watching him command the stage with his soulful voice, they've had to adapt to his late-night concert schedules and the endless vocal warm-ups echoing through the house every single morning.",
+    "My brother is a singer.": "OP spent their childhood constantly telling their brother to turn down his music, but his relentless practising ultimately paid off. OP recently stood in the front row of a packed auditorium, watching him perform a stunning solo set that brought the entire audience to its feet.",
+    "I got with my childhood crush over a short-form video online.": "OP came across a hilarious, viral short-form video that immediately reminded them of an old inside joke from middle school. OP impulsively sent the link to their childhood crush, sparking a nostalgic conversation that quickly turned into late-night phone calls and, eventually, a real-life relationship.",
+    "I fell in love with my husband over the local park.": "When OP first met their husband, they were both volunteering to design a new community garden for the local park. Spending every weekend side-by-side mapping out flowerbeds, planting trees, and chatting with neighbours made OP realise they were falling deeply in love with his kind heart and shared vision for the neighbourhood.",
+    "My first date was postponed because of ChillSpace.": "OP was dressed and ready to leave for a highly anticipated first date when the entire ChillSpace server crashed globally. Because they had only ever communicated through the app's messaging system and hadn't traded phone numbers yet, OP had no way to confirm the meeting spot, forcing them to postpone until the servers went back online the next day.",
+    "My brother is a politician.": "OP spent their entire childhood watching their brother win debates at the dinner table, so nobody was surprised when he officially ran for city council. Now, OP has to get used to seeing their brother's face on campaign banners draped across local streetlights and watching him deliver passionate speeches on the local news.",
+    "I first met after a discussion with my childhood crush over a short-form video online.": "OP left a thoughtful comment analysing a complex art style used in a trending short-form video. To OP's absolute shock, their childhood crush — whom they hadn't spoken to in years — replied to the comment to start a friendly debate, leading to an entirely new, deeply valued friendship group forming from the discussion.",
+    "My favourite team's match was full of arguments because of a random influencer.": "OP was incredibly excited to watch their favourite sports team play, but a famous lifestyle influencer sitting in the VIP section began loudly mocking the sport on their live stream. The influencer's critical comments sparked a massive, aggressive shouting match between their fans and the die-hard sports supporters in the stands, completely ruining the game's atmosphere for OP.",
+    "I remembered my dream boy over a video game.": "While exploring a hidden easter egg in a newly released open-world fantasy game, OP was hit with a wave of nostalgia. They vividly remembered staying up late during summer break years ago, trying to clear that exact same gaming franchise alongside the boy they used to consider their absolute dream match, prompting OP to wonder what he was up to now.",
+    "My old coworker is now a billionaire.": "OP used to share a tiny, cramped breakroom with a quiet programmer at a struggling tech startup. Years later, OP read a headline announcing that the programmer's side project had completely revolutionised global cybersecurity, turning their former desk neighbour into a prominent billionaire overnight.",
+    "My old school friend is now a politician.": "OP was clearing out old storage boxes when they found a middle school yearbook signed by an old classmate who promised they would change the world someday. That very afternoon, OP saw an online campaign ad confirming that their old friend was officially running for state representative to advocate for green energy.",
+    "My family gathering was full of arguments because of a band I liked as a kid.": "During a large family reunion dinner, OP's older sibling decided to play a cringeworthy home video of OP at age ten, fully dressed up and singing into a hairbrush to an edgy pop-punk band. The nostalgia quickly devolved into a heated, loud debate between the aunts and uncles over whether that specific era of music was iconic or just pure noise, completely hijacking the evening.",
+    "I had an argument with my dream girl over a kid's film.": "OP thought they had found their absolute dream girl until they sat down for a nostalgic movie night to watch a classic animated film. Afterwards, she launched into a surprisingly intense, cynical critique, mocking the heartwarming message and calling the main characters foolish, which led to a tense argument about empathy and perspective.",
+    "My trip to the Maldives was cancelled because of ChillSpace.": "OP had been counting down the days to a dream vacation in the Maldives, carefully booked through a travel coordinator found on the ChillSpace app. Unfortunately, a sudden viral trend on the platform exposed the coordinator as a massive scammer who had taken everyone's money without actually booking the flights, forcing OP to cancel the entire trip.",
+    "I left my childhood crush over the local park.": "OP finally got the chance to go out on a casual date with their long-time childhood crush at the local park. However, the illusion completely shattered when the crush casually tossed plastic trash into the duck pond and laughed when OP asked them to pick it up, proving to OP that their core values were completely mismatched.",
+    "I got with my babe over a kid's film.": "OP and their partner first bonded during a university film club screening of a beloved, nostalgic childhood movie. Finding out that they both still knew every single line of dialogue and song lyric by heart sparked an immediate, deep connection that eventually grew into a beautiful, lasting relationship.",
+    "I left my wife over a kid's film.": "OP and their wife were watching a classic animated children's movie from their youth when their wife began making deeply cynical and mean-spirited comments about the characters' kindness. This sparked a broader, serious conversation where OP realised her lack of empathy extended to real life, leading OP to make the difficult decision to leave the marriage."
+  };
+
+  const STORY_VIDEO_SRC = "https://ia601808.us.archive.org/16/items/videoplayback-3_20251207/videoplayback%20%283%29.mp4";
+
+  // ---- Writes a short backstory on the fly for story comments that don't
+  // have one of the hand-written entries in fullStories above. Runs
+  // entirely locally (no network call, no third-party API) - it regexes the
+  // comment back apart into the pieces makeStoryComment()/makeEventComment()/
+  // makeKnowSomeoneComment() built it from, then plugs those into a small
+  // pool of templates per comment type for some variety. ----
+
+  // ---- Positive relationship story: got with, got engaged, fell in love,
+  // first met, remembered - anything happy/nostalgic. ----
+  const positiveRelationshipStoryTemplates = [
+    (rel, topic) => `It started as a throwaway comment about ${topic}, the kind that isn't supposed to mean anything. Except OP's ${rel} lit up talking about it, and OP found themselves hanging on every word. By the end of the night neither of them wanted to be the one to say goodbye first.`,
+    (rel, topic) => `Neither of them planned on bonding over ${topic}, it just happened somewhere between the third joke and the second round of drinks. OP's ${rel} had this way of making even the smallest detail sound worth caring about, and OP was completely gone for it by the end of the conversation.`,
+    (rel, topic) => `OP wasn't expecting ${topic} to be the thing that did it, but watching their ${rel} get genuinely excited about it was somehow the most charming thing OP had seen in months. They talked for hours and neither of them noticed the time passing.`,
+    (rel, topic) => `It was a small, ordinary moment - just two people talking about ${topic} - but OP's ${rel} said something so unexpectedly sweet about it that OP has thought about it every day since. Some things just click.`,
+    (rel, topic) => `OP still can't quite explain why a conversation about ${topic} turned into one of the best nights of their life, except that their ${rel} had a way of making it feel like the only thing that mattered. They've been inseparable ever since.`
+  ];
+
+  // ---- Negative relationship story: broke up, argument, left - anything
+  // dramatic or disappointing. ----
+  const negativeRelationshipStoryTemplates = [
+    (rel, topic) => `OP swears it wasn't about ${topic} itself, it was the *principle* of it. Their ${rel} disagreed loudly, for over an hour, using increasingly specific evidence pulled from three different group chats. By the time either of them backed down, the moment had passed, and so, weirdly, had a lot more than that.`,
+    (rel, topic) => `It began as a harmless debate about ${topic} at 1am, the kind neither of them meant to take seriously. Forty-five minutes and one dramatically closed laptop later, OP's ${rel} said the quiet part out loud, and there was no walking it back after that.`,
+    (rel, topic) => `OP still isn't sure how a conversation about ${topic} spiraled the way it did, but their ${rel} apparently had *opinions* they'd been sitting on for months. What should've been a five-minute chat turned into the defining moment of the whole thing.`,
+    (rel, topic) => `Their ${rel} brought up ${topic} completely out of nowhere, mid-dinner, like it had been rehearsed. OP tried to laugh it off. Their ${rel} did not. Neither of them touched their food after that.`,
+    (rel, topic) => `In hindsight, OP probably shouldn't have brought up ${topic} while they were both already tired and hungry. Their ${rel} took it personally, things got weirdly intense fast, and by morning the group chat already knew before OP did.`
+  ];
+
+  const eventStoryTemplates = [
+    (event, culprit) => `Nobody saw it coming, but somehow ${culprit} became the reason OP's ${event} completely fell apart. What was supposed to be a simple, low-stakes day turned into a group chat that's still active to this day, mostly people trying to figure out whose idea it even was.`,
+    (event, culprit) => `OP had been planning this ${event} for weeks, and then ${culprit} entered the picture completely unannounced. By the time everyone realised what was happening, it was already too late to fix it, so they just leaned in and let it happen.`,
+    (event, culprit) => `The timing could not have been worse: right as the ${event} was getting started, ${culprit} showed up out of absolutely nowhere. OP tried to keep things on track for a solid ten minutes before giving up entirely.`,
+    (event, culprit) => `Honestly, OP still can't explain the full chain of events, but it started with ${culprit} and ended with the entire ${event} being talked about for weeks afterward, and not in the way anyone hoped.`,
+    (event, culprit) => `OP swears the ${event} was going fine until ${culprit} got involved. What followed was chaos nobody was prepared for, several apologies, and one very memorable photo that's now permanently in the family group chat.`
+  ];
+
+  const knowSomeoneStoryTemplates = [
+    (rel, role) => `It didn't come up for years, mostly because OP's ${rel} never once mentioned it, but a random search one night revealed they'd secretly been a ${role} the whole time. OP has so many questions and zero answers.`,
+    (rel, role) => `OP always thought their ${rel} was just being modest about their old job, but it turns out "just being modest" meant hiding an entire career as a ${role}. Nobody in the family saw this coming.`,
+    (rel, role) => `Turns out OP's ${rel} has been quietly living a completely different life as a ${role}, and only mentioned it once, in passing, like it was nothing. OP has not stopped thinking about it since.`,
+    (rel, role) => `OP found out purely by accident, scrolling late at night, that their ${rel} is apparently a ${role} now. No explanation, no warning, just a very confusing series of screenshots sent to the family group chat.`,
+    (rel, role) => `For years, OP had no idea their ${rel} used to be a ${role}, mostly because they never brought it up. It only came out recently, and now it's basically all anyone in the family talks about.`
+  ];
+
+  const genericStoryTemplates = [
+    () => `OP has told this story so many times it barely makes sense anymore, but everyone agrees it's one of the wildest things that's happened to the friend group all year.`,
+    () => `Nobody in the comments believes this actually happened exactly like OP says, but OP has receipts, several screenshots, and zero regrets about sharing it.`,
+    () => `OP has been asked to explain this at least a dozen times now, and somehow the story gets a little more chaotic with every retelling.`
+  ];
+
+  function generateLocalStory(commentText) {
+    // Relationship pattern: "I <verb> my <relation> over <topic>."
+    let m = commentText.match(/^I\s+(.+?)\s+my\s+(.+?)\s+over\s+(.+?)\.?$/i);
+    if (m) {
+      const verb = m[1].trim();
+      const rel = m[2].trim();
+      const topic = m[3].trim().replace(/\.$/, '');
+      const templates = isNegativeStoryVerb(verb)
+        ? negativeRelationshipStoryTemplates
+        : positiveRelationshipStoryTemplates;
+      return rand(templates)(rel, topic);
+    }
+
+    // Event pattern: "My <event>[ to <destination>] <outcome phrase> <culprit>."
+    m = commentText.match(/^My\s+(.+?)\s+(?:was\s+)?(?:cancelled because of|postponed because of|ruined by|full of arguments because of|made perfect by|happened because of)\s+(.+?)\.?$/i);
+    if (m) {
+      const event = m[1].trim();
+      const culprit = m[2].trim().replace(/\.$/, '');
+      return rand(eventStoryTemplates)(event, culprit);
+    }
+
+    // Know-someone pattern: "My <relation> (is a|is now a|was a) <role>."
+    m = commentText.match(/^My\s+(.+?)\s+(?:is now a|was a|is a)\s+(.+?)\.?$/i);
+    if (m) {
+      const rel = m[1].trim();
+      const role = m[2].trim().replace(/\.$/, '');
+      return rand(knowSomeoneStoryTemplates)(rel, role);
+    }
+
+    // Anything unrecognised still gets a story, just a generic one
+    return rand(genericStoryTemplates)();
+  }
+
+  // ---- Builds the TikTok-style video shell (background video + captions +
+  // controls) and returns handles to its pieces. Doesn't start narrating -
+  // that's startStoryNarration()'s job, once the story text is known. ----
+  function createStoryVideoShell() {
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+    const overlay = document.createElement('div');
+    overlay.className = 'story-video-overlay';
+    overlay.innerHTML = `
+      <div class="story-video-box">
+        <video class="story-bg-video" src="${STORY_VIDEO_SRC}" autoplay loop muted playsinline></video>
+        <div class="story-video-scrim"></div>
+        <button type="button" class="story-close-btn" aria-label="Close">✕</button>
+        <div class="story-video-header">✨ ChillSpace AI</div>
+        <div class="story-caption-wrap"><div class="story-caption" id="storyCaption"></div></div>
+        <div class="story-controls">
+          <button type="button" class="story-play-btn" id="storyPlayBtn">⏸ Pause narration</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const video = overlay.querySelector('.story-bg-video');
+    const captionEl = overlay.querySelector('#storyCaption');
+    const playBtn = overlay.querySelector('#storyPlayBtn');
+    const closeBtn = overlay.querySelector('.story-close-btn');
+
+    video.play().catch(() => { /* autoplay may be blocked; user can still read captions */ });
+
+    function close() {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      video.pause();
+      overlay.remove();
+    }
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+    return { overlay, video, captionEl, playBtn, closeBtn, close };
+  }
+
+  // ---- Starts the word-by-word captions + speechSynthesis narration for a
+  // known story on an already-open shell. ----
+  function startStoryNarration(shell, commentText, story) {
+    const { captionEl, playBtn } = shell;
+    const fullText = `${commentText} ${story}`;
+    const words = fullText.split(/\s+/).filter(Boolean);
+    captionEl.innerHTML = escapeHtml(words[0] || '');
+    playBtn.style.display = '';
+
+    // Build a rough char-offset -> word-index map so speechSynthesis
+    // "boundary" events (which report a charIndex) can drive the captions.
+    const wordRanges = [];
+    let acc = 0;
+    words.forEach((w, i) => {
+      wordRanges.push({ start: acc, end: acc + w.length, index: i });
+      acc += w.length + 1;
+    });
+
+    function renderCaptionWindow(centerIdx) {
+      const before = 2, after = 4;
+      const start = Math.max(0, centerIdx - before);
+      const end = Math.min(words.length, centerIdx + after);
+      let html = '';
+      for (let i = start; i < end; i++) {
+        const safeWord = escapeHtml(words[i]);
+        html += i === centerIdx
+          ? `<span class="story-word-active">${safeWord}</span> `
+          : `<span>${safeWord}</span> `;
+      }
+      captionEl.innerHTML = html;
+    }
+
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(fullText);
+      utterance.rate = 1;
+      utterance.pitch = 1;
+
+      utterance.onboundary = (e) => {
+        if (typeof e.charIndex !== 'number') return;
+        const match = wordRanges.find(r => e.charIndex >= r.start && e.charIndex < r.end);
+        if (match) renderCaptionWindow(match.index);
+      };
+
+      utterance.onend = () => {
+        captionEl.innerHTML = `<span class="story-word-active">The End ✨</span>`;
+        playBtn.textContent = '🔁 Replay narration';
+        playBtn.dataset.state = 'ended';
+      };
+
+      playBtn.onclick = () => {
+        if (playBtn.dataset.state === 'ended') {
+          playBtn.dataset.state = '';
+          renderCaptionWindow(0);
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(utterance);
+          playBtn.textContent = '⏸ Pause narration';
+          return;
+        }
+        if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+          window.speechSynthesis.pause();
+          playBtn.textContent = '▶ Resume narration';
+        } else if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+          playBtn.textContent = '⏸ Pause narration';
+        }
+      };
+
+      // Kick off narration right away (fine since this is inside a click handler)
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    } else {
+      // Browser has no speechSynthesis support — just show full text and hide controls
+      captionEl.textContent = fullText;
+      playBtn.style.display = 'none';
+    }
+  }
+
+  // Kept for any external code (or a future feature) that just wants to open
+  // the video+narration modal for an already-known story in one call.
+  function openStoryVideoModal(commentText, story) {
+    const shell = createStoryVideoShell();
+    startStoryNarration(shell, commentText, story);
+  }
+  window.openStoryVideoModal = openStoryVideoModal;
+
+  function showFullStory(btn) {
+    const commentText = btn.dataset.story;
+    const story = fullStories[commentText] || generateLocalStory(commentText);
+    const shell = createStoryVideoShell();
+    startStoryNarration(shell, commentText, story);
+  }
+  window.showFullStory = showFullStory;
+
+  function makeStoryPost(i) {
+    const opener = rand(storyOpeners);
+    const adj = rand(storyAdjs);
+    const question = `${opener}, what are your ${adj} stories?`;
+    const name = `${rand(firstNames)} ${rand(lastNames)}`;
+    const avatar = rand(avatars);
+    const minutes = Math.floor(Math.random()*59)+1;
+    const likeBase = Math.floor(Math.random() * 9999);
+
+    const el = document.createElement('article');
+    el.className = 'post';
+    el.style.animationDelay = `${i*40}ms`;
+
+    const commentCount = Math.floor(Math.random() * 23) + 8; // 8–30
+
+    // Build a shuffled pool of comment types so they're never clustered
+    const typePool = [];
+    for (let c = 0; c < commentCount; c++) {
+      typePool.push(c % 3); // 0=relationship, 1=event, 2=knowSomeone
+    }
+    // Fisher-Yates shuffle
+    for (let c = typePool.length - 1; c > 0; c--) {
+      const j = Math.floor(Math.random() * (c + 1));
+      [typePool[c], typePool[j]] = [typePool[j], typePool[c]];
+    }
+
+    const gradients = [
+      '135deg,#f97316,#ec4899','135deg,#06b6d4,#1877f2','135deg,#7c3aed,#ec4899',
+      '135deg,#10b981,#06b6d4','135deg,#f59e0b,#ef4444','135deg,#8b5cf6,#3b82f6',
+      '135deg,#14b8a6,#84cc16','135deg,#f43f5e,#f97316'
+    ];
+
+    // Build story comments HTML
+    let commentsHtml = '';
+    for (let c = 0; c < commentCount; c++) {
+      const cName = `${rand(firstNames)} ${rand(lastNames)}`;
+      const cInitial = cName[0];
+      const grad = gradients[c % gradients.length];
+      const type = typePool[c];
+      let commentText;
+      if (type === 0) {
+        commentText = `I ${rand(storyVerbs)} my ${rand(storyRelations)} over ${rand(storyTopics)}.`;
+      } else if (type === 1) {
+        commentText = makeEventComment();
+      } else {
+        commentText = makeKnowSomeoneComment();
+      }
+      // Every story comment gets the button now - dedicated stories show
+      // instantly, anything else gets written on the fly by generateStoryWithAI().
+      const fullStoryBtn = `<button type="button" class="full-story-btn" data-story="${commentText.replace(/"/g,'&quot;')}" onclick="showFullStory(this)">✨ See the full story with ChillSpace AI</button>`;
+      commentsHtml += `
+        <div class="story-comment-item">
+          <div class="story-comment-avatar" style="background:linear-gradient(${grad})">${cInitial}</div>
+          <div class="story-comment-bubble">
+            <div class="story-comment-name">${cName}</div>
+            ${commentText}
+          </div>
+        </div>${fullStoryBtn}`;
+    }
+
+    el.innerHTML = `
+      <div class="post-head">
+        <img class="avatar" src="${avatar}" alt="">
+        <div class="meta">
+          <div class="name">${name}</div>
+          <div class="time">${minutes}m ago · 🌐</div>
+        </div>
+      </div>
+      <div class="post-question post-content">${question}</div>
+      <div class="actions">
+        <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+        <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+        <button type="button" onclick="repostPost(this)">↗️ Repost</button>
+        <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+      </div>
+      <button type="button" class="show-comments-btn" onclick="toggleStoryComments(this)">💬 Show comments (${commentCount})</button>
+      <div class="story-comments">${commentsHtml}</div>
+    `;
+    return el;
+  }
+
+  function toggleStoryComments(btn) {
+    const section = btn.nextElementSibling;
+    const open = section.classList.toggle('open');
+    btn.textContent = open ? '🔼 Hide comments' : '💬 Show comments (8)';
+  }
+  window.toggleStoryComments = toggleStoryComments;
+
+  // ---- Ad post ----
+  function makeAdPost() {
+    const el = document.createElement('article');
+    el.className = 'post post-ad';
+    el.style.animationDelay = '0ms';
+    el.innerHTML = `
+      <div class="post-head">
+        <div class="comment-avatar" style="width:40px;height:40px;font-size:15px;font-weight:800;background:linear-gradient(135deg,#1877f2,#06b6d4);">CS</div>
+        <div class="meta">
+          <div class="name">ChillSpace <span class="post-ad-label">Ad</span></div>
+          <div class="time">Sponsored · 🌐</div>
+        </div>
+      </div>
+      <div class="post-content">Wanna check social media? Always check ChillSpace first!</div>
+      <video class="ad-video" src="https://ia601602.us.archive.org/23/items/chillspace-ad-15s/chillspace-ad-15s.mp4" autoplay controls muted playsinline loop preload="auto"></video>
+      <div class="actions">
+        <button type="button" class="like-btn" data-base="0" onclick="toggleLike(this)">👍 0</button>
+        <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+        <button type="button" onclick="repostPost(this)">↗️ Repost</button>
+        <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+      </div>
+    `;
+    return el;
+  }
+
+  // ---- Live Debates ----
+  const debateSubjects = {
+    music: ["Taylor Swift","BTS","Drake","Miley Cyrus","Beyoncé","Ed Sheeran","Ariana Grande","The Weeknd","Billie Eilish","Bad Bunny","Dua Lipa","Kendrick Lamar","Olivia Rodrigo","Travis Scott","Doja Cat","Harry Styles"],
+    football: ["Manchester United","Real Madrid","Barcelona","Liverpool","Manchester City","Bayern Munich","PSG","Arsenal","Chelsea","Juventus","AC Milan","Inter Miami","Tottenham","Borussia Dortmund"],
+    politics: politicians
+  };
+
+  const debateAdjectives = ["overrated","underrated","amazing","terrible","unnecessary","crazy","fantastic","saddening","worrying","perfect","better","worse","more talented","less talented","more important","more impressive","a joke","iconic","overhyped","misunderstood"];
+
+  const debateTemplates = [
+    s => `I think that ${s[0]}'s music is ${rand(debateAdjectives)}.`,
+    s => `${s[0]} is ${rand(debateAdjectives)} compared to ${s[1]} in my opinion.`,
+    s => `Well at least ${s[0]} is better than ${s[1]}.`,
+    s => `Don't say anything about ${s[1]}: you like ${s[0]}!`,
+    s => `${s[0]} is great! At least their talent is real, unlike ${s[1]}.`,
+    s => `Hot take: ${s[0]} is ${rand(debateAdjectives)} and nobody can convince me otherwise.`,
+    s => `${s[0]} over ${s[1]}, no contest.`,
+    s => `I'll never understand the hype around ${s[0]}.`,
+    s => `${s[1]} wishes they had ${s[0]}'s reputation.`,
+    s => `Comparing ${s[0]} to ${s[1]} is honestly disrespectful to ${s[0]}.`,
+    s => `${s[0]} is so ${rand(debateAdjectives)}, fight me.`,
+    s => `Why does everyone act like ${s[1]} is better than ${s[0]}? Explain.`
+  ];
+
+  const footballTemplates = [
+    s => `I think ${s[0]} are ${rand(debateAdjectives)} this season.`,
+    s => `${s[0]} are ${rand(debateAdjectives)} compared to ${s[1]} in my opinion.`,
+    s => `Well at least ${s[0]} can actually win trophies, unlike ${s[1]}.`,
+    s => `Don't talk to me about ${s[1]}: you support ${s[0]}!`,
+    s => `${s[0]} are great! At least their tactics make sense, unlike ${s[1]}.`,
+    s => `Hot take: ${s[0]} are ${rand(debateAdjectives)} and nobody can convince me otherwise.`,
+    s => `${s[0]} over ${s[1]}, no contest.`,
+    s => `I'll never understand the hype around ${s[0]}.`,
+    s => `${s[1]} wishes they had ${s[0]}'s squad.`,
+    s => `Comparing ${s[0]} to ${s[1]} is honestly disrespectful to ${s[0]}.`
+  ];
+
+  const politicsTemplates = [
+    s => `I think ${s[0]}'s policies are ${rand(debateAdjectives)}.`,
+    s => `${s[0]} is ${rand(debateAdjectives)} compared to ${s[1]} in my opinion.`,
+    s => `Well at least ${s[0]} is better than ${s[1]}.`,
+    s => `Don't say anything about ${s[1]}: you support ${s[0]}!`,
+    s => `${s[0]} actually gets things done, unlike ${s[1]}.`,
+    s => `Hot take: ${s[0]} is ${rand(debateAdjectives)} and nobody can convince me otherwise.`,
+    s => `${s[0]} over ${s[1]}, no contest.`,
+    s => `I'll never understand the support for ${s[0]}.`,
+    s => `Comparing ${s[0]} to ${s[1]} is honestly disrespectful to ${s[0]}.`
+  ];
+
+  function getDebateTemplates(category) {
+    if (category === 'football') return footballTemplates;
+    if (category === 'politics') return politicsTemplates;
+    return debateTemplates;
+  }
+
+  function pickTwoSubjects(category) {
+    const pool = [...debateSubjects[category]];
+    const a = rand(pool);
+    let b = rand(pool.filter(x => x !== a));
+    return [a, b];
+  }
+
+  function makeDebateLine(category, anchorSubject) {
+    const pool = debateSubjects[category];
+    let subjects;
+    if (anchorSubject) {
+      const other = rand(pool.filter(x => x !== anchorSubject));
+      subjects = Math.random() < 0.5 ? [anchorSubject, other] : [other, anchorSubject];
+    } else {
+      subjects = pickTwoSubjects(category);
+    }
+    const templates = getDebateTemplates(category);
+    return { text: rand(templates)(subjects), subjects };
+  }
+
+  function findMentionedSubject(text, category) {
+    const pool = debateSubjects[category];
+    const lower = text.toLowerCase();
+    return pool.find(s => lower.includes(s.toLowerCase()));
+  }
+
+  function findAnyMentionedSubject(text) {
+    for (const cat of ['music','football','politics']) {
+      const found = findMentionedSubject(text, cat);
+      if (found) return { category: cat, subject: found };
+    }
+    return null;
+  }
+
+  function makeDebatePost(i, category) {
+    const cat = category || rand(['music','football','politics']);
+    const name = `${rand(firstNames)} ${rand(lastNames)}`;
+    const avatar = rand(avatars);
+    const likeBase = Math.floor(Math.random() * 500);
+    const { text, subjects } = makeDebateLine(cat);
+
+    const el = document.createElement('article');
+    el.className = 'post debate-post';
+    el.style.animationDelay = `${i * 40}ms`;
+    el.dataset.category = cat;
+    el.dataset.lastSubject = subjects[subjects.length - 1];
+    el.dataset.relayCount = '0';
+    el.dataset.userJoined = '0';
+
+    const likeId = `dbt-like-${i}-${Date.now()}`;
+    el.innerHTML = `
+      <div class="post-head">
+        <img class="avatar" src="${avatar}" alt="">
+        <div class="meta">
+          <div class="name">${name}<span class="live-badge">● LIVE</span></div>
+          <div class="time">Just now · 🌐</div>
+        </div>
+      </div>
+      <div class="post-content">${text}</div>
+      <div class="actions">
+        <button type="button" class="like-btn" id="${likeId}" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+        <button type="button" class="debate-join-btn" onclick="openDebateJoinModal(this)">🔥 Join debate</button>
+        <button type="button" onclick="repostPost(this)">↗️ Repost</button>
+        <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+      </div>
+    `;
+
+    startDebateRelay(el);
+    return el;
+  }
+
+  function startDebateRelay(el) {
+    const maxRelays = Math.floor(Math.random() * 4) + 3; // 3-6 auto swaps before stopping (unless user joins)
+    function tick() {
+      // Stop relaying if post got removed from DOM, or user already joined and we've shown the response
+      if (!document.body.contains(el)) return;
+      if (el.dataset.userJoined === '1' && parseInt(el.dataset.relayCount) > 0) return;
+
+      const count = parseInt(el.dataset.relayCount || '0');
+      if (count >= maxRelays && el.dataset.userJoined !== 'pending') {
+        // End the live debate
+        const badge = el.querySelector('.live-badge');
+        if (badge) {
+          badge.outerHTML = '<span class="debate-ended-tag">· Debate ended</span>';
+        }
+        const joinBtn = el.querySelector('.debate-join-btn');
+        if (joinBtn) joinBtn.remove();
+        return;
+      }
+
+      el.classList.add('swapping');
+      setTimeout(() => {
+        if (!document.body.contains(el)) return;
+        const cat = el.dataset.category;
+        const anchor = el.dataset.lastSubject;
+        const { text, subjects } = makeDebateLine(cat, anchor);
+        const name = `${rand(firstNames)} ${rand(lastNames)}`;
+        const avatar = rand(avatars);
+        el.querySelector('.post-content').textContent = text;
+        el.querySelector('.post-head .name').innerHTML = `${name}<span class="live-badge">● LIVE</span>`;
+        el.querySelector('.post-head .avatar').src = avatar;
+        el.dataset.lastSubject = subjects[subjects.length - 1];
+        el.dataset.relayCount = String(count + 1);
+        el.classList.remove('swapping');
+        setTimeout(tick, 2400 + Math.random() * 1200);
+      }, 220);
+    }
+    setTimeout(tick, 2200 + Math.random() * 1200);
+  }
+
+  function openDebateJoinModal(btn) {
+    const postEl = btn.closest('.post');
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `
+      <div class="modal-box">
+        <div class="modal-title">Join the debate</div>
+        <textarea class="modal-textarea" placeholder="Share your hot take..." autofocus></textarea>
+        <div class="modal-actions">
+          <button type="button" class="modal-cancel">Cancel</button>
+          <button type="button" class="modal-post">Post</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    const textarea = overlay.querySelector('.modal-textarea');
+    setTimeout(() => textarea.focus(), 0);
+
+    function close() { overlay.remove(); }
+    overlay.querySelector('.modal-cancel').addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+    overlay.querySelector('.modal-post').addEventListener('click', () => {
+      const text = textarea.value.trim();
+      if (!text) return;
+      close();
+      joinDebate(postEl, text);
+    });
+  }
+  window.openDebateJoinModal = openDebateJoinModal;
+
+  function joinDebate(postEl, userText) {
+    // Mark as user-joined to pause auto relay momentarily
+    postEl.dataset.userJoined = 'pending';
+    postEl.classList.add('swapping');
+
+    setTimeout(() => {
+      // Replace the post with the user's own post
+      postEl.querySelector('.post-content').textContent = userText;
+      postEl.querySelector('.post-head .name').innerHTML = `You<span class="live-badge">● LIVE</span>`;
+      const avatarEl = postEl.querySelector('.post-head .avatar');
+      if (avatarEl) avatarEl.outerHTML = `<div class="comment-avatar" style="width:40px;height:40px;font-size:17px;font-weight:800;">Y</div>`;
+      postEl.classList.remove('swapping');
+
+      // Determine if userText mentions a known subject (any category)
+      const cat = postEl.dataset.category;
+      let mentioned = findMentionedSubject(userText, cat);
+      let useCategory = cat;
+      if (!mentioned) {
+        const anyMatch = findAnyMentionedSubject(userText);
+        if (anyMatch) {
+          mentioned = anyMatch.subject;
+          useCategory = anyMatch.category;
+          postEl.dataset.category = useCategory;
+        }
+      }
+
+      postEl.dataset.lastSubject = mentioned || rand(debateSubjects[useCategory]);
+      postEl.dataset.relayCount = '0';
+      postEl.dataset.userJoined = '1';
+
+      // Queue an automated relay response shortly after
+      setTimeout(() => {
+        if (!document.body.contains(postEl)) return;
+        postEl.classList.add('swapping');
+        setTimeout(() => {
+          if (!document.body.contains(postEl)) return;
+          const { text, subjects } = makeDebateLine(useCategory, postEl.dataset.lastSubject);
+          const name = `${rand(firstNames)} ${rand(lastNames)}`;
+          const avatar = rand(avatars);
+          postEl.querySelector('.post-content').textContent = text;
+          postEl.querySelector('.post-head .name').innerHTML = `${name}<span class="live-badge">● LIVE</span>`;
+          const avEl = postEl.querySelector('.comment-avatar') || postEl.querySelector('.avatar');
+          if (avEl) avEl.outerHTML = `<img class="avatar" src="${avatar}" alt="">`;
+          postEl.dataset.lastSubject = subjects[subjects.length - 1];
+          postEl.dataset.relayCount = '1';
+          postEl.classList.remove('swapping');
+          // Continue the relay normally after this
+          startDebateRelay(postEl);
+        }, 220);
+      }, 1600 + Math.random() * 800);
+    }, 220);
+  }
+  function makePollPost(i) {
+    // Pick 2–4 unique politicians for this poll
+    const shuffled = [...politicians].sort(() => Math.random() - 0.5);
+    const count = Math.floor(Math.random() * 3) + 2; // 2–4
+    const pollPols = shuffled.slice(0, count);
+
+    const name = `${rand(firstNames)} ${rand(lastNames)}`;
+    const avatar = rand(avatars);
+    const minutes = Math.floor(Math.random() * 59) + 1;
+    const likeBase = Math.floor(Math.random() * 3000);
+
+    // Generate fake raw vote counts (will normalise to %)
+    const votes = pollPols.map(() => Math.floor(Math.random() * 900) + 50);
+    const totalVotes = votes.reduce((a, b) => a + b, 0);
+    const pollId = `poll-${i}-${Date.now()}`;
+
+    // Build option buttons
+    const optionsHtml = pollPols.map((pol, idx) => `
+      <button type="button" class="poll-option" data-poll="${pollId}" data-idx="${idx}" onclick="votePoll(this)">
+        <div class="poll-bar" style="width:0%"></div>
+        <div class="poll-option-inner">
+          <span>${pol}</span>
+          <span class="poll-pct" style="display:none">${Math.round(votes[idx]/totalVotes*100)}%</span>
+        </div>
+      </button>`).join('');
+
+    // Build poll comments (2–5) only about these politicians
+    const commentCount = Math.floor(Math.random() * 4) + 2;
+    let pollCommentsHtml = '';
+    for (let c = 0; c < commentCount; c++) {
+      const cName = `${rand(firstNames)} ${rand(lastNames)}`;
+      const pol = rand(pollPols);
+      const topic = rand(politicalTopics);
+      const judgement = rand(politicalJudgements);
+      const beneficiary = rand(politicalBeneficiaries);
+      const grad = ['135deg,#f97316,#ec4899','135deg,#06b6d4,#1877f2','135deg,#7c3aed,#ec4899','135deg,#10b981,#06b6d4'][c % 4];
+      pollCommentsHtml += `
+        <div class="story-comment-item">
+          <div class="story-comment-avatar" style="background:linear-gradient(${grad})">${cName[0]}</div>
+          <div class="story-comment-bubble">
+            <div class="story-comment-name">${cName}</div>
+            Unpopular opinion: ${pol}'s ${topic} policy is ${judgement} for ${beneficiary}.
+          </div>
+        </div>`;
+    }
+
+    const el = document.createElement('article');
+    el.className = 'post';
+    el.style.animationDelay = `${i * 40}ms`;
+    el.innerHTML = `
+      <div class="post-head">
+        <img class="avatar" src="${avatar}" alt="">
+        <div class="meta">
+          <div class="name">${name}</div>
+          <div class="time">${minutes}m ago · 🌐</div>
+        </div>
+      </div>
+      <div class="poll-wrap">
+        <div class="poll-question">Who has the best policies right now?</div>
+        <div class="poll-options" id="${pollId}">${optionsHtml}</div>
+        <div class="poll-total" id="${pollId}-total" style="display:none">${totalVotes.toLocaleString()} votes</div>
+      </div>
+      <div class="actions">
+        <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+        <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+        <button type="button" onclick="repostPost(this)">↗️ Repost</button>
+        <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+      </div>
+      <button type="button" class="show-poll-comments-btn" onclick="togglePollComments(this)">💬 Show comments (${commentCount})</button>
+      <div class="poll-comments">${pollCommentsHtml}</div>
+    `;
+    return el;
+  }
+
+  function votePoll(btn) {
+    const pollId = btn.dataset.poll;
+    const container = document.getElementById(pollId);
+    if (!container || container.dataset.voted) return;
+    container.dataset.voted = '1';
+    // Reveal all bars and percentages
+    container.querySelectorAll('.poll-option').forEach(opt => {
+      opt.classList.add('voted');
+      opt.querySelector('.poll-bar').style.width = opt.querySelector('.poll-pct').textContent;
+      opt.querySelector('.poll-pct').style.display = '';
+    });
+    // Highlight chosen
+    btn.querySelector('.poll-bar').style.background = '#c5d9f7';
+    document.getElementById(`${pollId}-total`).style.display = '';
+  }
+  window.votePoll = votePoll;
+
+  function togglePollComments(btn) {
+    const section = btn.nextElementSibling;
+    const open = section.classList.toggle('open');
+    const count = section.querySelectorAll('.story-comment-item').length;
+    btn.textContent = open ? '🔼 Hide comments' : `💬 Show comments (${count})`;
+  }
+  window.togglePollComments = togglePollComments;
+
+  function makePoliticalPost() {
+    const pol = rand(politicians);
+    const topic = rand(politicalTopics);
+    const judgement = rand(politicalJudgements);
+    const beneficiary = rand(politicalBeneficiaries);
+    return `Unpopular opinion: ${pol}'s ${topic} policy is ${judgement} for ${beneficiary}.`;
+  }
+
+  // ============ LIVE DEBATES ============
+  const musicians = [
+    "Taylor Swift","Drake","BTS","Beyoncé","Ed Sheeran","Ariana Grande","The Weeknd",
+    "Billie Eilish","Bad Bunny","Dua Lipa","Kendrick Lamar","Miley Cyrus","Harry Styles",
+    "Olivia Rodrigo","Travis Scott","Doja Cat","Post Malone","SZA","Rihanna","Adele"
+  ];
+  const footballTeams = [
+    "Manchester United","Real Madrid","Barcelona","Liverpool","Manchester City",
+    "Bayern Munich","Arsenal","Chelsea","PSG","Juventus","AC Milan","Inter Miami",
+    "Tottenham","Borussia Dortmund","Atletico Madrid","Napoli"
+  ];
+  const debateAdjPairs = [
+    ["overrated","underrated"], ["amazing","terrible"], ["legendary","forgettable"],
+    ["iconic","overhyped"], ["consistent","inconsistent"], ["clinical","sloppy"]
+  ];
+  // Phrases used in "Well at least X is [phrase] than Y" — already comparative
+  const debateComparativePhrases = [
+    "better", "way better", "more talented", "more consistent",
+    "more reliable", "more exciting to watch", "more impactful"
+  ];
+  // Adjectives safe to use standalone in openers (no "than")
+  const debateOpenerAdjs = [
+    "overrated","underrated","amazing","terrible","legendary","forgettable","iconic","overhyped"
+  ];
+
+  function debateCategoryPool(category) {
+    if (category === 'music') return musicians;
+    if (category === 'football') return footballTeams;
+    return politicians;
+  }
+
+  function debateOpener(category) {
+    const pool = debateCategoryPool(category);
+    const a = rand(pool);
+    const adj = rand(debateOpenerAdjs);
+    if (category === 'football') return `I think that ${a} is ${adj} in my opinion.`;
+    return `I think that ${a}'s ${category === 'music' ? 'music' : 'policy'} is ${adj} in my opinion.`;
+  }
+
+  // Generate a reply line given category + previously mentioned name (so it stays related)
+  function debateReply(category, prevName) {
+    const pool = debateCategoryPool(category);
+    let other = rand(pool);
+    let tries = 0;
+    while (other === prevName && tries < 8) { other = rand(pool); tries++; }
+    const [adjPos, adjNeg] = rand(debateAdjPairs); // e.g. "iconic" / "overhyped"
+    const comparative = rand(debateComparativePhrases); // e.g. "way better"
+    const templates = category === 'football' ? [
+      `Well at least ${prevName} is ${comparative} than ${other}.`,
+      `Don't say anything about ${other}: you support ${prevName}!`,
+      `${other} is great! At least their form is good, unlike ${prevName}.`,
+      `Nah, ${other} have been way more ${adjPos} than ${prevName} all season.`,
+      `${prevName} fans always say that, but ${other} has way more quality.`,
+      `Honestly ${other} is the only club doing it right these days, not ${prevName}.`
+    ] : category === 'music' ? [
+      `Well at least ${prevName} is ${comparative} than ${other}.`,
+      `Don't say anything about ${other}: you like ${prevName}!`,
+      `${other} is great! At least their lyricism is good, unlike ${prevName}.`,
+      `Nah, ${other}'s last album was way more ${adjPos} than anything ${prevName} dropped.`,
+      `${prevName} fans always say that, but ${other} has way more range.`,
+      `Honestly ${other} is the only one doing anything original these days, not ${prevName}.`
+    ] : [
+      `Well at least ${prevName}'s policies are ${comparative} than ${other}'s.`,
+      `Don't say anything about ${other}: you support ${prevName}!`,
+      `${other} is great! At least their economic plan makes sense, unlike ${prevName}.`,
+      `Nah, ${other} has been way more ${adjPos} than ${prevName} lately.`,
+      `${prevName} supporters always say that, but ${other} actually delivers.`,
+      `Honestly ${other} is the only one being straight with voters, not ${prevName}.`
+    ];
+    return { text: rand(templates), nextName: other };
+  }
+
+  // Try to extract a known name from user input for a given category
+  function extractDebateName(text, category) {
+    const pool = debateCategoryPool(category);
+    const lower = text.toLowerCase();
+    return pool.find(n => lower.includes(n.toLowerCase())) || null;
+  }
+
+  function detectAnyDebateName(text) {
+    for (const cat of ['music','football','politics']) {
+      const found = extractDebateName(text, cat);
+      if (found) return { category: cat, name: found };
+    }
+    return null;
+  }
+
+  function makeDebatePost(i) {
+    const category = rand(['music','football','politics']);
+    const opener = debateOpener(category);
+    const pool = debateCategoryPool(category);
+    const mentioned = pool.find(n => opener.includes(n));
+
+    const name = `${rand(firstNames)} ${rand(lastNames)}`;
+    const avatar = rand(avatars);
+    const likeBase = Math.floor(Math.random() * 500);
+
+    const el = document.createElement('article');
+    el.className = 'post debate-post';
+    el.style.animationDelay = `${i * 40}ms`;
+    el.dataset.category = category;
+    el.dataset.lastName = mentioned || rand(pool);
+    el.dataset.userJoined = '0';
+
+    el.innerHTML = `
+      <div class="post-head">
+        <img class="avatar" src="${avatar}" alt="">
+        <div class="meta">
+          <div class="name">${name}<span class="live-badge">LIVE</span></div>
+          <div class="time">Just now · 🌐</div>
+        </div>
+      </div>
+      <div class="post-content" dir="auto">${opener}</div>
+      <div class="actions">
+        <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+        <button type="button" class="debate-join-btn" onclick="joinDebate(this)">🔥 Join debate</button>
+        <button type="button" onclick="repostPost(this)">↗️ Repost</button>
+        <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+      </div>
+    `;
+
+    startDebateRelay(el);
+    return el;
+  }
+
+  function startDebateRelay(el) {
+    const interval = setInterval(() => {
+      // Stop relaying if element was removed from DOM
+      if (!document.body.contains(el)) { clearInterval(interval); return; }
+      // Pause auto-relay shortly after the user joins, so their reply is visible
+      if (el.dataset.pauseUntil && Date.now() < parseInt(el.dataset.pauseUntil, 10)) return;
+
+      const category = el.dataset.category;
+      const prevName = el.dataset.lastName;
+      const { text, nextName } = debateReply(category, prevName);
+      const newName = `${rand(firstNames)} ${rand(lastNames)}`;
+      const newAvatar = rand(avatars);
+
+      el.classList.add('swapping');
+      setTimeout(() => {
+        const nameEl = el.querySelector('.name');
+        const avatarEl = el.querySelector('.avatar');
+        const contentEl = el.querySelector('.post-content');
+        nameEl.innerHTML = `${newName}<span class="live-badge">LIVE</span>`;
+        avatarEl.src = newAvatar;
+        contentEl.textContent = text;
+        el.dataset.lastName = nextName;
+        el.classList.remove('swapping');
+      }, 150);
+    }, 2000);
+    el._debateInterval = interval;
+  }
+
+  function joinDebate(btn) {
+    const postEl = btn.closest('.post');
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `
+      <div class="modal-box">
+        <div class="modal-title">Join the debate</div>
+        <textarea class="modal-textarea" placeholder="Share your hot take..." autofocus></textarea>
+        <div class="modal-actions">
+          <button type="button" class="modal-cancel">Cancel</button>
+          <button type="button" class="modal-post">Post</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    const textarea = overlay.querySelector('.modal-textarea');
+    setTimeout(() => textarea.focus(), 0);
+
+    function close() { overlay.remove(); }
+    overlay.querySelector('.modal-cancel').addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+    overlay.querySelector('.modal-post').addEventListener('click', () => {
+      const text = textarea.value.trim();
+      if (!text) return;
+      close();
+      injectUserIntoDebate(postEl, text);
+    });
+  }
+  window.joinDebate = joinDebate;
+
+  function injectUserIntoDebate(postEl, text) {
+    // Pause the relay briefly so the user's post is visible
+    postEl.dataset.pauseUntil = String(Date.now() + 2200);
+
+    postEl.classList.add('swapping');
+    setTimeout(() => {
+      const nameEl = postEl.querySelector('.name');
+      const avatarEl = postEl.querySelector('.avatar');
+      const contentEl = postEl.querySelector('.post-content');
+      nameEl.innerHTML = `You<span class="live-badge">LIVE</span>`;
+      avatarEl.src = '';
+      avatarEl.style.background = 'linear-gradient(135deg,#1877f2,#7c3aed)';
+      contentEl.textContent = text;
+      postEl.classList.remove('swapping');
+
+      // Try to detect a name in their text; if matched, keep their category, else maybe switch
+      const detected = detectAnyDebateName(text);
+      if (detected) {
+        postEl.dataset.category = detected.category;
+        postEl.dataset.lastName = detected.name;
+      }
+      // else: keep existing category/lastName so the relay continues naturally
+
+      // After the pause, post an automated reply continuing the thread
+      setTimeout(() => {
+        if (!document.body.contains(postEl)) return;
+        const category = postEl.dataset.category;
+        const prevName = postEl.dataset.lastName;
+        const { text: replyText, nextName } = debateReply(category, prevName);
+        const replyName = `${rand(firstNames)} ${rand(lastNames)}`;
+        const replyAvatar = rand(avatars);
+
+        postEl.classList.add('swapping');
+        setTimeout(() => {
+          const nameEl2 = postEl.querySelector('.name');
+          const avatarEl2 = postEl.querySelector('.avatar');
+          const contentEl2 = postEl.querySelector('.post-content');
+          avatarEl2.style.background = '';
+          nameEl2.innerHTML = `${replyName}<span class="live-badge">LIVE</span>`;
+          avatarEl2.src = replyAvatar;
+          contentEl2.textContent = replyText;
+          postEl.dataset.lastName = nextName;
+          postEl.classList.remove('swapping');
+        }, 150);
+      }, 2200);
+    }, 150);
+  }
+  window.injectUserIntoDebate = injectUserIntoDebate;
+  // ============ END LIVE DEBATES ============
+
+  // Pass allowLinesB = false to guarantee the returned content never comes
+  // from the linesB array (which is where the number-game button lives).
+  // Used for notification previews, which should never render it.
+  function makeContent(allowLinesB = true) {
+    const r = Math.random();
+    if (r < 0.10) {
+      return makePoliticalPost();
+    } else if (r < 0.50) {
+      if (allowLinesB && Math.random() < 0.5) {
+        return rand(linesB);
+      }
+      return `${rand(starters)} ${rand(topics)} which makes sense because I've always loved ${rand(endings)}.`;
+    } else if (r < 0.59) {
+      return makeQuestion();
+    } else if (r < 0.67) {
+      const s = rand(ko_starters);
+      const t = rand(ko_topics);
+      const e = rand(ko_endings);
+      return `${t} ${s}. ${e} 좋아해서 그래요.`;
+    } else if (r < 0.75) {
+      const s = rand(ja_starters);
+      const t = rand(ja_topics);
+      const e = rand(ja_endings);
+      return `${t}${s}。${e}が好きだから。`;
+    } else if (r < 0.83) {
+      const s = rand(ar_starters);
+      const t = rand(ar_topics);
+      const e = rand(ar_endings);
+      return `${s} ${t}. هذا منطقي لأنني دائماً أحببت ${e}.`;
+    } else if (r < 0.89) {
+      const s = rand(hi_starters);
+      const t = rand(hi_topics);
+      const e = rand(hi_endings);
+      return `${s} ${t}। समझ आता है क्योंकि मुझे हमेशा ${e} पसंद है।`;
+    } else if (r < 0.95) {
+      const s = rand(ru_starters);
+      const t = rand(ru_topics);
+      const e = rand(ru_endings);
+      return `${s} ${t}. Это логично, ведь я всегда любил ${e}.`;
+    } else {
+      const s = rand(th_starters);
+      const t = rand(th_topics);
+      const e = rand(th_endings);
+      return `${s} ${t} มันสมเหตุสมผลเพราะฉันชอบ${e}มาตลอด`;
+    }
+  }
+
+  // ---- Like button: random base count per post, toggles on/off ----
+  function toggleLike(btn) {
+    const liked = btn.dataset.liked === '1';
+    let base = parseInt(btn.dataset.base, 10);
+    if (Number.isNaN(base)) {
+      base = Math.floor(Math.random() * 9999); // 0–9998
+      btn.dataset.base = base;
+    }
+    if (!liked) {
+      btn.dataset.liked = '1';
+      btn.innerHTML = `✅ ${(base + 1).toLocaleString()}`;
+      btn.classList.add('liked');
+    } else {
+      btn.dataset.liked = '0';
+      btn.innerHTML = `👍 ${base.toLocaleString()}`;
+      btn.classList.remove('liked');
+    }
+  }
+  window.toggleLike = toggleLike;
+
+  // ---- Comment button: popup composer that shows comment on post ----
+  function openCommentModal(btn) {
+    const postEl = btn.closest('.post');
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `
+      <div class="modal-box">
+        <div class="modal-title">Write a comment</div>
+        <textarea class="modal-textarea" placeholder="Say something nice..." autofocus></textarea>
+        <div class="modal-actions">
+          <button type="button" class="modal-cancel">Cancel</button>
+          <button type="button" class="modal-post">Post</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    const textarea = overlay.querySelector('.modal-textarea');
+    setTimeout(() => textarea.focus(), 0);
+
+    function close() { overlay.remove(); }
+
+    overlay.querySelector('.modal-cancel').addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+
+    overlay.querySelector('.modal-post').addEventListener('click', () => {
+      const text = textarea.value.trim();
+      if (!text) return;
+      close();
+      appendComment(postEl, getCurrentUserName(), 'grey', text);
+      const viral = Math.random() < 0.2;
+      if (viral) showToast("Thanks for the comment - you're on track to go viral! 🚀");
+    });
+  }
+  window.openCommentModal = openCommentModal;
+
+  // ---- Append a comment bubble to a post and start ticking likes ----
+  // name/colorLabel let this represent either the local "You" commenter
+  // (using the name typed into the composer's name field) or a commenter
+  // loaded in from &comment_creator=&comment_profile_picture= URL params.
+  // Returns the created comment element, so a reply can be nested under it.
+  function appendComment(postEl, name, colorLabel, text) {
+    let section = postEl.querySelector('.comments-section');
+    if (!section) {
+      section = document.createElement('div');
+      section.className = 'comments-section';
+      postEl.appendChild(section);
+    }
+
+    // Pull any existing Share button out first so the new comment lands
+    // above it - it gets re-added at the bottom afterwards.
+    const existingShareBtn = section.querySelector('.share-comments-btn');
+    if (existingShareBtn) existingShareBtn.remove();
+
+    const displayName = (name && name.trim()) ? name.trim() : 'You';
+    const initial = displayName.charAt(0).toUpperCase();
+
+    const item = document.createElement('div');
+    item.className = 'comment-item';
+    item.dataset.commentName = displayName;
+    item.dataset.commentColor = (colorLabel || 'grey').toLowerCase();
+    item.innerHTML = `
+      <div class="comment-row">
+        <div class="comment-avatar" style="background:${gradientForColorLabel(colorLabel)}">${escapeHtml(initial)}</div>
+        <div class="comment-bubble">
+          <div class="comment-name">${escapeHtml(displayName)}</div>
+          <div class="comment-text">${escapeHtml(text)}</div>
+        </div>
+      </div>
+    `;
+    section.appendChild(item);
+
+    const metaRow = document.createElement('div');
+    metaRow.className = 'comment-meta-row';
+    const likesEl = document.createElement('div');
+    likesEl.className = 'comment-likes';
+    likesEl.textContent = '👍 0 likes';
+    metaRow.appendChild(likesEl);
+    metaRow.appendChild(buildReplyButton(item));
+    section.appendChild(metaRow);
+
+    startTickingLikes(likesEl, false);
+
+    ensureShareButton(postEl, section);
+
+    return item;
+  }
+
+  // ---- Small "↩️ Reply" button attached to every comment/reply created via
+  // appendComment()/addReply() - i.e. your own comments, comments loaded from
+  // a shared link, and personality-bot replies. Political and story-post
+  // comments are rendered separately (as .story-comment-item, not
+  // .comment-item) and never get one of these. ----
+  function buildReplyButton(item) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'comment-reply-btn';
+    btn.textContent = '↩️ Reply';
+    btn.addEventListener('click', () => openReplyModal(item));
+    return btn;
+  }
+
+  // ---- Nest a reply underneath a specific comment (or another reply) ----
+  // This is what powers &comment_*, &reply1_*, &reply2_*, &reply3_*, ... -
+  // loadPinnedPostFromURL() keeps walking replyN_ params for as long as they
+  // exist, and addReply() itself doesn't care how deep it's nesting.
+  function addReply(parentItem, name, colorLabel, text) {
+    if (!parentItem) return null;
+
+    let repliesEl = parentItem.querySelector(':scope > .comment-replies');
+    if (!repliesEl) {
+      repliesEl = document.createElement('div');
+      repliesEl.className = 'comment-replies';
+      parentItem.appendChild(repliesEl);
+    }
+
+    const displayName = (name && name.trim()) ? name.trim() : 'You';
+    const initial = displayName.charAt(0).toUpperCase();
+
+    const item = document.createElement('div');
+    item.className = 'comment-item reply-item';
+    item.dataset.commentName = displayName;
+    item.dataset.commentColor = (colorLabel || 'grey').toLowerCase();
+    item.innerHTML = `
+      <div class="comment-row">
+        <div class="comment-avatar" style="background:${gradientForColorLabel(colorLabel)}">${escapeHtml(initial)}</div>
+        <div class="comment-bubble">
+          <div class="comment-name">${escapeHtml(displayName)}</div>
+          <div class="comment-text">${escapeHtml(text)}</div>
+        </div>
+      </div>
+    `;
+    repliesEl.appendChild(item);
+
+    const metaRow = document.createElement('div');
+    metaRow.className = 'comment-meta-row';
+    metaRow.appendChild(buildReplyButton(item));
+    item.appendChild(metaRow);
+
+    return item;
+  }
+
+  // ---- "Reply" modal: posts straight to the thread under the comment/reply
+  // it was opened from, via addReply(). Only ever reachable from a Reply
+  // button, which only ever appears on .comment-item elements. ----
+  function openReplyModal(parentItem) {
+    const targetName = parentItem.dataset.commentName || 'comment';
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `
+      <div class="modal-box">
+        <div class="modal-title">Reply to ${escapeHtml(targetName)}</div>
+        <textarea class="modal-textarea" placeholder="Write a reply..." autofocus></textarea>
+        <div class="modal-actions">
+          <button type="button" class="modal-cancel">Cancel</button>
+          <button type="button" class="modal-post">Reply</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    const textarea = overlay.querySelector('.modal-textarea');
+    setTimeout(() => textarea.focus(), 0);
+
+    function close() { overlay.remove(); }
+    overlay.querySelector('.modal-cancel').addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+
+    overlay.querySelector('.modal-post').addEventListener('click', () => {
+      const text = textarea.value.trim();
+      if (!text) return;
+      close();
+      addReply(parentItem, getCurrentUserName(), 'grey', text);
+    });
+  }
+  window.openReplyModal = openReplyModal;
+
+  // ---- Share button shown below all comments on a post ----
+  function ensureShareButton(postEl, section) {
+    section = section || postEl.querySelector('.comments-section');
+    if (!section) return;
+    let btn = section.querySelector('.share-comments-btn');
+    if (btn) {
+      section.appendChild(btn); // keep it as the very last element
+      return;
+    }
+    btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'share-comments-btn';
+    btn.textContent = '🔗 Share';
+    btn.addEventListener('click', () => sharePostWithComment(postEl));
+    section.appendChild(btn);
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ---- Helpers for building a link to a *specific* post ----
+
+  // Given an <img class="avatar"> src, find its human-readable colour label
+  // (falls back to 'grey' if it's not one of the known generated avatars).
+  function avatarLabelFromSrc(src) {
+    const idx = avatars.indexOf(src);
+    return idx !== -1 ? avatarLabels[idx] : 'grey';
+  }
+
+  // Builds a link using the plain-text URL parameter system:
+  // ?post_creator=...&profile_picture=...&post_content=...
+  function buildContentPostLink(name, colorLabel, content) {
+    const base = window.location.origin + window.location.pathname;
+    const query = [
+      `post_creator=${encodeURIComponent(name)}`,
+      `profile_picture=${encodeURIComponent(colorLabel)}`,
+      `post_content=${encodeURIComponent(content)}`
+    ].join('&');
+    return `${base}?${query}`;
+  }
+
+  // ---- Finds a direct-child image/video on a post, if any, so share links
+  // can carry them forward as &img_src=/&video_src= ----
+  function appendQueryParams(link, parts) {
+    if (!parts.length) return link;
+    const query = parts.join('&');
+    return link.includes('?') ? `${link}&${query}` : `${link}?${query}`;
+  }
+
+  function getPostMediaParams(postEl) {
+    const parts = [];
+    const img = postEl.querySelector(':scope > .post-image');
+    if (img) {
+      const src = img.getAttribute('src');
+      if (src) parts.push(`img_src=${encodeURIComponent(src)}`);
+    }
+    // Videos store the un-transformed URL the user originally pasted in
+    // data-original-src, so re-sharing doesn't re-run the YouTube rewrite
+    // on an already-embeddable link.
+    const videoHolder = postEl.querySelector(':scope > .post-video-wrap, :scope > video.post-video');
+    const originalVideoSrc = videoHolder ? videoHolder.dataset.originalSrc : null;
+    if (originalVideoSrc) parts.push(`video_src=${encodeURIComponent(originalVideoSrc)}`);
+    return parts;
+  }
+
+  // Figures out the best link for a given .post element:
+  //  1. If it was itself loaded from a ?post= share code, reuse that exact code.
+  //  2. If it's a sponsored/ad post, there's no specific post to link to - use
+  //     the generic ChillSpace URL.
+  //  3. Otherwise, build a ?post_creator=&profile_picture=&post_content= link
+  //     from the post's own name/avatar/content (this covers every ordinary
+  //     feed post, poll/debate/story posts with content, and user-generated
+  //     posts from the composer).
+  //  4. If the post doesn't have the fields needed for any of the above
+  //     (e.g. a poll with no plain-text content), fall back to the generic URL.
+  // Any image or video attached directly to the post is carried along as
+  // &img_src=/&video_src= so whoever opens the link sees the same media.
+  function getPostLink(postEl) {
+    const base = window.location.origin + window.location.pathname;
+    if (!postEl) return base;
+
+    const mediaParts = getPostMediaParams(postEl);
+
+    if (postEl.dataset.postParam) {
+      return appendQueryParams(`${base}?post=${encodeURIComponent(postEl.dataset.postParam)}`, mediaParts);
+    }
+
+    if (postEl.classList.contains('post-ad')) {
+      return base;
+    }
+
+    const nameEl = postEl.querySelector('.name');
+    const contentEl = postEl.querySelector('.post-content, .post-question');
+    if (!nameEl || !contentEl) return base;
+
+    // The number-game button isn't real post text - sharing it as
+    // ?post_content=... would just recreate a plain-text line reading "GO to
+    // Number Game" instead of an actual working button, so treat it like the
+    // old embedded iframe version did and fall back to the generic link.
+    if (contentEl.querySelector('.number-game-btn')) return base;
+
+    // Use just the name text, ignoring any nested badges like "● LIVE" or "Ad"
+    const firstNode = nameEl.childNodes[0];
+    const name = (firstNode && firstNode.nodeType === Node.TEXT_NODE)
+      ? firstNode.textContent.trim()
+      : nameEl.textContent.trim();
+    const content = contentEl.textContent.trim();
+    if (!name || !content) return base;
+
+    const avatarImg = postEl.querySelector('.avatar');
+    const colorLabel = avatarImg ? avatarLabelFromSrc(avatarImg.getAttribute('src')) : 'grey';
+
+    return appendQueryParams(buildContentPostLink(name, colorLabel, content), mediaParts);
+  }
+  window.getPostLink = getPostLink;
+
+  // ---- Reads the name typed into the "Enter your name" field above the
+  // composer, falling back to "You" if it's empty ----
+  function getCurrentUserName() {
+    const input = document.getElementById('composer-name-input');
+    const val = input ? input.value.trim() : '';
+    return val || 'You';
+  }
+  window.getCurrentUserName = getCurrentUserName;
+
+  // ---- Finds the most recent comment on a post, if any ----
+  function getLastCommentInfo(postEl) {
+    const section = postEl.querySelector('.comments-section');
+    if (!section) return null;
+    const items = section.querySelectorAll('.comment-item');
+    if (!items.length) return null;
+    const last = items[items.length - 1];
+    const name = last.dataset.commentName;
+    const colorLabel = last.dataset.commentColor;
+    const textEl = last.querySelector('.comment-text');
+    const content = textEl ? textEl.textContent.trim() : '';
+    if (!name || !content) return null;
+    return { name, colorLabel, content };
+  }
+
+  // ---- Walks the "freshest" comment thread on a post: the last top-level
+  // comment, then its last reply, then that reply's last reply, and so on -
+  // for as deep as the thread goes. This is what lets a shared link carry a
+  // whole back-and-forth (via &comment_*, &reply1_*, &reply2_*, ...), not
+  // just the single most recent comment. ----
+  function getCommentChain(postEl) {
+    const section = postEl.querySelector('.comments-section');
+    if (!section) return [];
+
+    const topItems = Array.from(section.children).filter(
+      child => child.classList && child.classList.contains('comment-item') && !child.classList.contains('reply-item')
+    );
+    if (!topItems.length) return [];
+
+    const chain = [];
+    let current = topItems[topItems.length - 1];
+    while (current) {
+      const name = current.dataset.commentName;
+      const colorLabel = current.dataset.commentColor;
+      const textEl = current.querySelector(':scope > .comment-row .comment-text');
+      const content = textEl ? textEl.textContent.trim() : '';
+      if (!name || !content) break;
+      chain.push({ name, colorLabel, content });
+
+      const repliesEl = current.querySelector(':scope > .comment-replies');
+      const replyItems = repliesEl ? repliesEl.querySelectorAll(':scope > .comment-item') : null;
+      current = (replyItems && replyItems.length) ? replyItems[replyItems.length - 1] : null;
+    }
+    return chain;
+  }
+
+  // ---- Extends a post's link with &comment_creator=/&comment_content=...
+  // for its most recent comment thread, walking as many &reply1_*, &reply2_*,
+  // ... levels deep as the thread actually goes ----
+  function getPostLinkWithComment(postEl) {
+    const link = getPostLink(postEl);
+    const chain = getCommentChain(postEl);
+    if (!chain.length) return link;
+
+    const parts = [];
+    chain.forEach((c, i) => {
+      const prefix = i === 0 ? 'comment' : `reply${i}`;
+      parts.push(`${prefix}_creator=${encodeURIComponent(c.name)}`);
+      parts.push(`${prefix}_profile_picture=${encodeURIComponent(c.colorLabel || 'grey')}`);
+      parts.push(`${prefix}_content=${encodeURIComponent(c.content)}`);
+    });
+
+    return appendQueryParams(link, parts);
+  }
+
+  // ---- "Share" button below all comments: shares the post's link together
+  // with its most recent comment ----
+  // ---- "Share" from the comment modal: just the link, no post text or
+  // comment content included ----
+  async function sharePostWithComment(postEl) {
+    const link = getPostLinkWithComment(postEl);
+    const data = { title: 'ChillSpace', url: link };
+    if (navigator.share) {
+      try { await navigator.share(data); } catch (e) {}
+    } else {
+      const tweet = encodeURIComponent(link);
+      window.open(`https://twitter.com/intent/tweet?text=${tweet}`, '_blank', 'noopener');
+    }
+  }
+  window.sharePostWithComment = sharePostWithComment;
+
+  // ---- Repost button: shares just the link to that specific post, no post
+  // text quoted alongside it ----
+  async function repostPost(btn) {
+    const postEl = btn.closest('.post');
+    const link = getPostLink(postEl);
+    const data = { title: 'ChillSpace', url: link };
+    if (navigator.share) {
+      try { await navigator.share(data); } catch (e) {}
+    } else {
+      const tweet = encodeURIComponent(link);
+      window.open(`https://twitter.com/intent/tweet?text=${tweet}`, '_blank', 'noopener');
+    }
+  }
+  window.repostPost = repostPost;
+
+  // ---- ChillSpace AI ----
+  function chillAI(btn) {
+    const postEl = btn.closest('.post');
+
+    // A post loaded via ?chillspace_ai_response=... always uses that exact message
+    const customResponse = postEl ? postEl.dataset.aiResponse : '';
+    if (customResponse) {
+      showAIToast(escapeHtml(customResponse));
+      return;
+    }
+
+    const contentEl = postEl ? postEl.querySelector('.post-content') : null;
+    const text = contentEl ? contentEl.textContent.trim() : '';
+
+    // Pattern 1: "[text] which makes sense because I've always loved [thing]"
+    const p1 = /^(.+?)\s+which makes sense because I'?ve always loved (.+?)\.?$/i;
+    // Pattern 2: "[How/Why] is [thing] so [underrated/popular] in [place/time]"
+    const p2 = /^(how|why)\s+is\s+(.+?)\s+(so\s+(?:underrated|popular))\s+in\s+(.+?)\??$/i;
+
+    // Detect non-English via presence of non-Latin script characters
+    const nonLatin = /[\u0080-\u024F\u0370-\u03FF\u0400-\u04FF\u0600-\u06FF\u0900-\u097F\u0E00-\u0E7F\u1100-\u11FF\u3000-\u9FFF\uAC00-\uD7AF]/;
+
+    let msg;
+    const m1 = text.match(p1);
+    const m2 = text.match(p2);
+
+    if (m1) {
+      const activity = m1[1].trim();
+      const thing = m1[2].trim().replace(/\.$/, '');
+      // Swap first-person "I" with "they" in the activity part
+      const swapped = activity
+        .replace(/\bI'm\b/gi, "they're")
+        .replace(/\bI've\b/gi, "they've")
+        .replace(/\bI'd\b/gi, "they'd")
+        .replace(/\bI'll\b/gi, "they'll")
+        .replace(/\bI\b/g, "they")
+        .replace(/\bmy\b/gi, "their")
+        .replace(/\bmyself\b/gi, "themselves");
+      msg = `This user seems to like ${thing}, so ${swapped}.`;
+    } else if (m2) {
+      const thing = m2[2].trim();
+      const descriptor = m2[3].trim();
+      const place = m2[4].trim().replace(/\?$/, '');
+      msg = `${thing.charAt(0).toUpperCase() + thing.slice(1)} is ${descriptor} in ${place} due to societal factors and personal preferences.`;
+    } else if (nonLatin.test(text)) {
+      msg = "Sorry, our AI can currently only process English text. Try again with a different post.";
+    } else {
+      msg = "I don't yet know how to analyse this post. You could try asking a third-party AI or using your brain to interpret the post yourself.";
+    }
+
+    showAIToast(msg);
+  }
+  window.chillAI = chillAI;
+
+  function showAIToast(msg) {
+    // Remove any existing AI toast
+    document.querySelectorAll('.ai-toast').forEach(t => t.remove());
+    const toast = document.createElement('div');
+    toast.className = 'ai-toast';
+    toast.innerHTML = `<div class="ai-toast-label">✨ ChillSpace AI</div>${msg}`;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('show'));
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 250);
+    }, 4000);
+  }
+  window.showAIToast = showAIToast;
+
+  // ---- Small toast helper for comment result ----
+  function showToast(msg) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('show'));
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 250);
+    }, 2600);
+  }
+  window.showToast = showToast;
+
+  // ==========================================================================
+  // ---- Shareable / pinned post via URL parameter (?post=XXXXXXX) ----
+  //
+  // Each character of the parameter is a base-36 digit (0-9, then a-z), so
+  // any array with more than 10 options can still be addressed with a single
+  // character. Position meaning (left to right):
+  //   [0] post type      -> which content template to use
+  //   [1] "starter"      -> e.g. "I finally tried"
+  //   [2] "topic"        -> e.g. "thrift flipping"
+  //   [3] "ending"       -> e.g. "tea ceremonies"
+  //   [4] first name
+  //   [5] last name
+  //   [6] avatar colour
+  //
+  // The exact number isn't meant to be memorised by users - it's just an
+  // encoding of "which item from each list", generated by whatever shares
+  // the link (e.g. a "share this post" button could build the URL).
+  // ==========================================================================
+
+  function charToIndex(ch) {
+    const v = parseInt(ch, 36);
+    return Number.isNaN(v) ? 0 : v;
+  }
+
+  function decodePostParam(param) {
+    if (!param) return null;
+    const p = param.toLowerCase().replace(/[^0-9a-z]/g, '');
+    if (!p.length) return null;
+
+    const at = i => charToIndex(p[i] || '0');
+    const typeIdx = at(0);
+    const starterIdx = at(1);
+    const topicIdx = at(2);
+    const endingIdx = at(3);
+    const firstIdx = at(4);
+    const lastIdx = at(5);
+    const avatarIdx = at(6);
+
+    const name = `${firstNames[firstIdx % firstNames.length]} ${lastNames[lastIdx % lastNames.length]}`;
+    const avatar = avatars[avatarIdx % avatars.length];
+
+    let content;
+    switch (typeIdx % 4) {
+      case 0:
+        content = `${starters[starterIdx % starters.length]} ${topics[topicIdx % topics.length]} which makes sense because I've always loved ${endings[endingIdx % endings.length]}.`;
+        break;
+      case 1:
+        content = pinnableLines[topicIdx % pinnableLines.length];
+        break;
+      case 2: {
+        const w = qWords[starterIdx % qWords.length];
+        const t = qThings[topicIdx % qThings.length];
+        const pl = qPlaces[endingIdx % qPlaces.length];
+        content = `${w} is ${t} so popular in ${pl} right now?`;
+        break;
+      }
+      default: {
+        const verb = storyVerbs[starterIdx % storyVerbs.length];
+        const rel = storyRelations[topicIdx % storyRelations.length];
+        const topic = storyTopics[endingIdx % storyTopics.length];
+        content = `I ${verb} my ${rel} over ${topic}.`;
+      }
+    }
+
+    return { name, avatar, content, raw: p };
+  }
+
+  // Simple deterministic "hash" so the same ?post= value always shows the
+  // same like count instead of a random one on every reload.
+  function hashToRange(str, max) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) {
+      h = (h * 31 + str.charCodeAt(i)) >>> 0;
+    }
+    return h % max;
+  }
+
+  function buildPinnedPost(param) {
+    const decoded = decodePostParam(param);
+    if (!decoded) return null;
+
+    const likeBase = hashToRange(decoded.raw, 9999);
+
+    const el = document.createElement('article');
+    el.className = 'post pinned-post';
+    el.dataset.postParam = decoded.raw; // lets repostPost reuse this exact ?post= code
+    el.innerHTML = `
+      <div class="post-head">
+        <img class="avatar" src="${decoded.avatar}" alt="">
+        <div class="meta">
+          <div class="name">${escapeHtml(decoded.name)}</div>
+          <div class="time">📌 Pinned post · 🌐</div>
+        </div>
+      </div>
+      <div class="post-content" dir="auto">${decoded.content}</div>
+      <div class="actions">
+        <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+        <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+        <button type="button" onclick="repostPost(this)">↗️ Repost</button>
+        <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+      </div>
+    `;
+    return el;
+  }
+
+  // ==========================================================================
+  // ---- Shareable / pinned post via plain-text URL parameters ----
+  //   ?post_creator=<name>&profile_picture=<colour>&post_content=<text>
+  //
+  // Unlike the ?post= code above, the content here lives directly in the URL
+  // instead of being encoded. This is what repostPost() falls back to for any
+  // post that doesn't already have a ?post= code of its own (e.g. an ordinary
+  // feed post, or a post a user typed into the composer).
+  // ==========================================================================
+  function buildPinnedPostFromContent(name, colorLabel, content) {
+    if (!name || !content) return null;
+
+    const idx = avatarLabels.indexOf((colorLabel || '').toLowerCase());
+    const avatar = avatars[idx !== -1 ? idx : 0];
+    const likeBase = hashToRange(name + content, 9999);
+
+    const el = document.createElement('article');
+    el.className = 'post pinned-post';
+    el.innerHTML = `
+      <div class="post-head">
+        <img class="avatar" src="${avatar}" alt="">
+        <div class="meta">
+          <div class="name">${escapeHtml(name)}</div>
+          <div class="time">📌 Pinned post · 🌐</div>
+        </div>
+      </div>
+      <div class="post-content" dir="auto">${escapeHtml(content)}</div>
+      <div class="actions">
+        <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+        <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+        <button type="button" onclick="repostPost(this)">↗️ Repost</button>
+        <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+      </div>
+    `;
+    return el;
+  }
+
+  function loadPinnedPostFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const postParam = params.get('post');
+    const creatorParam = params.get('post_creator');
+    const contentParam = params.get('post_content');
+
+    let el = null;
+    if (postParam) {
+      el = buildPinnedPost(postParam);
+    } else if (creatorParam && contentParam) {
+      el = buildPinnedPostFromContent(creatorParam, params.get('profile_picture'), contentParam);
+    }
+    if (!el) return;
+
+    const feed = document.getElementById('feed');
+    feed.insertBefore(el, feed.firstChild);
+
+    // ?chillspace_ai_response=... overrides what the ✨ ChillSpace AI button says for this post
+    const aiResponseParam = params.get('chillspace_ai_response');
+    if (aiResponseParam) el.dataset.aiResponse = aiResponseParam;
+
+    // &img_src=<url> embeds an image in the pinned post, same as pasting one
+    // into the composer's "Paste image link" field would.
+    const imgSrcParam = params.get('img_src');
+    if (imgSrcParam && /^https?:\/\//i.test(imgSrcParam)) {
+      const contentEl = el.querySelector('.post-content, .post-question');
+      const img = document.createElement('img');
+      img.className = 'post-image';
+      img.src = imgSrcParam;
+      img.alt = '';
+      img.loading = 'lazy';
+      img.onerror = () => img.remove();
+      if (contentEl) contentEl.insertAdjacentElement('afterend', img);
+      else el.insertBefore(img, el.querySelector('.actions'));
+    }
+
+    // &video_src=<url> embeds a video the same way the composer's "Paste
+    // video link" field would - a direct .mp4 file, or a YouTube link
+    // (watch/shorts/mobile links all get converted to an embeddable player).
+    const videoSrcParam = params.get('video_src');
+    if (videoSrcParam) {
+      const videoHtml = buildVideoEmbedHtml(videoSrcParam);
+      if (videoHtml) {
+        const anchor = el.querySelector('.post-image') || el.querySelector('.post-content, .post-question');
+        if (anchor) anchor.insertAdjacentHTML('afterend', videoHtml);
+        else el.insertAdjacentHTML('afterbegin', videoHtml);
+      }
+    }
+
+    // If the link also carries a comment, attach it to the pinned post
+    const commentCreator = params.get('comment_creator');
+    const commentContent = params.get('comment_content');
+    let commentItem = null;
+    if (commentCreator && commentContent) {
+      commentItem = appendComment(el, commentCreator, params.get('comment_profile_picture'), commentContent);
+    }
+
+    // &reply1_creator=/&reply1_profile_picture=/&reply1_content= nests a reply
+    // under that comment, &reply2_... nests a further reply under reply1, and
+    // so on - this keeps walking replyN_ params for as long as they exist, so
+    // a shared link can carry a reply thread of any depth.
+    let parentItem = commentItem;
+    let level = 1;
+    while (parentItem) {
+      const replyCreator = params.get(`reply${level}_creator`);
+      const replyContent = params.get(`reply${level}_content`);
+      if (!replyCreator || !replyContent) break;
+      parentItem = addReply(parentItem, replyCreator, params.get(`reply${level}_profile_picture`), replyContent);
+      level++;
+    }
+  }
+
+  function createPost(i) {
+    const name = `${rand(firstNames)} ${rand(lastNames)}`;
+    const avatar = rand(avatars);
+    const minutes = Math.floor(Math.random()*59)+1;
+    const time = `${minutes}m ago`;
+    const content = makeContent();
+    const likeBase = Math.floor(Math.random() * 9999); // 0–9998
+
+    const el = document.createElement('article');
+    el.className = 'post';
+    el.style.animationDelay = `${i*40}ms`;
+    el.innerHTML = `
+      <div class="post-head">
+        <img class="avatar" src="${avatar}" alt="">
+        <div class="meta">
+          <div class="name">${name}</div>
+          <div class="time">${time} · 🌐</div>
+        </div>
+      </div>
+      <div class="post-content" dir="auto">${content}</div>
+      <div class="actions">
+        <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+        <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+        <button type="button" onclick="repostPost(this)">↗️ Repost</button>
+        <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+      </div>
+    `;
+    return el;
+  }
+
+  function loadFeed() {
+    const feed = document.getElementById('feed');
+    const adPosition = 3;
+    const available = [1,2,4,5,6,7,8,9,10,11].filter(p => p !== adPosition);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    const storyPositions = new Set([shuffled[0], shuffled[1]]);
+    const pollPosition = shuffled[2]; // one poll in initial feed
+    const debatePosition = shuffled[3]; // one live debate in initial feed
+
+    let adDone = false;
+    for (let i = 0; i < 12; i++) {
+      if (i === adPosition && !adDone) {
+        // Skip the video ad while autoscrolling - its autoplaying video is
+        // what was causing the scroll lag - and fill that slot with a
+        // normal post instead so the feed length/layout stays the same.
+        if (autoscrollOn) {
+          feed.appendChild(createPost(i));
+        } else {
+          feed.appendChild(makeAdPost());
+        }
+        adDone = true;
+      }
+      if (storyPositions.has(i)) {
+        feed.appendChild(makeStoryPost(i));
+      } else if (i === pollPosition) {
+        feed.appendChild(makePollPost(i));
+      } else if (i === debatePosition) {
+        feed.appendChild(makeDebatePost(i));
+      } else {
+        feed.appendChild(createPost(i));
+      }
+    }
+  }
+
+  let loading = false;
+  function loadMorePosts(count = 8) {
+    if (loading) return;
+    loading = true;
+    const loader = document.getElementById('loader');
+    loader.classList.add('show');
+   
+    setTimeout(() => {
+      const feed = document.getElementById('feed');
+      const start = feed.children.length;
+      for (let i = 0; i < count; i++) {
+        const r = Math.random();
+        if (r < 0.2) {
+          feed.appendChild(makeStoryPost(start + i));
+        } else if (r < 0.32) {
+          feed.appendChild(makePollPost(start + i));
+        } else if (r < 0.42) {
+          feed.appendChild(makeDebatePost(start + i));
+        } else {
+          feed.appendChild(createPost(start + i));
+        }
+      }
+      loading = false;
+      loader.classList.remove('show');
+    }, 350);
+  }
+
+  function setupInfiniteScroll() {
+    const sentinel = document.getElementById('sentinel');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          loadMorePosts(8);
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '200px',
+      threshold: 0
+    });
+    observer.observe(sentinel);
+  }
+
+  document.getElementById('shareBtn').addEventListener('click', async () => {
+    const data = {
+      title: 'ChillSpace',
+      text: "Meet the world's first non-addictive social app!",
+      url: window.location.href
+    };
+    if (navigator.share) {
+      try { await navigator.share(data); } catch(e) {}
+    } else {
+      const tweet = encodeURIComponent(`${data.text} ${data.url}`);
+      window.open(`https://twitter.com/intent/tweet?text=${tweet}`, '_blank', 'noopener');
+    }
+  });
+
+  // ---- "What's on your mind?" composer ----
+  function openImageGuideModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `
+      <div class="modal-box" style="max-width:480px">
+        <div class="modal-title" style="font-size:15px;margin-bottom:10px">🖼️ How to get an image link</div>
+        <ol style="font-size:14px;line-height:1.7;color:#1c1e21;padding-left:20px;margin:0">
+          <li>Upload your file to a third-party image hosting service such as <a href="https://imgbb.com" target="_blank" rel="noopener">ImgBB</a>.</li>
+          <li>Copy the link to your image and open it in a web browser.</li>
+          <li>Hold the image down (mobile) or right-click it (desktop) and select "Open image in new tab".</li>
+          <li>Copy that link.</li>
+          <li>Paste it into the "Paste image link" field on ChillSpace.</li>
+        </ol>
+        <div class="modal-actions" style="margin-top:16px">
+          <button type="button" class="modal-post" onclick="this.closest('.modal-overlay').remove()">Got it</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) overlay.remove();
+    });
+  }
+  window.openImageGuideModal = openImageGuideModal;
+
+  function openVideoGuideModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `
+      <div class="modal-box" style="max-width:480px">
+        <div class="modal-title" style="font-size:15px;margin-bottom:10px">🎬 How to add a video</div>
+        <ol style="font-size:14px;line-height:1.7;color:#1c1e21;padding-left:20px;margin:0">
+          <li>Paste a direct link to a web video file, e.g. <code>https://example.com/video.mp4</code>.</li>
+          <li>Or paste a YouTube link — either a normal watch link or a Shorts link both work.</li>
+          <li>YouTube links are automatically converted into an embeddable player, so just paste the link as you copied it.</li>
+        </ol>
+        <div class="modal-actions" style="margin-top:16px">
+          <button type="button" class="modal-post" onclick="this.closest('.modal-overlay').remove()">Got it</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) overlay.remove();
+    });
+  }
+  window.openVideoGuideModal = openVideoGuideModal;
+
+  // ---- Video URL helpers: converts YouTube watch/shorts/mobile links into
+  // an embeddable /embed/ URL, and builds the HTML for either a YouTube
+  // <iframe> or a direct <video> tag (for plain web video files). ----
+  function isYouTubeUrl(url) {
+    return /youtube\.com|youtu\.be/i.test(url);
+  }
+
+  function normalizeYouTubeEmbedUrl(urlRaw) {
+    let u = urlRaw.trim();
+
+    // youtu.be short links -> youtube.com/embed/<id>
+    const shortMatch = u.match(/youtu\.be\/([a-zA-Z0-9_-]+)/i);
+    if (shortMatch) {
+      return `https://www.youtube.com/embed/${shortMatch[1]}`;
+    }
+
+    u = u.replace(/m\.youtube/i, 'youtube');
+    u = u.replace(/\/watch\?v=/i, '/embed/');
+    u = u.replace(/\/shorts\//i, '/embed/');
+
+    // Anything trailing after the video ID (like &t=30s) breaks /embed/ paths,
+    // so trim query params off an /embed/ URL - the id itself is kept.
+    const embedMatch = u.match(/^(https?:\/\/(?:www\.)?youtube\.com\/embed\/[a-zA-Z0-9_-]+)/i);
+    if (embedMatch) return embedMatch[1];
+
+    return u;
+  }
+
+  function buildVideoEmbedHtml(urlRaw) {
+    const url = (urlRaw || '').trim();
+    if (!/^https?:\/\//i.test(url)) return '';
+
+    if (isYouTubeUrl(url)) {
+      const embedUrl = normalizeYouTubeEmbedUrl(url);
+      return `<div class="post-video-wrap" data-original-src="${escapeHtml(url)}"><iframe class="post-video" src="${escapeHtml(embedUrl)}" title="Embedded video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>`;
+    }
+
+    return `<video class="post-video" src="${escapeHtml(url)}" data-original-src="${escapeHtml(url)}" controls playsinline preload="metadata" onerror="this.remove()"></video>`;
+  }
+  window.buildVideoEmbedHtml = buildVideoEmbedHtml;
+
+  function setupComposer() {
+    const input = document.getElementById('composer-input');
+    const postRow = document.getElementById('composer-post-row');
+    const postBtn = document.getElementById('composer-post-btn');
+    const nameInput = document.getElementById('composer-name-input');
+    const imageInput = document.getElementById('composer-image-input');
+    const imageHelpBtn = document.getElementById('composer-image-help-btn');
+    const videoInput = document.getElementById('composer-video-input');
+    const videoHelpBtn = document.getElementById('composer-video-help-btn');
+
+    // Remember the entered name across visits/reloads
+    try {
+      const savedName = localStorage.getItem('chillspace_display_name');
+      if (savedName) nameInput.value = savedName;
+    } catch (e) { /* localStorage unavailable - just don't persist */ }
+    nameInput.addEventListener('input', () => {
+      try { localStorage.setItem('chillspace_display_name', nameInput.value); } catch (e) {}
+    });
+
+    imageHelpBtn.addEventListener('click', openImageGuideModal);
+    videoHelpBtn.addEventListener('click', openVideoGuideModal);
+
+    input.addEventListener('focus', () => postRow.classList.add('visible'));
+    input.addEventListener('input', () => {
+      postBtn.disabled = input.value.trim().length === 0;
+    });
+
+    postBtn.addEventListener('click', () => {
+      const text = input.value.trim();
+      if (!text) return;
+
+      const displayName = getCurrentUserName();
+      const initial = displayName.charAt(0).toUpperCase();
+
+      // Only use the pasted image link if it actually looks like a URL
+      const imageUrlRaw = imageInput.value.trim();
+      const hasImage = /^https?:\/\//i.test(imageUrlRaw);
+      const imageHtml = hasImage
+        ? `<img class="post-image" src="${escapeHtml(imageUrlRaw)}" alt="" loading="lazy" onerror="this.remove()">`
+        : '';
+
+      // Only use the pasted video link if it actually looks like a URL
+      const videoUrlRaw = videoInput.value.trim();
+      const videoHtml = buildVideoEmbedHtml(videoUrlRaw);
+
+      // Create a new post at the top of the feed
+      const feed = document.getElementById('feed');
+      const el = document.createElement('article');
+      el.className = 'post own-post';
+      el.style.animationDelay = '0ms';
+      const likeBase = 0;
+      el.innerHTML = `
+        <div class="post-head">
+          <div class="comment-avatar" style="width:40px;height:40px;font-size:17px;font-weight:800;">${escapeHtml(initial)}</div>
+          <div class="meta">
+            <div class="name">${escapeHtml(displayName)}</div>
+            <div class="time">Just now · 🌐</div>
+          </div>
+        </div>
+        <div class="post-content" dir="auto">${escapeHtml(text)}</div>
+        ${imageHtml}
+        ${videoHtml}
+        <div class="actions">
+          <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 0</button>
+          <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+          <button type="button" onclick="repostPost(this)">↗️ Repost</button>
+          <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+        </div>
+      `;
+      feed.insertBefore(el, feed.firstChild);
+
+      // Start ticking likes on the new post
+      const likeBtn = el.querySelector('.like-btn');
+      startTickingLikes(likeBtn, true);
+
+      // Reset composer
+      input.value = '';
+      imageInput.value = '';
+      videoInput.value = '';
+      postBtn.disabled = true;
+      postRow.classList.remove('visible');
+      input.blur();
+    });
+
+    // Hide post row if clicking outside
+    document.addEventListener('click', (e) => {
+      if (!document.getElementById('composer').contains(e.target)) {
+        if (input.value.trim() === '') postRow.classList.remove('visible');
+      }
+    });
+  }
+
+  // Override startTickingLikes to support post like buttons too
+  function startTickingLikes(el, isPostBtn = false) {
+    let count = 0;
+    function tick() {
+      count++;
+      if (isPostBtn) {
+        const base = parseInt(el.dataset.base || '0', 10);
+        el.dataset.base = count;
+        const liked = el.dataset.liked === '1';
+        el.innerHTML = liked ? `✅ ${(count+1).toLocaleString()}` : `👍 ${count.toLocaleString()}`;
+      } else {
+        el.textContent = `👍 ${count.toLocaleString()} like${count === 1 ? '' : 's'}`;
+      }
+      const delay = Math.max(400, 3500 - count * 60 + Math.random() * 600);
+      setTimeout(tick, delay);
+    }
+    setTimeout(tick, 1200 + Math.random() * 1000);
+  }
+
+  // ---- Notification bell ----
+  function setupBell() {
+    const count = Math.floor(Math.random() * 7) + 2; // 2–8
+    document.getElementById('bell-badge').textContent = count;
+
+    // Generate notifications using names/content from the site's own arrays
+    const notifList = document.getElementById('notif-list');
+    for (let n = 0; n < count; n++) {
+      const name1 = `${rand(firstNames)} ${rand(lastNames)}`;
+      const isRepost = Math.random() < 0.35 && n > 0;
+      let html = '';
+      const initial = name1[0];
+
+      if (isRepost) {
+        const name2 = `${rand(firstNames)} ${rand(lastNames)}`;
+        const previewPost = makeContent(false); // never show iframes/linesB in notifications
+        html = `<div class="notif-item">
+          <div class="notif-avatar">${initial}</div>
+          <div class="notif-text">
+            <strong>${name1}</strong>, who you follow, reposted <strong>${name2}</strong>'s post
+            <div class="notif-post-preview">"${previewPost}"</div>
+          </div>
+        </div>`;
+      } else {
+        const previewPost = makeContent(false); // never show iframes/linesB in notifications
+        html = `<div class="notif-item">
+          <div class="notif-avatar">${initial}</div>
+          <div class="notif-text">
+            <strong>${name1}</strong>, who you follow, posted
+            <div class="notif-post-preview">"${previewPost}"</div>
+          </div>
+        </div>`;
+      }
+      notifList.insertAdjacentHTML('beforeend', html);
+    }
+
+    const bellBtn = document.getElementById('bellBtn');
+    const panel = document.getElementById('notif-panel');
+
+    bellBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      panel.classList.toggle('open');
+      if (panel.classList.contains('open')) {
+        document.getElementById('bell-badge').style.display = 'none';
+      }
+    });
+    document.addEventListener('click', (e) => {
+      if (!document.getElementById('bell-wrap').contains(e.target)) {
+        panel.classList.remove('open');
+      }
+    });
+  }
+
+  // ==========================================================================
+  // ---- ChillSpace personalities ----
+  // Custom "characters" a user can create (a name + exactly one of 5 traits)
+  // that reply to a post with a trait-flavoured, auto-generated response.
+  // ==========================================================================
+
+  const personalityTraits = ['Sarcastic', 'Loving', 'Annoying', 'Supportive', 'Chaotic'];
+
+  // Reuses the same 5 colour labels as profile_picture/comment_profile_picture,
+  // just for a bit of visual variety on the comment avatar.
+  const traitColors = {
+    Sarcastic: 'red',
+    Loving: 'purple',
+    Annoying: 'green',
+    Supportive: 'blue',
+    Chaotic: 'grey'
+  };
+
+  function cap(s) {
+    return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+  }
+
+  // Each trait has exactly 5 possible reply templates. `topic` is the thing
+  // the poster said they feel about (e.g. "K-pop", or "detesting K-pop" if
+  // they said they detest it) and `ending` is the thing they said they've
+  // always loved (e.g. "football"). Templates that don't need one just
+  // ignore it.
+  const personalityTemplates = {
+    Sarcastic: [
+      (topic, ending) => `Yeah, TOTALLY makes sense 🙄 not like ${ending} is boring or anything`,
+      () => `Never seen a post like that before 🙄`,
+      (topic, ending) => `${cap(topic)} and ${ending}? Yeah, their fans ALWAYS get on 😡`,
+      (topic, ending) => `Yeah it makes sense, because you've always been obsessed with something a little too much! Was ${ending}, now it's ${topic}`,
+      () => `Doesn't make sense at all! Just like your like count doesn't, because your post is so boring`
+    ],
+    Loving: [
+      (topic, ending) => `Aww I love this for you! ${cap(topic)} AND ${ending} 🥰 you deserve both`,
+      (topic) => `This made my whole day, thank you for sharing ${topic} with us 💕`,
+      (topic, ending) => `Honestly? ${cap(topic)} makes so much sense with how much you love ${ending} 🥺`,
+      () => `Sending you so much love, keep being amazing! 💖`,
+      (topic) => `I'm so proud of you for being open about ${topic} 🤗`
+    ],
+    Annoying: [
+      (topic) => `${cap(topic)}?? ${cap(topic)}?? Did you say ${topic}?? Wow. ${cap(topic)}.`,
+      () => `first 😎`,
+      (topic, ending) => `not to be that person but I liked ${topic} before it was cool, also I like ${ending} more`,
+      () => `can you guys stop posting about this, my notifications are exploding 😩`,
+      (topic) => `um actually ${topic} is objectively mid, just saying`
+    ],
+    Supportive: [
+      (topic) => `Good for you for being into ${topic}! Proud of you 👏`,
+      (topic, ending) => `This is such a great combo, ${topic} and ${ending} both deserve more love`,
+      () => `Keep sharing things like this, your feed is honestly so wholesome`,
+      (topic) => `Not everyone has the courage to post about ${topic}, respect 🙌`,
+      (topic, ending) => `Anyone who loves ${ending} this much is alright by me, and ${topic} too`
+    ],
+    Chaotic: [
+      (topic) => `WAIT ${cap(topic)} WAIT WAIT WAIT hold on let me sit down`,
+      (topic, ending) => `okay but what if ${topic} but make it ${ending}, someone build this now`,
+      () => `no because I read this three times and I still don't know what's happening but I'm invested`,
+      (topic) => `${cap(topic)} supremacy, no further questions your honor`,
+      (topic, ending) => `this is either genius or unhinged and honestly? both, because ${topic} + ${ending} shouldn't work but it does`
+    ]
+  };
+
+  // How each starter reframes the topic into a phrase, e.g. "I absolutely
+  // detest" + "K-pop" -> "detesting K-pop", vs "I love" + "K-pop" -> "K-pop".
+  const starterTopicTransforms = {
+    "I love": (topic) => topic,
+    "I absolutely detest": (topic) => `detesting ${topic}`,
+    "I don't understand the hype about": (topic) => `not understanding the hype about ${topic}`,
+    "I just discovered how much I enjoy": (topic) => `enjoying ${topic}`,
+    "I would recommend": (topic) => `recommending ${topic}`,
+    "I'm obsessed with": (topic) => `being obsessed with ${topic}`,
+    "I could never get into": (topic) => `not getting into ${topic}`,
+    "I secretly enjoy": (topic) => `secretly enjoying ${topic}`,
+    "I finally tried": (topic) => `trying ${topic}`,
+    "I think everyone should try": (topic) => `thinking everyone should try ${topic}`
+  };
+
+  // Tries to pull a "topic phrase" + "ending" out of a post's text. Handles:
+  //  - "<starter> <topic> which makes sense because I've always loved <ending>."
+  //    from makeContent() - topic/ending come straight from the sentence.
+  //  - "Unpopular opinion: <politician>'s ... policy is ... for ..." from
+  //    makePoliticalPost() - the politician becomes the topic, "politics"
+  //    stands in for the ending.
+  // Returns null if the post doesn't match either (e.g. a poll, ad, or a
+  // custom user/URL post) - callers fall back to something more generic.
+  function parseChillPost(text) {
+    const political = text.match(/^Unpopular opinion:\s*(.+?)'s\s+.+?\s+policy is\s+.+?\s+for\s+.+?\.?$/i);
+    if (political) {
+      return { topic: political[1].trim(), ending: 'politics' };
+    }
+
+    // Reddit-story-style posts from makeContent()/buildPinnedPost(), e.g.
+    // "I left my wife over a kid's film." - the relation becomes the topic,
+    // the thing it was over becomes the ending.
+    const story = text.match(/^I\s+.+?\s+my\s+(.+?)\s+over\s+(.+?)\.?$/i);
+    if (story) {
+      return { topic: story[1].trim(), ending: story[2].trim().replace(/\.$/, '') };
+    }
+
+    const m = text.match(/^(.+?)\s+which makes sense because I'?ve always loved (.+?)\.?$/i);
+    if (!m) return null;
+
+    const rawActivity = m[1].trim();
+    const ending = m[2].trim().replace(/\.$/, '');
+
+    // Find which known starter this began with (longest match wins, since
+    // some starters share the leading word "I")
+    let matchedStarter = null;
+    starters.forEach(s => {
+      if (rawActivity.toLowerCase().startsWith(s.toLowerCase() + ' ')) {
+        if (!matchedStarter || s.length > matchedStarter.length) matchedStarter = s;
+      }
+    });
+
+    let topic;
+    if (matchedStarter) {
+      const topicPart = rawActivity.slice(matchedStarter.length).trim();
+      const transform = starterTopicTransforms[matchedStarter];
+      topic = transform ? transform(topicPart) : topicPart;
+    } else {
+      topic = rawActivity.replace(/^I\s+/i, '');
+    }
+
+    return { topic, ending };
+  }
+
+  // ---- Personality storage (persisted in localStorage, like the name field) ----
+  function loadPersonalities() {
+    try {
+      const raw = localStorage.getItem('chillspace_personalities');
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+  function savePersonalities(list) {
+    try { localStorage.setItem('chillspace_personalities', JSON.stringify(list)); } catch (e) {}
+  }
+  let personalities = loadPersonalities();
+
+  // Question posts ("Why is bubble tea so popular in Japan right now?") don't
+  // have a clean "topic + ending" to swap in and out, so each personality
+  // just gets one fixed, simple response instead.
+  const questionResponses = {
+    Sarcastic: "Why do you think?",
+    Loving: "I don't know, but I love that you're curious about it 💕",
+    Annoying: "Ohhh I actually know this one, but I'm not gonna tell you 😏",
+    Supportive: "Great question - I'm sure you'll figure it out!",
+    Chaotic: "No idea, but now I need to know too, brb googling"
+  };
+
+  // ---- Real, user-typed posts (the composer, ?post_creator=&post_content=
+  // links, etc.) don't have a clean auto-generated "topic + ending" shape to
+  // slot into the multi-template system below, so every personality trait
+  // just says exactly one fixed line, every time, instead. Auto-generated
+  // ChillSpace posts (the "...which makes sense because I've always loved
+  // ..." posts, "Unpopular opinion: ...'s ... policy is..." posts, story
+  // posts, etc.) are unaffected and keep picking randomly from their five
+  // templates in personalityTemplates below. ----
+  const userGeneratedResponses = {
+    Sarcastic: "How did you think of that?",
+    Loving: "Your post is amazing!",
+    Annoying: "lol ok, cool post I guess 🙄",
+    Supportive: "Love this, keep posting stuff like it!",
+    Chaotic: "not me reading this three times and still not knowing what to say"
+  };
+
+  function generatePersonalityReply(personality, postEl) {
+    // Question posts: one fixed line per trait, no topic/ending needed
+    if (postEl.querySelector('.post-question')) {
+      const replyText = questionResponses[personality.trait] || questionResponses.Sarcastic;
+      appendComment(postEl, personality.name, traitColors[personality.trait] || 'grey', replyText);
+      return;
+    }
+
+    // Live debate posts (music/football/politics) track exactly who or what
+    // is currently being argued about, so use that directly instead of
+    // trying to regex it out of constantly-changing text - these always
+    // count as "auto-generated", never user posts.
+    if (postEl.classList.contains('debate-post') && postEl.dataset.lastName) {
+      const topic = postEl.dataset.lastName;
+      const ending = postEl.dataset.category || 'this';
+      const templates = personalityTemplates[personality.trait] || personalityTemplates.Sarcastic;
+      const replyText = rand(templates)(topic, ending);
+      appendComment(postEl, personality.name, traitColors[personality.trait] || 'grey', replyText);
+      return;
+    }
+
+    const contentEl = postEl.querySelector('.post-content, .post-question');
+    const postText = contentEl ? contentEl.textContent.trim() : '';
+    const parsed = parseChillPost(postText);
+
+    let replyText;
+    if (parsed) {
+      // Recognised auto-generated ChillSpace post shape - keep the existing
+      // five-templates-per-trait behaviour.
+      const templates = personalityTemplates[personality.trait] || personalityTemplates.Sarcastic;
+      replyText = rand(templates)(parsed.topic, parsed.ending);
+    } else {
+      // Everything else is a real user-generated post (composer, shared
+      // ?post_creator=&post_content= link, etc.) - one fixed line per trait.
+      replyText = userGeneratedResponses[personality.trait] || userGeneratedResponses.Sarcastic;
+    }
+
+    appendComment(postEl, personality.name, traitColors[personality.trait] || 'grey', replyText);
+  }
+
+  // ---- Adds a "🎭 Reply with ChillSpace personality" row below the action
+  // bar on every post, present or future - a MutationObserver means we don't
+  // need to touch every single post-generating function individually ----
+  function attachPersonalityRow(postEl) {
+    if (!postEl || !postEl.classList || !postEl.classList.contains('post')) return;
+    if (postEl.querySelector(':scope > .personality-row')) return;
+
+    const row = document.createElement('div');
+    row.className = 'personality-row';
+    row.innerHTML = `<button type="button" class="personality-btn">🎭 Reply with ChillSpace personality</button>`;
+    row.querySelector('.personality-btn').addEventListener('click', (e) => togglePersonalityMenu(e.currentTarget));
+
+    const actions = postEl.querySelector(':scope > .actions');
+    if (actions) {
+      actions.insertAdjacentElement('afterend', row);
+    } else {
+      postEl.appendChild(row);
+    }
+  }
+
+  function setupPersonalityRows() {
+    const feed = document.getElementById('feed');
+    if (!feed) return;
+
+    feed.querySelectorAll('.post').forEach(attachPersonalityRow);
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((m) => {
+        m.addedNodes.forEach((node) => {
+          if (node.nodeType !== 1) return;
+          attachPersonalityRow(node);
+          if (node.querySelectorAll) node.querySelectorAll('.post').forEach(attachPersonalityRow);
+        });
+      });
+    });
+    observer.observe(feed, { childList: true });
+  }
+
+  let openPersonalityMenuEl = null;
+
+  function togglePersonalityMenu(btn) {
+    // Close an already-open menu first; if it belonged to this same button,
+    // that's all a re-click should do.
+    if (openPersonalityMenuEl) {
+      const sameBtn = openPersonalityMenuEl.dataset.forBtn === btn.dataset.personalityMenuId;
+      openPersonalityMenuEl.remove();
+      openPersonalityMenuEl = null;
+      if (sameBtn) return;
+    }
+
+    const postEl = btn.closest('.post');
+    const menu = document.createElement('div');
+    menu.className = 'personality-menu';
+
+    let itemsHtml = '';
+    if (personalities.length === 0) {
+      itemsHtml += `<div class="personality-menu-empty">No personalities yet — create one below 👇</div>`;
+    } else {
+      personalities.forEach(p => {
+        itemsHtml += `<button type="button" class="personality-menu-item" data-id="${p.id}"><span>${escapeHtml(p.name)}</span><span class="personality-trait-tag">${escapeHtml(p.trait)}</span></button>`;
+      });
+    }
+    itemsHtml += `<button type="button" class="personality-menu-item personality-menu-create">+ Create a personality</button>`;
+    menu.innerHTML = itemsHtml;
+
+    menu.querySelectorAll('.personality-menu-item:not(.personality-menu-create)').forEach(el => {
+      el.addEventListener('click', () => {
+        const p = personalities.find(pp => pp.id === el.dataset.id);
+        menu.remove();
+        openPersonalityMenuEl = null;
+        if (p) generatePersonalityReply(p, postEl);
+      });
+    });
+    const createBtn = menu.querySelector('.personality-menu-create');
+    if (createBtn) {
+      createBtn.addEventListener('click', () => {
+        menu.remove();
+        openPersonalityMenuEl = null;
+        openCreatePersonalityModal();
+      });
+    }
+
+    // Attach straight to <body> with fixed positioning under the button.
+    // Posts each have their own CSS animation, which gives every post its
+    // own stacking context - so a menu nested inside one post's DOM subtree
+    // can never rise above a later post no matter its z-index. Living on
+    // body sidesteps that entirely.
+    if (!btn.dataset.personalityMenuId) {
+      btn.dataset.personalityMenuId = 'pm' + Math.random().toString(36).slice(2);
+    }
+    menu.dataset.forBtn = btn.dataset.personalityMenuId;
+
+    document.body.appendChild(menu);
+    const rect = btn.getBoundingClientRect();
+    menu.style.left = `${rect.left}px`;
+    menu.style.top = `${rect.bottom + 6}px`;
+    menu.style.width = `${rect.width}px`;
+    // If it would overflow past the bottom of the viewport, open upward instead
+    const menuHeight = menu.offsetHeight;
+    if (rect.bottom + 6 + menuHeight > window.innerHeight) {
+      menu.style.top = `${Math.max(6, rect.top - menuHeight - 6)}px`;
+    }
+
+    openPersonalityMenuEl = menu;
+
+    setTimeout(() => {
+      document.addEventListener('click', function handler(e) {
+        if (!menu.isConnected) {
+          document.removeEventListener('click', handler);
+          return;
+        }
+        if (!menu.contains(e.target) && e.target !== btn) {
+          menu.remove();
+          if (openPersonalityMenuEl === menu) openPersonalityMenuEl = null;
+          document.removeEventListener('click', handler);
+        }
+      });
+    }, 0);
+  }
+  window.togglePersonalityMenu = togglePersonalityMenu;
+
+  function openCreatePersonalityModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    const traitButtons = personalityTraits.map(t => `<button type="button" class="trait-option" data-trait="${t}">${t}</button>`).join('');
+    overlay.innerHTML = `
+      <div class="modal-box">
+        <div class="modal-title">Create a personality</div>
+        <input type="text" class="personality-name-input" placeholder="Personality name" maxlength="40" autofocus>
+        <div class="trait-picker">${traitButtons}</div>
+        <div class="modal-actions">
+          <button type="button" class="modal-cancel">Cancel</button>
+          <button type="button" class="modal-post">Create</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    let selectedTrait = null;
+    overlay.querySelectorAll('.trait-option').forEach(traitBtn => {
+      traitBtn.addEventListener('click', () => {
+        overlay.querySelectorAll('.trait-option').forEach(b => b.classList.remove('selected'));
+        traitBtn.classList.add('selected');
+        selectedTrait = traitBtn.dataset.trait;
+      });
+    });
+
+    const nameInput = overlay.querySelector('.personality-name-input');
+    const close = () => overlay.remove();
+    overlay.querySelector('.modal-cancel').addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+
+    overlay.querySelector('.modal-post').addEventListener('click', () => {
+      const name = nameInput.value.trim();
+      if (!name || !selectedTrait) {
+        showToast('Enter a name and pick a trait first');
+        return;
+      }
+      const personality = { id: 'p' + Date.now() + Math.floor(Math.random() * 1000), name, trait: selectedTrait };
+      personalities.push(personality);
+      savePersonalities(personalities);
+      close();
+      showToast(`"${name}" the ${selectedTrait} personality was created!`);
+    });
+  }
+  window.openCreatePersonalityModal = openCreatePersonalityModal;
+
+  // ---- ?post_intent=<url-encoded text> pre-fills the "What's on your mind?"
+  // composer field so a shared link can drop someone straight into typing a
+  // specific post. URLSearchParams.get() already URL-decodes the value for
+  // us. The name field is deliberately left alone - if it's already
+  // pre-filled (e.g. remembered via localStorage from a past visit), it
+  // stays exactly as it was. ----
+  function applyPostIntentFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const intent = params.get('post_intent');
+    if (intent === null) return;
+
+    const input = document.getElementById('composer-input');
+    const postRow = document.getElementById('composer-post-row');
+    const postBtn = document.getElementById('composer-post-btn');
+    if (!input) return;
+
+    input.value = intent;
+    postRow.classList.add('visible');
+    postBtn.disabled = input.value.trim().length === 0;
+    input.dispatchEvent(new Event('input'));
+  }
+
+  // ---- ?autoscroll=on slowly and continuously scrolls the page down at a
+  // moderate, easy-to-read pace. Since the feed loads more posts forever via
+  // infinite scroll, this just keeps going - but a manual scroll/swipe/wheel
+  // from the person pauses it briefly so it doesn't fight them. ----
+  function setupAutoScroll() {
+    if (!autoscrollOn) return;
+
+    const PIXELS_PER_SECOND = 60; // 1.5x the original moderate pace
+    const PAUSE_AFTER_MANUAL_SCROLL_MS = 2500;
+
+    let lastTime = null;
+    let pausedUntil = 0;
+
+    function pauseBriefly() {
+      pausedUntil = performance.now() + PAUSE_AFTER_MANUAL_SCROLL_MS;
+    }
+    window.addEventListener('wheel', pauseBriefly, { passive: true });
+    window.addEventListener('touchmove', pauseBriefly, { passive: true });
+
+    function step(timestamp) {
+      if (lastTime !== null && timestamp >= pausedUntil) {
+        const deltaSeconds = (timestamp - lastTime) / 1000;
+        window.scrollBy(0, PIXELS_PER_SECOND * deltaSeconds);
+      }
+      lastTime = timestamp;
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadFeed();
+    loadPinnedPostFromURL();
+    setupInfiniteScroll();
+    setupComposer();
+    applyPostIntentFromURL();
+    setupAutoScroll();
+    setupBell();
+    setupPersonalityRows();
+  });
+</script>
+<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
+<!-- AI_AGENT_API_DOCS -->
+<script type="application/json" id="ai-api-docs">
+{
+  "name": "ChillSpace API",
+  "description": "Generate and share random opinion posts. All endpoints return JSON and support CORS.",
+  "base_url": "https://chill-space.pages.dev/api",
+  "endpoints": [
+    {
+      "path": "/feed",
+      "method": "GET",
+      "description": "Get 20 random generated posts",
+      "example": "https://chill-space.pages.dev/api/feed"
+    },
+    {
+      "path": "/post/{code}",
+      "method": "GET", 
+      "description": "Generate a post from a 5-character code. Code chars: 0-9A-Z",
+      "example": "https://chill-space.pages.dev/api/post/0L3M9",
+      "code_format": "ABCDE = Template + Opinion1 + Topic1 + Opinion2 + Topic2"
+    },
+    {
+      "path": "/post",
+      "method": "GET",
+      "description": "Render a custom post directly via URL params",
+      "params": {
+        "post_creator": "string",
+        "post_content": "string", 
+        "profile_picture": "string - default grey"
+      },
+      "example": "https://chill-space.pages.dev/api/post?post_creator=A+ChillSpace+User&post_content=I+love+coding&profile_picture=grey"
+    }
+  ],
+  "share_url_format": "https://chill-space.pages.dev/?post_creator=...&post_content=...&profile_picture=..."
+}
+</script>
+</body>
+</html>

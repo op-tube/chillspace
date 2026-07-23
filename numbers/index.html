@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Game</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    color: white;
+    position: relative;
+    overflow-x: hidden;
+    background: #000; /* black bars for "contain" */
+  }
+  #bgFrame {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    z-index: -2;
+    filter: brightness(0.6);
+  }
+  #bgVideo {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* FIT instead of FILL */
+    z-index: -1;
+    filter: brightness(0.8);
+    display: none;
+    background: #000;
+  }
+.stats {
+    margin-top: 30px;
+    text-align: center;
+  }
+.stat-green { color: #00ff00; font-size: 2.5rem; font-weight: 800; text-shadow: 0 0 15px #00ff00; }
+.stat-magenta { color: #ff00ff; font-size: 1.4rem; }
+.stat-gold { color: #ffdd00; font-size: 1.4rem; }
+.buttons {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+    flex-direction: column;
+    align-items: center;
+  }
+.btn-plus {
+    background: #ff00ff;
+    border: none;
+    padding: 16px 60px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 15px #ff00ff;
+  }
+.btn-music {
+    background: #111;
+    border: 2px solid #00ff00;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    color: white;
+  }
+.btn-music.playing { background: #00ff00; color: #000; }
+.leaderboard {
+    width: 90%;
+    max-width: 500px;
+    background: rgba(0,0,0,0.75);
+    border: 2px solid #ff00ff;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 20px;
+    backdrop-filter: blur(5px);
+  }
+.bar-row {
+    margin: 8px 0;
+  }
+.bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+.bar {
+    height: 20px;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+  }
+.bar.you { background: #00ff00; box-shadow: 0 0 10px #00ff00; }
+.bar.bot { background: #a020f0; }
+  #nameInput {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 10px;
+    width: 200px;
+    text-align: center;
+  }
+.share-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+.share-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #222;
+    transition: transform 0.2s;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+.share-btn:hover { transform: scale(1.1); }
+.whatsapp { background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg'); background-color: #25D366; }
+.x { background-color: #000; }
+.chill { background-image: url('https://i.ibb.co/MkvCqpXy/kmc-20260722-172909.png'); background-color: #ff00ff; }
+</style>
+</head>
+<body>
+
+<iframe id="bgFrame" src="https://chill-space.pages.dev/?autoscroll=on"></iframe>
+<video id="bgVideo" muted playsinline></video>
+
+<div id="setup">
+  <h2>Enter your name</h2>
+  <input id="nameInput" placeholder="Your name" maxlength="12">
+  <button class="btn-plus" onclick="startGame()">Start</button>
+</div>
+
+<div id="game" style="display:none; width:100%; text-align:center;">
+  <div class="stats">
+    <div class="stat-green" id="totalStat">Total: 0</div>
+    <div class="stat-magenta" id="yourTotalStat">Your total: 0</div>
+    <div class="stat-gold" id="thisGameStat">This game: 0</div>
+  </div>
+
+  <div class="buttons">
+    <button class="btn-plus" id="plusBtn" onclick="addOne()">+1</button>
+    <button class="btn-music" id="musicBtn" onclick="toggleMusic()">♪ Play Music</button>
+  </div>
+
+  <div class="leaderboard" id="leaderboard"></div>
+
+  <div class="share-buttons">
+    <button class="share-btn whatsapp" onclick="shareWhatsApp()" title="+20 points"></button>
+    <button class="share-btn x" onclick="shareX()" title="+50 points">X</button>
+    <button class="share-btn chill" onclick="shareChill()" title="+10 points"></button>
+  </div>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="https://ia800705.us.archive.org/11/items/CountingUpOn1Tap/AUD-20260124-WA0004.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let player = { name: "You", score: 0, sessionScore: 0 };
+let bots = [];
+let totalCount = 0;
+let musicOn = false;
+const bgMusic = document.getElementById('bgMusic');
+const bgVideo = document.getElementById('bgVideo');
+const shareText = "check out the Number Game! Try it now at https://chill-space.pages.dev/numbers";
+let lastSaveTime = Date.now();
+let videoTimeout;
+
+const VIDEO_FIRST = "https://ia600108.us.archive.org/3/items/video-project-7-1_202607/Video%20Project%207%201.mp4"; // heart
+const VIDEO_OTHER = "https://ia600507.us.archive.org/29/items/numbear-aegyo-hwaiting/Video%20Project%207.mp4"; // you can do it
+
+function load() {
+  const data = JSON.parse(localStorage.getItem('numberGameV9') || '{}');
+  player.score = data.score || 0;
+  player.name = data.name || "You";
+  player.sessionScore = 0;
+  bots = data.bots || [];
+  totalCount = data.total || 0;
+  lastSaveTime = data.lastSave || Date.now();
+}
+
+function save() {
+  localStorage.setItem('numberGameV9', JSON.stringify({
+    score: player.score,
+    name: player.name,
+    bots,
+    total: totalCount,
+    lastSave: Date.now()
+  }));
+}
+
+function initBots() {
+  if(bots.length === 0) {
+    const names = ["Astra", "Nova", "Zed", "Kira", "Bot-5"];
+    bots = names.map(n => ({ name: n, score: 0 }));
+  }
+}
+
+function offlineCatchup() {
+  const timeOffline = Date.now() - lastSaveTime;
+  if(timeOffline > 5000) {
+    bots.forEach(b => {
+      const diff = Math.max(0, player.score - b.score);
+      const minAdd = Math.floor(diff * 0.5);
+      const maxAdd = Math.floor(diff * 2);
+      const add = minAdd + Math.floor(Math.random() * (maxAdd - minAdd + 1));
+      b.score += add;
+      totalCount += add;
+    });
+  }
+}
+
+function startGame() {
+  const savedData = JSON.parse(localStorage.getItem('numberGameV9') || '{}');
+  if(savedData.name) document.getElementById('nameInput').value = savedData.name;
+
+  const input = document.getElementById('nameInput').value.trim();
+  if(input) player.name = input;
+
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('game').style.display = 'block';
+  load();
+  if(input) player.name = input;
+  initBots();
+  offlineCatchup();
+  updateUI();
+  updateBackground();
+
+  // when video ends, go back to iframe
+  bgVideo.addEventListener('ended', () => {
+    bgVideo.style.display = 'none';
+    bgVideo.src = '';
+  });
+
+  setInterval(botTick, 500);
+  setInterval(updateBackground, 15000); // check every 15s
+}
+
+function addOne() {
+  player.score++;
+  player.sessionScore++;
+  totalCount++;
+  bots.forEach(b => {
+    if(Math.random() < 0.33) {
+      b.score += Math.floor(Math.random()*2)+1;
+      totalCount++;
+    }
+  });
+  save();
+  updateUI();
+}
+
+function botTick() {
+  bots.forEach(b => {
+    if(Math.random() < 0.25) {
+      b.score += Math.floor(Math.random()*3)+1;
+      totalCount++;
+    }
+  });
+  save();
+  updateUI();
+}
+
+function getLeader() {
+  let all = [player,...bots].sort((a,b) => b.score - a.score);
+  return all[0] === player;
+}
+
+function updateBackground() {
+  // don't interrupt a video that's already playing
+  if(!bgVideo.paused && bgVideo.style.display === 'block') return;
+
+  const isFirst = getLeader();
+  const newSrc = isFirst? VIDEO_FIRST : VIDEO_OTHER;
+
+  bgVideo.src = newSrc;
+  bgVideo.style.display = 'block';
+  bgVideo.play().catch(()=>{});
+}
+
+function updateUI() {
+  document.getElementById('totalStat').textContent = `Total: ${totalCount}`;
+  document.getElementById('yourTotalStat').textContent = `Your total: ${player.score}`;
+  document.getElementById('thisGameStat').textContent = `This game: ${player.sessionScore}`;
+
+  let all = [player,...bots].sort((a,b) => b.score - a.score);
+  const maxScore = all[0].score || 1;
+  const lb = document.getElementById('leaderboard');
+  lb.innerHTML = '<h3 style="text-align:center; margin-bottom:10px;">Live Rankings</h3>';
+
+  all.slice(0,6).forEach(p => {
+    const width = (p.score / maxScore) * 100;
+    const barRow = document.createElement('div');
+    barRow.className = 'bar-row';
+    barRow.innerHTML = `
+      <div class="bar-label">
+        <span>${p.name}</span>
+        <span>${p.score}</span>
+      </div>
+      <div class="bar ${p === player? 'you' : 'bot'}" style="width: ${width}%"></div>
+    `;
+    lb.appendChild(barRow);
+  });
+}
+
+function shareWhatsApp() {
+  const url = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+  window.open(url, '_blank');
+  addBonus(20);
+}
+
+function shareX() {
+  const url = `https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+  window.open(url, '_blank');
+  addBonus(50);
+}
+
+function shareChill() {
+  const url = `https://chill-space.pages.dev/?post_intent=${encodeURIComponent(shareText)}`;
+  window.open(url, '_blank');
+  addBonus(10);
+}
+
+function addBonus(amount) {
+  player.score += amount;
+  player.sessionScore += amount;
+  totalCount += amount;
+  save();
+  updateUI();
+}
+
+function toggleMusic() {
+  musicOn =!musicOn;
+  const btn = document.getElementById('musicBtn');
+  if(musicOn) {
+    bgMusic.play();
+    btn.classList.add('playing');
+    btn.textContent = '⏸ Pause Music';
+  } else {
+    bgMusic.pause();
+    btn.classList.remove('playing');
+    btn.textContent = '♪ Play Music';
+  }
+}
+</script>
+</body>
+</html>
