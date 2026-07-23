@@ -1,5 +1,5 @@
 const CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const OPINIONS = ["love","like","enjoy","adore","appreciate","prefer","dig","stan","am into","am obsessed with","hate","dislike","detest","can't stand","despise","am not a fan of","am over","avoid","dont rate","am bored of","respect","support","believe in","am passionate about","am curious about","am learning","study","practice","live for","need more","want","crave","am tired of","am done with","vibe with","am chill with"];
+const OPINIONS = ["love","like","enjoy","adore","appreciate","prefer","dig","stan","am into","am obsessed with","hate","dislike","detest","can't stand","despise","am not a fan of","am over","avoid","think [topic] is overrated","find [topic] boring","respect","support","believe in","am passionate about","am curious about","am learning","study","practice","live for","need more","want","crave","am tired of","am done with","vibe with","am chill with"];
 const TOPICS = ["coding","gaming","music","reading","art","cooking","sports","travel","photography","gardening","movies","anime","fitness","fashion","design","writing","dancing","nature","tech","science","history","psychology","finance","crypto","ai","robots","cars","space","food","coffee","memes","podcasts","youtube","tiktok","chess","puzzles"];
 const TEMPLATES = {
   "0":"I [op1] [topic1] which makes sense because I've always [op2]d [topic2]",
@@ -43,52 +43,80 @@ const TEMPLATES = {
 function getCharIndex(char) {
   return CHARS.indexOf(char.toUpperCase());
 }
+function randInt(max) { return Math.floor(Math.random() * max); }
+
 function fillTemplate(template, op1, t1, op2, t2) {
   op1 = op1.replace("[topic]", t1);
   op2 = op2.replace("[topic]", t2);
-  if(op2.endsWith("e")) op2 = op2.slice(0, -1); // enjoy -> enjoyed
+  // grammar fix
+  if(op2.endsWith("e")) op2 = op2.slice(0, -1) + "d";
+  else if(!op2.endsWith("d")) op2 = op2 + "d";
   return template.replace("[op1]", op1).replace("[topic1]", t1).replace("[op2]", op2).replace("[topic2]", t2);
 }
 
 export async function onRequest({ request, params }) {
   const url = new URL(request.url);
+  const code = params.code; // this works because file is [code].js
 
-  const codeFromPath = params.code;
-  const codeFromQuery = url.searchParams.get('code');
   const creator = url.searchParams.get('post_creator');
   const content = url.searchParams.get('post_content');
   const pfp = url.searchParams.get('profile_picture') || 'grey';
-  const code = codeFromPath || codeFromQuery;
 
   // Case 1: Custom post via URL params
   if (creator && content) {
     return new Response(JSON.stringify({
+      success: true,
       id: code || `custom-${Date.now()}`,
       creator,
+      username: `@${creator.toLowerCase()}`,
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${creator}`,
       content,
       profile_picture: pfp,
       code: code || null,
+      likes: 0,
+      comments: 0,
+      created_at: new Date().toISOString(),
       url: request.url
-    }), { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }});
+    }, null, 2), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
   }
 
   // Case 2: Generated post via 5-char code
-  if (code && code.length === 5) {
-    const [t, o1, tp1, o2, tp2] = code.split('').map(getCharIndex);
-    if([t,o1,tp1,o2,tp2].includes(-1)) {
-      return new Response(JSON.stringify({error:"Invalid code"}), {status:400});
-    }
-    const template = TEMPLATES[code[0].toUpperCase()] || TEMPLATES["0"];
-    const text = fillTemplate(template, OPINIONS[o1], TOPICS[tp1], OPINIONS[o2], TOPICS[tp2]);
-    return new Response(JSON.stringify({
-      id: code,
-      creator: "ChillBot",
-      content: text,
-      profile_picture: "grey",
-      code,
-      url: `https://chill-space.pages.dev/?post_creator=${encodeURIComponent(creator)}&post_content=${encodeURIComponent(content)}&profile_picture=${encodeURIComponent(profile_picture)}`
-    }), { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }});
+  if (!code || code.length!== 5) {
+    return new Response(JSON.stringify({ success: false, error: "Need a 5 character code" }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
   }
 
-  return new Response(JSON.stringify({ error: "Need either code or post_creator + post_content" }), { status: 400 });
+  const [t, o1, tp1, o2, tp2] = code.split('').map(getCharIndex);
+  if([t,o1,tp1,o2,tp2].includes(-1)) {
+    return new Response(JSON.stringify({ success: false, error: "Invalid code characters" }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+    });
+  }
+
+  const template = TEMPLATES[code[0].toUpperCase()] || TEMPLATES["0"];
+  const text = fillTemplate(template, OPINIONS[o1], TOPICS[tp1], OPINIONS[o2], TOPICS[tp2]);
+
+  return new Response(JSON.stringify({
+    success: true,
+    id: code,
+    creator: "ChillBot",
+    username: "@chillbot",
+    avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${code}`,
+    content: text,
+    profile_picture: "grey",
+    code,
+    likes: randInt(500),
+    comments: randInt(50),
+    created_at: new Date(Date.now() - randInt(1000*60*60*24*7)).toISOString(),
+    url: `https://chill-space.pages.dev/?code=${code}`
+  }, null, 2), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+  });
 }
