@@ -37,4 +37,3 @@ export async function onRequest() {
       'Access-Control-Allow-Origin': '*'
     }
   });
-}
