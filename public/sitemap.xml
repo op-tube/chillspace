@@ -12,6 +12,11 @@
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
+  <url>
+    <loc>https://chill-space.pages.dev/crossposting.txt</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
 
 
   <!-- API Endpoints -->
@@ -33,12 +38,12 @@
 
   <!-- Example Generated Posts - helps AI discover the code system -->
   <url>
-    <loc>https://chill-space.pages.dev/?code=0L3M9</loc>
+    <loc>https://chill-space.pages.dev/?post=0L3M9</loc>
     <changefreq>never</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://chill-space.pages.dev/?code=ABCDE</loc>
+    <loc>https://chill-space.pages.dev/?post=ABCDE</loc>
     <changefreq>never</changefreq>
     <priority>0.5</priority>
   </url>
