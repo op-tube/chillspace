@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Allow: /api/
 
-Sitemap: https://chill-space.pages.dev/sitemap.xml
+Sitemap: https://chill-space.pages.dev/public/sitemap.xml
