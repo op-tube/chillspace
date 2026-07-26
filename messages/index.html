@@ -798,6 +798,25 @@
     return "https://ig.me/" + encodeURIComponent(igUsername) + "?text=" + encodeURIComponent(text);
   }
 
+  // For AI providers we send the ChillSpace link itself rather than the raw
+  // message text. The link's query string (sender_name, message_content,
+  // sent_at, ...) is already plain, labeled text, so a model can read it
+  // directly — this framing just makes sure it does that instead of trying
+  // (and failing) to browse to the URL.
+  function buildAIPrompt(chillSpaceLink, providerId, providerName) {
+    const replyTemplate = BASE_URL +
+      "?sender_name=" + encodeURIComponent(providerName) +
+      "&sender_channel=ai" +
+      "&sender_handle=" + encodeURIComponent(providerId) +
+      "&message_content=<your reply, URL-encoded>" +
+      "&sent_at=<current UTC time, e.g. " + new Date().toISOString() + ">";
+    return "You've received a ChillSpace message. You don't need to open the link below — " +
+      "just read its query parameters directly (sender_name, message_content, sent_at, etc). " +
+      "Link: " + chillSpaceLink + "\n\n" +
+      "To reply, end your response with a link in exactly this format (fill in message_content " +
+      "with your reply, URL-encoded, and sent_at with the current UTC time): " + replyTemplate;
+  }
+
   function fallbackCopy(text) {
     const ta = document.createElement("textarea");
     ta.value = text;
@@ -1176,8 +1195,8 @@
 
     const note = ai
       ? (provider.supportsPrefill
-          ? `Sending opens ${provider.name} in a new tab with your message ready to send.`
-          : `Sending opens ${provider.name} in a new tab and copies your message — paste it in there.`)
+          ? `Sending opens ${provider.name} in a new tab with a ChillSpace link ready to send.`
+          : `Sending opens ${provider.name} in a new tab and copies a ChillSpace link — paste it in there.`)
       : channel.sendNote;
 
     chatScreen.innerHTML = `
@@ -1217,13 +1236,20 @@
       addMessage(contactKey(contact), { dir: "sent", text: text, ts: Date.now() });
       input.value = "";
 
+      // Build the ChillSpace link (with UTC send time) embedding sender
+      // identity + message, used for every channel including AI chats.
+      const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
+
       if (ai) {
-        // AI chats get the raw message text so the assistant can read it directly.
+        // Send the link itself rather than the raw text, framed so the
+        // assistant reads it straight off the query string (sender_name,
+        // message_content, sent_at, ...) instead of trying to browse it.
+        const aiPrompt = buildAIPrompt(link, provider.id, provider.name);
         if (provider.supportsPrefill) {
           render();
-          window.open(provider.url + encodeURIComponent(text), "_blank", "noopener");
+          window.open(provider.url + encodeURIComponent(aiPrompt), "_blank", "noopener");
         } else {
-          copyToClipboard(text).then(() => {
+          copyToClipboard(aiPrompt).then(() => {
             window.open(provider.url, "_blank", "noopener");
             showToast(`Copied — paste your message into ${provider.name}.`);
           });
@@ -1231,9 +1257,7 @@
         return;
       }
 
-      // Human contacts: build the ChillSpace link (with UTC send time) embedding
-      // sender identity + message, then hand it off via the contact's channel.
-      const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
+      // Human contacts: hand the link off via the contact's channel.
       const outLink = channel.buildLink(contact.handle, link);
 
       render();
@@ -1253,10 +1277,23 @@
 
   // ---------- Incoming link handling ----------
   function finalizeIncomingMessage(incoming) {
-    // Add them back using whichever channel *they* signed up with, so
-    // replying uses the right kind of link (WhatsApp/email/Instagram).
-    const channelId = CHANNELS[incoming.sender_channel] ? incoming.sender_channel : "whatsapp";
-    const contact = upsertContact(incoming.sender_name, channelId, incoming.sender_handle);
+    let contact;
+    if (incoming.sender_channel === "ai") {
+      // A reply link from an AI provider (e.g. ChatGPT) — merge it back
+      // into the existing AI contact's thread rather than creating a new
+      // human-style contact.
+      contact = addAIContact(incoming.sender_handle);
+      if (!contact) {
+        // Unknown provider id — fall back to a plain contact so the
+        // message isn't silently dropped.
+        contact = upsertContact(incoming.sender_name, "whatsapp", incoming.sender_handle);
+      }
+    } else {
+      // Add them back using whichever channel *they* signed up with, so
+      // replying uses the right kind of link (WhatsApp/email/Instagram).
+      const channelId = CHANNELS[incoming.sender_channel] ? incoming.sender_channel : "whatsapp";
+      contact = upsertContact(incoming.sender_name, channelId, incoming.sender_handle);
+    }
     // Prefer the sender's original UTC send time (sent_at) so the chat
     // sorts by when the message was actually sent, not when it was opened.
     const ts = incoming.sent_at ? new Date(incoming.sent_at).getTime() : Date.now();
