@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChillSpace Messages</title>
+<style>
+  :root{
+    --bg: #1B1730;
+    --panel: #241F3D;
+    --panel-2: #2C2650;
+    --accent: #FF8966;
+    --accent-soft: #FFB79C;
+    --mint: #7EE0C3;
+    --text: #F1EEFA;
+    --muted: #9089B0;
+    --bubble-me: linear-gradient(135deg, #FF8966, #FF6F91);
+    --bubble-them: #2C2650;
+    --danger: #FF6B6B;
+    --radius: 18px;
+    --font-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+    --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+  }
+
+  body {
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(255,137,102,0.15), transparent 40%),
+      radial-gradient(circle at 90% 10%, rgba(126,224,195,0.12), transparent 35%);
+    background-attachment: fixed;
+  }
+
+  #app {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: rgba(27, 23, 48, 0.4);
+  }
+
+  /* ---------- Header ---------- */
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    position: sticky;
+    top: 0;
+    background: rgba(27,23,48,0.85);
+    backdrop-filter: blur(10px);
+    z-index: 5;
+  }
+
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .brand .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--mint);
+    box-shadow: 0 0 0 0 rgba(126,224,195,0.5);
+    animation: breathe 2.4s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(126,224,195,0.5); }
+    50% { box-shadow: 0 0 0 6px rgba(126,224,195,0); }
+  }
+
+  .topbar .sub {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .back-btn {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px 4px 0;
+    line-height: 1;
+  }
+
+  /* ---------- Screens ---------- */
+  .screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  /* ---------- Setup ---------- */
+  .setup-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+    padding: 30px;
+    text-align: center;
+  }
+
+  .setup-wrap h1 {
+    font-family: var(--font-display);
+    font-size: 30px;
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  .setup-wrap p.lead {
+    color: var(--muted);
+    margin: 0;
+    font-size: 15px;
+  }
+
+  .incoming-preview {
+    background: var(--panel);
+    border-radius: var(--radius);
+    padding: 16px;
+    text-align: left;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .incoming-preview .from {
+    font-size: 12px;
+    color: var(--mint);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  label {
+    display: block;
+    text-align: left;
+    font-size: 13px;
+    color: var(--muted);
+    margin: 14px 0 6px;
+  }
+
+  input[type="text"], input[type="tel"] {
+    width: 100%;
+    padding: 13px 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: var(--panel);
+    color: var(--text);
+    font-size: 15px;
+    font-family: var(--font-body);
+    outline: none;
+  }
+
+  input:focus {
+    border-color: var(--accent);
+  }
+
+  input::placeholder { color: #6b6488; }
+
+  .btn {
+    border: none;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+  }
+
+  .btn:focus-visible, .icon-btn:focus-visible, .contact-row:focus-visible {
+    outline: 2px solid var(--mint);
+    outline-offset: 2px;
+  }
+
+  .btn-primary {
+    background: var(--bubble-me);
+    color: #241130;
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .btn-block { width: 100%; }
+
+  /* ---------- Contacts list ---------- */
+  .contacts-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .contacts-header h2 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    margin: 0;
+  }
+
+  .add-btn {
+    background: var(--panel);
+    color: var(--accent-soft);
+    border: 1px solid rgba(255,137,102,0.3);
+    border-radius: 999px;
+    padding: 9px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .empty-state {
+    margin-top: 40px;
+    text-align: center;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .empty-state .big {
+    font-size: 42px;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--panel);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 13px 15px;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    color: var(--text);
+    font-family: var(--font-body);
+  }
+
+  .contact-row:hover { background: var(--panel-2); }
+
+  .avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--mint));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    color: #1B1730;
+    font-family: var(--font-display);
+    flex-shrink: 0;
+  }
+
+  .contact-meta { flex: 1; min-width: 0; }
+  .contact-name { font-weight: 600; font-size: 15px; }
+  .contact-preview {
+    font-size: 13px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ---------- Modal ---------- */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 8, 20, 0.6);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 20;
+  }
+
+  .modal {
+    background: var(--panel);
+    width: 100%;
+    max-width: 480px;
+    border-radius: 22px 22px 0 0;
+    padding: 24px 22px 28px;
+    animation: slideUp 0.22s ease-out;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal h3 {
+    font-family: var(--font-display);
+    margin: 0 0 4px;
+    font-size: 19px;
+  }
+
+  .modal .hint {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .error-text {
+    color: var(--danger);
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  /* ---------- Chat ---------- */
+  .chat-screen { padding: 0; display: flex; flex-direction: column; flex: 1; }
+
+  .messages {
+    flex: 1;
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+  }
+
+  .bubble-row { display: flex; }
+  .bubble-row.me { justify-content: flex-end; }
+  .bubble-row.them { justify-content: flex-start; }
+
+  .bubble {
+    max-width: 78%;
+    padding: 11px 14px;
+    border-radius: 16px;
+    font-size: 14.5px;
+    line-height: 1.4;
+    word-wrap: break-word;
+  }
+
+  .bubble-row.me .bubble {
+    background: var(--bubble-me);
+    color: #241130;
+    border-bottom-right-radius: 4px;
+  }
+
+  .bubble-row.them .bubble {
+    background: var(--bubble-them);
+    color: var(--text);
+    border-bottom-left-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .bubble .time {
+    display: block;
+    font-size: 10.5px;
+    margin-top: 5px;
+    opacity: 0.65;
+  }
+
+  .empty-chat {
+    margin: auto;
+    text-align: center;
+    color: var(--muted);
+    padding: 20px;
+  }
+
+  .composer {
+    display: flex;
+    gap: 10px;
+    padding: 14px 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    background: rgba(27,23,48,0.9);
+  }
+
+  .composer input {
+    flex: 1;
+  }
+
+  .send-btn {
+    background: var(--bubble-me);
+    color: #241130;
+    border: none;
+    border-radius: 12px;
+    width: 46px;
+    flex-shrink: 0;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .whatsapp-note {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    padding: 0 16px 10px;
+  }
+
+  a { color: var(--mint); }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand .dot { animation: none; }
+    .modal { animation: none; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  const STORAGE_KEYS = {
+    username: "cs_username",
+    myNumber: "cs_my_number",
+    contacts: "cs_contacts",
+    messages: "cs_messages"
+  };
+
+  const BASE_URL = "https://chill-space.pages.dev/messages";
+
+  // ---------- Storage helpers ----------
+  function getUsername() { return localStorage.getItem(STORAGE_KEYS.username) || ""; }
+  function getMyNumber() { return localStorage.getItem(STORAGE_KEYS.myNumber) || ""; }
+  function setIdentity(username, number) {
+    localStorage.setItem(STORAGE_KEYS.username, username);
+    localStorage.setItem(STORAGE_KEYS.myNumber, number);
+  }
+
+  function getContacts() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.contacts)) || []; }
+    catch (e) { return []; }
+  }
+  function saveContacts(list) {
+    localStorage.setItem(STORAGE_KEYS.contacts, JSON.stringify(list));
+  }
+
+  function getAllMessages() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.messages)) || {}; }
+    catch (e) { return {}; }
+  }
+  function saveAllMessages(obj) {
+    localStorage.setItem(STORAGE_KEYS.messages, JSON.stringify(obj));
+  }
+
+  function normalizePhone(raw) {
+    // keep leading + but strip everything else non-digit
+    let trimmed = raw.trim();
+    let plus = trimmed.startsWith("+") ? "+" : "";
+    let digits = trimmed.replace(/[^\d]/g, "");
+    return plus + digits;
+  }
+  function digitsOnly(raw) {
+    return raw.replace(/[^\d]/g, "");
+  }
+
+  function findContactByPhone(phone) {
+    const target = digitsOnly(phone);
+    return getContacts().find(c => digitsOnly(c.phone) === target);
+  }
+
+  function upsertContact(name, phone) {
+    const contacts = getContacts();
+    const target = digitsOnly(phone);
+    const existing = contacts.find(c => digitsOnly(c.phone) === target);
+    if (existing) {
+      existing.name = name || existing.name;
+      saveContacts(contacts);
+      return existing;
+    }
+    const contact = { name: name || phone, phone: normalizePhone(phone) };
+    contacts.push(contact);
+    saveContacts(contacts);
+    return contact;
+  }
+
+  function addMessage(phone, entry) {
+    const all = getAllMessages();
+    const key = digitsOnly(phone);
+    if (!all[key]) all[key] = [];
+    all[key].push(entry);
+    saveAllMessages(all);
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function formatTime(ts) {
+    const d = new Date(ts);
+    return d.toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+  }
+
+  function buildChillSpaceLink(senderName, senderNumber, messageContent) {
+    const params = new URLSearchParams({
+      sender_name: senderName,
+      sender_number: senderNumber,
+      message_content: messageContent
+    });
+    return BASE_URL + "?" + params.toString();
+  }
+
+  function buildWaLink(contactPhone, text) {
+    return "https://wa.me/" + digitsOnly(contactPhone) + "?text=" + encodeURIComponent(text);
+  }
+
+  // ---------- App state ----------
+  let state = {
+    view: "loading", // loading | setup | contacts | chat
+    activeContactPhone: null,
+    pendingIncoming: null, // { sender_name, sender_number, message_content } awaiting setup
+    modal: null // 'addContact' | null
+  };
+
+  const app = document.getElementById("app");
+
+  function render() {
+    app.innerHTML = "";
+    if (state.view === "setup") {
+      renderSetup();
+    } else if (state.view === "chat") {
+      renderChat();
+    } else {
+      renderContacts();
+    }
+    if (state.modal === "addContact") {
+      renderAddContactModal();
+    }
+  }
+
+  // ---------- Setup screen ----------
+  function renderSetup() {
+    const wrap = document.createElement("div");
+    wrap.className = "setup-wrap";
+
+    let previewHtml = "";
+    if (state.pendingIncoming) {
+      previewHtml = `
+        <div class="incoming-preview">
+          <div class="from">${escapeHtml(state.pendingIncoming.sender_name)} sent you a message</div>
+          <div>${escapeHtml(state.pendingIncoming.message_content)}</div>
+        </div>
+      `;
+    }
+
+    wrap.innerHTML = `
+      <div class="brand" style="justify-content:center;"><span class="dot"></span> ChillSpace Messages</div>
+      <h1>${state.pendingIncoming ? "Someone sent you a message" : "Set up your space"}</h1>
+      <p class="lead">${state.pendingIncoming ? "Pick a username to see it and reply." : "Choose a username and add your phone number so friends can message you back."}</p>
+      ${previewHtml}
+      <div>
+        <label for="su-username">Your username</label>
+        <input id="su-username" type="text" placeholder="e.g. jordan" maxlength="30" />
+        <label for="su-number">Your phone number (with country code)</label>
+        <input id="su-number" type="tel" placeholder="e.g. +15551234567" />
+        <div id="su-error" class="error-text" style="display:none;"></div>
+      </div>
+      <button class="btn btn-primary btn-block" id="su-continue" style="margin-top:8px;">Continue</button>
+    `;
+    app.appendChild(wrap);
+
+    document.getElementById("su-continue").addEventListener("click", () => {
+      const username = document.getElementById("su-username").value.trim();
+      const number = document.getElementById("su-number").value.trim();
+      const errorEl = document.getElementById("su-error");
+      if (!username) {
+        errorEl.textContent = "Please choose a username.";
+        errorEl.style.display = "block";
+        return;
+      }
+      if (!number || digitsOnly(number).length < 7) {
+        errorEl.textContent = "Please enter a valid phone number with country code.";
+        errorEl.style.display = "block";
+        return;
+      }
+      setIdentity(username, normalizePhone(number));
+
+      if (state.pendingIncoming) {
+        finalizeIncomingMessage(state.pendingIncoming);
+        state.pendingIncoming = null;
+      } else {
+        state.view = "contacts";
+      }
+      render();
+    });
+  }
+
+  // ---------- Contacts screen ----------
+  function renderContacts() {
+    const topbar = document.createElement("div");
+    topbar.className = "topbar";
+    topbar.innerHTML = `
+      <div class="brand"><span class="dot"></span> ChillSpace</div>
+      <div class="sub">@${escapeHtml(getUsername())}</div>
+    `;
+    app.appendChild(topbar);
+
+    const screen = document.createElement("div");
+    screen.className = "screen";
+
+    const contacts = getContacts();
+    const allMessages = getAllMessages();
+
+    let listHtml = "";
+    if (contacts.length === 0) {
+      listHtml = `
+        <div class="empty-state">
+          <div class="big">🌙</div>
+          <div>No contacts yet.</div>
+          <div>Add a friend's number to start chilling.</div>
+        </div>
+      `;
+    } else {
+      const rows = contacts.map(c => {
+        const msgs = allMessages[digitsOnly(c.phone)] || [];
+        const last = msgs[msgs.length - 1];
+        const preview = last ? (last.dir === "sent" ? "You: " : "") + last.text : "No messages yet";
+        const initial = (c.name || "?").trim().charAt(0).toUpperCase() || "?";
+        return `
+          <button class="contact-row" data-phone="${escapeHtml(c.phone)}">
+            <div class="avatar">${escapeHtml(initial)}</div>
+            <div class="contact-meta">
+              <div class="contact-name">${escapeHtml(c.name)}</div>
+              <div class="contact-preview">${escapeHtml(preview)}</div>
+            </div>
+          </button>
+        `;
+      }).join("");
+      listHtml = `<div class="contact-list">${rows}</div>`;
+    }
+
+    screen.innerHTML = `
+      <div class="contacts-header">
+        <h2>Chats</h2>
+        <button class="add-btn" id="add-contact-btn">+ Add contact</button>
+      </div>
+      ${listHtml}
+    `;
+    app.appendChild(screen);
+
+    document.getElementById("add-contact-btn").addEventListener("click", () => {
+      state.modal = "addContact";
+      render();
+    });
+
+    document.querySelectorAll(".contact-row").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.activeContactPhone = btn.getAttribute("data-phone");
+        state.view = "chat";
+        render();
+      });
+    });
+  }
+
+  // ---------- Add contact modal ----------
+  function renderAddContactModal() {
+    const backdrop = document.createElement("div");
+    backdrop.className = "modal-backdrop";
+    backdrop.innerHTML = `
+      <div class="modal">
+        <h3>Add contact</h3>
+        <p class="hint">Enter their name and phone number with country code.</p>
+        <label for="ac-name">Name</label>
+        <input id="ac-name" type="text" placeholder="e.g. Sam" maxlength="40" />
+        <label for="ac-phone">Phone number</label>
+        <input id="ac-phone" type="tel" placeholder="e.g. +15559876543" />
+        <div id="ac-error" class="error-text" style="display:none;"></div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" id="ac-cancel" style="flex:1;">Cancel</button>
+          <button class="btn btn-primary" id="ac-save" style="flex:1;">Save</button>
+        </div>
+      </div>
+    `;
+    app.appendChild(backdrop);
+
+    backdrop.addEventListener("click", (e) => {
+      if (e.target === backdrop) { state.modal = null; render(); }
+    });
+
+    document.getElementById("ac-cancel").addEventListener("click", () => {
+      state.modal = null; render();
+    });
+
+    document.getElementById("ac-save").addEventListener("click", () => {
+      const name = document.getElementById("ac-name").value.trim();
+      const phone = document.getElementById("ac-phone").value.trim();
+      const errorEl = document.getElementById("ac-error");
+      if (!name) {
+        errorEl.textContent = "Please enter a name.";
+        errorEl.style.display = "block";
+        return;
+      }
+      if (!phone || digitsOnly(phone).length < 7) {
+        errorEl.textContent = "Please enter a valid phone number with country code.";
+        errorEl.style.display = "block";
+        return;
+      }
+      const contact = upsertContact(name, phone);
+      state.modal = null;
+      state.activeContactPhone = contact.phone;
+      state.view = "chat";
+      render();
+    });
+  }
+
+  // ---------- Chat screen ----------
+  function renderChat() {
+    const contact = findContactByPhone(state.activeContactPhone) ||
+      { name: state.activeContactPhone, phone: state.activeContactPhone };
+
+    const topbar = document.createElement("div");
+    topbar.className = "topbar";
+    topbar.innerHTML = `
+      <button class="back-btn" id="chat-back" aria-label="Back">←</button>
+      <div class="brand">${escapeHtml(contact.name)}</div>
+      <div class="sub">${escapeHtml(contact.phone)}</div>
+    `;
+    app.appendChild(topbar);
+
+    const chatScreen = document.createElement("div");
+    chatScreen.className = "chat-screen";
+
+    const msgs = getAllMessages()[digitsOnly(contact.phone)] || [];
+    let msgsHtml = "";
+    if (msgs.length === 0) {
+      msgsHtml = `<div class="empty-chat">No messages yet with ${escapeHtml(contact.name)}. Send the first one!</div>`;
+    } else {
+      msgsHtml = msgs.map(m => `
+        <div class="bubble-row ${m.dir === 'sent' ? 'me' : 'them'}">
+          <div class="bubble">
+            ${escapeHtml(m.text)}
+            <span class="time">${formatTime(m.ts)}</span>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    chatScreen.innerHTML = `
+      <div class="messages" id="messages-pane">${msgsHtml}</div>
+      <div class="whatsapp-note">Sending opens WhatsApp to deliver your message link.</div>
+      <div class="composer">
+        <input id="chat-input" type="text" placeholder="Type a message..." maxlength="500" />
+        <button class="send-btn" id="chat-send" aria-label="Send">➤</button>
+      </div>
+    `;
+    app.appendChild(chatScreen);
+
+    const pane = document.getElementById("messages-pane");
+    pane.scrollTop = pane.scrollHeight;
+
+    document.getElementById("chat-back").addEventListener("click", () => {
+      state.view = "contacts";
+      state.activeContactPhone = null;
+      render();
+    });
+
+    const input = document.getElementById("chat-input");
+    const sendBtn = document.getElementById("chat-send");
+
+    function trySend() {
+      const text = input.value.trim();
+      if (!text) return;
+
+      // Save locally as sent
+      addMessage(contact.phone, { dir: "sent", text: text, ts: Date.now() });
+
+      // Build the ChillSpace link embedding sender identity + message
+      const link = buildChillSpaceLink(getUsername(), getMyNumber(), text);
+      const waLink = buildWaLink(contact.phone, link);
+
+      input.value = "";
+      render();
+
+      window.location.href = waLink;
+    }
+
+    sendBtn.addEventListener("click", trySend);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") trySend();
+    });
+  }
+
+  // ---------- Incoming link handling ----------
+  function finalizeIncomingMessage(incoming) {
+    const contact = upsertContact(incoming.sender_name, incoming.sender_number);
+    addMessage(contact.phone, {
+      dir: "received",
+      text: incoming.message_content,
+      ts: Date.now()
+    });
+    state.activeContactPhone = contact.phone;
+    state.view = "chat";
+  }
+
+  function readIncomingParams() {
+    const params = new URLSearchParams(window.location.search);
+    const senderName = params.get("sender_name");
+    const senderNumber = params.get("sender_number");
+    const messageContent = params.get("message_content");
+    if (senderName && senderNumber && messageContent) {
+      return { sender_name: senderName, sender_number: senderNumber, message_content: messageContent };
+    }
+    return null;
+  }
+
+  function init() {
+    const incoming = readIncomingParams();
+
+    if (incoming) {
+      // Clean the URL so a refresh doesn't re-process the same message
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
+
+    if (!getUsername()) {
+      state.view = "setup";
+      state.pendingIncoming = incoming;
+    } else if (incoming) {
+      finalizeIncomingMessage(incoming);
+    } else {
+      state.view = "contacts";
+    }
+
+    render();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
