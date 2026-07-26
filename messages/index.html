@@ -1301,7 +1301,45 @@
     update();
   }
 
+  // ---------- One-time migration ----------
+  // Contacts/messages saved before this update used a plain {name, phone}
+  // shape and message keys were just digitsOnly(phone) (or "ai:<provider>").
+  // This update introduced {name, channel, handle} contacts and prefixed
+  // message keys (e.g. "wa:15551234567") so email/Instagram contacts don't
+  // collide with WhatsApp ones. Without this step, old contacts would still
+  // show up (their `name` still reads fine) but their message history would
+  // look empty, because it's saved under the old, unprefixed key.
+  function migrateLegacyData() {
+    const contacts = getContacts();
+    const isLegacy = contacts.some(c => !c.channel);
+    if (!isLegacy) return;
+
+    const allMessages = getAllMessages();
+    const migratedContacts = contacts.map(c => {
+      if (c.channel) return c; // already new-format, leave untouched
+
+      const wasAI = c.type === "ai" || (typeof c.phone === "string" && c.phone.indexOf("ai:") === 0);
+      if (wasAI) {
+        // AI keys were already "ai:<provider>" before and after, so no
+        // message remapping is needed for these.
+        return { name: c.name, channel: "ai", provider: c.provider || (c.phone || "").slice(3) };
+      }
+
+      const oldKey = digitsOnly(c.phone || "");
+      const newContact = { name: c.name, channel: "whatsapp", handle: normalizePhone(c.phone || "") };
+      const newKey = contactKey(newContact);
+      if (allMessages[oldKey] && !allMessages[newKey]) {
+        allMessages[newKey] = allMessages[oldKey];
+      }
+      return newContact;
+    });
+
+    saveContacts(migratedContacts);
+    saveAllMessages(allMessages);
+  }
+
   function init() {
+    migrateLegacyData();
     setupViewportTracking();
     const incoming = readIncomingParams();
 
