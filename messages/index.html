@@ -244,6 +244,11 @@
     border-color: rgba(126,224,195,0.35);
   }
 
+  .add-btn.import-btn {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.15);
+  }
+
   .site-footer-link {
     margin-top: 24px;
     padding-top: 16px;
@@ -746,6 +751,51 @@
     return existing;
   }
 
+  // Imports device contacts via the Contact Picker API (navigator.contacts).
+  // Support is currently limited to Chrome/Edge on Android — it's simply
+  // unavailable everywhere else (desktop browsers, iOS Safari, etc.), and
+  // there's no way to feature-test it beyond checking the API exists.
+  function contactPickerSupported() {
+    return !!(navigator.contacts && window.ContactsManager);
+  }
+
+  async function importContacts() {
+    if (!contactPickerSupported()) {
+      showToast("Contact import isn't supported on this browser/device yet.");
+      return;
+    }
+    let people;
+    try {
+      people = await navigator.contacts.select(["name", "tel", "email"], { multiple: true });
+    } catch (err) {
+      // User cancelled the picker, or permission was denied — either way,
+      // there's nothing to do.
+      return;
+    }
+    if (!people || people.length === 0) return;
+
+    let added = 0;
+    people.forEach(person => {
+      const name = (person.name && person.name[0]) || "Unnamed contact";
+      const phone = person.tel && person.tel[0];
+      const email = person.email && person.email[0];
+      if (phone) {
+        upsertContact(name, "whatsapp", phone);
+        added++;
+      } else if (email) {
+        upsertContact(name, "email", email);
+        added++;
+      }
+      // People with neither a phone number nor an email are skipped, since
+      // ChillSpace has no channel to reach them on.
+    });
+
+    showToast(added > 0
+      ? `Imported ${added} contact${added === 1 ? "" : "s"}.`
+      : "Those contacts didn't have a phone number or email to import.");
+    render();
+  }
+
   function addMessage(contactId, entry) {
     const all = getAllMessages();
     if (!all[contactId]) all[contactId] = [];
@@ -798,12 +848,26 @@
     return "https://ig.me/" + encodeURIComponent(igUsername) + "?text=" + encodeURIComponent(text);
   }
 
+  // A compact JSON transcript of everything ChillSpace has stored locally
+  // for this AI thread so far: [{from, text, sent_at}, ...] in UTC.
+  // This is only ever attached to the outbound link we hand to the AI
+  // provider — it's never read back in when ChillSpace itself loads a URL.
+  function buildContextWindowJSON(contactId) {
+    const msgs = getAllMessages()[contactId] || [];
+    const transcript = msgs.map(m => ({
+      from: m.dir === "sent" ? "user" : "assistant",
+      text: m.text,
+      sent_at: new Date(m.ts).toISOString()
+    }));
+    return JSON.stringify(transcript);
+  }
+
   // For AI providers we send the ChillSpace link itself rather than the raw
   // message text. The link's query string (sender_name, message_content,
   // sent_at, ...) is already plain, labeled text, so a model can read it
   // directly — this framing just makes sure it does that instead of trying
   // (and failing) to browse to the URL.
-  function buildAIPrompt(chillSpaceLink, providerId, providerName) {
+  function buildAIPrompt(chillSpaceLinkWithContext, providerId, providerName) {
     const replyTemplate = BASE_URL +
       "?sender_name=" + encodeURIComponent(providerName) +
       "&sender_channel=ai" +
@@ -812,9 +876,12 @@
       "&sent_at=<current UTC time, e.g. " + new Date().toISOString() + ">";
     return "You've received a ChillSpace message. You don't need to open the link below — " +
       "just read its query parameters directly (sender_name, message_content, sent_at, etc). " +
-      "Link: " + chillSpaceLink + "\n\n" +
+      "The link also includes a context_window parameter — a JSON transcript of this whole " +
+      "ChillSpace conversation so far, for your reference only. " +
+      "Link: " + chillSpaceLinkWithContext + "\n\n" +
       "To reply, end your response with a link in exactly this format (fill in message_content " +
-      "with your reply, URL-encoded, and sent_at with the current UTC time): " + replyTemplate;
+      "with your reply, URL-encoded, and sent_at with the current UTC time). Do NOT include a " +
+      "context_window parameter in your reply link — it isn't needed and will be ignored: " + replyTemplate;
   }
 
   function fallbackCopy(text) {
@@ -1014,6 +1081,7 @@
         <div class="header-actions">
           <button class="add-btn" id="add-contact-btn">+ Add contact</button>
           <button class="add-btn ai-btn" id="add-ai-btn">+ Add AI chat</button>
+          <button class="add-btn import-btn" id="import-contacts-btn">📇 Import contacts</button>
         </div>
       </div>
       ${listHtml}
@@ -1032,6 +1100,8 @@
       state.modal = "addAI";
       render();
     });
+
+    document.getElementById("import-contacts-btn").addEventListener("click", importContacts);
 
     document.querySelectorAll(".contact-row").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -1232,19 +1302,23 @@
       const text = input.value.trim();
       if (!text) return;
 
-      // Save locally as sent
-      addMessage(contactKey(contact), { dir: "sent", text: text, ts: Date.now() });
-      input.value = "";
-
-      // Build the ChillSpace link (with UTC send time) embedding sender
-      // identity + message, used for every channel including AI chats.
-      const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
+      const id = contactKey(contact);
 
       if (ai) {
+        // Snapshot the conversation as it stands *before* this new message,
+        // since the message itself is already carried in message_content.
+        const contextWindow = buildContextWindowJSON(id);
+
+        addMessage(id, { dir: "sent", text: text, ts: Date.now() });
+        input.value = "";
+
+        const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
+        const linkWithContext = link + "&context_window=" + encodeURIComponent(contextWindow);
+
         // Send the link itself rather than the raw text, framed so the
         // assistant reads it straight off the query string (sender_name,
         // message_content, sent_at, ...) instead of trying to browse it.
-        const aiPrompt = buildAIPrompt(link, provider.id, provider.name);
+        const aiPrompt = buildAIPrompt(linkWithContext, provider.id, provider.name);
         if (provider.supportsPrefill) {
           render();
           window.open(provider.url + encodeURIComponent(aiPrompt), "_blank", "noopener");
@@ -1256,6 +1330,14 @@
         }
         return;
       }
+
+      // Save locally as sent
+      addMessage(id, { dir: "sent", text: text, ts: Date.now() });
+      input.value = "";
+
+      // Build the ChillSpace link (with UTC send time) embedding sender
+      // identity + message.
+      const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
 
       // Human contacts: hand the link off via the contact's channel.
       const outLink = channel.buildLink(contact.handle, link);
