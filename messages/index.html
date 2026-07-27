@@ -761,41 +761,71 @@
   }
 
   async function importContacts() {
-    if (!contactPickerSupported()) {
-      showToast("Contact import isn't supported on this browser/device yet.");
+  let added = 0;
+  let contactsToProcess = [];
+
+  // --- 1. Try Android bridge (if running in the ChillSpace app) ---
+  if (window.AndroidContacts) {
+    try {
+      const json = window.AndroidContacts.getContacts();
+      const androidContacts = JSON.parse(json);
+      if (androidContacts && androidContacts.length > 0) {
+        contactsToProcess = androidContacts.map(c => ({
+          name: c.name || "Unnamed contact",
+          phone: c.phone || "",
+          email: null  // Android bridge currently only provides phone
+        }));
+      }
+    } catch (e) {
+      console.warn("Android contact fetch failed:", e);
+      // fall through to Web Contact Picker
+    }
+  }
+
+  // --- 2. If no contacts from Android, try Web Contact Picker ---
+  if (contactsToProcess.length === 0) {
+    if (!navigator.contacts || !navigator.contacts.select) {
+      showToast("Contact import isn't supported on this browser/device.");
       return;
     }
     let people;
     try {
       people = await navigator.contacts.select(["name", "tel", "email"], { multiple: true });
     } catch (err) {
-      // User cancelled the picker, or permission was denied — either way,
-      // there's nothing to do.
+      // User cancelled or permission denied – do nothing
       return;
     }
     if (!people || people.length === 0) return;
 
-    let added = 0;
     people.forEach(person => {
       const name = (person.name && person.name[0]) || "Unnamed contact";
       const phone = person.tel && person.tel[0];
       const email = person.email && person.email[0];
-      if (phone) {
-        upsertContact(name, "whatsapp", phone);
-        added++;
-      } else if (email) {
-        upsertContact(name, "email", email);
-        added++;
-      }
-      // People with neither a phone number nor an email are skipped, since
-      // ChillSpace has no channel to reach them on.
+      contactsToProcess.push({ name, phone, email });
     });
-
-    showToast(added > 0
-      ? `Imported ${added} contact${added === 1 ? "" : "s"}.`
-      : "Those contacts didn't have a phone number or email to import.");
-    render();
   }
+
+  // --- 3. Process the contacts (unified) ---
+  if (contactsToProcess.length === 0) {
+    showToast("No contacts found to import.");
+    return;
+  }
+
+  contactsToProcess.forEach(({ name, phone, email }) => {
+    if (phone) {
+      upsertContact(name, "whatsapp", phone);
+      added++;
+    } else if (email) {
+      upsertContact(name, "email", email);
+      added++;
+    }
+  });
+
+  showToast(added > 0
+    ? `Imported ${added} contact${added === 1 ? "" : "s"}.`
+    : "Those contacts didn't have a phone number or email to import.");
+  render();
+}
 
   function addMessage(contactId, entry) {
     const all = getAllMessages();
