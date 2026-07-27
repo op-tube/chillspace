@@ -918,9 +918,11 @@
 
   // ---------- App state ----------
   let state = {
-    view: "loading", // loading | setup | contacts | chat
+    view: "loading", // loading | setup | contacts | chat | share
     activeContactId: null,
     pendingIncoming: null, // { sender_name, sender_channel, sender_handle, message_content, sent_at } awaiting setup
+    pendingShareText: null, // text awaiting setup, from a ?text= share link
+    shareText: null, // text currently being shared to a contact (share screen)
     modal: null, // 'addContact' | 'addAI' | null
     toast: null
   };
@@ -931,6 +933,8 @@
     app.innerHTML = "";
     if (state.view === "setup") {
       renderSetup();
+    } else if (state.view === "share") {
+      renderShareScreen();
     } else if (state.view === "chat") {
       renderChat();
     } else {
@@ -958,14 +962,21 @@
           <div>${escapeHtml(state.pendingIncoming.message_content)}</div>
         </div>
       `;
+    } else if (state.pendingShareText) {
+      previewHtml = `
+        <div class="incoming-preview">
+          <div class="from">Ready to share</div>
+          <div>${escapeHtml(state.pendingShareText)}</div>
+        </div>
+      `;
     }
 
     const channel = getChannel(setupChannel);
 
     wrap.innerHTML = `
       <div class="brand" style="justify-content:center;"><span class="dot"></span> ChillSpace Messages</div>
-      <h1>${state.pendingIncoming ? "Someone sent you a message" : "Set up your space"}</h1>
-      <p class="lead">${state.pendingIncoming ? "Pick a username to see it and reply." : "Choose a username and how friends can reach you back."}</p>
+      <h1>${state.pendingIncoming ? "Someone sent you a message" : (state.pendingShareText ? "Share to a ChillSpace contact" : "Set up your space")}</h1>
+      <p class="lead">${state.pendingIncoming ? "Pick a username to see it and reply." : (state.pendingShareText ? "Set up your space, then pick who to send this to." : "Choose a username and how friends can reach you back.")}</p>
       ${previewHtml}
       <div>
         <label for="su-username">Your username</label>
@@ -1012,6 +1023,10 @@
       if (state.pendingIncoming) {
         finalizeIncomingMessage(state.pendingIncoming);
         state.pendingIncoming = null;
+      } else if (state.pendingShareText) {
+        state.shareText = state.pendingShareText;
+        state.pendingShareText = null;
+        state.view = "share";
       } else {
         state.view = "contacts";
       }
@@ -1113,6 +1128,86 @@
     });
   }
 
+  // ---------- Share screen (from a ?text= link, e.g. shared from the main
+  // ChillSpace site) ----------
+  function renderShareScreen() {
+    const topbar = document.createElement("div");
+    topbar.className = "topbar";
+    topbar.innerHTML = `
+      <button class="back-btn" id="share-cancel" aria-label="Cancel">←</button>
+      <div class="brand">Share to a contact</div>
+    `;
+    app.appendChild(topbar);
+
+    const screen = document.createElement("div");
+    screen.className = "screen";
+
+    const contacts = getContacts();
+
+    let listHtml = "";
+    if (contacts.length === 0) {
+      listHtml = `
+        <div class="empty-state">
+          <div class="big">🌙</div>
+          <div>No contacts yet.</div>
+          <div>Add a contact first, then come back and share.</div>
+        </div>
+      `;
+    } else {
+      const rows = contacts.map(c => {
+        const id = contactKey(c);
+        const ai = isAIContact(c);
+        const initial = ai ? "✦" : ((c.name || "?").trim().charAt(0).toUpperCase() || "?");
+        return `
+          <button class="contact-row" data-id="${escapeHtml(id)}">
+            <div class="avatar${ai ? " ai" : ""}">${escapeHtml(initial)}</div>
+            <div class="contact-meta">
+              <div class="contact-name">${escapeHtml(c.name)}${ai ? '<span class="ai-tag">AI</span>' : ""}</div>
+            </div>
+          </button>
+        `;
+      }).join("");
+      listHtml = `<div class="contact-list">${rows}</div>`;
+    }
+
+    screen.innerHTML = `
+      <p class="hint" style="margin-bottom: 8px;">Sending as @${escapeHtml(getUsername())}. Pick who to send this to:</p>
+      <div class="incoming-preview" style="margin-bottom: 20px;">
+        <div>${escapeHtml(state.shareText)}</div>
+      </div>
+      ${listHtml}
+      <div class="modal-actions" style="margin-top: 20px;">
+        <button class="btn btn-ghost btn-block" id="add-contact-from-share-btn">+ Add a new contact</button>
+      </div>
+    `;
+    app.appendChild(screen);
+
+    function exitShare() {
+      state.shareText = null;
+      state.view = "contacts";
+      render();
+    }
+
+    document.getElementById("share-cancel").addEventListener("click", exitShare);
+    document.getElementById("add-contact-from-share-btn").addEventListener("click", () => {
+      state.modal = "addContact";
+      render();
+    });
+
+    document.querySelectorAll(".contact-row").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const contact = findContactById(btn.getAttribute("data-id"));
+        if (!contact) return;
+        const text = state.shareText;
+        state.shareText = null;
+        state.activeContactId = contactKey(contact);
+        state.view = "chat";
+        render();
+        sendMessageToContact(contact, text);
+      });
+    });
+  }
+
   // ---------- Add contact modal ----------
   let addContactChannel = "whatsapp";
 
@@ -1176,8 +1271,12 @@
       }
       const contact = upsertContact(name, addContactChannel, rawHandle);
       state.modal = null;
-      state.activeContactId = contactKey(contact);
-      state.view = "chat";
+      if (state.shareText) {
+        state.view = "share";
+      } else {
+        state.activeContactId = contactKey(contact);
+        state.view = "chat";
+      }
       render();
     });
   }
@@ -1226,6 +1325,49 @@
         render();
       });
     });
+  }
+
+  // Sends `text` to `contact` over whatever channel it uses (WhatsApp/email/
+  // Instagram link, or the ChatGPT prefill flow), and records it locally as
+  // a sent message. Shared by the composer's send button and the incoming
+  // ?text= share flow.
+  function sendMessageToContact(contact, text) {
+    const id = contactKey(contact);
+
+    if (isAIContact(contact)) {
+      const provider = getAIProvider(contact.provider);
+      // Snapshot the conversation as it stands *before* this new message,
+      // since the message itself is already carried in message_content.
+      const contextWindow = buildContextWindowJSON(id);
+
+      addMessage(id, { dir: "sent", text: text, ts: Date.now() });
+
+      const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
+      const linkWithContext = link + "&context_window=" + encodeURIComponent(contextWindow);
+
+      // Send the link itself rather than the raw text, framed so the
+      // assistant reads it straight off the query string (sender_name,
+      // message_content, sent_at, ...) instead of trying to browse it.
+      const aiPrompt = buildAIPrompt(linkWithContext, provider.id, provider.name);
+      if (provider.supportsPrefill) {
+        window.open(provider.url + encodeURIComponent(aiPrompt), "_blank", "noopener");
+      } else {
+        copyToClipboard(aiPrompt).then(() => {
+          window.open(provider.url, "_blank", "noopener");
+          showToast(`Copied — paste your message into ${provider.name}.`);
+        });
+      }
+      return;
+    }
+
+    // Save locally as sent
+    addMessage(id, { dir: "sent", text: text, ts: Date.now() });
+
+    // Build the ChillSpace link (with UTC send time) embedding sender
+    // identity + message, then hand it off via the contact's channel.
+    const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
+    const outLink = getChannel(contact.channel).buildLink(contact.handle, link);
+    window.location.href = outLink;
   }
 
   // ---------- Chat screen ----------
@@ -1302,49 +1444,9 @@
     function trySend() {
       const text = input.value.trim();
       if (!text) return;
-
-      const id = contactKey(contact);
-
-      if (ai) {
-        // Snapshot the conversation as it stands *before* this new message,
-        // since the message itself is already carried in message_content.
-        const contextWindow = buildContextWindowJSON(id);
-
-        addMessage(id, { dir: "sent", text: text, ts: Date.now() });
-        input.value = "";
-
-        const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
-        const linkWithContext = link + "&context_window=" + encodeURIComponent(contextWindow);
-
-        // Send the link itself rather than the raw text, framed so the
-        // assistant reads it straight off the query string (sender_name,
-        // message_content, sent_at, ...) instead of trying to browse it.
-        const aiPrompt = buildAIPrompt(linkWithContext, provider.id, provider.name);
-        if (provider.supportsPrefill) {
-          render();
-          window.open(provider.url + encodeURIComponent(aiPrompt), "_blank", "noopener");
-        } else {
-          copyToClipboard(aiPrompt).then(() => {
-            window.open(provider.url, "_blank", "noopener");
-            showToast(`Copied — paste your message into ${provider.name}.`);
-          });
-        }
-        return;
-      }
-
-      // Save locally as sent
-      addMessage(id, { dir: "sent", text: text, ts: Date.now() });
       input.value = "";
-
-      // Build the ChillSpace link (with UTC send time) embedding sender
-      // identity + message.
-      const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
-
-      // Human contacts: hand the link off via the contact's channel.
-      const outLink = channel.buildLink(contact.handle, link);
-
       render();
-      window.location.href = outLink;
+      sendMessageToContact(contact, text);
     }
 
     sendBtn.addEventListener("click", trySend);
@@ -1461,10 +1563,13 @@
   function init() {
     migrateLegacyData();
     setupViewportTracking();
-    const incoming = readIncomingParams();
 
-    if (incoming) {
-      // Clean the URL so a refresh doesn't re-process the same message
+    const params = new URLSearchParams(window.location.search);
+    const sharedText = params.get("text");
+    const incoming = sharedText ? null : readIncomingParams();
+
+    if (incoming || sharedText !== null) {
+      // Clean the URL so a refresh doesn't re-process the same link.
       const cleanUrl = window.location.origin + window.location.pathname;
       window.history.replaceState({}, document.title, cleanUrl);
     }
@@ -1472,8 +1577,12 @@
     if (!getUsername()) {
       state.view = "setup";
       state.pendingIncoming = incoming;
+      state.pendingShareText = sharedText;
     } else if (incoming) {
       finalizeIncomingMessage(incoming);
+    } else if (sharedText !== null) {
+      state.shareText = sharedText;
+      state.view = "share";
     } else {
       state.view = "contacts";
     }
