@@ -853,7 +853,12 @@
     return d.toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
   }
 
-  function buildChillSpaceLink(senderName, senderChannel, senderHandle, messageContent) {
+  // recipientChannel/recipientHandle are optional — when we already know
+  // how to reach the recipient (e.g. their WhatsApp number or email, from
+  // our own contact entry for them), we embed it in the link too. That way,
+  // if they've never used ChillSpace before, their setup screen can be
+  // prefilled with their own info instead of asking them to type it in.
+  function buildChillSpaceLink(senderName, senderChannel, senderHandle, messageContent, recipientChannel, recipientHandle) {
     const params = new URLSearchParams({
       sender_name: senderName,
       sender_channel: senderChannel,
@@ -864,6 +869,10 @@
       // sort consistently for everyone regardless of time zone.
       sent_at: new Date().toISOString()
     });
+    if (recipientChannel && recipientHandle) {
+      params.set("recipient_channel", recipientChannel);
+      params.set("recipient_handle", recipientHandle);
+    }
     return BASE_URL + "?" + params.toString();
   }
 
@@ -982,6 +991,10 @@
 
   // ---------- Setup screen ----------
   let setupChannel = "whatsapp";
+  // When a recipient opens an incoming link for the first time, we already
+  // know their own channel/handle (the sender embedded it), so we prefill
+  // it here rather than making them type it in again.
+  let setupPrefillHandle = "";
 
   function renderSetup() {
     const wrap = document.createElement("div");
@@ -1018,7 +1031,8 @@
         <div class="channel-tabs" id="su-channel-tabs">${channelTabsHtml(setupChannel)}</div>
         <p class="hint" id="su-channel-hint">${escapeHtml(channel.selfHint)}</p>
         <label for="su-handle" id="su-handle-label">${escapeHtml(channel.label)}</label>
-        <input id="su-handle" type="${channel.inputType}" placeholder="${escapeHtml(channel.placeholder)}" />
+        <input id="su-handle" type="${channel.inputType}" placeholder="${escapeHtml(channel.placeholder)}" value="${escapeHtml(setupPrefillHandle)}" />
+        ${setupPrefillHandle ? `<p class="hint">We filled this in from the message you received — double check it's right.</p>` : ""}
         <div id="su-error" class="error-text" style="display:none;"></div>
       </div>
       <button class="btn btn-primary btn-block" id="su-continue" style="margin-top:8px;">Continue</button>
@@ -1029,6 +1043,7 @@
       tab.addEventListener("click", () => {
         const nameVal = document.getElementById("su-username").value;
         setupChannel = tab.getAttribute("data-channel");
+        setupPrefillHandle = ""; // only valid for the originally-suggested channel
         render();
         const nameInput = document.getElementById("su-username");
         if (nameInput) nameInput.value = nameVal;
@@ -1397,8 +1412,10 @@
     addMessage(id, { dir: "sent", text: text, ts: Date.now() });
 
     // Build the ChillSpace link (with UTC send time) embedding sender
-    // identity + message, then hand it off via the contact's channel.
-    const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
+    // identity + message, plus the recipient's own channel/handle (so their
+    // setup screen can autofill it if they're new to ChillSpace), then hand
+    // it off via the contact's channel.
+    const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text, contact.channel, contact.handle);
     const outLink = getChannel(contact.channel).buildLink(contact.handle, link);
     window.location.href = outLink;
   }
@@ -1533,13 +1550,19 @@
     // had sender_number, which was always a WhatsApp phone number.
     const senderChannel = params.get("sender_channel") || (params.get("sender_number") ? "whatsapp" : null);
     const senderHandle = params.get("sender_handle") || params.get("sender_number");
+    // The recipient's own channel/handle, if the sender knew it — lets us
+    // prefill a first-time recipient's setup screen with their own info.
+    const recipientChannel = params.get("recipient_channel");
+    const recipientHandle = params.get("recipient_handle");
     if (senderName && senderChannel && senderHandle && messageContent) {
       return {
         sender_name: senderName,
         sender_channel: senderChannel,
         sender_handle: senderHandle,
         message_content: messageContent,
-        sent_at: sentAt
+        sent_at: sentAt,
+        recipient_channel: recipientChannel,
+        recipient_handle: recipientHandle
       };
     }
     return null;
@@ -1611,6 +1634,10 @@
       state.view = "setup";
       state.pendingIncoming = incoming;
       state.pendingShareText = sharedText;
+      if (incoming && incoming.recipient_channel && incoming.recipient_handle && CHANNELS[incoming.recipient_channel]) {
+        setupChannel = incoming.recipient_channel;
+        setupPrefillHandle = incoming.recipient_handle;
+      }
     } else if (incoming) {
       finalizeIncomingMessage(incoming);
     } else if (sharedText !== null) {
