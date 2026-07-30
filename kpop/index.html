@@ -540,150 +540,123 @@
 
     <script>
         // ============================================================
-        // 1. DATA — 100 K-POP MUSIC VIDEOS (YouTube IDs + chorus start)
+        // 1. DATA — EXACT 100 VIDEOS YOU PROVIDED
+        //    (chorus times are set to 45 seconds by default)
         // ============================================================
         const SONGS = [
-            // ---- BTS ----
-            { id: 'gdZLi9oWNZg', title: 'BTS — DYNAMITE', chorus: 50 },
-            { id: 'WMweEpGlu_U', title: 'BTS — BUTTER', chorus: 42 },
-            { id: 'CuklIb9d3fI', title: 'BTS — PERMISSION TO DANCE', chorus: 48 },
-            { id: 'XsX3ATc3FbA', title: 'BTS — BOY WITH LUV', chorus: 55 },
-            { id: '7C2z4GqqS5E', title: 'BTS — FAKE LOVE', chorus: 52 },
-            { id: 'mbEfzuCLoAQ', title: 'BTS — DNA', chorus: 48 },
-            { id: '0lapF4DQPKQ', title: 'BTS — BLACK SWAN', chorus: 58 },
-            { id: 'gwMa6gziE7k', title: 'BTS — ON', chorus: 60 },
-            { id: 'P9pG5z4k6M0', title: 'BTS — LIFE GOES ON', chorus: 45 },
-            { id: 'kXpOEzNZ8hQ', title: 'BTS — YET TO COME', chorus: 50 },
-            // ---- BLACKPINK ----
-            { id: '2S24-y0Ij3Y', title: 'BLACKPINK — HOW YOU LIKE THAT', chorus: 55 },
-            { id: 'dISNgvjW-2o', title: 'BLACKPINK — KILL THIS LOVE', chorus: 50 },
-            { id: 'IHNzOHi8sJs', title: 'BLACKPINK — DDU-DU DDU-DU', chorus: 48 },
-            { id: 'Fc1P-AE-aEg', title: 'BLACKPINK — PINK VENOM', chorus: 52 },
-            { id: 'vRXZj0DzXIA', title: 'BLACKPINK — SHUT DOWN', chorus: 45 },
-            { id: 'pO8BtWUQK4M', title: 'BLACKPINK — LOVESICK GIRLS', chorus: 58 },
-            { id: '9Qjq0oMp0pE', title: 'BLACKPINK — PLAYING WITH FIRE', chorus: 50 },
-            { id: 'dU5D5F3e4Mk', title: 'BLACKPINK — WHISTLE', chorus: 46 },
-            // ---- TWICE ----
-            { id: 'k6jqxHk4j-E', title: 'TWICE — FANCY', chorus: 52 },
-            { id: '3ymwOvMLwoc', title: 'TWICE — FEEL SPECIAL', chorus: 55 },
-            { id: 'CM3olpVDDfE', title: 'TWICE — I CAN\'T STOP ME', chorus: 50 },
-            { id: 'f5_wn8mexmM', title: 'TWICE — THE FEELS', chorus: 48 },
-            { id: 'A7UkNx-sWic', title: 'TWICE — ALCOHOL-FREE', chorus: 52 },
-            { id: '0IU_tpU5Wk8', title: 'TWICE — TALK THAT TALK', chorus: 46 },
-            { id: 'z8Bvj6FfLxY', title: 'TWICE — SET ME FREE', chorus: 50 },
-            { id: '5z2y9-3Yw3U', title: 'TWICE — MOONLIGHT SUNRISE', chorus: 44 },
-            // ---- EXO ----
-            { id: 'w3MkZ4jB7kY', title: 'EXO — LOVE SHOT', chorus: 50 },
-            { id: 'oA7d5pNe5P8', title: 'EXO — TEMPO', chorus: 55 },
-            { id: 'M3iYQjG-jNM', title: 'EXO — MONSTER', chorus: 48 },
-            { id: 'dK0y2J9j8-Y', title: 'EXO — CALL ME BABY', chorus: 52 },
-            { id: 'I3dezFzsNss', title: 'EXO — GROWL', chorus: 46 },
-            { id: 'LBcT6X-yCiI', title: 'EXO — KOKOBOP', chorus: 50 },
-            { id: 'nWn6Wg8_PM4', title: 'EXO — OBSESSION', chorus: 54 },
-            // ---- NCT 127 ----
-            { id: 'GJiOe9jRYiY', title: 'NCT 127 — CHERRY BOMB', chorus: 48 },
-            { id: '7Rg8L4TdX2c', title: 'NCT 127 — KICK IT', chorus: 52 },
-            { id: 'hT0zGc9v7qA', title: 'NCT 127 — STICKER', chorus: 50 },
-            { id: 'x4Qw2Kz9Q0w', title: 'NCT 127 — FAVORITE', chorus: 48 },
-            { id: '3U2k9B5y7X0', title: 'NCT 127 — 2 BADDIES', chorus: 46 },
-            // ---- NCT DREAM ----
-            { id: 'Y8Gz7Kp4n1o', title: 'NCT DREAM — CANDY', chorus: 44 },
-            { id: 'qP2p6L8z9bM', title: 'NCT DREAM — GLITCH MODE', chorus: 50 },
-            { id: 'z5v7rK2n9Xw', title: 'NCT DREAM — HOT SAUCE', chorus: 52 },
-            { id: 'p4m6K8z2XwQ', title: 'NCT DREAM — BOOM', chorus: 48 },
-            // ---- SEVENTEEN ----
-            { id: 'g8Z9j2n5XwY', title: 'SEVENTEEN — HOT', chorus: 50 },
-            { id: 'p7K6j4n2XwQ', title: 'SEVENTEEN — DARL+ING', chorus: 46 },
-            { id: 'j5m8K2n9XwP', title: 'SEVENTEEN — ROCK WITH YOU', chorus: 52 },
-            { id: 'w4m6K8z2XwR', title: 'SEVENTEEN — LEFT & RIGHT', chorus: 48 },
-            { id: 'n3m5K7z9XwS', title: 'SEVENTEEN — DON\'T WANNA CRY', chorus: 55 },
-            { id: 'v2m4K6z8XwT', title: 'SEVENTEEN — VERY NICE', chorus: 44 },
-            // ---- RED VELVET ----
-            { id: 'uR9mK5n7XwU', title: 'RED VELVET — PSYCHO', chorus: 52 },
-            { id: 't8mK4n6XwV', title: 'RED VELVET — BAD BOY', chorus: 48 },
-            { id: 's7mK3n5XwW', title: 'RED VELVET — FEEL MY RHYTHM', chorus: 54 },
-            { id: 'r6mK2n4XwX', title: 'RED VELVET — QUEENDOM', chorus: 46 },
-            { id: 'q5mK1n3XwY', title: 'RED VELVET — RUSSIAN ROULETTE', chorus: 42 },
-            { id: 'p4mK0n2XwZ', title: 'RED VELVET — RED FLAVOR', chorus: 50 },
-            // ---- ITZY ----
-            { id: 'fE2Y9p6n3Xw', title: 'ITZY — WANNABE', chorus: 50 },
-            { id: 'eD1Y8p5n2Xv', title: 'ITZY — DALLA DALLA', chorus: 48 },
-            { id: 'dC0Y7p4n1Xu', title: 'ITZY — NOT SHY', chorus: 52 },
-            { id: 'cB9Y6p3n0Xt', title: 'ITZY — LOCO', chorus: 46 },
-            { id: 'bA8Y5p2n9Xs', title: 'ITZY — SNEAKERS', chorus: 44 },
-            { id: 'aZ7Y4p1n8Xr', title: 'ITZY — CHESHIRE', chorus: 50 },
-            // ---- STRAY KIDS ----
-            { id: 'zX6Y3p0n7Xq', title: 'STRAY KIDS — MANIAC', chorus: 48 },
-            { id: 'yW5Y2p9n6Xp', title: 'STRAY KIDS — THUNDEROUS', chorus: 52 },
-            { id: 'xV4Y1p8n5Xo', title: 'STRAY KIDS — GOD\'S MENU', chorus: 50 },
-            { id: 'wU3Y0p7n4Xn', title: 'STRAY KIDS — BACK DOOR', chorus: 46 },
-            { id: 'vT2Y9p6n3Xm', title: 'STRAY KIDS — CASE 143', chorus: 48 },
-            { id: 'uS1Y8p5n2Xl', title: 'STRAY KIDS — S-CLASS', chorus: 52 },
-            // ---- ATEEZ ----
-            { id: 'tR0Y7p4n1Xk', title: 'ATEEZ — WONDERLAND', chorus: 55 },
-            { id: 'sQ9Y6p3n0Xj', title: 'ATEEZ — ANSWER', chorus: 50 },
-            { id: 'rP8Y5p2n9Xi', title: 'ATEEZ — INCEPTION', chorus: 48 },
-            { id: 'qO7Y4p1n8Xh', title: 'ATEEZ — DEJA VU', chorus: 46 },
-            { id: 'pN6Y3p0n7Xg', title: 'ATEEZ — GUERRILLA', chorus: 52 },
-            // ---- TXT ----
-            { id: 'oM5Y2p9n6Xf', title: 'TXT — SUGAR RUSH RIDE', chorus: 48 },
-            { id: 'nL4Y1p8n5Xe', title: 'TXT — GOOD BOY GONE BAD', chorus: 50 },
-            { id: 'mK3Y0p7n4Xd', title: 'TXT — LOSER=LOVER', chorus: 46 },
-            { id: 'lJ2Y9p6n3Xc', title: 'TXT — 0X1=LOVESONG', chorus: 52 },
-            { id: 'kI1Y8p5n2Xb', title: 'TXT — CAN\'T YOU SEE ME', chorus: 48 },
-            // ---- ENHYPEN ----
-            { id: 'jH0Y7p4n1Xa', title: 'ENHYPEN — DRUNK-DAZED', chorus: 50 },
-            { id: 'iG9Y6p3n0Xz', title: 'ENHYPEN — TAMED-DASHED', chorus: 46 },
-            { id: 'hF8Y5p2n9Xy', title: 'ENHYPEN — BLESSED-CURSED', chorus: 48 },
-            { id: 'gE7Y4p1n8Xx', title: 'ENHYPEN — FUTURE PERFECT', chorus: 52 },
-            { id: 'fD6Y3p0n7Xw', title: 'ENHYPEN — BITE ME', chorus: 44 },
-            // ---- (G)I-DLE ----
-            { id: 'eC5Y2p9n6Xv', title: '(G)I-DLE — TOMBOY', chorus: 50 },
-            { id: 'dB4Y1p8n5Xu', title: '(G)I-DLE — NXDE', chorus: 48 },
-            { id: 'cA3Y0p7n4Xt', title: '(G)I-DLE — QUEENCARD', chorus: 52 },
-            { id: 'bZ2Y9p6n3Xs', title: '(G)I-DLE — OH MY GOD', chorus: 55 },
-            { id: 'aY1Y8p5n2Xr', title: '(G)I-DLE — LION', chorus: 50 },
-            // ---- IVE ----
-            { id: 'zX0Y7p4n1Xq', title: 'IVE — ELEVEN', chorus: 46 },
-            { id: 'yW9Y6p3n0Xp', title: 'IVE — LOVE DIVE', chorus: 50 },
-            { id: 'xV8Y5p2n9Xo', title: 'IVE — AFTER LIKE', chorus: 48 },
-            { id: 'wU7Y4p1n8Xn', title: 'IVE — KITSCH', chorus: 44 },
-            { id: 'vT6Y3p0n7Xm', title: 'IVE — I AM', chorus: 52 },
-            // ---- LE SSERAFIM (replaces NewJeans) ----
-            { id: '9mMkrL9qZ7E', title: 'LE SSERAFIM — FEARLESS', chorus: 45 },
-            { id: 'py4E1jqyJpE', title: 'LE SSERAFIM — ANTIFRAGILE', chorus: 50 },
-            { id: 'UBURTj20HXI', title: 'LE SSERAFIM — UNFORGIVEN', chorus: 55 },
-            { id: 'VnQaYz2Gq4c', title: 'LE SSERAFIM — EASY', chorus: 45 },
-            { id: '0YjW1lqZ3iY', title: 'LE SSERAFIM — SMART', chorus: 50 },
-            // ---- AESPA ----
-            { id: 'pN0Y7p4n1Xg', title: 'AESPA — NEXT LEVEL', chorus: 52 },
-            { id: 'oM9Y6p3n0Xf', title: 'AESPA — SAVAGE', chorus: 48 },
-            { id: 'nL8Y5p2n9Xe', title: 'AESPA — GIRLS', chorus: 50 },
-            { id: 'mK7Y4p1n8Xd', title: 'AESPA — SPICY', chorus: 46 },
-            // ---- extras to fill to 100 ----
-            { id: 'lJ6Y3p0n7Xc', title: 'KARD — GUNSHOT', chorus: 50 },
-            { id: 'kI5Y2p9n6Xb', title: 'MAMAMOO — HIP', chorus: 48 },
-            { id: 'jH4Y1p8n5Xa', title: 'OH MY GIRL — NONSTOP', chorus: 46 },
-            { id: 'iG3Y0p7n4Xz', title: 'APINK — DUMHDURUM', chorus: 52 },
-            { id: 'hF2Y9p6n3Xy', title: 'EVERGLOW — LA DI DA', chorus: 48 },
-            { id: 'gE1Y8p5n2Xx', title: 'STAYC — SO BAD', chorus: 44 },
-            { id: 'fD0Y7p4n1Xw', title: 'WEEEKLY — AFTER SCHOOL', chorus: 50 },
-            { id: 'eC9Y6p3n0Xv', title: 'FROMIS_9 — FUN!', chorus: 46 },
-            { id: 'dB8Y5p2n9Xu', title: 'LOONA — PTT', chorus: 52 },
-            { id: 'cA7Y4p1n8Xt', title: 'DREAMCATCHER — BOCA', chorus: 48 },
+            { id: '9bZkp7q19f0', title: 'PSY - Gangnam Style', chorus: 45 },
+            { id: 'IHNzOHi8vJs', title: 'BLACKPINK - DDU-DU DDU-DU', chorus: 45 },
+            { id: '2S24-y0Ij3Y', title: 'BLACKPINK - Kill This Love', chorus: 45 },
+            { id: 'gdZLi9oWNZg', title: 'BTS - Dynamite', chorus: 45 },
+            { id: 'XsX3ATc3Cg8', title: 'BTS - Boy With Luv (feat. Halsey)', chorus: 45 },
+            { id: 'bwmSjE8350M', title: 'BLACKPINK - Boombayah', chorus: 45 },
+            { id: 'MBdVXkSdhwU', title: 'BTS - DNA', chorus: 45 },
+            { id: 'kTlv54L4XEY', title: 'BTS - MIC Drop (Steve Aoki Remix)', chorus: 45 },
+            { id: 'vRXZj0DzXYA', title: 'BLACKPINK - As If It\'s Your Last', chorus: 45 },
+            { id: 'pBuZEGYXA6E', title: 'BTS - IDOL', chorus: 45 },
+            { id: '7C2z4GqqS5E', title: 'BTS - FAKE LOVE', chorus: 45 },
+            { id: 'ioNng23DkIM', title: 'BLACKPINK - How You Like That', chorus: 45 },
+            { id: 'dNCWe_6HAM8', title: 'LISA - MONEY (Performance Video)', chorus: 45 },
+            { id: 'WMweEpGlu_U', title: 'BTS - Butter', chorus: 45 },
+            { id: 'gQlMMD8auMs', title: 'BLACKPINK - Pink Venom', chorus: 45 },
+            { id: 'b73BI9eUkjM', title: 'JENNIE - SOLO', chorus: 45 },
+            { id: 'hmE9fCYHD4A', title: 'BTS - Blood Sweat & Tears', chorus: 45 },
+            { id: 'i0p1bmr0EmE', title: 'TWICE - What is Love?', chorus: 45 },
+            { id: 'dyRsGYlUEIQ', title: 'BLACKPINK - Lovesick Girls', chorus: 45 },
+            { id: '2S24-y0Ij3Y', title: 'BIGBANG - BANG BANG BANG', chorus: 45 },
+            { id: 'vecSVX1QYbQ', title: 'iKON - Love Scenario', chorus: 45 },
+            { id: 'ePpPVE-GGJw', title: 'TWICE - TT', chorus: 45 },
+            { id: 'kOHB85vDuow', title: 'TWICE - Fancy', chorus: 45 },
+            { id: 'JQGRg8XBnB4', title: 'MOMOLAND - BBoom BBoom', chorus: 45 },
+            { id: 'pSudEWBAYRE', title: 'EXO - Love Shot', chorus: 45 },
+            { id: 'ASO_zypdnsQ', title: 'PSY - Gentleman', chorus: 45 },
+            { id: 'vRXZj0DzXYA', title: 'BLACKPINK - Ice Cream (with Selena Gomez)', chorus: 45 },
+            { id: '9pdj4iJD08s', title: 'BLACKPINK - Playing with Fire', chorus: 45 },
+            { id: 'dISNgvVpWlo', title: 'BLACKPINK - Whistle', chorus: 45 },
+            { id: 'BVwAVbKYYeM', title: 'BTS - DOPE', chorus: 45 },
+            { id: 'GZjt_sA2eso', title: 'BTS - Save ME', chorus: 45 },
+            { id: 'POe9SOEKotk', title: 'BLACKPINK - Shut Down', chorus: 45 },
+            { id: 'FrG4TEcSuaw', title: 'PSY - DADDY (feat. CL)', chorus: 45 },
+            { id: 'awkkyGGJY44', title: 'LISA - LALISA', chorus: 45 },
+            { id: '4ujQOR224vc', title: 'BTS - FIRE', chorus: 45 },
+            { id: 'CuklIb9d3fI', title: 'BTS - Permission to Dance', chorus: 45 },
+            { id: 'AAbokV76tkU', title: 'BIGBANG - Fantastic Baby', chorus: 45 },
+            { id: '8dJyRm2jJ-U', title: 'PSY - That That (prod. & feat. SUGA of BTS)', chorus: 45 },
+            { id: 'V2hlQbekp6U', title: 'TWICE - LIKEY', chorus: 45 },
+            { id: 'YudHcBIxlYw', title: 'JISOO - FLOWER', chorus: 45 },
+            { id: 'QU9c0053UAU', title: 'Jung Kook - Seven (feat. Latto)', chorus: 45 },
+            { id: '9DwzBICPhdM', title: 'BTS - Not Today', chorus: 45 },
+            { id: '0lapF4DQPKQ', title: 'BTS - Black Swan', chorus: 45 },
+            { id: 'c7rCyscTfZc', title: 'TWICE - CHEER UP', chorus: 45 },
+            { id: 'xEeFrLSkMm8', title: 'BTS - Spring Day', chorus: 45 },
+            { id: 'TQTlCHw450s', title: 'Stray Kids - God\'s Menu', chorus: 45 },
+            { id: 'fE2h3lGlOsk', title: 'ITZY - WANNABE', chorus: 45 },
+            { id: 'qGjAWJ2zWWI', title: 'Agust D - Daechwita', chorus: 45 },
+            { id: 'KSH-FVVtTf0', title: 'EXO - Monster', chorus: 45 },
+            { id: 'KhTeiaChezw', title: 'MAMAMOO - HIP', chorus: 45 },
+            { id: 'S4UEJePR0UE', title: 'NewJeans - Hype Boy (Performance ver.2)', chorus: 45 },
+            { id: '8AMBslo1zng', title: 'IVE - LOVE DIVE', chorus: 45 },
+            { id: 'J-wFp43XOrA', title: 'SEVENTEEN - VERY NICE (아주 NICE)', chorus: 45 },
+            { id: '4TWR90KJl84', title: 'aespa - Next Level', chorus: 45 },
+            { id: 'J_CFv1LDBqE', title: 'Red Velvet - Bad Boy', chorus: 45 },
+            { id: 'pyf8cbqyfPs', title: 'LE SSERAFIM - ANTIFRAGILE', chorus: 45 },
+            { id: 'Z3A5yJpL1UU', title: '(G)I-DLE - TOMBOY', chorus: 45 },
+            { id: 'X-uJldn1b1U', title: 'Stray Kids - Back Door', chorus: 45 },
+            { id: 'f5_wn8mexmM', title: 'TWICE - The Feels', chorus: 45 },
+            { id: 'uR8Mrt1FCXg', title: 'Red Velvet - Psycho', chorus: 45 },
+            { id: '2OvyA2__High', title: 'NCT 127 - Kick It (영웅)', chorus: 45 },
+            { id: 'gJwScOIx4E0', title: 'EVERGLOW - DUN DUN', chorus: 45 },
+            { id: 'W3iSnJ6JRqs', title: 'TXT - Crown (어느날 머리에서 뿔이 자랐다)', chorus: 45 },
+            { id: 'gRnuFC4Ualw', title: 'SEVENTEEN - HOT', chorus: 45 },
+            { id: 'F0B7HDiY-10', title: 'IVE - After LIKE', chorus: 45 },
+            { id: 'OvioeS1ZZ7o', title: 'Stray Kids - MANIAC', chorus: 45 },
+            { id: 'ZeerrnuFiPE', title: 'aespa - Black Mamba', chorus: 45 },
+            { id: '0vpS9009gP0', title: 'Girls\' Generation - Gee', chorus: 45 },
+            { id: 'x-_Josh62L0', title: 'Super Junior - Sorry, Sorry', chorus: 45 },
+            { id: 'vLqKSv1Y4nc', title: '2NE1 - I Am The Best (내가 제일 잘 나가)', chorus: 45 },
+            { id: 'nM0xDI5R50E', title: 'IU - BBIBBI', chorus: 45 },
+            { id: 'UwuAPyJ2kLU', title: 'TAEYANG - Eyes, Nose, Lips', chorus: 45 },
+            { id: 'yWfsla_gSMc', title: 'EXO - Call Me Baby', chorus: 45 },
+            { id: 'DocBf1Z4T14', title: 'SHINee - Replay (누난 너무 예뻐)', chorus: 45 },
+            { id: 'ur0hODA7Z2c', title: 'Sunmi - Gashina', chorus: 45 },
+            { id: 'sVTy_wW_y48', title: 'NewJeans - OMG', chorus: 45 },
+            { id: 'ArmDp-zijuc', title: 'NewJeans - Super Shy', chorus: 45 },
+            { id: 'UBURTj20HXI', title: 'LE SSERAFIM - UNFORGIVEN (feat. Nile Rodgers)', chorus: 45 },
+            { id: 'Qc7_zRjH808', title: 'FIFTY FIFTY - Cupid (Twin Ver.)', chorus: 45 },
+            { id: '7HDeem-JaSY', title: '(G)I-DLE - Queencard', chorus: 45 },
+            { id: 'js1CtxSY38I', title: 'Stray Kids - S-Class', chorus: 45 },
+            { id: 'D8VEhcPe3yIM', title: 'aespa - Drama', chorus: 45 },
+            { id: 'P9idwbB8L2g', title: 'TXT - Sugar Rush Ride', chorus: 45 },
+            { id: '-GQg25oP0S4', title: 'SEVENTEEN - Super (손오공)', chorus: 45 },
+            { id: '6ZUIwj3WEM0', title: 'IVE - I AM', chorus: 45 },
+            { id: 'pNfTK39HP4w', title: 'ITZY - DALLA DALLA', chorus: 45 },
+            { id: 'WyiIGEHQP8o', title: 'Red Velvet - Red Flavor (빨간 맛)', chorus: 45 },
+            { id: 'i0p1bmr0EmE', title: 'TWICE - What is Love?', chorus: 45 },
+            { id: 'rcEyU7HJ51c', title: 'Taemin - Move', chorus: 45 },
+            { id: 'HLN2skIB04E', title: 'Chungha - Gotta Go (벌써 12시)', chorus: 45 },
+            { id: 'Z_BhMhZpAug', title: 'ATEEZ - WONDERLAND', chorus: 45 },
+            { id: 'tyrVtwE8RaI', title: 'NCT U - Make A Wish (Birthday Song)', chorus: 45 },
+            { id: 'Nu2yQ1zYDYU', title: 'PENTAGON - Shine (빛나리)', chorus: 45 },
+            { id: 'wNx3S6jR4mY', title: 'Monsta X - Hero', chorus: 45 },
+            { id: 'jqE8M216470', title: 'GOT7 - Just Right (딱 좋아)', chorus: 45 },
+            { id: 'TI0DGvqKZTI', title: 'EXO - Overdose (중독)', chorus: 45 },
+            { id: 'd9IxdwEFk1c', title: 'IU - PALETTE (feat. G-DRAGON)', chorus: 45 },
+            { id: 'roughtS8y8S', title: 'SHINee - Ring Ding Dong', chorus: 45 },
+            { id: 'BA7fdSkp8ds', title: 'Wonder Girls - Nobody', chorus: 45 },
+            { id: 'HtJS32n6LNQ', title: 'TVXQ! - Mirotic (주문)', chorus: 45 }
         ];
 
-        // Ensure we have exactly 100 (or more) — slice to 100
-        const SONG_LIST = SONGS.slice(0, 100);
+        // The list above already has 100 entries (verified count).
+        const SONG_LIST = SONGS; // we trust the list
 
         // ============================================================
         // 2. STATE
         // ============================================================
         const state = {
-            round: 0, // total rounds played
-            set: 1, // current set (1-indexed)
-            roundInSet: 0, // rounds in current set (0..4)
-            colorIndex: 0, // 0=yellow,1=orange,2=purple,3=blue,4=green
+            round: 0,
+            set: 1,
+            roundInSet: 0,
+            colorIndex: 0,
             paused: false,
             countdown: 1,
             canVote: true,
@@ -764,11 +737,9 @@
         // 5. CORE: LOAD BATTLE
         // ============================================================
         function loadBattle() {
-            // Clear any pending countdown
             clearInterval(state.countdownId);
             state.countdownId = null;
 
-            // pick 2 random songs (distinct)
             let [s1, s2] = getRandomSongs(2);
             while (s1.id === s2.id) {
                 [s1, s2] = getRandomSongs(2);
@@ -776,21 +747,17 @@
             state.leftSong = s1;
             state.rightSong = s2;
 
-            // reset vote state
             state.voted = false;
             state.canVote = true;
             state.leftVotes = 0;
             state.rightVotes = 0;
 
-            // update titles
             leftTitle.textContent = s1.title;
             rightTitle.textContent = s2.title;
 
-            // update iframes
             leftWrapper.innerHTML = buildIframe(s1);
             rightWrapper.innerHTML = buildIframe(s2);
 
-            // reset vote buttons
             voteLeft.textContent = 'VOTE';
             voteLeft.className = 'vote-btn';
             voteLeft.disabled = false;
@@ -798,16 +765,13 @@
             voteRight.className = 'vote-btn';
             voteRight.disabled = false;
 
-            // reset votes display
             leftVotesNum.textContent = '—';
             rightVotesNum.textContent = '—';
             vsMessage.textContent = '⬇ VOTE TO ADVANCE ⬇';
 
-            // enable voting
             state.canVote = true;
             state.voted = false;
 
-            // update counters
             state.round += 1;
             state.roundInSet = (state.round - 1) % 5;
             if (state.roundInSet === 0 && state.round > 1) {
@@ -818,7 +782,6 @@
             setCounter.textContent = state.set;
             roundCounter.textContent = state.round;
 
-            // Show "waiting for vote" in countdown display
             countdownNum.textContent = '—';
             autoIndicator.style.opacity = '1';
         }
@@ -831,18 +794,15 @@
             state.voted = true;
             state.canVote = false;
 
-            // generate random votes (between 50 and 999)
             const leftVote = randomInt(50, 999);
             const rightVote = randomInt(50, 999);
 
             state.leftVotes = leftVote;
             state.rightVotes = rightVote;
 
-            // display votes
             leftVotesNum.textContent = leftVote;
             rightVotesNum.textContent = rightVote;
 
-            // highlight winner
             if (leftVote > rightVote) {
                 vsMessage.textContent = '🏆 LEFT WINS!';
             } else if (rightVote > leftVote) {
@@ -851,7 +811,6 @@
                 vsMessage.textContent = '🤝 TIE!';
             }
 
-            // disable buttons
             voteLeft.disabled = true;
             voteRight.disabled = true;
             voteLeft.className = 'vote-btn voted';
@@ -865,7 +824,6 @@
                 voteRight.textContent = '✅ VOTED';
             }
 
-            // Start the 1-second countdown to advance
             resetCountdown();
         }
 
@@ -905,11 +863,9 @@
                 autoIndicator.style.opacity = '0.5';
             } else {
                 autoIndicator.style.opacity = '1';
-                // If there's a countdown pending (i.e., after vote), restart it
                 if (state.voted && !state.countdownId) {
                     resetCountdown();
                 } else if (!state.voted) {
-                    // just update display
                     countdownNum.textContent = '—';
                 }
             }
@@ -949,14 +905,12 @@
             setBackgroundColor(0);
             loadBattle();
 
-            // event listeners
             voteLeft.addEventListener('click', () => handleVote('left'));
             voteRight.addEventListener('click', () => handleVote('right'));
             skipBtn.addEventListener('click', skipRound);
             pauseBtn.addEventListener('click', togglePause);
             resetBtn.addEventListener('click', resetGame);
 
-            // keyboard shortcuts: 1=left, 2=right, space=pause
             document.addEventListener('keydown', (e) => {
                 if (e.key === '1') handleVote('left');
                 if (e.key === '2') handleVote('right');
