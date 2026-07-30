@@ -45,24 +45,51 @@
             background-clip: text;
             color: transparent;
         }
-        #shareBtn {
+
+        .header-btn {
             background: #1877f2;
-            color: white;
+            color: #fff;
             border: none;
-            padding: 9px 18px;
+            padding: 8px 14px;
             border-radius: 999px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(24, 119, 242, 0.3);
             transition: transform .08s ease, background .2s ease, box-shadow .2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.2;
+            min-width: 52px;
         }
-        #shareBtn:hover {
+        .header-btn:hover {
             background: #166fe5;
             box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35);
+            text-decoration: none;
+            color: #fff;
         }
-        #shareBtn:active {
+        .header-btn:active {
             transform: scale(0.97);
+        }
+
+        .header-btn.gaming-btn {
+            background: #7c3aed;
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+        }
+        .header-btn.gaming-btn:hover {
+            background: #6d28d9;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
+        }
+
+        .header-btn.dm-btn {
+            background: #06b6d4;
+            box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
+        }
+        .header-btn.dm-btn:hover {
+            background: #0891b2;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.35);
         }
 
         main {
@@ -195,7 +222,7 @@
             position: relative;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         #bellBtn {
             background: none;
@@ -1333,9 +1360,13 @@
             .logo {
                 font-size: 23px;
             }
-            #shareBtn {
-                padding: 8px 14px;
-                font-size: 13.5px;
+            .header-btn {
+                padding: 6px 10px;
+                font-size: 11.5px;
+                min-width: 40px;
+            }
+            #bell-wrap {
+                gap: 5px;
             }
             .post {
                 padding: 12px 0 8px;
@@ -1374,7 +1405,8 @@
                     <div class="notif-header">Notifications</div>
                     <div id="notif-list"></div>
                 </div>
-                <button id="shareBtn" aria-label="Share ChillSpace">Share</button>
+                <a href="/messages" class="header-btn dm-btn">DM</a>
+                <a href="/gaming" class="header-btn gaming-btn">gaming</a>
             </div>
         </div>
     </header>
@@ -3515,20 +3547,6 @@
             });
             observer.observe(sentinel);
         }
-
-        document.getElementById('shareBtn').addEventListener('click', async () => {
-            const data = {
-                title: 'ChillSpace',
-                text: "Meet the world's first non-addictive social app!",
-                url: window.location.href
-            };
-            if (navigator.share) {
-                try { await navigator.share(data); } catch (e) {}
-            } else {
-                const tweet = encodeURIComponent(`${data.text} ${data.url}`);
-                window.open(`https://twitter.com/intent/tweet?text=${tweet}`, '_blank', 'noopener');
-            }
-        });
 
         // ---- "What's on your mind?" composer ----
         function openImageGuideModal() {
