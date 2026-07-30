@@ -1,1657 +1,1736 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
-<title>ChillSpace Messages</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Inter:wght@400..600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #1B1730;
-    --panel: #241F3D;
-    --panel-2: #2C2650;
-    --accent: #FF8966;
-    --accent-soft: #FFB79C;
-    --mint: #7EE0C3;
-    --text: #F1EEFA;
-    --muted: #9089B0;
-    --bubble-me: linear-gradient(135deg, #FF8966, #FF6F91);
-    --bubble-them: #2C2650;
-    --danger: #FF6B6B;
-    --radius: 18px;
-    --font-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
-    --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
-  }
-
-  * { box-sizing: border-box; }
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-  }
-
-  body {
-    background-image:
-      radial-gradient(circle at 15% 0%, rgba(255,137,102,0.15), transparent 40%),
-      radial-gradient(circle at 90% 10%, rgba(126,224,195,0.12), transparent 35%);
-    background-attachment: fixed;
-  }
-
-  #app {
-    max-width: 480px;
-    margin: 0 auto;
-    height: 100dvh;
-    height: var(--app-height, 100dvh);
-    display: flex;
-    flex-direction: column;
-    background: rgba(27, 23, 48, 0.4);
-    overflow: hidden;
-  }
-
-  /* ---------- Header ---------- */
-  .topbar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 18px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    position: sticky;
-    top: 0;
-    background: rgba(27,23,48,0.85);
-    backdrop-filter: blur(10px);
-    z-index: 5;
-  }
-
-  .brand {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 20px;
-    letter-spacing: -0.02em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .brand .dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--mint);
-    box-shadow: 0 0 0 0 rgba(126,224,195,0.5);
-    animation: breathe 2.4s ease-in-out infinite;
-  }
-
-  @keyframes breathe {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(126,224,195,0.5); }
-    50% { box-shadow: 0 0 0 6px rgba(126,224,195,0); }
-  }
-
-  .topbar .sub {
-    margin-left: auto;
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  .back-btn {
-    background: none;
-    border: none;
-    color: var(--text);
-    font-size: 20px;
-    cursor: pointer;
-    padding: 4px 8px 4px 0;
-    line-height: 1;
-  }
-
-  /* ---------- Screens ---------- */
-  .screen {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    overflow-y: auto;
-  }
-
-  /* ---------- Setup ---------- */
-  .setup-wrap {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 22px;
-    padding: 30px;
-    text-align: center;
-    overflow-y: auto;
-  }
-
-  .setup-wrap h1 {
-    font-family: var(--font-display);
-    font-size: 30px;
-    margin: 0;
-    line-height: 1.15;
-  }
-
-  .setup-wrap p.lead {
-    color: var(--muted);
-    margin: 0;
-    font-size: 15px;
-  }
-
-  .incoming-preview {
-    background: var(--panel);
-    border-radius: var(--radius);
-    padding: 16px;
-    text-align: left;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .incoming-preview .from {
-    font-size: 12px;
-    color: var(--mint);
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-
-  label {
-    display: block;
-    text-align: left;
-    font-size: 13px;
-    color: var(--muted);
-    margin: 14px 0 6px;
-  }
-
-  input[type="text"], input[type="tel"] {
-    width: 100%;
-    padding: 13px 15px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: var(--panel);
-    color: var(--text);
-    font-size: 15px;
-    font-family: var(--font-body);
-    outline: none;
-  }
-
-  input:focus {
-    border-color: var(--accent);
-  }
-
-  input::placeholder { color: #6b6488; }
-
-  .btn {
-    border: none;
-    border-radius: 12px;
-    padding: 14px 18px;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: var(--font-body);
-    cursor: pointer;
-  }
-
-  .btn:focus-visible, .icon-btn:focus-visible, .contact-row:focus-visible {
-    outline: 2px solid var(--mint);
-    outline-offset: 2px;
-  }
-
-  .btn-primary {
-    background: var(--bubble-me);
-    color: #241130;
-  }
-
-  .btn-primary:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
-
-  .btn-block { width: 100%; }
-
-  /* ---------- Contacts list ---------- */
-  .contacts-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-
-  .contacts-header h2 {
-    font-family: var(--font-display);
-    font-size: 22px;
-    margin: 0;
-  }
-
-  .header-actions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
-  .add-btn {
-    background: var(--panel);
-    color: var(--accent-soft);
-    border: 1px solid rgba(255,137,102,0.3);
-    border-radius: 999px;
-    padding: 9px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-
-  .add-btn.ai-btn {
-    color: var(--mint);
-    border-color: rgba(126,224,195,0.35);
-  }
-
-  .add-btn.import-btn {
-    color: var(--text);
-    border-color: rgba(255,255,255,0.15);
-  }
-
-  .site-footer-link {
-    margin-top: 24px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    text-align: center;
-  }
-
-  .site-footer-link a {
-    color: var(--muted);
-    font-size: 13px;
-    text-decoration: none;
-  }
-
-  .site-footer-link a:hover { color: var(--mint); }
-
-  .ai-tag {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: #1B1730;
-    background: var(--mint);
-    border-radius: 6px;
-    padding: 1px 6px;
-    margin-left: 6px;
-    vertical-align: middle;
-  }
-
-  .avatar.ai {
-    background: linear-gradient(135deg, var(--mint), #9C8CFF);
-  }
-
-  .toast {
-    position: absolute;
-    left: 50%;
-    bottom: 90px;
-    transform: translateX(-50%);
-    background: var(--panel-2);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--text);
-    padding: 10px 16px;
-    border-radius: 12px;
-    font-size: 13px;
-    max-width: 85%;
-    text-align: center;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-    z-index: 15;
-    animation: toastIn 0.2s ease-out;
-  }
-
-  @keyframes toastIn {
-    from { opacity: 0; transform: translate(-50%, 8px); }
-    to { opacity: 1; transform: translate(-50%, 0); }
-  }
-
-  .provider-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 16px;
-  }
-
-  .provider-option {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--panel-2);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 14px;
-    padding: 12px 14px;
-    cursor: pointer;
-    color: var(--text);
-    text-align: left;
-    font-family: var(--font-body);
-    width: 100%;
-  }
-
-  .provider-option:hover { background: #342c5c; }
-
-  .provider-option .p-icon {
-    width: 38px; height: 38px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--mint), #9C8CFF);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700;
-    color: #1B1730;
-    font-family: var(--font-display);
-    flex-shrink: 0;
-  }
-
-  .provider-option .p-meta { flex: 1; }
-  .provider-option .p-name { font-weight: 600; font-size: 14.5px; }
-  .provider-option .p-note { font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-  .empty-state {
-    margin-top: 40px;
-    text-align: center;
-    color: var(--muted);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .empty-state .big {
-    font-size: 42px;
-  }
-
-  .contact-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .contact-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    background: var(--panel);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 16px;
-    padding: 13px 15px;
-    cursor: pointer;
-    text-align: left;
-    width: 100%;
-    color: var(--text);
-    font-family: var(--font-body);
-  }
-
-  .contact-row:hover { background: var(--panel-2); }
-
-  .avatar {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--mint));
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700;
-    color: #1B1730;
-    font-family: var(--font-display);
-    flex-shrink: 0;
-  }
-
-  .contact-meta { flex: 1; min-width: 0; }
-  .contact-name { font-weight: 600; font-size: 15px; }
-  .contact-preview {
-    font-size: 13px;
-    color: var(--muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* ---------- Modal ---------- */
-  .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(10, 8, 20, 0.6);
-    backdrop-filter: blur(3px);
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    z-index: 20;
-  }
-
-  .modal {
-    background: var(--panel);
-    width: 100%;
-    max-width: 480px;
-    border-radius: 22px 22px 0 0;
-    padding: 24px 22px 28px;
-    animation: slideUp 0.22s ease-out;
-  }
-
-  @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
-  .modal h3 {
-    font-family: var(--font-display);
-    margin: 0 0 4px;
-    font-size: 19px;
-  }
-
-  .modal .hint {
-    font-size: 13px;
-    color: var(--muted);
-    margin: 0;
-  }
-
-  .modal-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 18px;
-  }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--muted);
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-
-  .error-text {
-    color: var(--danger);
-    font-size: 13px;
-    margin-top: 8px;
-  }
-
-  .channel-tabs {
-    display: flex;
-    gap: 8px;
-    margin-top: 14px;
-  }
-
-  .channel-tab {
-    flex: 1;
-    background: var(--panel-2);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
-    padding: 9px 6px;
-    color: var(--muted);
-    font-size: 13px;
-    font-weight: 600;
-    font-family: var(--font-body);
-    cursor: pointer;
-  }
-
-  .channel-tab.active {
-    background: var(--bubble-me);
-    color: #241130;
-    border-color: transparent;
-  }
-
-  /* ---------- Chat ---------- */
-  .chat-screen { padding: 0; display: flex; flex-direction: column; flex: 1; min-height: 0; position: relative; }
-
-  .messages {
-    flex: 1;
-    min-height: 0;
-    padding: 18px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    overflow-y: auto;
-  }
-
-  .bubble-row { display: flex; }
-  .bubble-row.me { justify-content: flex-end; }
-  .bubble-row.them { justify-content: flex-start; }
-
-  .bubble {
-    max-width: 78%;
-    padding: 11px 14px;
-    border-radius: 16px;
-    font-size: 14.5px;
-    line-height: 1.4;
-    word-wrap: break-word;
-  }
-
-  .bubble-row.me .bubble {
-    background: var(--bubble-me);
-    color: #241130;
-    border-bottom-right-radius: 4px;
-  }
-
-  .bubble-row.them .bubble {
-    background: var(--bubble-them);
-    color: var(--text);
-    border-bottom-left-radius: 4px;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .bubble .time {
-    display: block;
-    font-size: 10.5px;
-    margin-top: 5px;
-    opacity: 0.65;
-  }
-
-  .empty-chat {
-    margin: auto;
-    text-align: center;
-    color: var(--muted);
-    padding: 20px;
-  }
-
-  .composer {
-    display: flex;
-    gap: 10px;
-    padding: 14px 16px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    background: rgba(27,23,48,0.9);
-  }
-
-  .composer input {
-    flex: 1;
-  }
-
-  .send-btn {
-    background: var(--bubble-me);
-    color: #241130;
-    border: none;
-    border-radius: 12px;
-    width: 46px;
-    flex-shrink: 0;
-    cursor: pointer;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  .whatsapp-note {
-    font-size: 11px;
-    color: var(--muted);
-    text-align: center;
-    padding: 0 16px 10px;
-  }
-
-  a { color: var(--mint); }
-
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .brand .dot { animation: none; }
-    .modal { animation: none; }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+    <title>ChillSpace Messages</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Inter:wght@400..600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #1B1730;
+            --panel: #241F3D;
+            --panel-2: #2C2650;
+            --accent: #FF8966;
+            --accent-soft: #FFB79C;
+            --mint: #7EE0C3;
+            --text: #F1EEFA;
+            --muted: #9089B0;
+            --bubble-me: linear-gradient(135deg, #FF8966, #FF6F91);
+            --bubble-them: #2C2650;
+            --danger: #FF6B6B;
+            --radius: 18px;
+            --font-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+            --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+        }
+
+        body {
+            background-image:
+                radial-gradient(circle at 15% 0%, rgba(255, 137, 102, 0.15), transparent 40%),
+                radial-gradient(circle at 90% 10%, rgba(126, 224, 195, 0.12), transparent 35%);
+            background-attachment: fixed;
+        }
+
+        #app {
+            max-width: 480px;
+            margin: 0 auto;
+            height: 100dvh;
+            height: var(--app-height, 100dvh);
+            display: flex;
+            flex-direction: column;
+            background: rgba(27, 23, 48, 0.4);
+            overflow: hidden;
+        }
+
+        /* ---------- Header ---------- */
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            position: sticky;
+            top: 0;
+            background: rgba(27, 23, 48, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 5;
+        }
+
+        .brand {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--mint);
+            box-shadow: 0 0 0 0 rgba(126, 224, 195, 0.5);
+            animation: breathe 2.4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(126, 224, 195, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 0 6px rgba(126, 224, 195, 0);
+            }
+        }
+
+        .topbar .sub {
+            margin-left: auto;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px 8px 4px 0;
+            line-height: 1;
+        }
+
+        /* ---------- Screens ---------- */
+        .screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* ---------- Setup ---------- */
+        .setup-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 22px;
+            padding: 30px;
+            text-align: center;
+            overflow-y: auto;
+        }
+
+        .setup-wrap h1 {
+            font-family: var(--font-display);
+            font-size: 30px;
+            margin: 0;
+            line-height: 1.15;
+        }
+
+        .setup-wrap p.lead {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .incoming-preview {
+            background: var(--panel);
+            border-radius: var(--radius);
+            padding: 16px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .incoming-preview .from {
+            font-size: 12px;
+            color: var(--mint);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-size: 13px;
+            color: var(--muted);
+            margin: 14px 0 6px;
+        }
+
+        input[type="text"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 13px 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--panel);
+            color: var(--text);
+            font-size: 15px;
+            font-family: var(--font-body);
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--accent);
+        }
+
+        input::placeholder {
+            color: #6b6488;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: var(--font-body);
+            cursor: pointer;
+        }
+
+        .btn:focus-visible,
+        .icon-btn:focus-visible,
+        .contact-row:focus-visible {
+            outline: 2px solid var(--mint);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background: var(--bubble-me);
+            color: #241130;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* ---------- Contacts list ---------- */
+        .contacts-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .contacts-header h2 {
+            font-family: var(--font-display);
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .add-btn {
+            background: var(--panel);
+            color: var(--accent-soft);
+            border: 1px solid rgba(255, 137, 102, 0.3);
+            border-radius: 999px;
+            padding: 9px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .add-btn.ai-btn {
+            color: var(--mint);
+            border-color: rgba(126, 224, 195, 0.35);
+        }
+
+        .add-btn.import-btn {
+            color: var(--text);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .site-footer-link {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+        }
+
+        .site-footer-link a {
+            color: var(--muted);
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .site-footer-link a:hover {
+            color: var(--mint);
+        }
+
+        .ai-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #1B1730;
+            background: var(--mint);
+            border-radius: 6px;
+            padding: 1px 6px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        .avatar.ai {
+            background: linear-gradient(135deg, var(--mint), #9C8CFF);
+        }
+
+        .toast {
+            position: absolute;
+            left: 50%;
+            bottom: 90px;
+            transform: translateX(-50%);
+            background: var(--panel-2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            max-width: 85%;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            z-index: 15;
+            animation: toastIn 0.2s ease-out;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 8px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .provider-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .provider-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--panel-2);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 12px 14px;
+            cursor: pointer;
+            color: var(--text);
+            text-align: left;
+            font-family: var(--font-body);
+            width: 100%;
+        }
+
+        .provider-option:hover {
+            background: #342c5c;
+        }
+
+        .provider-option .p-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--mint), #9C8CFF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #1B1730;
+            font-family: var(--font-display);
+            flex-shrink: 0;
+        }
+
+        .provider-option .p-meta {
+            flex: 1;
+        }
+        .provider-option .p-name {
+            font-weight: 600;
+            font-size: 14.5px;
+        }
+        .provider-option .p-note {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .empty-state {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--muted);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .empty-state .big {
+            font-size: 42px;
+        }
+
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contact-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 13px 15px;
+            cursor: pointer;
+            text-align: left;
+            width: 100%;
+            color: var(--text);
+            font-family: var(--font-body);
+        }
+
+        .contact-row:hover {
+            background: var(--panel-2);
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--mint));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #1B1730;
+            font-family: var(--font-display);
+            flex-shrink: 0;
+        }
+
+        .contact-meta {
+            flex: 1;
+            min-width: 0;
+        }
+        .contact-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .contact-preview {
+            font-size: 13px;
+            color: var(--muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ---------- Modal ---------- */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 8, 20, 0.6);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 20;
+        }
+
+        .modal {
+            background: var(--panel);
+            width: 100%;
+            max-width: 480px;
+            border-radius: 22px 22px 0 0;
+            padding: 24px 22px 28px;
+            animation: slideUp 0.22s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h3 {
+            font-family: var(--font-display);
+            margin: 0 0 4px;
+            font-size: 19px;
+        }
+
+        .modal .hint {
+            font-size: 13px;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .error-text {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .channel-tabs {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .channel-tab {
+            flex: 1;
+            background: var(--panel-2);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 9px 6px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            font-family: var(--font-body);
+            cursor: pointer;
+        }
+
+        .channel-tab.active {
+            background: var(--bubble-me);
+            color: #241130;
+            border-color: transparent;
+        }
+
+        /* ---------- Chat ---------- */
+        .chat-screen {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            position: relative;
+        }
+
+        .messages {
+            flex: 1;
+            min-height: 0;
+            padding: 18px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+        }
+
+        .bubble-row {
+            display: flex;
+        }
+        .bubble-row.me {
+            justify-content: flex-end;
+        }
+        .bubble-row.them {
+            justify-content: flex-start;
+        }
+
+        .bubble {
+            max-width: 78%;
+            padding: 11px 14px;
+            border-radius: 16px;
+            font-size: 14.5px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .bubble-row.me .bubble {
+            background: var(--bubble-me);
+            color: #241130;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bubble-row.them .bubble {
+            background: var(--bubble-them);
+            color: var(--text);
+            border-bottom-left-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .bubble .time {
+            display: block;
+            font-size: 10.5px;
+            margin-top: 5px;
+            opacity: 0.65;
+        }
+
+        /* ---------- Clickable ChillSpace links inside messages ---------- */
+        .bubble a.chill-link {
+            color: var(--mint);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            font-weight: 500;
+            word-break: break-all;
+        }
+        .bubble-row.me .bubble a.chill-link {
+            color: #241130;
+            text-decoration-color: rgba(36, 17, 48, 0.4);
+        }
+        .bubble a.chill-link:hover {
+            opacity: 0.8;
+        }
+        .bubble a.chill-link:visited {
+            color: var(--mint);
+        }
+        .bubble-row.me .bubble a.chill-link:visited {
+            color: #241130;
+        }
+
+        .empty-chat {
+            margin: auto;
+            text-align: center;
+            color: var(--muted);
+            padding: 20px;
+        }
+
+        .composer {
+            display: flex;
+            gap: 10px;
+            padding: 14px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(27, 23, 48, 0.9);
+        }
+
+        .composer input {
+            flex: 1;
+        }
+
+        .send-btn {
+            background: var(--bubble-me);
+            color: #241130;
+            border: none;
+            border-radius: 12px;
+            width: 46px;
+            flex-shrink: 0;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .whatsapp-note {
+            font-size: 11px;
+            color: var(--muted);
+            text-align: center;
+            padding: 0 16px 10px;
+        }
+
+        a {
+            color: var(--mint);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .brand .dot {
+                animation: none;
+            }
+            .modal {
+                animation: none;
+            }
+        }
+    </style>
 </head>
 <body>
-<div id="app"></div>
-
-<script>
-(function () {
-  "use strict";
-
-  const STORAGE_KEYS = {
-    username: "cs_username",
-    myChannel: "cs_my_channel",
-    myHandle: "cs_my_handle",
-    contacts: "cs_contacts",
-    messages: "cs_messages"
-  };
-
-  const BASE_URL = "https://chill-space.pages.dev/messages";
-  const MAIN_SITE_URL = "https://chill-space.pages.dev/";
-
-  // Note: as of this writing, chatgpt.com natively supports a "?q=" URL
-  // parameter that prefills and submits a prompt. Claude and Gemini chats
-  // have been removed from this list since they don't currently work.
-  const AI_PROVIDERS = [
-    { id: "chatgpt", name: "ChatGPT", supportsPrefill: true, url: "https://chatgpt.com/?q=" }
-  ];
-
-  function getAIProvider(id) {
-    return AI_PROVIDERS.find(p => p.id === id);
-  }
-
-  // ---------- Storage helpers ----------
-  function getUsername() { return localStorage.getItem(STORAGE_KEYS.username) || ""; }
-  function getMyChannel() { return localStorage.getItem(STORAGE_KEYS.myChannel) || "whatsapp"; }
-  function getMyHandle() { return localStorage.getItem(STORAGE_KEYS.myHandle) || ""; }
-  function setIdentity(username, channel, handle) {
-    localStorage.setItem(STORAGE_KEYS.username, username);
-    localStorage.setItem(STORAGE_KEYS.myChannel, channel);
-    localStorage.setItem(STORAGE_KEYS.myHandle, handle);
-  }
-
-  function getContacts() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.contacts)) || []; }
-    catch (e) { return []; }
-  }
-  function saveContacts(list) {
-    localStorage.setItem(STORAGE_KEYS.contacts, JSON.stringify(list));
-  }
-
-  function getAllMessages() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.messages)) || {}; }
-    catch (e) { return {}; }
-  }
-  function saveAllMessages(obj) {
-    localStorage.setItem(STORAGE_KEYS.messages, JSON.stringify(obj));
-  }
-
-  function normalizePhone(raw) {
-    // keep leading + but strip everything else non-digit
-    let trimmed = raw.trim();
-    let plus = trimmed.startsWith("+") ? "+" : "";
-    let digits = trimmed.replace(/[^\d]/g, "");
-    return plus + digits;
-  }
-  function digitsOnly(raw) {
-    return raw.replace(/[^\d]/g, "");
-  }
-
-  // ---------- Channels ----------
-  // A contact can reach ChillSpace's human friends over a few different
-  // messaging systems, or be a fixed AI chat. Each channel knows how to
-  // normalize a raw handle and turn it + a message into an outbound link.
-  const CHANNELS = {
-    whatsapp: {
-      label: "WhatsApp",
-      inputType: "tel",
-      placeholder: "e.g. +15559876543",
-      hint: "Enter their name and phone number with country code.",
-      selfHint: "Enter your name and phone number with country code.",
-      normalize: (raw) => normalizePhone(raw),
-      isValid: (handle) => digitsOnly(handle).length >= 7,
-      invalidMessage: "Please enter a valid phone number with country code.",
-      key: (handle) => "wa:" + digitsOnly(handle),
-      buildLink: (handle, chillSpaceLink) => buildWaLink(handle, chillSpaceLink),
-      sendNote: "Sending opens WhatsApp to deliver your message link."
-    },
-    email: {
-      label: "Email",
-      inputType: "text",
-      placeholder: "e.g. sam@example.com",
-      hint: "Enter their name and email address.",
-      selfHint: "Enter your name and email address.",
-      normalize: (raw) => raw.trim().toLowerCase(),
-      isValid: (handle) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(handle),
-      invalidMessage: "Please enter a valid email address.",
-      key: (handle) => "email:" + handle.trim().toLowerCase(),
-      buildLink: (handle, chillSpaceLink) => buildMailLink(handle, chillSpaceLink),
-      sendNote: "Sending opens your email app to deliver your message link."
-    },
-    instagram: {
-      label: "Instagram",
-      inputType: "text",
-      placeholder: "e.g. sam.does.things",
-      hint: "Enter their name and Instagram username.",
-      selfHint: "Enter your name and Instagram username.",
-      normalize: (raw) => raw.trim().replace(/^@/, "").toLowerCase(),
-      isValid: (handle) => handle.length >= 1,
-      invalidMessage: "Please enter a valid Instagram username.",
-      key: (handle) => "ig:" + handle.trim().replace(/^@/, "").toLowerCase(),
-      buildLink: (handle, chillSpaceLink) => buildIgLink(handle, chillSpaceLink),
-      sendNote: "Sending opens Instagram to deliver your message link."
-    }
-  };
-
-  function getChannel(id) {
-    return CHANNELS[id] || CHANNELS.whatsapp;
-  }
-
-  function channelTabsHtml(selectedId) {
-    return Object.keys(CHANNELS).map(id => `
-      <button type="button" class="channel-tab${id === selectedId ? " active" : ""}" data-channel="${id}">
-        ${escapeHtml(CHANNELS[id].label)}
-      </button>
-    `).join("");
-  }
-
-  // Human contacts are keyed by their channel + normalized handle.
-  // AI contacts use a fixed "ai:<provider>" id instead.
-  function contactKey(contact) {
-    if (!contact) return "";
-    if (contact.channel === "ai") return "ai:" + contact.provider;
-    return getChannel(contact.channel).key(contact.handle || "");
-  }
-
-  function isAIContact(contact) {
-    return !!contact && contact.channel === "ai";
-  }
-
-  function findContactById(id) {
-    return getContacts().find(c => contactKey(c) === id);
-  }
-
-  function upsertContact(name, channelId, rawHandle) {
-    const channel = getChannel(channelId);
-    const handle = channel.normalize(rawHandle);
-    const draft = { channel: channelId, handle: handle };
-    const target = contactKey(draft);
-    const contacts = getContacts();
-    const existing = contacts.find(c => contactKey(c) === target);
-    if (existing) {
-      existing.name = name || existing.name;
-      saveContacts(contacts);
-      return existing;
-    }
-    const contact = { name: name || handle, channel: channelId, handle: handle };
-    contacts.push(contact);
-    saveContacts(contacts);
-    return contact;
-  }
-
-  function addAIContact(providerId) {
-    const provider = getAIProvider(providerId);
-    if (!provider) return null;
-    const contacts = getContacts();
-    const key = "ai:" + providerId;
-    let existing = contacts.find(c => contactKey(c) === key);
-    if (!existing) {
-      existing = { name: provider.name, channel: "ai", provider: providerId };
-      contacts.push(existing);
-      saveContacts(contacts);
-    }
-    return existing;
-  }
-
-  // Imports device contacts via the Contact Picker API (navigator.contacts).
-  // Support is currently limited to Chrome/Edge on Android — it's simply
-  // unavailable everywhere else (desktop browsers, iOS Safari, etc.), and
-  // there's no way to feature-test it beyond checking the API exists.
-  function contactPickerSupported() {
-    return !!(navigator.contacts && window.ContactsManager);
-  }
-
-  async function importContacts() {
-  let added = 0;
-  let contactsToProcess = [];
-
-  // --- 1. Try Android bridge (if running in the ChillSpace app) ---
-  if (window.AndroidContacts) {
-    try {
-      const json = window.AndroidContacts.getContacts();
-      const androidContacts = JSON.parse(json);
-      if (androidContacts && androidContacts.length > 0) {
-        contactsToProcess = androidContacts.map(c => ({
-          name: c.name || "Unnamed contact",
-          phone: c.phone || "",
-          email: null  // Android bridge currently only provides phone
-        }));
-      }
-    } catch (e) {
-      console.warn("Android contact fetch failed:", e);
-      // fall through to Web Contact Picker
-    }
-  }
-
-  // --- 2. If no contacts from Android, try Web Contact Picker ---
-  if (contactsToProcess.length === 0) {
-    if (!navigator.contacts || !navigator.contacts.select) {
-      showToast("Contact import isn't supported on this browser/device.");
-      return;
-    }
-    let people;
-    try {
-      people = await navigator.contacts.select(["name", "tel", "email"], { multiple: true });
-    } catch (err) {
-      // User cancelled or permission denied – do nothing
-      return;
-    }
-    if (!people || people.length === 0) return;
-
-    people.forEach(person => {
-      const name = (person.name && person.name[0]) || "Unnamed contact";
-      const phone = person.tel && person.tel[0];
-      const email = person.email && person.email[0];
-      contactsToProcess.push({ name, phone, email });
-    });
-  }
-
-  // --- 3. Process the contacts (unified) ---
-  if (contactsToProcess.length === 0) {
-    showToast("No contacts found to import.");
-    return;
-  }
-
-  contactsToProcess.forEach(({ name, phone, email }) => {
-    if (phone) {
-      upsertContact(name, "whatsapp", phone);
-      added++;
-    } else if (email) {
-      upsertContact(name, "email", email);
-      added++;
-    }
-  });
-
-  showToast(added > 0
-    ? `Imported ${added} contact${added === 1 ? "" : "s"}.`
-    : "Those contacts didn't have a phone number or email to import.");
-  render();
-}
-
-  function addMessage(contactId, entry) {
-    const all = getAllMessages();
-    if (!all[contactId]) all[contactId] = [];
-    all[contactId].push(entry);
-    saveAllMessages(all);
-  }
-
-  function lastMessageFor(contactId) {
-    const msgs = getAllMessages()[contactId] || [];
-    return msgs.length ? msgs[msgs.length - 1] : null;
-  }
-
-  function escapeHtml(str) {
-    const div = document.createElement("div");
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
-  function formatTime(ts) {
-    const d = new Date(ts);
-    return d.toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
-  }
-
-  // recipientChannel/recipientHandle are optional — when we already know
-  // how to reach the recipient (e.g. their WhatsApp number or email, from
-  // our own contact entry for them), we embed it in the link too. That way,
-  // if they've never used ChillSpace before, their setup screen can be
-  // prefilled with their own info instead of asking them to type it in.
-  function buildChillSpaceLink(senderName, senderChannel, senderHandle, messageContent, recipientChannel, recipientHandle) {
-    const params = new URLSearchParams({
-      sender_name: senderName,
-      sender_channel: senderChannel,
-      sender_handle: senderHandle,
-      message_content: messageContent,
-      // Always the UTC moment the message was sent (ISO 8601, e.g.
-      // 2026-07-26T14:03:00.000Z), not the sender's local time, so chats
-      // sort consistently for everyone regardless of time zone.
-      sent_at: new Date().toISOString()
-    });
-    if (recipientChannel && recipientHandle) {
-      params.set("recipient_channel", recipientChannel);
-      params.set("recipient_handle", recipientHandle);
-    }
-    return BASE_URL + "?" + params.toString();
-  }
-
-  function buildWaLink(contactPhone, text) {
-    return "https://wa.me/" + digitsOnly(contactPhone) + "?text=" + encodeURIComponent(text);
-  }
-
-  function buildMailLink(emailAddress, text) {
-    const subject = "You have a new ChillSpace message!";
-    return "mailto:" + encodeURIComponent(emailAddress) +
-      "?subject=" + encodeURIComponent(subject) +
-      "&body=" + encodeURIComponent(text);
-  }
-
-  function buildIgLink(igUsername, text) {
-    return "https://ig.me/" + encodeURIComponent(igUsername) + "?text=" + encodeURIComponent(text);
-  }
-
-  // A compact JSON transcript of everything ChillSpace has stored locally
-  // for this AI thread so far: [{from, text, sent_at}, ...] in UTC.
-  // This is only ever attached to the outbound link we hand to the AI
-  // provider — it's never read back in when ChillSpace itself loads a URL.
-  function buildContextWindowJSON(contactId) {
-    const msgs = getAllMessages()[contactId] || [];
-    const transcript = msgs.map(m => ({
-      from: m.dir === "sent" ? "user" : "assistant",
-      text: m.text,
-      sent_at: new Date(m.ts).toISOString()
-    }));
-    return JSON.stringify(transcript);
-  }
-
-  // For AI providers we send the ChillSpace link itself rather than the raw
-  // message text. The link's query string (sender_name, message_content,
-  // sent_at, ...) is already plain, labeled text, so a model can read it
-  // directly — this framing just makes sure it does that instead of trying
-  // (and failing) to browse to the URL.
-  function buildAIPrompt(chillSpaceLinkWithContext, providerId, providerName) {
-    const replyTemplate = BASE_URL +
-      "?sender_name=" + encodeURIComponent(providerName) +
-      "&sender_channel=ai" +
-      "&sender_handle=" + encodeURIComponent(providerId) +
-      "&message_content=<your reply, URL-encoded>" +
-      "&sent_at=<current UTC time, e.g. " + new Date().toISOString() + ">";
-    return "You've received a ChillSpace message. You don't need to open the link below — " +
-      "just read its query parameters directly (sender_name, message_content, sent_at, etc). " +
-      "The link also includes a context_window parameter — a JSON transcript of this whole " +
-      "ChillSpace conversation so far, for your reference only. " +
-      "Link: " + chillSpaceLinkWithContext + "\n\n" +
-      "To reply, end your response with a link in exactly this format (fill in message_content " +
-      "with your reply, URL-encoded, and sent_at with the current UTC time). Do NOT include a " +
-      "context_window parameter in your reply link — it isn't needed and will be ignored: " + replyTemplate;
-  }
-
-  function fallbackCopy(text) {
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.opacity = "0";
-    document.body.appendChild(ta);
-    ta.focus();
-    ta.select();
-    try { document.execCommand("copy"); } catch (e) { /* ignore */ }
-    document.body.removeChild(ta);
-  }
-
-  function copyToClipboard(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-      return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
-    }
-    fallbackCopy(text);
-    return Promise.resolve();
-  }
-
-  let toastTimer = null;
-  function showToast(message) {
-    state.toast = message;
-    render();
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      state.toast = null;
-      render();
-    }, 3500);
-  }
-
-  // ---------- App state ----------
-  let state = {
-    view: "loading", // loading | setup | contacts | chat | share
-    activeContactId: null,
-    pendingIncoming: null, // { sender_name, sender_channel, sender_handle, message_content, sent_at } awaiting setup
-    pendingShareText: null, // text awaiting setup, from a ?text= share link
-    shareText: null, // text currently being shared to a contact (share screen)
-    modal: null, // 'addContact' | 'addAI' | null
-    toast: null
-  };
-
-  const app = document.getElementById("app");
-
-  function render() {
-    app.innerHTML = "";
-    if (state.view === "setup") {
-      renderSetup();
-    } else if (state.view === "share") {
-      renderShareScreen();
-    } else if (state.view === "chat") {
-      renderChat();
-    } else {
-      renderContacts();
-    }
-    if (state.modal === "addContact") {
-      renderAddContactModal();
-    } else if (state.modal === "addAI") {
-      renderAddAIModal();
-    }
-  }
-
-  // ---------- Setup screen ----------
-  let setupChannel = "whatsapp";
-  // When a recipient opens an incoming link for the first time, we already
-  // know their own channel/handle (the sender embedded it), so we prefill
-  // it here rather than making them type it in again.
-  let setupPrefillHandle = "";
-
-  function renderSetup() {
-    const wrap = document.createElement("div");
-    wrap.className = "setup-wrap";
-
-    let previewHtml = "";
-    if (state.pendingIncoming) {
-      previewHtml = `
-        <div class="incoming-preview">
-          <div class="from">${escapeHtml(state.pendingIncoming.sender_name)} sent you a message</div>
-          <div>${escapeHtml(state.pendingIncoming.message_content)}</div>
-        </div>
-      `;
-    } else if (state.pendingShareText) {
-      previewHtml = `
-        <div class="incoming-preview">
-          <div class="from">Ready to share</div>
-          <div>${escapeHtml(state.pendingShareText)}</div>
-        </div>
-      `;
-    }
-
-    const channel = getChannel(setupChannel);
-
-    wrap.innerHTML = `
-      <div class="brand" style="justify-content:center;"><span class="dot"></span> ChillSpace Messages</div>
-      <h1>${state.pendingIncoming ? "Someone sent you a message" : (state.pendingShareText ? "Share to a ChillSpace contact" : "Set up your space")}</h1>
-      <p class="lead">${state.pendingIncoming ? "Pick a username to see it and reply." : (state.pendingShareText ? "Set up your space, then pick who to send this to." : "Choose a username and how friends can reach you back.")}</p>
-      ${previewHtml}
-      <div>
-        <label for="su-username">Your username</label>
-        <input id="su-username" type="text" placeholder="e.g. jordan" maxlength="30" />
-        <label>Sign up with</label>
-        <div class="channel-tabs" id="su-channel-tabs">${channelTabsHtml(setupChannel)}</div>
-        <p class="hint" id="su-channel-hint">${escapeHtml(channel.selfHint)}</p>
-        <label for="su-handle" id="su-handle-label">${escapeHtml(channel.label)}</label>
-        <input id="su-handle" type="${channel.inputType}" placeholder="${escapeHtml(channel.placeholder)}" value="${escapeHtml(setupPrefillHandle)}" />
-        ${setupPrefillHandle ? `<p class="hint">We filled this in from the message you received — double check it's right.</p>` : ""}
-        <div id="su-error" class="error-text" style="display:none;"></div>
-      </div>
-      <button class="btn btn-primary btn-block" id="su-continue" style="margin-top:8px;">Continue</button>
-    `;
-    app.appendChild(wrap);
-
-    document.querySelectorAll("#su-channel-tabs .channel-tab").forEach(tab => {
-      tab.addEventListener("click", () => {
-        const nameVal = document.getElementById("su-username").value;
-        setupChannel = tab.getAttribute("data-channel");
-        setupPrefillHandle = ""; // only valid for the originally-suggested channel
-        render();
-        const nameInput = document.getElementById("su-username");
-        if (nameInput) nameInput.value = nameVal;
-      });
-    });
-
-    document.getElementById("su-continue").addEventListener("click", () => {
-      const username = document.getElementById("su-username").value.trim();
-      const rawHandle = document.getElementById("su-handle").value.trim();
-      const activeChannel = getChannel(setupChannel);
-      const errorEl = document.getElementById("su-error");
-      if (!username) {
-        errorEl.textContent = "Please choose a username.";
-        errorEl.style.display = "block";
-        return;
-      }
-      const normalizedHandle = activeChannel.normalize(rawHandle);
-      if (!rawHandle || !activeChannel.isValid(normalizedHandle)) {
-        errorEl.textContent = activeChannel.invalidMessage;
-        errorEl.style.display = "block";
-        return;
-      }
-      setIdentity(username, setupChannel, normalizedHandle);
-
-      if (state.pendingIncoming) {
-        finalizeIncomingMessage(state.pendingIncoming);
-        state.pendingIncoming = null;
-      } else if (state.pendingShareText) {
-        state.shareText = state.pendingShareText;
-        state.pendingShareText = null;
-        state.view = "share";
-      } else {
-        state.view = "contacts";
-      }
-      render();
-    });
-  }
-
-  // ---------- Contacts screen ----------
-  function renderContacts() {
-    const topbar = document.createElement("div");
-    topbar.className = "topbar";
-    topbar.innerHTML = `
-      <div class="brand"><span class="dot"></span> ChillSpace</div>
-      <div class="sub">@${escapeHtml(getUsername())}</div>
-    `;
-    app.appendChild(topbar);
-
-    const screen = document.createElement("div");
-    screen.className = "screen";
-
-    const contacts = getContacts();
-    const allMessages = getAllMessages();
-
-    // Sort by most recent message first (contacts with no messages yet sink
-    // to the bottom, in the order they were added).
-    const decorated = contacts.map(c => {
-      const id = contactKey(c);
-      const msgs = allMessages[id] || [];
-      const last = msgs.length ? msgs[msgs.length - 1] : null;
-      return { contact: c, id: id, last: last };
-    });
-    decorated.sort((a, b) => {
-      const aTs = a.last ? a.last.ts : -Infinity;
-      const bTs = b.last ? b.last.ts : -Infinity;
-      return bTs - aTs;
-    });
-
-    let listHtml = "";
-    if (contacts.length === 0) {
-      listHtml = `
-        <div class="empty-state">
-          <div class="big">🌙</div>
-          <div>No contacts yet.</div>
-          <div>Add a friend's number to start chilling.</div>
-        </div>
-      `;
-    } else {
-      const rows = decorated.map(({ contact: c, id, last }) => {
-        const preview = last ? (last.dir === "sent" ? "You: " : "") + last.text : "No messages yet";
-        const ai = isAIContact(c);
-        const initial = ai ? "✦" : ((c.name || "?").trim().charAt(0).toUpperCase() || "?");
-        return `
-          <button class="contact-row" data-id="${escapeHtml(id)}">
-            <div class="avatar${ai ? " ai" : ""}">${escapeHtml(initial)}</div>
-            <div class="contact-meta">
-              <div class="contact-name">${escapeHtml(c.name)}${ai ? '<span class="ai-tag">AI</span>' : ""}</div>
-              <div class="contact-preview">${escapeHtml(preview)}</div>
-            </div>
-          </button>
-        `;
-      }).join("");
-      listHtml = `<div class="contact-list">${rows}</div>`;
-    }
-
-    screen.innerHTML = `
-      <div class="contacts-header">
-        <h2>Chats</h2>
-        <div class="header-actions">
-          <button class="add-btn" id="add-contact-btn">+ Add contact</button>
-          <button class="add-btn ai-btn" id="add-ai-btn">+ Add AI chat</button>
-          <button class="add-btn import-btn" id="import-contacts-btn">📇 Import contacts</button>
-        </div>
-      </div>
-      ${listHtml}
-      <div class="site-footer-link">
-        <a href="${MAIN_SITE_URL}" target="_blank" rel="noopener">🌐 Visit the ChillSpace site ↗</a>
-      </div>
-    `;
-    app.appendChild(screen);
-
-    document.getElementById("add-contact-btn").addEventListener("click", () => {
-      state.modal = "addContact";
-      render();
-    });
-
-    document.getElementById("add-ai-btn").addEventListener("click", () => {
-      state.modal = "addAI";
-      render();
-    });
-
-    document.getElementById("import-contacts-btn").addEventListener("click", importContacts);
-
-    document.querySelectorAll(".contact-row").forEach(btn => {
-      btn.addEventListener("click", () => {
-        state.activeContactId = btn.getAttribute("data-id");
-        state.view = "chat";
-        render();
-      });
-    });
-  }
-
-  // ---------- Share screen (from a ?text= link, e.g. shared from the main
-  // ChillSpace site) ----------
-  function renderShareScreen() {
-    const topbar = document.createElement("div");
-    topbar.className = "topbar";
-    topbar.innerHTML = `
-      <button class="back-btn" id="share-cancel" aria-label="Cancel">←</button>
-      <div class="brand">Share to a contact</div>
-    `;
-    app.appendChild(topbar);
-
-    const screen = document.createElement("div");
-    screen.className = "screen";
-
-    const contacts = getContacts();
-
-    let listHtml = "";
-    if (contacts.length === 0) {
-      listHtml = `
-        <div class="empty-state">
-          <div class="big">🌙</div>
-          <div>No contacts yet.</div>
-          <div>Add a contact first, then come back and share.</div>
-        </div>
-      `;
-    } else {
-      const rows = contacts.map(c => {
-        const id = contactKey(c);
-        const ai = isAIContact(c);
-        const initial = ai ? "✦" : ((c.name || "?").trim().charAt(0).toUpperCase() || "?");
-        return `
-          <button class="contact-row" data-id="${escapeHtml(id)}">
-            <div class="avatar${ai ? " ai" : ""}">${escapeHtml(initial)}</div>
-            <div class="contact-meta">
-              <div class="contact-name">${escapeHtml(c.name)}${ai ? '<span class="ai-tag">AI</span>' : ""}</div>
-            </div>
-          </button>
-        `;
-      }).join("");
-      listHtml = `<div class="contact-list">${rows}</div>`;
-    }
-
-    screen.innerHTML = `
-      <p class="hint" style="margin-bottom: 8px;">Sending as @${escapeHtml(getUsername())}. Pick who to send this to:</p>
-      <div class="incoming-preview" style="margin-bottom: 20px;">
-        <div>${escapeHtml(state.shareText)}</div>
-      </div>
-      ${listHtml}
-      <div class="modal-actions" style="margin-top: 20px;">
-        <button class="btn btn-ghost btn-block" id="add-contact-from-share-btn">+ Add a new contact</button>
-      </div>
-    `;
-    app.appendChild(screen);
-
-    function exitShare() {
-      state.shareText = null;
-      state.view = "contacts";
-      render();
-    }
-
-    document.getElementById("share-cancel").addEventListener("click", exitShare);
-    document.getElementById("add-contact-from-share-btn").addEventListener("click", () => {
-      state.modal = "addContact";
-      render();
-    });
-
-    document.querySelectorAll(".contact-row").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const contact = findContactById(btn.getAttribute("data-id"));
-        if (!contact) return;
-        const text = state.shareText;
-        state.shareText = null;
-        state.activeContactId = contactKey(contact);
-        state.view = "chat";
-        render();
-        sendMessageToContact(contact, text);
-      });
-    });
-  }
-
-  // ---------- Add contact modal ----------
-  let addContactChannel = "whatsapp";
-
-  function renderAddContactModal() {
-    const backdrop = document.createElement("div");
-    backdrop.className = "modal-backdrop";
-
-    const channel = getChannel(addContactChannel);
-
-    backdrop.innerHTML = `
-      <div class="modal">
-        <h3>Add contact</h3>
-        <p class="hint">Choose how you'll message them, then enter their details.</p>
-        <div class="channel-tabs">${channelTabsHtml(addContactChannel)}</div>
-        <p class="hint" id="ac-channel-hint">${escapeHtml(channel.hint)}</p>
-        <label for="ac-name">Name</label>
-        <input id="ac-name" type="text" placeholder="e.g. Sam" maxlength="40" />
-        <label for="ac-handle" id="ac-handle-label">${escapeHtml(channel.label)}</label>
-        <input id="ac-handle" type="${channel.inputType}" placeholder="${escapeHtml(channel.placeholder)}" />
-        <div id="ac-error" class="error-text" style="display:none;"></div>
-        <div class="modal-actions">
-          <button class="btn btn-ghost" id="ac-cancel" style="flex:1;">Cancel</button>
-          <button class="btn btn-primary" id="ac-save" style="flex:1;">Save</button>
-        </div>
-      </div>
-    `;
-    app.appendChild(backdrop);
-
-    backdrop.addEventListener("click", (e) => {
-      if (e.target === backdrop) { state.modal = null; render(); }
-    });
-
-    document.getElementById("ac-cancel").addEventListener("click", () => {
-      state.modal = null; render();
-    });
-
-    backdrop.querySelectorAll(".channel-tab").forEach(tab => {
-      tab.addEventListener("click", () => {
-        const nameVal = document.getElementById("ac-name").value;
-        addContactChannel = tab.getAttribute("data-channel");
-        render();
-        const nameInput = document.getElementById("ac-name");
-        if (nameInput) nameInput.value = nameVal;
-      });
-    });
-
-    document.getElementById("ac-save").addEventListener("click", () => {
-      const name = document.getElementById("ac-name").value.trim();
-      const rawHandle = document.getElementById("ac-handle").value.trim();
-      const activeChannel = getChannel(addContactChannel);
-      const errorEl = document.getElementById("ac-error");
-      if (!name) {
-        errorEl.textContent = "Please enter a name.";
-        errorEl.style.display = "block";
-        return;
-      }
-      if (!rawHandle || !activeChannel.isValid(activeChannel.normalize(rawHandle))) {
-        errorEl.textContent = activeChannel.invalidMessage;
-        errorEl.style.display = "block";
-        return;
-      }
-      const contact = upsertContact(name, addContactChannel, rawHandle);
-      state.modal = null;
-      if (state.shareText) {
-        state.view = "share";
-      } else {
-        state.activeContactId = contactKey(contact);
-        state.view = "chat";
-      }
-      render();
-    });
-  }
-
-  // ---------- Add AI chat modal ----------
-  function renderAddAIModal() {
-    const backdrop = document.createElement("div");
-    backdrop.className = "modal-backdrop";
-
-    const options = AI_PROVIDERS.map(p => `
-      <button class="provider-option" data-provider="${p.id}">
-        <div class="p-icon">${escapeHtml(p.name.charAt(0))}</div>
-        <div class="p-meta">
-          <div class="p-name">${escapeHtml(p.name)}</div>
-          <div class="p-note">${p.supportsPrefill ? "Opens with your message already typed in" : "Opens the site and copies your message to paste in"}</div>
-        </div>
-      </button>
-    `).join("");
-
-    backdrop.innerHTML = `
-      <div class="modal">
-        <h3>Add an AI chat</h3>
-        <p class="hint">Pick an assistant. Messages you send will open its site directly.</p>
-        <div class="provider-list">${options}</div>
-        <div class="modal-actions">
-          <button class="btn btn-ghost btn-block" id="ai-cancel">Cancel</button>
-        </div>
-      </div>
-    `;
-    app.appendChild(backdrop);
-
-    backdrop.addEventListener("click", (e) => {
-      if (e.target === backdrop) { state.modal = null; render(); }
-    });
-
-    document.getElementById("ai-cancel").addEventListener("click", () => {
-      state.modal = null; render();
-    });
-
-    document.querySelectorAll(".provider-option").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const contact = addAIContact(btn.getAttribute("data-provider"));
-        state.modal = null;
-        state.activeContactId = contactKey(contact);
-        state.view = "chat";
-        render();
-      });
-    });
-  }
-
-  // Sends `text` to `contact` over whatever channel it uses (WhatsApp/email/
-  // Instagram link, or the ChatGPT prefill flow), and records it locally as
-  // a sent message. Shared by the composer's send button and the incoming
-  // ?text= share flow.
-  function sendMessageToContact(contact, text) {
-    const id = contactKey(contact);
-
-    if (isAIContact(contact)) {
-      const provider = getAIProvider(contact.provider);
-      // Snapshot the conversation as it stands *before* this new message,
-      // since the message itself is already carried in message_content.
-      const contextWindow = buildContextWindowJSON(id);
-
-      addMessage(id, { dir: "sent", text: text, ts: Date.now() });
-
-      const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
-      const linkWithContext = link + "&context_window=" + encodeURIComponent(contextWindow);
-
-      // Send the link itself rather than the raw text, framed so the
-      // assistant reads it straight off the query string (sender_name,
-      // message_content, sent_at, ...) instead of trying to browse it.
-      const aiPrompt = buildAIPrompt(linkWithContext, provider.id, provider.name);
-      if (provider.supportsPrefill) {
-        window.open(provider.url + encodeURIComponent(aiPrompt), "_blank", "noopener");
-      } else {
-        copyToClipboard(aiPrompt).then(() => {
-          window.open(provider.url, "_blank", "noopener");
-          showToast(`Copied — paste your message into ${provider.name}.`);
-        });
-      }
-      return;
-    }
-
-    // Save locally as sent
-    addMessage(id, { dir: "sent", text: text, ts: Date.now() });
-
-    // Build the ChillSpace link (with UTC send time) embedding sender
-    // identity + message, plus the recipient's own channel/handle (so their
-    // setup screen can autofill it if they're new to ChillSpace), then hand
-    // it off via the contact's channel.
-    const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text, contact.channel, contact.handle);
-    const outLink = getChannel(contact.channel).buildLink(contact.handle, link);
-    window.location.href = outLink;
-  }
-
-  // ---------- Chat screen ----------
-  function renderChat() {
-    const contact = findContactById(state.activeContactId) ||
-      { name: state.activeContactId, channel: "whatsapp", handle: state.activeContactId };
-
-    const ai = isAIContact(contact);
-    const provider = ai ? getAIProvider(contact.provider) : null;
-    const channel = ai ? null : getChannel(contact.channel);
-
-    const topbar = document.createElement("div");
-    topbar.className = "topbar";
-    topbar.innerHTML = `
-      <button class="back-btn" id="chat-back" aria-label="Back">←</button>
-      <div class="brand">${escapeHtml(contact.name)}</div>
-      <div class="sub">${ai ? "AI chat" : escapeHtml(contact.handle)}</div>
-    `;
-    app.appendChild(topbar);
-
-    const chatScreen = document.createElement("div");
-    chatScreen.className = "chat-screen";
-
-    const msgs = getAllMessages()[contactKey(contact)] || [];
-    let msgsHtml = "";
-    if (msgs.length === 0) {
-      msgsHtml = `<div class="empty-chat">No messages yet with ${escapeHtml(contact.name)}. Send the first one!</div>`;
-    } else {
-      msgsHtml = msgs.map(m => `
-        <div class="bubble-row ${m.dir === 'sent' ? 'me' : 'them'}">
-          <div class="bubble">
-            ${escapeHtml(m.text)}
-            <span class="time">${formatTime(m.ts)}</span>
-          </div>
-        </div>
-      `).join("");
-    }
-
-    const note = ai
-      ? (provider.supportsPrefill
-          ? `Sending opens ${provider.name} in a new tab with a ChillSpace link ready to send.`
-          : `Sending opens ${provider.name} in a new tab and copies a ChillSpace link — paste it in there.`)
-      : channel.sendNote;
-
-    chatScreen.innerHTML = `
-      <div class="messages" id="messages-pane">${msgsHtml}</div>
-      <div class="whatsapp-note">${note}</div>
-      <div class="composer">
-        <input id="chat-input" type="text" placeholder="Type a message..." maxlength="500" />
-        <button class="send-btn" id="chat-send" aria-label="Send">➤</button>
-      </div>
-    `;
-    app.appendChild(chatScreen);
-
-    if (state.toast) {
-      const toastEl = document.createElement("div");
-      toastEl.className = "toast";
-      toastEl.textContent = state.toast;
-      chatScreen.appendChild(toastEl);
-    }
-
-    const pane = document.getElementById("messages-pane");
-    pane.scrollTop = pane.scrollHeight;
-
-    document.getElementById("chat-back").addEventListener("click", () => {
-      state.view = "contacts";
-      state.activeContactId = null;
-      render();
-    });
-
-    const input = document.getElementById("chat-input");
-    const sendBtn = document.getElementById("chat-send");
-
-    function trySend() {
-      const text = input.value.trim();
-      if (!text) return;
-      input.value = "";
-      render();
-      sendMessageToContact(contact, text);
-    }
-
-    sendBtn.addEventListener("click", trySend);
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") trySend();
-    });
-    input.addEventListener("focus", () => {
-      setTimeout(() => {
-        input.scrollIntoView({ block: "end", behavior: "smooth" });
-      }, 250);
-    });
-  }
-
-  // ---------- Incoming link handling ----------
-  function finalizeIncomingMessage(incoming) {
-    let contact;
-    if (incoming.sender_channel === "ai") {
-      // A reply link from an AI provider (e.g. ChatGPT) — merge it back
-      // into the existing AI contact's thread rather than creating a new
-      // human-style contact.
-      contact = addAIContact(incoming.sender_handle);
-      if (!contact) {
-        // Unknown provider id — fall back to a plain contact so the
-        // message isn't silently dropped.
-        contact = upsertContact(incoming.sender_name, "whatsapp", incoming.sender_handle);
-      }
-    } else {
-      // Add them back using whichever channel *they* signed up with, so
-      // replying uses the right kind of link (WhatsApp/email/Instagram).
-      const channelId = CHANNELS[incoming.sender_channel] ? incoming.sender_channel : "whatsapp";
-      contact = upsertContact(incoming.sender_name, channelId, incoming.sender_handle);
-    }
-    // Prefer the sender's original UTC send time (sent_at) so the chat
-    // sorts by when the message was actually sent, not when it was opened.
-    const ts = incoming.sent_at ? new Date(incoming.sent_at).getTime() : Date.now();
-    addMessage(contactKey(contact), {
-      dir: "received",
-      text: incoming.message_content,
-      ts: isNaN(ts) ? Date.now() : ts
-    });
-    state.activeContactId = contactKey(contact);
-    state.view = "chat";
-  }
-
-  function readIncomingParams() {
-    const params = new URLSearchParams(window.location.search);
-    const senderName = params.get("sender_name");
-    const messageContent = params.get("message_content");
-    const sentAt = params.get("sent_at");
-    // New links carry sender_channel + sender_handle. Older links only
-    // had sender_number, which was always a WhatsApp phone number.
-    const senderChannel = params.get("sender_channel") || (params.get("sender_number") ? "whatsapp" : null);
-    const senderHandle = params.get("sender_handle") || params.get("sender_number");
-    // The recipient's own channel/handle, if the sender knew it — lets us
-    // prefill a first-time recipient's setup screen with their own info.
-    const recipientChannel = params.get("recipient_channel");
-    const recipientHandle = params.get("recipient_handle");
-    if (senderName && senderChannel && senderHandle && messageContent) {
-      return {
-        sender_name: senderName,
-        sender_channel: senderChannel,
-        sender_handle: senderHandle,
-        message_content: messageContent,
-        sent_at: sentAt,
-        recipient_channel: recipientChannel,
-        recipient_handle: recipientHandle
-      };
-    }
-    return null;
-  }
-
-  function setupViewportTracking() {
-    if (!window.visualViewport) return;
-    const vv = window.visualViewport;
-    function update() {
-      document.documentElement.style.setProperty("--app-height", vv.height + "px");
-    }
-    vv.addEventListener("resize", update);
-    vv.addEventListener("scroll", update);
-    update();
-  }
-
-  // ---------- One-time migration ----------
-  // Contacts/messages saved before this update used a plain {name, phone}
-  // shape and message keys were just digitsOnly(phone) (or "ai:<provider>").
-  // This update introduced {name, channel, handle} contacts and prefixed
-  // message keys (e.g. "wa:15551234567") so email/Instagram contacts don't
-  // collide with WhatsApp ones. Without this step, old contacts would still
-  // show up (their `name` still reads fine) but their message history would
-  // look empty, because it's saved under the old, unprefixed key.
-  function migrateLegacyData() {
-    const contacts = getContacts();
-    const isLegacy = contacts.some(c => !c.channel);
-    if (!isLegacy) return;
-
-    const allMessages = getAllMessages();
-    const migratedContacts = contacts.map(c => {
-      if (c.channel) return c; // already new-format, leave untouched
-
-      const wasAI = c.type === "ai" || (typeof c.phone === "string" && c.phone.indexOf("ai:") === 0);
-      if (wasAI) {
-        // AI keys were already "ai:<provider>" before and after, so no
-        // message remapping is needed for these.
-        return { name: c.name, channel: "ai", provider: c.provider || (c.phone || "").slice(3) };
-      }
-
-      const oldKey = digitsOnly(c.phone || "");
-      const newContact = { name: c.name, channel: "whatsapp", handle: normalizePhone(c.phone || "") };
-      const newKey = contactKey(newContact);
-      if (allMessages[oldKey] && !allMessages[newKey]) {
-        allMessages[newKey] = allMessages[oldKey];
-      }
-      return newContact;
-    });
-
-    saveContacts(migratedContacts);
-    saveAllMessages(allMessages);
-  }
-
-  function init() {
-    migrateLegacyData();
-    setupViewportTracking();
-
-    const params = new URLSearchParams(window.location.search);
-    const sharedText = params.get("text");
-    const incoming = sharedText ? null : readIncomingParams();
-
-    if (incoming || sharedText !== null) {
-      // Clean the URL so a refresh doesn't re-process the same link.
-      const cleanUrl = window.location.origin + window.location.pathname;
-      window.history.replaceState({}, document.title, cleanUrl);
-    }
-
-    if (!getUsername()) {
-      state.view = "setup";
-      state.pendingIncoming = incoming;
-      state.pendingShareText = sharedText;
-      if (incoming && incoming.recipient_channel && incoming.recipient_handle && CHANNELS[incoming.recipient_channel]) {
-        setupChannel = incoming.recipient_channel;
-        setupPrefillHandle = incoming.recipient_handle;
-      }
-    } else if (incoming) {
-      finalizeIncomingMessage(incoming);
-    } else if (sharedText !== null) {
-      state.shareText = sharedText;
-      state.view = "share";
-    } else {
-      state.view = "contacts";
-    }
-
-    render();
-  }
-
-  init();
-})();
-</script>
+    <div id="app"></div>
+
+    <script>
+        (function() {
+            "use strict";
+
+            const STORAGE_KEYS = {
+                username: "cs_username",
+                myChannel: "cs_my_channel",
+                myHandle: "cs_my_handle",
+                contacts: "cs_contacts",
+                messages: "cs_messages"
+            };
+
+            const BASE_URL = "https://chill-space.pages.dev/messages";
+            const MAIN_SITE_URL = "https://chill-space.pages.dev/";
+
+            const AI_PROVIDERS = [
+                { id: "chatgpt", name: "ChatGPT", supportsPrefill: true, url: "https://chatgpt.com/?q=" }
+            ];
+
+            function getAIProvider(id) {
+                return AI_PROVIDERS.find(p => p.id === id);
+            }
+
+            // ---------- Storage helpers ----------
+            function getUsername() { return localStorage.getItem(STORAGE_KEYS.username) || ""; }
+
+            function getMyChannel() { return localStorage.getItem(STORAGE_KEYS.myChannel) || "whatsapp"; }
+
+            function getMyHandle() { return localStorage.getItem(STORAGE_KEYS.myHandle) || ""; }
+
+            function setIdentity(username, channel, handle) {
+                localStorage.setItem(STORAGE_KEYS.username, username);
+                localStorage.setItem(STORAGE_KEYS.myChannel, channel);
+                localStorage.setItem(STORAGE_KEYS.myHandle, handle);
+            }
+
+            function getContacts() {
+                try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.contacts)) || []; } catch (e) { return []; }
+            }
+
+            function saveContacts(list) {
+                localStorage.setItem(STORAGE_KEYS.contacts, JSON.stringify(list));
+            }
+
+            function getAllMessages() {
+                try { return JSON.parse(localStorage.getItem(STORAGE_KEYS.messages)) || {}; } catch (e) { return {}; }
+            }
+
+            function saveAllMessages(obj) {
+                localStorage.setItem(STORAGE_KEYS.messages, JSON.stringify(obj));
+            }
+
+            function normalizePhone(raw) {
+                let trimmed = raw.trim();
+                let plus = trimmed.startsWith("+") ? "+" : "";
+                let digits = trimmed.replace(/[^\d]/g, "");
+                return plus + digits;
+            }
+
+            function digitsOnly(raw) {
+                return raw.replace(/[^\d]/g, "");
+            }
+
+            // ---------- Channels ----------
+            const CHANNELS = {
+                whatsapp: {
+                    label: "WhatsApp",
+                    inputType: "tel",
+                    placeholder: "e.g. +15559876543",
+                    hint: "Enter their name and phone number with country code.",
+                    selfHint: "Enter your name and phone number with country code.",
+                    normalize: (raw) => normalizePhone(raw),
+                    isValid: (handle) => digitsOnly(handle).length >= 7,
+                    invalidMessage: "Please enter a valid phone number with country code.",
+                    key: (handle) => "wa:" + digitsOnly(handle),
+                    buildLink: (handle, chillSpaceLink) => buildWaLink(handle, chillSpaceLink),
+                    sendNote: "Sending opens WhatsApp to deliver your message link."
+                },
+                email: {
+                    label: "Email",
+                    inputType: "text",
+                    placeholder: "e.g. sam@example.com",
+                    hint: "Enter their name and email address.",
+                    selfHint: "Enter your name and email address.",
+                    normalize: (raw) => raw.trim().toLowerCase(),
+                    isValid: (handle) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(handle),
+                    invalidMessage: "Please enter a valid email address.",
+                    key: (handle) => "email:" + handle.trim().toLowerCase(),
+                    buildLink: (handle, chillSpaceLink) => buildMailLink(handle, chillSpaceLink),
+                    sendNote: "Sending opens your email app to deliver your message link."
+                },
+                instagram: {
+                    label: "Instagram",
+                    inputType: "text",
+                    placeholder: "e.g. sam.does.things",
+                    hint: "Enter their name and Instagram username.",
+                    selfHint: "Enter your name and Instagram username.",
+                    normalize: (raw) => raw.trim().replace(/^@/, "").toLowerCase(),
+                    isValid: (handle) => handle.length >= 1,
+                    invalidMessage: "Please enter a valid Instagram username.",
+                    key: (handle) => "ig:" + handle.trim().replace(/^@/, "").toLowerCase(),
+                    buildLink: (handle, chillSpaceLink) => buildIgLink(handle, chillSpaceLink),
+                    sendNote: "Sending opens Instagram to deliver your message link."
+                }
+            };
+
+            function getChannel(id) {
+                return CHANNELS[id] || CHANNELS.whatsapp;
+            }
+
+            function channelTabsHtml(selectedId) {
+                return Object.keys(CHANNELS).map(id => `
+              <button type="button" class="channel-tab${id === selectedId ? " active" : ""}" data-channel="${id}">
+                ${escapeHtml(CHANNELS[id].label)}
+              </button>
+            `).join("");
+            }
+
+            function contactKey(contact) {
+                if (!contact) return "";
+                if (contact.channel === "ai") return "ai:" + contact.provider;
+                return getChannel(contact.channel).key(contact.handle || "");
+            }
+
+            function isAIContact(contact) {
+                return !!contact && contact.channel === "ai";
+            }
+
+            function findContactById(id) {
+                return getContacts().find(c => contactKey(c) === id);
+            }
+
+            function upsertContact(name, channelId, rawHandle) {
+                const channel = getChannel(channelId);
+                const handle = channel.normalize(rawHandle);
+                const draft = { channel: channelId, handle: handle };
+                const target = contactKey(draft);
+                const contacts = getContacts();
+                const existing = contacts.find(c => contactKey(c) === target);
+                if (existing) {
+                    existing.name = name || existing.name;
+                    saveContacts(contacts);
+                    return existing;
+                }
+                const contact = { name: name || handle, channel: channelId, handle: handle };
+                contacts.push(contact);
+                saveContacts(contacts);
+                return contact;
+            }
+
+            function addAIContact(providerId) {
+                const provider = getAIProvider(providerId);
+                if (!provider) return null;
+                const contacts = getContacts();
+                const key = "ai:" + providerId;
+                let existing = contacts.find(c => contactKey(c) === key);
+                if (!existing) {
+                    existing = { name: provider.name, channel: "ai", provider: providerId };
+                    contacts.push(existing);
+                    saveContacts(contacts);
+                }
+                return existing;
+            }
+
+            function contactPickerSupported() {
+                return !!(navigator.contacts && window.ContactsManager);
+            }
+
+            async function importContacts() {
+                let added = 0;
+                let contactsToProcess = [];
+
+                if (window.AndroidContacts) {
+                    try {
+                        const json = window.AndroidContacts.getContacts();
+                        const androidContacts = JSON.parse(json);
+                        if (androidContacts && androidContacts.length > 0) {
+                            contactsToProcess = androidContacts.map(c => ({
+                                name: c.name || "Unnamed contact",
+                                phone: c.phone || "",
+                                email: null
+                            }));
+                        }
+                    } catch (e) {
+                        console.warn("Android contact fetch failed:", e);
+                    }
+                }
+
+                if (contactsToProcess.length === 0) {
+                    if (!navigator.contacts || !navigator.contacts.select) {
+                        showToast("Contact import isn't supported on this browser/device.");
+                        return;
+                    }
+                    let people;
+                    try {
+                        people = await navigator.contacts.select(["name", "tel", "email"], { multiple: true });
+                    } catch (err) {
+                        return;
+                    }
+                    if (!people || people.length === 0) return;
+                    people.forEach(person => {
+                        const name = (person.name && person.name[0]) || "Unnamed contact";
+                        const phone = person.tel && person.tel[0];
+                        const email = person.email && person.email[0];
+                        contactsToProcess.push({ name, phone, email });
+                    });
+                }
+
+                if (contactsToProcess.length === 0) {
+                    showToast("No contacts found to import.");
+                    return;
+                }
+
+                contactsToProcess.forEach(({ name, phone, email }) => {
+                    if (phone) {
+                        upsertContact(name, "whatsapp", phone);
+                        added++;
+                    } else if (email) {
+                        upsertContact(name, "email", email);
+                        added++;
+                    }
+                });
+
+                showToast(added > 0 ?
+                    `Imported ${added} contact${added === 1 ? "" : "s"}.` :
+                    "Those contacts didn't have a phone number or email to import.");
+                render();
+            }
+
+            function addMessage(contactId, entry) {
+                const all = getAllMessages();
+                if (!all[contactId]) all[contactId] = [];
+                all[contactId].push(entry);
+                saveAllMessages(all);
+            }
+
+            function lastMessageFor(contactId) {
+                const msgs = getAllMessages()[contactId] || [];
+                return msgs.length ? msgs[msgs.length - 1] : null;
+            }
+
+            function escapeHtml(str) {
+                const div = document.createElement("div");
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            function formatTime(ts) {
+                const d = new Date(ts);
+                return d.toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+            }
+
+            function buildChillSpaceLink(senderName, senderChannel, senderHandle, messageContent, recipientChannel,
+                recipientHandle) {
+                const params = new URLSearchParams({
+                    sender_name: senderName,
+                    sender_channel: senderChannel,
+                    sender_handle: senderHandle,
+                    message_content: messageContent,
+                    sent_at: new Date().toISOString()
+                });
+                if (recipientChannel && recipientHandle) {
+                    params.set("recipient_channel", recipientChannel);
+                    params.set("recipient_handle", recipientHandle);
+                }
+                return BASE_URL + "?" + params.toString();
+            }
+
+            function buildWaLink(contactPhone, text) {
+                return "https://wa.me/" + digitsOnly(contactPhone) + "?text=" + encodeURIComponent(text);
+            }
+
+            function buildMailLink(emailAddress, text) {
+                const subject = "You have a new ChillSpace message!";
+                return "mailto:" + encodeURIComponent(emailAddress) +
+                    "?subject=" + encodeURIComponent(subject) +
+                    "&body=" + encodeURIComponent(text);
+            }
+
+            function buildIgLink(igUsername, text) {
+                return "https://ig.me/" + encodeURIComponent(igUsername) + "?text=" + encodeURIComponent(text);
+            }
+
+            function buildContextWindowJSON(contactId) {
+                const msgs = getAllMessages()[contactId] || [];
+                const transcript = msgs.map(m => ({
+                    from: m.dir === "sent" ? "user" : "assistant",
+                    text: m.text,
+                    sent_at: new Date(m.ts).toISOString()
+                }));
+                return JSON.stringify(transcript);
+            }
+
+            function buildAIPrompt(chillSpaceLinkWithContext, providerId, providerName) {
+                const replyTemplate = BASE_URL +
+                    "?sender_name=" + encodeURIComponent(providerName) +
+                    "&sender_channel=ai" +
+                    "&sender_handle=" + encodeURIComponent(providerId) +
+                    "&message_content=<your reply, URL-encoded>" +
+                    "&sent_at=<current UTC time, e.g. " + new Date().toISOString() + ">";
+                return "You've received a ChillSpace message. You don't need to open the link below — " +
+                    "just read its query parameters directly (sender_name, message_content, sent_at, etc). " +
+                    "The link also includes a context_window parameter — a JSON transcript of this whole " +
+                    "ChillSpace conversation so far, for your reference only. " +
+                    "Link: " + chillSpaceLinkWithContext + "\n\n" +
+                    "To reply, end your response with a link in exactly this format (fill in message_content " +
+                    "with your reply, URL-encoded, and sent_at with the current UTC time). Do NOT include a " +
+                    "context_window parameter in your reply link — it isn't needed and will be ignored: " +
+                    replyTemplate;
+            }
+
+            function fallbackCopy(text) {
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                ta.style.position = "fixed";
+                ta.style.opacity = "0";
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                try { document.execCommand("copy"); } catch (e) { /* ignore */ }
+                document.body.removeChild(ta);
+            }
+
+            function copyToClipboard(text) {
+                if (navigator.clipboard && window.isSecureContext) {
+                    return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+                }
+                fallbackCopy(text);
+                return Promise.resolve();
+            }
+
+            let toastTimer = null;
+
+            function showToast(message) {
+                state.toast = message;
+                render();
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    state.toast = null;
+                    render();
+                }, 3500);
+            }
+
+            // ---------- Render message with clickable ChillSpace links ----------
+            // This function takes raw message text and returns HTML with all
+            // chill-space.pages.dev URLs turned into clickable <a> tags.
+            // Other URLs remain as plain escaped text.
+            function renderMessageWithLinks(text) {
+                // Regex that matches chill-space.pages.dev URLs with or without protocol,
+                // with or without www, and stops at whitespace or common punctuation
+                // that shouldn't be part of the link.
+                const urlRegex = /(?:https?:\/\/)?(?:www\.)?chill-space\.pages\.dev[^\s<>".,!?;:]*/gi;
+
+                // First escape the entire text to prevent XSS.
+                let escaped = escapeHtml(text);
+
+                // Find all chill-space.pages.dev URLs in the escaped text and replace
+                // them with anchor tags. We use the escaped version for both href
+                // and link text so everything stays safe. The href will have &amp;
+                // for any & in the URL, which the browser will decode correctly.
+                let result = escaped.replace(urlRegex, function(match) {
+                    let href = match;
+                    // If the URL doesn't have a protocol, add https://
+                    if (!href.startsWith('http://') && !href.startsWith('https://')) {
+                        href = 'https://' + href;
+                    }
+                    // Use a dedicated class so we can style it distinctively.
+                    return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="chill-link">${match}</a>`;
+                });
+
+                return result;
+            }
+
+            // ---------- App state ----------
+            let state = {
+                view: "loading",
+                activeContactId: null,
+                pendingIncoming: null,
+                pendingShareText: null,
+                shareText: null,
+                modal: null,
+                toast: null
+            };
+
+            const app = document.getElementById("app");
+
+            function render() {
+                app.innerHTML = "";
+                if (state.view === "setup") {
+                    renderSetup();
+                } else if (state.view === "share") {
+                    renderShareScreen();
+                } else if (state.view === "chat") {
+                    renderChat();
+                } else {
+                    renderContacts();
+                }
+                if (state.modal === "addContact") {
+                    renderAddContactModal();
+                } else if (state.modal === "addAI") {
+                    renderAddAIModal();
+                }
+            }
+
+            // ---------- Setup screen ----------
+            let setupChannel = "whatsapp";
+            let setupPrefillHandle = "";
+
+            function renderSetup() {
+                const wrap = document.createElement("div");
+                wrap.className = "setup-wrap";
+
+                let previewHtml = "";
+                if (state.pendingIncoming) {
+                    previewHtml = `
+                <div class="incoming-preview">
+                  <div class="from">${escapeHtml(state.pendingIncoming.sender_name)} sent you a message</div>
+                  <div>${escapeHtml(state.pendingIncoming.message_content)}</div>
+                </div>
+              `;
+                } else if (state.pendingShareText) {
+                    previewHtml = `
+                <div class="incoming-preview">
+                  <div class="from">Ready to share</div>
+                  <div>${escapeHtml(state.pendingShareText)}</div>
+                </div>
+              `;
+                }
+
+                const channel = getChannel(setupChannel);
+
+                wrap.innerHTML = `
+              <div class="brand" style="justify-content:center;"><span class="dot"></span> ChillSpace Messages</div>
+              <h1>${state.pendingIncoming ? "Someone sent you a message" : (state.pendingShareText ? "Share to a ChillSpace contact" : "Set up your space")}</h1>
+              <p class="lead">${state.pendingIncoming ? "Pick a username to see it and reply." : (state.pendingShareText ? "Set up your space, then pick who to send this to." : "Choose a username and how friends can reach you back.")}</p>
+              ${previewHtml}
+              <div>
+                <label for="su-username">Your username</label>
+                <input id="su-username" type="text" placeholder="e.g. jordan" maxlength="30" />
+                <label>Sign up with</label>
+                <div class="channel-tabs" id="su-channel-tabs">${channelTabsHtml(setupChannel)}</div>
+                <p class="hint" id="su-channel-hint">${escapeHtml(channel.selfHint)}</p>
+                <label for="su-handle" id="su-handle-label">${escapeHtml(channel.label)}</label>
+                <input id="su-handle" type="${channel.inputType}" placeholder="${escapeHtml(channel.placeholder)}" value="${escapeHtml(setupPrefillHandle)}" />
+                ${setupPrefillHandle ? `<p class="hint">We filled this in from the message you received — double check it's right.</p>` : ""}
+                <div id="su-error" class="error-text" style="display:none;"></div>
+              </div>
+              <button class="btn btn-primary btn-block" id="su-continue" style="margin-top:8px;">Continue</button>
+            `;
+                app.appendChild(wrap);
+
+                document.querySelectorAll("#su-channel-tabs .channel-tab").forEach(tab => {
+                    tab.addEventListener("click", () => {
+                        const nameVal = document.getElementById("su-username").value;
+                        setupChannel = tab.getAttribute("data-channel");
+                        setupPrefillHandle = "";
+                        render();
+                        const nameInput = document.getElementById("su-username");
+                        if (nameInput) nameInput.value = nameVal;
+                    });
+                });
+
+                document.getElementById("su-continue").addEventListener("click", () => {
+                    const username = document.getElementById("su-username").value.trim();
+                    const rawHandle = document.getElementById("su-handle").value.trim();
+                    const activeChannel = getChannel(setupChannel);
+                    const errorEl = document.getElementById("su-error");
+                    if (!username) {
+                        errorEl.textContent = "Please choose a username.";
+                        errorEl.style.display = "block";
+                        return;
+                    }
+                    const normalizedHandle = activeChannel.normalize(rawHandle);
+                    if (!rawHandle || !activeChannel.isValid(normalizedHandle)) {
+                        errorEl.textContent = activeChannel.invalidMessage;
+                        errorEl.style.display = "block";
+                        return;
+                    }
+                    setIdentity(username, setupChannel, normalizedHandle);
+
+                    if (state.pendingIncoming) {
+                        finalizeIncomingMessage(state.pendingIncoming);
+                        state.pendingIncoming = null;
+                    } else if (state.pendingShareText) {
+                        state.shareText = state.pendingShareText;
+                        state.pendingShareText = null;
+                        state.view = "share";
+                    } else {
+                        state.view = "contacts";
+                    }
+                    render();
+                });
+            }
+
+            // ---------- Contacts screen ----------
+            function renderContacts() {
+                const topbar = document.createElement("div");
+                topbar.className = "topbar";
+                topbar.innerHTML = `
+              <div class="brand"><span class="dot"></span> ChillSpace</div>
+              <div class="sub">@${escapeHtml(getUsername())}</div>
+            `;
+                app.appendChild(topbar);
+
+                const screen = document.createElement("div");
+                screen.className = "screen";
+
+                const contacts = getContacts();
+                const allMessages = getAllMessages();
+
+                const decorated = contacts.map(c => {
+                    const id = contactKey(c);
+                    const msgs = allMessages[id] || [];
+                    const last = msgs.length ? msgs[msgs.length - 1] : null;
+                    return { contact: c, id: id, last: last };
+                });
+                decorated.sort((a, b) => {
+                    const aTs = a.last ? a.last.ts : -Infinity;
+                    const bTs = b.last ? b.last.ts : -Infinity;
+                    return bTs - aTs;
+                });
+
+                let listHtml = "";
+                if (contacts.length === 0) {
+                    listHtml = `
+                <div class="empty-state">
+                  <div class="big">🌙</div>
+                  <div>No contacts yet.</div>
+                  <div>Add a friend's number to start chilling.</div>
+                </div>
+              `;
+                } else {
+                    const rows = decorated.map(({ contact: c, id, last }) => {
+                        const preview = last ? (last.dir === "sent" ? "You: " : "") + last.text :
+                        "No messages yet";
+                        const ai = isAIContact(c);
+                        const initial = ai ? "✦" : ((c.name || "?").trim().charAt(0).toUpperCase() || "?");
+                        return `
+                  <button class="contact-row" data-id="${escapeHtml(id)}">
+                    <div class="avatar${ai ? " ai" : ""}">${escapeHtml(initial)}</div>
+                    <div class="contact-meta">
+                      <div class="contact-name">${escapeHtml(c.name)}${ai ? '<span class="ai-tag">AI</span>' : ""}</div>
+                      <div class="contact-preview">${escapeHtml(preview)}</div>
+                    </div>
+                  </button>
+                `;
+                    }).join("");
+                    listHtml = `<div class="contact-list">${rows}</div>`;
+                }
+
+                screen.innerHTML = `
+              <div class="contacts-header">
+                <h2>Chats</h2>
+                <div class="header-actions">
+                  <button class="add-btn" id="add-contact-btn">+ Add contact</button>
+                  <button class="add-btn ai-btn" id="add-ai-btn">+ Add AI chat</button>
+                  <button class="add-btn import-btn" id="import-contacts-btn">📇 Import contacts</button>
+                </div>
+              </div>
+              ${listHtml}
+              <div class="site-footer-link">
+                <a href="${MAIN_SITE_URL}" target="_blank" rel="noopener">🌐 Visit the ChillSpace site ↗</a>
+              </div>
+            `;
+                app.appendChild(screen);
+
+                document.getElementById("add-contact-btn").addEventListener("click", () => {
+                    state.modal = "addContact";
+                    render();
+                });
+
+                document.getElementById("add-ai-btn").addEventListener("click", () => {
+                    state.modal = "addAI";
+                    render();
+                });
+
+                document.getElementById("import-contacts-btn").addEventListener("click", importContacts);
+
+                document.querySelectorAll(".contact-row").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        state.activeContactId = btn.getAttribute("data-id");
+                        state.view = "chat";
+                        render();
+                    });
+                });
+            }
+
+            // ---------- Share screen ----------
+            function renderShareScreen() {
+                const topbar = document.createElement("div");
+                topbar.className = "topbar";
+                topbar.innerHTML = `
+              <button class="back-btn" id="share-cancel" aria-label="Cancel">←</button>
+              <div class="brand">Share to a contact</div>
+            `;
+                app.appendChild(topbar);
+
+                const screen = document.createElement("div");
+                screen.className = "screen";
+
+                const contacts = getContacts();
+
+                let listHtml = "";
+                if (contacts.length === 0) {
+                    listHtml = `
+                <div class="empty-state">
+                  <div class="big">🌙</div>
+                  <div>No contacts yet.</div>
+                  <div>Add a contact first, then come back and share.</div>
+                </div>
+              `;
+                } else {
+                    const rows = contacts.map(c => {
+                        const id = contactKey(c);
+                        const ai = isAIContact(c);
+                        const initial = ai ? "✦" : ((c.name || "?").trim().charAt(0).toUpperCase() || "?");
+                        return `
+                  <button class="contact-row" data-id="${escapeHtml(id)}">
+                    <div class="avatar${ai ? " ai" : ""}">${escapeHtml(initial)}</div>
+                    <div class="contact-meta">
+                      <div class="contact-name">${escapeHtml(c.name)}${ai ? '<span class="ai-tag">AI</span>' : ""}</div>
+                    </div>
+                  </button>
+                `;
+                    }).join("");
+                    listHtml = `<div class="contact-list">${rows}</div>`;
+                }
+
+                screen.innerHTML = `
+              <p class="hint" style="margin-bottom: 8px;">Sending as @${escapeHtml(getUsername())}. Pick who to send this to:</p>
+              <div class="incoming-preview" style="margin-bottom: 20px;">
+                <div>${escapeHtml(state.shareText)}</div>
+              </div>
+              ${listHtml}
+              <div class="modal-actions" style="margin-top: 20px;">
+                <button class="btn btn-ghost btn-block" id="add-contact-from-share-btn">+ Add a new contact</button>
+              </div>
+            `;
+                app.appendChild(screen);
+
+                function exitShare() {
+                    state.shareText = null;
+                    state.view = "contacts";
+                    render();
+                }
+
+                document.getElementById("share-cancel").addEventListener("click", exitShare);
+                document.getElementById("add-contact-from-share-btn").addEventListener("click", () => {
+                    state.modal = "addContact";
+                    render();
+                });
+
+                document.querySelectorAll(".contact-row").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const contact = findContactById(btn.getAttribute("data-id"));
+                        if (!contact) return;
+                        const text = state.shareText;
+                        state.shareText = null;
+                        state.activeContactId = contactKey(contact);
+                        state.view = "chat";
+                        render();
+                        sendMessageToContact(contact, text);
+                    });
+                });
+            }
+
+            // ---------- Add contact modal ----------
+            let addContactChannel = "whatsapp";
+
+            function renderAddContactModal() {
+                const backdrop = document.createElement("div");
+                backdrop.className = "modal-backdrop";
+
+                const channel = getChannel(addContactChannel);
+
+                backdrop.innerHTML = `
+              <div class="modal">
+                <h3>Add contact</h3>
+                <p class="hint">Choose how you'll message them, then enter their details.</p>
+                <div class="channel-tabs">${channelTabsHtml(addContactChannel)}</div>
+                <p class="hint" id="ac-channel-hint">${escapeHtml(channel.hint)}</p>
+                <label for="ac-name">Name</label>
+                <input id="ac-name" type="text" placeholder="e.g. Sam" maxlength="40" />
+                <label for="ac-handle" id="ac-handle-label">${escapeHtml(channel.label)}</label>
+                <input id="ac-handle" type="${channel.inputType}" placeholder="${escapeHtml(channel.placeholder)}" />
+                <div id="ac-error" class="error-text" style="display:none;"></div>
+                <div class="modal-actions">
+                  <button class="btn btn-ghost" id="ac-cancel" style="flex:1;">Cancel</button>
+                  <button class="btn btn-primary" id="ac-save" style="flex:1;">Save</button>
+                </div>
+              </div>
+            `;
+                app.appendChild(backdrop);
+
+                backdrop.addEventListener("click", (e) => {
+                    if (e.target === backdrop) { state.modal = null;
+                        render(); }
+                });
+
+                document.getElementById("ac-cancel").addEventListener("click", () => {
+                    state.modal = null;
+                    render();
+                });
+
+                backdrop.querySelectorAll(".channel-tab").forEach(tab => {
+                    tab.addEventListener("click", () => {
+                        const nameVal = document.getElementById("ac-name").value;
+                        addContactChannel = tab.getAttribute("data-channel");
+                        render();
+                        const nameInput = document.getElementById("ac-name");
+                        if (nameInput) nameInput.value = nameVal;
+                    });
+                });
+
+                document.getElementById("ac-save").addEventListener("click", () => {
+                    const name = document.getElementById("ac-name").value.trim();
+                    const rawHandle = document.getElementById("ac-handle").value.trim();
+                    const activeChannel = getChannel(addContactChannel);
+                    const errorEl = document.getElementById("ac-error");
+                    if (!name) {
+                        errorEl.textContent = "Please enter a name.";
+                        errorEl.style.display = "block";
+                        return;
+                    }
+                    if (!rawHandle || !activeChannel.isValid(activeChannel.normalize(rawHandle))) {
+                        errorEl.textContent = activeChannel.invalidMessage;
+                        errorEl.style.display = "block";
+                        return;
+                    }
+                    const contact = upsertContact(name, addContactChannel, rawHandle);
+                    state.modal = null;
+                    if (state.shareText) {
+                        state.view = "share";
+                    } else {
+                        state.activeContactId = contactKey(contact);
+                        state.view = "chat";
+                    }
+                    render();
+                });
+            }
+
+            // ---------- Add AI chat modal ----------
+            function renderAddAIModal() {
+                const backdrop = document.createElement("div");
+                backdrop.className = "modal-backdrop";
+
+                const options = AI_PROVIDERS.map(p => `
+              <button class="provider-option" data-provider="${p.id}">
+                <div class="p-icon">${escapeHtml(p.name.charAt(0))}</div>
+                <div class="p-meta">
+                  <div class="p-name">${escapeHtml(p.name)}</div>
+                  <div class="p-note">${p.supportsPrefill ? "Opens with your message already typed in" : "Opens the site and copies your message to paste in"}</div>
+                </div>
+              </button>
+            `).join("");
+
+                backdrop.innerHTML = `
+              <div class="modal">
+                <h3>Add an AI chat</h3>
+                <p class="hint">Pick an assistant. Messages you send will open its site directly.</p>
+                <div class="provider-list">${options}</div>
+                <div class="modal-actions">
+                  <button class="btn btn-ghost btn-block" id="ai-cancel">Cancel</button>
+                </div>
+              </div>
+            `;
+                app.appendChild(backdrop);
+
+                backdrop.addEventListener("click", (e) => {
+                    if (e.target === backdrop) { state.modal = null;
+                        render(); }
+                });
+
+                document.getElementById("ai-cancel").addEventListener("click", () => {
+                    state.modal = null;
+                    render();
+                });
+
+                document.querySelectorAll(".provider-option").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const contact = addAIContact(btn.getAttribute("data-provider"));
+                        state.modal = null;
+                        state.activeContactId = contactKey(contact);
+                        state.view = "chat";
+                        render();
+                    });
+                });
+            }
+
+            // ---------- Send a message to a contact ----------
+            function sendMessageToContact(contact, text) {
+                const id = contactKey(contact);
+
+                if (isAIContact(contact)) {
+                    const provider = getAIProvider(contact.provider);
+                    const contextWindow = buildContextWindowJSON(id);
+
+                    addMessage(id, { dir: "sent", text: text, ts: Date.now() });
+
+                    const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
+                    const linkWithContext = link + "&context_window=" + encodeURIComponent(contextWindow);
+
+                    const aiPrompt = buildAIPrompt(linkWithContext, provider.id, provider.name);
+                    if (provider.supportsPrefill) {
+                        window.open(provider.url + encodeURIComponent(aiPrompt), "_blank", "noopener");
+                    } else {
+                        copyToClipboard(aiPrompt).then(() => {
+                            window.open(provider.url, "_blank", "noopener");
+                            showToast(`Copied — paste your message into ${provider.name}.`);
+                        });
+                    }
+                    return;
+                }
+
+                addMessage(id, { dir: "sent", text: text, ts: Date.now() });
+
+                const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text, contact.channel,
+                    contact.handle);
+                const outLink = getChannel(contact.channel).buildLink(contact.handle, link);
+                window.location.href = outLink;
+            }
+
+            // ---------- Chat screen ----------
+            function renderChat() {
+                const contact = findContactById(state.activeContactId) ||
+                    { name: state.activeContactId, channel: "whatsapp", handle: state.activeContactId };
+
+                const ai = isAIContact(contact);
+                const provider = ai ? getAIProvider(contact.provider) : null;
+                const channel = ai ? null : getChannel(contact.channel);
+
+                const topbar = document.createElement("div");
+                topbar.className = "topbar";
+                topbar.innerHTML = `
+              <button class="back-btn" id="chat-back" aria-label="Back">←</button>
+              <div class="brand">${escapeHtml(contact.name)}</div>
+              <div class="sub">${ai ? "AI chat" : escapeHtml(contact.handle)}</div>
+            `;
+                app.appendChild(topbar);
+
+                const chatScreen = document.createElement("div");
+                chatScreen.className = "chat-screen";
+
+                const msgs = getAllMessages()[contactKey(contact)] || [];
+                let msgsHtml = "";
+                if (msgs.length === 0) {
+                    msgsHtml =
+                        `<div class="empty-chat">No messages yet with ${escapeHtml(contact.name)}. Send the first one!</div>`;
+                } else {
+                    msgsHtml = msgs.map(m => {
+                        // Use renderMessageWithLinks to make chill-space.pages.dev URLs clickable.
+                        const renderedText = renderMessageWithLinks(m.text);
+                        return `
+                  <div class="bubble-row ${m.dir === 'sent' ? 'me' : 'them'}">
+                    <div class="bubble">
+                      ${renderedText}
+                      <span class="time">${formatTime(m.ts)}</span>
+                    </div>
+                  </div>
+                `;
+                    }).join("");
+                }
+
+                const note = ai ?
+                    (provider.supportsPrefill ?
+                        `Sending opens ${provider.name} in a new tab with a ChillSpace link ready to send.` :
+                        `Sending opens ${provider.name} in a new tab and copies a ChillSpace link — paste it in there.`) :
+                    channel.sendNote;
+
+                chatScreen.innerHTML = `
+              <div class="messages" id="messages-pane">${msgsHtml}</div>
+              <div class="whatsapp-note">${note}</div>
+              <div class="composer">
+                <input id="chat-input" type="text" placeholder="Type a message..." maxlength="500" />
+                <button class="send-btn" id="chat-send" aria-label="Send">➤</button>
+              </div>
+            `;
+                app.appendChild(chatScreen);
+
+                if (state.toast) {
+                    const toastEl = document.createElement("div");
+                    toastEl.className = "toast";
+                    toastEl.textContent = state.toast;
+                    chatScreen.appendChild(toastEl);
+                }
+
+                const pane = document.getElementById("messages-pane");
+                pane.scrollTop = pane.scrollHeight;
+
+                document.getElementById("chat-back").addEventListener("click", () => {
+                    state.view = "contacts";
+                    state.activeContactId = null;
+                    render();
+                });
+
+                const input = document.getElementById("chat-input");
+                const sendBtn = document.getElementById("chat-send");
+
+                function trySend() {
+                    const text = input.value.trim();
+                    if (!text) return;
+                    input.value = "";
+                    render();
+                    sendMessageToContact(contact, text);
+                }
+
+                sendBtn.addEventListener("click", trySend);
+                input.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter") trySend();
+                });
+                input.addEventListener("focus", () => {
+                    setTimeout(() => {
+                        input.scrollIntoView({ block: "end", behavior: "smooth" });
+                    }, 250);
+                });
+            }
+
+            // ---------- Incoming link handling ----------
+            function finalizeIncomingMessage(incoming) {
+                let contact;
+                if (incoming.sender_channel === "ai") {
+                    contact = addAIContact(incoming.sender_handle);
+                    if (!contact) {
+                        contact = upsertContact(incoming.sender_name, "whatsapp", incoming.sender_handle);
+                    }
+                } else {
+                    const channelId = CHANNELS[incoming.sender_channel] ? incoming.sender_channel : "whatsapp";
+                    contact = upsertContact(incoming.sender_name, channelId, incoming.sender_handle);
+                }
+                const ts = incoming.sent_at ? new Date(incoming.sent_at).getTime() : Date.now();
+                addMessage(contactKey(contact), {
+                    dir: "received",
+                    text: incoming.message_content,
+                    ts: isNaN(ts) ? Date.now() : ts
+                });
+                state.activeContactId = contactKey(contact);
+                state.view = "chat";
+            }
+
+            function readIncomingParams() {
+                const params = new URLSearchParams(window.location.search);
+                const senderName = params.get("sender_name");
+                const messageContent = params.get("message_content");
+                const sentAt = params.get("sent_at");
+                const senderChannel = params.get("sender_channel") || (params.get("sender_number") ? "whatsapp" : null);
+                const senderHandle = params.get("sender_handle") || params.get("sender_number");
+                const recipientChannel = params.get("recipient_channel");
+                const recipientHandle = params.get("recipient_handle");
+                if (senderName && senderChannel && senderHandle && messageContent) {
+                    return {
+                        sender_name: senderName,
+                        sender_channel: senderChannel,
+                        sender_handle: senderHandle,
+                        message_content: messageContent,
+                        sent_at: sentAt,
+                        recipient_channel: recipientChannel,
+                        recipient_handle: recipientHandle
+                    };
+                }
+                return null;
+            }
+
+            function setupViewportTracking() {
+                if (!window.visualViewport) return;
+                const vv = window.visualViewport;
+
+                function update() {
+                    document.documentElement.style.setProperty("--app-height", vv.height + "px");
+                }
+                vv.addEventListener("resize", update);
+                vv.addEventListener("scroll", update);
+                update();
+            }
+
+            // ---------- One-time migration ----------
+            function migrateLegacyData() {
+                const contacts = getContacts();
+                const isLegacy = contacts.some(c => !c.channel);
+                if (!isLegacy) return;
+
+                const allMessages = getAllMessages();
+                const migratedContacts = contacts.map(c => {
+                    if (c.channel) return c;
+                    const wasAI = c.type === "ai" || (typeof c.phone === "string" && c.phone.indexOf("ai:") === 0);
+                    if (wasAI) {
+                        return { name: c.name, channel: "ai", provider: c.provider || (c.phone || "").slice(
+                            3) };
+                    }
+                    const oldKey = digitsOnly(c.phone || "");
+                    const newContact = { name: c.name, channel: "whatsapp", handle: normalizePhone(c.phone ||
+                            "") };
+                    const newKey = contactKey(newContact);
+                    if (allMessages[oldKey] && !allMessages[newKey]) {
+                        allMessages[newKey] = allMessages[oldKey];
+                    }
+                    return newContact;
+                });
+
+                saveContacts(migratedContacts);
+                saveAllMessages(allMessages);
+            }
+
+            // ---------- Init ----------
+            function init() {
+                migrateLegacyData();
+                setupViewportTracking();
+
+                const params = new URLSearchParams(window.location.search);
+                const sharedText = params.get("text");
+                const incoming = sharedText ? null : readIncomingParams();
+
+                if (incoming || sharedText !== null) {
+                    const cleanUrl = window.location.origin + window.location.pathname;
+                    window.history.replaceState({}, document.title, cleanUrl);
+                }
+
+                if (!getUsername()) {
+                    state.view = "setup";
+                    state.pendingIncoming = incoming;
+                    state.pendingShareText = sharedText;
+                    if (incoming && incoming.recipient_channel && incoming.recipient_handle && CHANNELS[incoming
+                            .recipient_channel
+                        ]) {
+                        setupChannel = incoming.recipient_channel;
+                        setupPrefillHandle = incoming.recipient_handle;
+                    }
+                } else if (incoming) {
+                    finalizeIncomingMessage(incoming);
+                } else if (sharedText !== null) {
+                    state.shareText = sharedText;
+                    state.view = "share";
+                } else {
+                    state.view = "contacts";
+                }
+
+                render();
+            }
+
+            init();
+        })();
+    </script>
 </body>
 </html>
