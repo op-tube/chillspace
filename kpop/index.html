@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
 
     <style>
-        /* --- RESET & BASE (same as before) --- */
+        /* --- RESET & BASE --- */
         *,
         *::before,
         *::after {
@@ -368,7 +368,7 @@
             padding: 8px 24px;
             border: none;
             border-radius: 60px;
-            background: #1e5e2e; /* dark green */
+            background: #1e5e2e;
             color: #ffffff;
             cursor: pointer;
             transition: all 0.15s ease;
@@ -457,14 +457,13 @@
             </div>
         </div>
 
-        <!-- GUESS MODE PROMPT (hidden by default) -->
+        <!-- GUESS MODE PROMPT -->
         <div id="guessPrompt" class="guess-mode-prompt hidden">
             YOUR FRIEND PICKED A OR B – GUESS!
         </div>
 
         <!-- BATTLE GRID -->
         <div class="battle-grid" id="battleGrid">
-            <!-- LEFT VIDEO -->
             <div class="video-card" id="leftCard">
                 <span class="label">🎵 SONG A</span>
                 <div class="song-title" id="leftTitle">—</div>
@@ -476,13 +475,11 @@
                 </div>
             </div>
 
-            <!-- VS DIVIDER -->
             <div class="vs-divider">
                 ⚡
                 <span class="vs-sub">VS</span>
             </div>
 
-            <!-- RIGHT VIDEO -->
             <div class="video-card" id="rightCard">
                 <span class="label">🎵 SONG B</span>
                 <div class="song-title" id="rightTitle">—</div>
@@ -510,7 +507,7 @@
             </div>
         </div>
 
-        <!-- SHARE BUTTON (appears after voting) -->
+        <!-- SHARE BUTTON -->
         <div id="shareContainer" class="share-btn-wrap hidden">
             <button class="share-btn" id="shareBtn">📤 SHARE TO FRIENDS</button>
         </div>
@@ -532,7 +529,7 @@
 
     <script>
         // ============================================================
-        // 1. MANUAL LIST OF 100 VIDEO IDs (from your JSON)
+        // 1. SONG LIST (100 videos)
         // ============================================================
         const SONG_LIST = [
             { title: "LE SSERAFIM FEARLESS MV", id: "4vbDFu0PUew", chorus: 45 },
@@ -654,7 +651,7 @@
             roundInSet: 0,
             colorIndex: 0,
             paused: false,
-            countdown: 2, // changed from 1 to 2
+            countdown: 2,
             canVote: true,
             voted: false,
             leftSong: null,
@@ -692,8 +689,6 @@
         const shareContainer = $('#shareContainer');
         const shareBtn = $('#shareBtn');
         const guessPrompt = $('#guessPrompt');
-        const leftBtnWrap = $('#leftBtnWrap');
-        const rightBtnWrap = $('#rightBtnWrap');
 
         // ============================================================
         // 3. HELPERS
@@ -737,7 +732,24 @@
         }
 
         // ============================================================
-        // 4. LOAD BATTLE (normal mode)
+        // 4. ATTACH NORMAL VOTE HANDLERS (CRITICAL FIX)
+        // ============================================================
+        function attachNormalHandlers() {
+            voteLeft.onclick = () => handleVote('left');
+            voteRight.onclick = () => handleVote('right');
+            // Reset button text/look if they were in guess mode
+            voteLeft.textContent = 'VOTE';
+            voteLeft.className = 'vote-btn';
+            voteLeft.disabled = false;
+            voteRight.textContent = 'VOTE';
+            voteRight.className = 'vote-btn';
+            voteRight.disabled = false;
+            voteLeft.classList.remove('hidden');
+            voteRight.classList.remove('hidden');
+        }
+
+        // ============================================================
+        // 5. LOAD BATTLE (normal mode)
         // ============================================================
         function loadBattle() {
             clearInterval(state.countdownId);
@@ -745,12 +757,9 @@
 
             shareContainer.classList.add('hidden');
             guessPrompt.classList.add('hidden');
-            voteLeft.textContent = 'VOTE';
-            voteLeft.className = 'vote-btn';
-            voteLeft.disabled = false;
-            voteRight.textContent = 'VOTE';
-            voteRight.className = 'vote-btn';
-            voteRight.disabled = false;
+
+            // Attach normal handlers
+            attachNormalHandlers();
 
             let [s1, s2] = getRandomSongs(2);
             while (s1.id === s2.id) {
@@ -792,7 +801,7 @@
         }
 
         // ============================================================
-        // 5. VOTING
+        // 6. VOTING
         // ============================================================
         function handleVote(side) {
             if (!state.canVote || state.voted) return;
@@ -830,16 +839,15 @@
             }
 
             shareContainer.classList.remove('hidden');
-
-            resetCountdown(); // starts at 2 seconds
+            resetCountdown();
         }
 
         // ============================================================
-        // 6. COUNTDOWN & AUTO-ADVANCE (now 2 seconds)
+        // 7. COUNTDOWN (2 seconds)
         // ============================================================
         function resetCountdown() {
             clearInterval(state.countdownId);
-            state.countdown = 2; // set to 2 seconds
+            state.countdown = 2;
             countdownNum.textContent = '2';
 
             state.countdownId = setInterval(() => {
@@ -859,7 +867,7 @@
         }
 
         // ============================================================
-        // 7. SHARE FUNCTIONALITY
+        // 8. SHARE
         // ============================================================
         function shareToFriends() {
             const aId = state.leftSong.id;
@@ -873,7 +881,7 @@
         }
 
         // ============================================================
-        // 8. GUESS MODE
+        // 9. GUESS MODE
         // ============================================================
         function initGuessMode(videoA, videoB, friendChoice) {
             state.guessMode = true;
@@ -892,9 +900,7 @@
             leftWrapper.innerHTML = buildIframe(songA);
             rightWrapper.innerHTML = buildIframe(songB);
 
-            voteLeft.classList.add('hidden');
-            voteRight.classList.add('hidden');
-
+            // Configure buttons for guess mode
             voteLeft.textContent = 'GUESS A';
             voteLeft.className = 'vote-btn';
             voteLeft.disabled = false;
@@ -918,6 +924,7 @@
             state.voted = false;
             state.canVote = false;
 
+            // Guess handler
             const guessHandler = (e) => {
                 if (state.guessMade) return;
                 const side = e.currentTarget.dataset.side;
@@ -936,23 +943,19 @@
                     leftVotesNum.textContent = '—';
                 }
                 setTimeout(() => {
+                    // Exit guess mode and start normal game
                     state.guessMode = false;
                     state.friendChoice = null;
-                    voteLeft.classList.remove('hidden');
-                    voteRight.classList.remove('hidden');
-                    voteLeft.textContent = 'VOTE';
-                    voteRight.textContent = 'VOTE';
-                    voteLeft.className = 'vote-btn';
-                    voteRight.className = 'vote-btn';
-                    voteLeft.disabled = false;
-                    voteRight.disabled = false;
+                    state.guessMade = false;
                     guessPrompt.classList.add('hidden');
                     autoIndicator.style.opacity = '1';
+                    // Reset round counters
                     state.round = 0;
                     state.set = 1;
                     state.roundInSet = 0;
                     state.colorIndex = 0;
                     setBackgroundColor(0);
+                    // Load battle with normal handlers
                     loadBattle();
                 }, 1500);
             };
@@ -964,7 +967,7 @@
         }
 
         // ============================================================
-        // 9. CONTROLS
+        // 10. CONTROLS
         // ============================================================
         function togglePause() {
             if (state.guessMode) return;
@@ -986,16 +989,10 @@
 
         function skipRound() {
             if (state.guessMode) {
+                // Exit guess mode early
                 state.guessMode = false;
                 state.friendChoice = null;
-                voteLeft.classList.remove('hidden');
-                voteRight.classList.remove('hidden');
-                voteLeft.textContent = 'VOTE';
-                voteRight.textContent = 'VOTE';
-                voteLeft.className = 'vote-btn';
-                voteRight.className = 'vote-btn';
-                voteLeft.disabled = false;
-                voteRight.disabled = false;
+                state.guessMade = false;
                 guessPrompt.classList.add('hidden');
                 autoIndicator.style.opacity = '1';
                 state.round = 0;
@@ -1020,14 +1017,7 @@
             if (state.guessMode) {
                 state.guessMode = false;
                 state.friendChoice = null;
-                voteLeft.classList.remove('hidden');
-                voteRight.classList.remove('hidden');
-                voteLeft.textContent = 'VOTE';
-                voteRight.textContent = 'VOTE';
-                voteLeft.className = 'vote-btn';
-                voteRight.className = 'vote-btn';
-                voteLeft.disabled = false;
-                voteRight.disabled = false;
+                state.guessMade = false;
                 guessPrompt.classList.add('hidden');
                 autoIndicator.style.opacity = '1';
             }
@@ -1047,7 +1037,7 @@
         }
 
         // ============================================================
-        // 10. INIT
+        // 11. INIT
         // ============================================================
         function init() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -1063,12 +1053,9 @@
             } else {
                 setBackgroundColor(0);
                 loadBattle();
-                voteLeft.onclick = () => handleVote('left');
-                voteRight.onclick = () => handleVote('right');
             }
 
             shareBtn.addEventListener('click', shareToFriends);
-
             skipBtn.addEventListener('click', skipRound);
             pauseBtn.addEventListener('click', togglePause);
             resetBtn.addEventListener('click', resetGame);
