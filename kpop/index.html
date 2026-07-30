@@ -350,6 +350,7 @@
             transform: scale(0.95);
         }
 
+        /* ----- SHARE BUTTON (DARK GREEN) ----- */
         .share-btn-wrap {
             margin-top: 12px;
             display: flex;
@@ -367,16 +368,18 @@
             padding: 8px 24px;
             border: none;
             border-radius: 60px;
-            background: #1a1a1a;
-            color: #fff;
+            background: #1e5e2e; /* dark green */
+            color: #ffffff;
             cursor: pointer;
             transition: all 0.15s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .share-btn:hover {
             transform: scale(1.03);
-            background: #333;
+            background: #2a7a3a;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
         .share-btn:active {
@@ -651,7 +654,7 @@
             roundInSet: 0,
             colorIndex: 0,
             paused: false,
-            countdown: 1,
+            countdown: 2, // changed from 1 to 2
             canVote: true,
             voted: false,
             leftSong: null,
@@ -659,9 +662,8 @@
             leftVotes: 0,
             rightVotes: 0,
             countdownId: null,
-            // guess mode
             guessMode: false,
-            friendChoice: null, // 'a' or 'b'
+            friendChoice: null,
             guessMade: false,
         };
 
@@ -741,10 +743,8 @@
             clearInterval(state.countdownId);
             state.countdownId = null;
 
-            // Hide share button and guess prompt
             shareContainer.classList.add('hidden');
             guessPrompt.classList.add('hidden');
-            // Reset vote buttons to show "VOTE"
             voteLeft.textContent = 'VOTE';
             voteLeft.className = 'vote-btn';
             voteLeft.disabled = false;
@@ -829,19 +829,18 @@
                 voteRight.textContent = '✅ VOTED';
             }
 
-            // Show share button
             shareContainer.classList.remove('hidden');
 
-            resetCountdown();
+            resetCountdown(); // starts at 2 seconds
         }
 
         // ============================================================
-        // 6. COUNTDOWN & AUTO-ADVANCE
+        // 6. COUNTDOWN & AUTO-ADVANCE (now 2 seconds)
         // ============================================================
         function resetCountdown() {
             clearInterval(state.countdownId);
-            state.countdown = 1;
-            countdownNum.textContent = '1';
+            state.countdown = 2; // set to 2 seconds
+            countdownNum.textContent = '2';
 
             state.countdownId = setInterval(() => {
                 state.countdown -= 1;
@@ -865,7 +864,6 @@
         function shareToFriends() {
             const aId = state.leftSong.id;
             const bId = state.rightSong.id;
-            // Determine which side the user voted for
             const choice = voteLeft.classList.contains('voted-left') ? 'a' : 'b';
             const baseUrl = 'https://chill-space.pages.dev/kpop';
             const shareUrl =
@@ -882,27 +880,21 @@
             state.friendChoice = friendChoice;
             state.guessMade = false;
 
-            // Find song objects
             const songA = findSongById(videoA);
             const songB = findSongById(videoB);
             if (!songA || !songB) {
-                // Fallback: if not found, load normal battle
                 loadBattle();
                 return;
             }
 
-            // Set the videos
             leftTitle.textContent = songA.title;
             rightTitle.textContent = songB.title;
             leftWrapper.innerHTML = buildIframe(songA);
             rightWrapper.innerHTML = buildIframe(songB);
 
-            // Hide normal vote buttons, show guess buttons
             voteLeft.classList.add('hidden');
             voteRight.classList.add('hidden');
 
-            // Create guess buttons if not already present
-            // We'll reuse the vote buttons but change their text and behavior
             voteLeft.textContent = 'GUESS A';
             voteLeft.className = 'vote-btn';
             voteLeft.disabled = false;
@@ -912,45 +904,30 @@
             voteRight.disabled = false;
             voteRight.classList.remove('hidden');
 
-            // Remove any previous event listeners by cloning and replacing? We'll just override click.
-            // We'll store the guess handler separately.
-            // Remove old listeners by replacing the buttons with clones? Simpler: we'll use a flag.
-            // We'll attach a new click handler that checks guessMode.
-
-            // Show guess prompt
             guessPrompt.classList.remove('hidden');
             vsMessage.textContent = '🤔 GUESS YOUR FRIEND\'S CHOICE';
 
-            // Hide share button and auto-indicator
             shareContainer.classList.add('hidden');
             autoIndicator.style.opacity = '0';
 
-            // Reset stats display
             leftVotesNum.textContent = '?';
             rightVotesNum.textContent = '?';
 
-            // Store the song objects for later
             state.leftSong = songA;
             state.rightSong = songB;
-            state.voted = false; // not used in guess mode
-            state.canVote = false; // disable normal voting
+            state.voted = false;
+            state.canVote = false;
 
-            // Override the vote button click handlers for guess mode
-            // We'll use a single handler with a flag
             const guessHandler = (e) => {
                 if (state.guessMade) return;
                 const side = e.currentTarget.dataset.side;
-                // side is 'left' or 'right'
                 const guess = side === 'left' ? 'a' : 'b';
                 state.guessMade = true;
-                // Disable buttons
                 voteLeft.disabled = true;
                 voteRight.disabled = true;
-                // Show result
                 const correct = guess === state.friendChoice;
                 const resultMsg = correct ? '✅ CORRECT! 🎉' : '❌ WRONG!';
                 vsMessage.textContent = `YOU GUESSED ${guess.toUpperCase()} – ${resultMsg}`;
-                // Show which one was the friend's choice
                 if (state.friendChoice === 'a') {
                     leftVotesNum.textContent = '⭐ FRIEND\'S PICK';
                     rightVotesNum.textContent = '—';
@@ -958,12 +935,9 @@
                     rightVotesNum.textContent = '⭐ FRIEND\'S PICK';
                     leftVotesNum.textContent = '—';
                 }
-                // After 1.5 seconds, transition to normal game
                 setTimeout(() => {
-                    // Clean up guess mode
                     state.guessMode = false;
                     state.friendChoice = null;
-                    // Reset buttons
                     voteLeft.classList.remove('hidden');
                     voteRight.classList.remove('hidden');
                     voteLeft.textContent = 'VOTE';
@@ -974,7 +948,6 @@
                     voteRight.disabled = false;
                     guessPrompt.classList.add('hidden');
                     autoIndicator.style.opacity = '1';
-                    // Start normal game from scratch (round 0)
                     state.round = 0;
                     state.set = 1;
                     state.roundInSet = 0;
@@ -984,19 +957,17 @@
                 }, 1500);
             };
 
-            // Remove old listeners and attach new ones
             voteLeft.onclick = guessHandler;
             voteRight.onclick = guessHandler;
-            // Also ensure data-side is set
             voteLeft.dataset.side = 'left';
             voteRight.dataset.side = 'right';
         }
 
         // ============================================================
-        // 9. CONTROLS (pause, skip, reset)
+        // 9. CONTROLS
         // ============================================================
         function togglePause() {
-            if (state.guessMode) return; // no pause in guess mode
+            if (state.guessMode) return;
             state.paused = !state.paused;
             pauseBtn.textContent = state.paused ? '▶ PLAY' : '⏸ PAUSE';
             if (state.paused) {
@@ -1015,7 +986,6 @@
 
         function skipRound() {
             if (state.guessMode) {
-                // If in guess mode, skip to normal game
                 state.guessMode = false;
                 state.friendChoice = null;
                 voteLeft.classList.remove('hidden');
@@ -1048,7 +1018,6 @@
 
         function resetGame() {
             if (state.guessMode) {
-                // Reset guess mode to normal
                 state.guessMode = false;
                 state.friendChoice = null;
                 voteLeft.classList.remove('hidden');
@@ -1081,39 +1050,29 @@
         // 10. INIT
         // ============================================================
         function init() {
-            // Parse URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             const videoA = urlParams.get('video_a');
             const videoB = urlParams.get('video_b');
             const friendChoice = urlParams.get('friend_choice');
 
             if (videoA && videoB && friendChoice && (friendChoice === 'a' || friendChoice === 'b')) {
-                // Enter guess mode
                 initGuessMode(videoA, videoB, friendChoice);
-                // Set background color to yellow (index 0)
                 setBackgroundColor(0);
-                // Update header counters (hide set/round)
                 setCounter.textContent = '—';
                 roundCounter.textContent = '—';
-                // Hide auto indicator countdown (already hidden in guess mode)
             } else {
-                // Normal mode
                 setBackgroundColor(0);
                 loadBattle();
-                // Attach normal vote handlers
                 voteLeft.onclick = () => handleVote('left');
                 voteRight.onclick = () => handleVote('right');
             }
 
-            // Share button
             shareBtn.addEventListener('click', shareToFriends);
 
-            // Controls
             skipBtn.addEventListener('click', skipRound);
             pauseBtn.addEventListener('click', togglePause);
             resetBtn.addEventListener('click', resetGame);
 
-            // Keyboard shortcuts
             document.addEventListener('keydown', (e) => {
                 if (state.guessMode) {
                     if (e.key === '1') { voteLeft.click(); }
