@@ -356,99 +356,76 @@
             transform: scale(0.95);
         }
 
+        /* --- LOADING OVERLAY --- */
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+        #loadingOverlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #loadingOverlay h2 {
+            font-size: 2rem;
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+        }
+        #loadingOverlay .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.1);
+            border-top-color: #f9e74b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        #loadingOverlay .progress {
+            margin-top: 20px;
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
         /* --- RESPONSIVE --- */
         @media (max-width: 820px) {
-            .container {
-                padding: 18px 14px 28px;
-                border-radius: 28px;
-            }
-
-            .battle-grid {
-                grid-template-columns: 1fr;
-                gap: 18px;
-            }
-
-            .vs-divider {
-                flex-direction: row;
-                padding: 4px 0;
-                gap: 12px;
-                font-size: 1.8rem;
-            }
-
-            .vs-divider .vs-sub {
-                font-size: 0.6rem;
-                margin-top: 0;
-            }
-
-            .votes-display {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-
-            .vote-count.center-vs {
-                order: -1;
-            }
-
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-
-            .header-stats {
-                font-size: 0.8rem;
-                padding: 6px 16px;
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .video-card {
-                padding: 12px 12px 16px;
-            }
-
-            .vote-btn {
-                max-width: 100%;
-            }
-
-            .iframe-wrapper {
-                border-radius: 12px;
-            }
+            .container { padding: 18px 14px 28px; border-radius: 28px; }
+            .battle-grid { grid-template-columns: 1fr; gap: 18px; }
+            .vs-divider { flex-direction: row; padding: 4px 0; gap: 12px; font-size: 1.8rem; }
+            .vs-divider .vs-sub { font-size: 0.6rem; margin-top: 0; }
+            .votes-display { grid-template-columns: 1fr; gap: 8px; }
+            .vote-count.center-vs { order: -1; }
+            .header { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .header-stats { font-size: 0.8rem; padding: 6px 16px; width: 100%; justify-content: space-between; }
+            .video-card { padding: 12px 12px 16px; }
+            .vote-btn { max-width: 100%; }
+            .iframe-wrapper { border-radius: 12px; }
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                padding: 12px 10px 20px;
-                border-radius: 20px;
-            }
-            .header h1 {
-                font-size: 1.4rem;
-                letter-spacing: 2px;
-            }
-            .header-stats {
-                font-size: 0.7rem;
-                padding: 4px 12px;
-                flex-wrap: wrap;
-                gap: 6px;
-            }
-            .vote-btn {
-                font-size: 0.8rem;
-                padding: 8px 16px;
-            }
-            .footer-controls button {
-                font-size: 0.7rem;
-                padding: 6px 18px;
-            }
+            body { padding: 10px; }
+            .container { padding: 12px 10px 20px; border-radius: 20px; }
+            .header h1 { font-size: 1.4rem; letter-spacing: 2px; }
+            .header-stats { font-size: 0.7rem; padding: 4px 12px; flex-wrap: wrap; gap: 6px; }
+            .vote-btn { font-size: 0.8rem; padding: 8px 16px; }
+            .footer-controls button { font-size: 0.7rem; padding: 6px 18px; }
         }
 
         /* --- UTILITY --- */
-        .hidden {
-            display: none !important;
-        }
-
-        /* small spinner while loading */
+        .hidden { display: none !important; }
         .loading-placeholder {
             display: flex;
             align-items: center;
@@ -464,6 +441,13 @@
 </head>
 <body>
 
+    <!-- LOADING OVERLAY -->
+    <div id="loadingOverlay">
+        <h2>🎵 LOADING SONGS</h2>
+        <div class="spinner"></div>
+        <div class="progress" id="loadProgress">0 / 100</div>
+    </div>
+
     <div class="container" id="app">
         <!-- HEADER -->
         <div class="header">
@@ -477,7 +461,6 @@
 
         <!-- BATTLE GRID -->
         <div class="battle-grid" id="battleGrid">
-            <!-- LEFT VIDEO -->
             <div class="video-card" id="leftCard">
                 <span class="label">🎵 SONG A</span>
                 <div class="song-title" id="leftTitle">—</div>
@@ -489,13 +472,11 @@
                 </div>
             </div>
 
-            <!-- VS DIVIDER -->
             <div class="vs-divider">
                 ⚡
                 <span class="vs-sub">VS</span>
             </div>
 
-            <!-- RIGHT VIDEO -->
             <div class="video-card" id="rightCard">
                 <span class="label">🎵 SONG B</span>
                 <div class="song-title" id="rightTitle">—</div>
@@ -540,118 +521,149 @@
 
     <script>
         // ============================================================
-        // 1. DATA — EXACT 100 VIDEOS YOU PROVIDED
-        //    (chorus times are set to 45 seconds by default)
+        // 1. YOUR ASYNC FUNCTION TO FETCH VIDEO INFO FROM YOUTUBE
         // ============================================================
-        const SONGS = [
-            { id: '9bZkp7q19f0', title: 'PSY - Gangnam Style', chorus: 45 },
-            { id: 'IHNzOHi8vJs', title: 'BLACKPINK - DDU-DU DDU-DU', chorus: 45 },
-            { id: '2S24-y0Ij3Y', title: 'BLACKPINK - Kill This Love', chorus: 45 },
-            { id: 'gdZLi9oWNZg', title: 'BTS - Dynamite', chorus: 45 },
-            { id: 'XsX3ATc3Cg8', title: 'BTS - Boy With Luv (feat. Halsey)', chorus: 45 },
-            { id: 'bwmSjE8350M', title: 'BLACKPINK - Boombayah', chorus: 45 },
-            { id: 'MBdVXkSdhwU', title: 'BTS - DNA', chorus: 45 },
-            { id: 'kTlv54L4XEY', title: 'BTS - MIC Drop (Steve Aoki Remix)', chorus: 45 },
-            { id: 'vRXZj0DzXYA', title: 'BLACKPINK - As If It\'s Your Last', chorus: 45 },
-            { id: 'pBuZEGYXA6E', title: 'BTS - IDOL', chorus: 45 },
-            { id: '7C2z4GqqS5E', title: 'BTS - FAKE LOVE', chorus: 45 },
-            { id: 'ioNng23DkIM', title: 'BLACKPINK - How You Like That', chorus: 45 },
-            { id: 'dNCWe_6HAM8', title: 'LISA - MONEY (Performance Video)', chorus: 45 },
-            { id: 'WMweEpGlu_U', title: 'BTS - Butter', chorus: 45 },
-            { id: 'gQlMMD8auMs', title: 'BLACKPINK - Pink Venom', chorus: 45 },
-            { id: 'b73BI9eUkjM', title: 'JENNIE - SOLO', chorus: 45 },
-            { id: 'hmE9fCYHD4A', title: 'BTS - Blood Sweat & Tears', chorus: 45 },
-            { id: 'i0p1bmr0EmE', title: 'TWICE - What is Love?', chorus: 45 },
-            { id: 'dyRsGYlUEIQ', title: 'BLACKPINK - Lovesick Girls', chorus: 45 },
-            { id: '2S24-y0Ij3Y', title: 'BIGBANG - BANG BANG BANG', chorus: 45 },
-            { id: 'vecSVX1QYbQ', title: 'iKON - Love Scenario', chorus: 45 },
-            { id: 'ePpPVE-GGJw', title: 'TWICE - TT', chorus: 45 },
-            { id: 'kOHB85vDuow', title: 'TWICE - Fancy', chorus: 45 },
-            { id: 'JQGRg8XBnB4', title: 'MOMOLAND - BBoom BBoom', chorus: 45 },
-            { id: 'pSudEWBAYRE', title: 'EXO - Love Shot', chorus: 45 },
-            { id: 'ASO_zypdnsQ', title: 'PSY - Gentleman', chorus: 45 },
-            { id: 'vRXZj0DzXYA', title: 'BLACKPINK - Ice Cream (with Selena Gomez)', chorus: 45 },
-            { id: '9pdj4iJD08s', title: 'BLACKPINK - Playing with Fire', chorus: 45 },
-            { id: 'dISNgvVpWlo', title: 'BLACKPINK - Whistle', chorus: 45 },
-            { id: 'BVwAVbKYYeM', title: 'BTS - DOPE', chorus: 45 },
-            { id: 'GZjt_sA2eso', title: 'BTS - Save ME', chorus: 45 },
-            { id: 'POe9SOEKotk', title: 'BLACKPINK - Shut Down', chorus: 45 },
-            { id: 'FrG4TEcSuaw', title: 'PSY - DADDY (feat. CL)', chorus: 45 },
-            { id: 'awkkyGGJY44', title: 'LISA - LALISA', chorus: 45 },
-            { id: '4ujQOR224vc', title: 'BTS - FIRE', chorus: 45 },
-            { id: 'CuklIb9d3fI', title: 'BTS - Permission to Dance', chorus: 45 },
-            { id: 'AAbokV76tkU', title: 'BIGBANG - Fantastic Baby', chorus: 45 },
-            { id: '8dJyRm2jJ-U', title: 'PSY - That That (prod. & feat. SUGA of BTS)', chorus: 45 },
-            { id: 'V2hlQbekp6U', title: 'TWICE - LIKEY', chorus: 45 },
-            { id: 'YudHcBIxlYw', title: 'JISOO - FLOWER', chorus: 45 },
-            { id: 'QU9c0053UAU', title: 'Jung Kook - Seven (feat. Latto)', chorus: 45 },
-            { id: '9DwzBICPhdM', title: 'BTS - Not Today', chorus: 45 },
-            { id: '0lapF4DQPKQ', title: 'BTS - Black Swan', chorus: 45 },
-            { id: 'c7rCyscTfZc', title: 'TWICE - CHEER UP', chorus: 45 },
-            { id: 'xEeFrLSkMm8', title: 'BTS - Spring Day', chorus: 45 },
-            { id: 'TQTlCHw450s', title: 'Stray Kids - God\'s Menu', chorus: 45 },
-            { id: 'fE2h3lGlOsk', title: 'ITZY - WANNABE', chorus: 45 },
-            { id: 'qGjAWJ2zWWI', title: 'Agust D - Daechwita', chorus: 45 },
-            { id: 'KSH-FVVtTf0', title: 'EXO - Monster', chorus: 45 },
-            { id: 'KhTeiaChezw', title: 'MAMAMOO - HIP', chorus: 45 },
-            { id: 'S4UEJePR0UE', title: 'NewJeans - Hype Boy (Performance ver.2)', chorus: 45 },
-            { id: '8AMBslo1zng', title: 'IVE - LOVE DIVE', chorus: 45 },
-            { id: 'J-wFp43XOrA', title: 'SEVENTEEN - VERY NICE (아주 NICE)', chorus: 45 },
-            { id: '4TWR90KJl84', title: 'aespa - Next Level', chorus: 45 },
-            { id: 'J_CFv1LDBqE', title: 'Red Velvet - Bad Boy', chorus: 45 },
-            { id: 'pyf8cbqyfPs', title: 'LE SSERAFIM - ANTIFRAGILE', chorus: 45 },
-            { id: 'Z3A5yJpL1UU', title: '(G)I-DLE - TOMBOY', chorus: 45 },
-            { id: 'X-uJldn1b1U', title: 'Stray Kids - Back Door', chorus: 45 },
-            { id: 'f5_wn8mexmM', title: 'TWICE - The Feels', chorus: 45 },
-            { id: 'uR8Mrt1FCXg', title: 'Red Velvet - Psycho', chorus: 45 },
-            { id: '2OvyA2__High', title: 'NCT 127 - Kick It (영웅)', chorus: 45 },
-            { id: 'gJwScOIx4E0', title: 'EVERGLOW - DUN DUN', chorus: 45 },
-            { id: 'W3iSnJ6JRqs', title: 'TXT - Crown (어느날 머리에서 뿔이 자랐다)', chorus: 45 },
-            { id: 'gRnuFC4Ualw', title: 'SEVENTEEN - HOT', chorus: 45 },
-            { id: 'F0B7HDiY-10', title: 'IVE - After LIKE', chorus: 45 },
-            { id: 'OvioeS1ZZ7o', title: 'Stray Kids - MANIAC', chorus: 45 },
-            { id: 'ZeerrnuFiPE', title: 'aespa - Black Mamba', chorus: 45 },
-            { id: '0vpS9009gP0', title: 'Girls\' Generation - Gee', chorus: 45 },
-            { id: 'x-_Josh62L0', title: 'Super Junior - Sorry, Sorry', chorus: 45 },
-            { id: 'vLqKSv1Y4nc', title: '2NE1 - I Am The Best (내가 제일 잘 나가)', chorus: 45 },
-            { id: 'nM0xDI5R50E', title: 'IU - BBIBBI', chorus: 45 },
-            { id: 'UwuAPyJ2kLU', title: 'TAEYANG - Eyes, Nose, Lips', chorus: 45 },
-            { id: 'yWfsla_gSMc', title: 'EXO - Call Me Baby', chorus: 45 },
-            { id: 'DocBf1Z4T14', title: 'SHINee - Replay (누난 너무 예뻐)', chorus: 45 },
-            { id: 'ur0hODA7Z2c', title: 'Sunmi - Gashina', chorus: 45 },
-            { id: 'sVTy_wW_y48', title: 'NewJeans - OMG', chorus: 45 },
-            { id: 'ArmDp-zijuc', title: 'NewJeans - Super Shy', chorus: 45 },
-            { id: 'UBURTj20HXI', title: 'LE SSERAFIM - UNFORGIVEN (feat. Nile Rodgers)', chorus: 45 },
-            { id: 'Qc7_zRjH808', title: 'FIFTY FIFTY - Cupid (Twin Ver.)', chorus: 45 },
-            { id: '7HDeem-JaSY', title: '(G)I-DLE - Queencard', chorus: 45 },
-            { id: 'js1CtxSY38I', title: 'Stray Kids - S-Class', chorus: 45 },
-            { id: 'D8VEhcPe3yIM', title: 'aespa - Drama', chorus: 45 },
-            { id: 'P9idwbB8L2g', title: 'TXT - Sugar Rush Ride', chorus: 45 },
-            { id: '-GQg25oP0S4', title: 'SEVENTEEN - Super (손오공)', chorus: 45 },
-            { id: '6ZUIwj3WEM0', title: 'IVE - I AM', chorus: 45 },
-            { id: 'pNfTK39HP4w', title: 'ITZY - DALLA DALLA', chorus: 45 },
-            { id: 'WyiIGEHQP8o', title: 'Red Velvet - Red Flavor (빨간 맛)', chorus: 45 },
-            { id: 'i0p1bmr0EmE', title: 'TWICE - What is Love?', chorus: 45 },
-            { id: 'rcEyU7HJ51c', title: 'Taemin - Move', chorus: 45 },
-            { id: 'HLN2skIB04E', title: 'Chungha - Gotta Go (벌써 12시)', chorus: 45 },
-            { id: 'Z_BhMhZpAug', title: 'ATEEZ - WONDERLAND', chorus: 45 },
-            { id: 'tyrVtwE8RaI', title: 'NCT U - Make A Wish (Birthday Song)', chorus: 45 },
-            { id: 'Nu2yQ1zYDYU', title: 'PENTAGON - Shine (빛나리)', chorus: 45 },
-            { id: 'wNx3S6jR4mY', title: 'Monsta X - Hero', chorus: 45 },
-            { id: 'jqE8M216470', title: 'GOT7 - Just Right (딱 좋아)', chorus: 45 },
-            { id: 'TI0DGvqKZTI', title: 'EXO - Overdose (중독)', chorus: 45 },
-            { id: 'd9IxdwEFk1c', title: 'IU - PALETTE (feat. G-DRAGON)', chorus: 45 },
-            { id: 'roughtS8y8S', title: 'SHINee - Ring Ding Dong', chorus: 45 },
-            { id: 'BA7fdSkp8ds', title: 'Wonder Girls - Nobody', chorus: 45 },
-            { id: 'HtJS32n6LNQ', title: 'TVXQ! - Mirotic (주문)', chorus: 45 }
+        async function getYouTubeVideoInfo(videoUrl) {
+            const oembedUrl =
+                `https://www.youtube.com/oembed?url=${encodeURIComponent(videoUrl)}&format=json`;
+            try {
+                const response = await fetch(oembedUrl);
+                const data = await response.json();
+                // Extract the 11-character video ID from the URL
+                const videoId = videoUrl.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})/)[1];
+                return { title: data.title, id: videoId };
+            } catch (error) {
+                console.error("Failed to fetch video details:", error);
+                // Fallback: extract ID and use a placeholder title
+                const fallbackId = videoUrl.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})/)[1];
+                return { title: `Video ${fallbackId}`, id: fallbackId };
+            }
+        }
+
+        // ============================================================
+        // 2. LIST OF 100 YOUTUBE URLs (derived from your provided IDs)
+        // ============================================================
+        const VIDEO_URLS = [
+            'https://www.youtube.com/watch?v=9bZkp7q19f0',
+            'https://www.youtube.com/watch?v=IHNzOHi8vJs',
+            'https://www.youtube.com/watch?v=2S24-y0Ij3Y',
+            'https://www.youtube.com/watch?v=gdZLi9oWNZg',
+            'https://www.youtube.com/watch?v=XsX3ATc3Cg8',
+            'https://www.youtube.com/watch?v=bwmSjE8350M',
+            'https://www.youtube.com/watch?v=MBdVXkSdhwU',
+            'https://www.youtube.com/watch?v=kTlv54L4XEY',
+            'https://www.youtube.com/watch?v=vRXZj0DzXYA',
+            'https://www.youtube.com/watch?v=pBuZEGYXA6E',
+            'https://www.youtube.com/watch?v=7C2z4GqqS5E',
+            'https://www.youtube.com/watch?v=ioNng23DkIM',
+            'https://www.youtube.com/watch?v=dNCWe_6HAM8',
+            'https://www.youtube.com/watch?v=WMweEpGlu_U',
+            'https://www.youtube.com/watch?v=gQlMMD8auMs',
+            'https://www.youtube.com/watch?v=b73BI9eUkjM',
+            'https://www.youtube.com/watch?v=hmE9fCYHD4A',
+            'https://www.youtube.com/watch?v=i0p1bmr0EmE',
+            'https://www.youtube.com/watch?v=dyRsGYlUEIQ',
+            'https://www.youtube.com/watch?v=2S24-y0Ij3Y',
+            'https://www.youtube.com/watch?v=vecSVX1QYbQ',
+            'https://www.youtube.com/watch?v=ePpPVE-GGJw',
+            'https://www.youtube.com/watch?v=kOHB85vDuow',
+            'https://www.youtube.com/watch?v=JQGRg8XBnB4',
+            'https://www.youtube.com/watch?v=pSudEWBAYRE',
+            'https://www.youtube.com/watch?v=ASO_zypdnsQ',
+            'https://www.youtube.com/watch?v=vRXZj0DzXYA',
+            'https://www.youtube.com/watch?v=9pdj4iJD08s',
+            'https://www.youtube.com/watch?v=dISNgvVpWlo',
+            'https://www.youtube.com/watch?v=BVwAVbKYYeM',
+            'https://www.youtube.com/watch?v=GZjt_sA2eso',
+            'https://www.youtube.com/watch?v=POe9SOEKotk',
+            'https://www.youtube.com/watch?v=FrG4TEcSuaw',
+            'https://www.youtube.com/watch?v=awkkyGGJY44',
+            'https://www.youtube.com/watch?v=4ujQOR224vc',
+            'https://www.youtube.com/watch?v=CuklIb9d3fI',
+            'https://www.youtube.com/watch?v=AAbokV76tkU',
+            'https://www.youtube.com/watch?v=8dJyRm2jJ-U',
+            'https://www.youtube.com/watch?v=V2hlQbekp6U',
+            'https://www.youtube.com/watch?v=YudHcBIxlYw',
+            'https://www.youtube.com/watch?v=QU9c0053UAU',
+            'https://www.youtube.com/watch?v=9DwzBICPhdM',
+            'https://www.youtube.com/watch?v=0lapF4DQPKQ',
+            'https://www.youtube.com/watch?v=c7rCyscTfZc',
+            'https://www.youtube.com/watch?v=xEeFrLSkMm8',
+            'https://www.youtube.com/watch?v=TQTlCHw450s',
+            'https://www.youtube.com/watch?v=fE2h3lGlOsk',
+            'https://www.youtube.com/watch?v=qGjAWJ2zWWI',
+            'https://www.youtube.com/watch?v=KSH-FVVtTf0',
+            'https://www.youtube.com/watch?v=KhTeiaChezw',
+            'https://www.youtube.com/watch?v=S4UEJePR0UE',
+            'https://www.youtube.com/watch?v=8AMBslo1zng',
+            'https://www.youtube.com/watch?v=J-wFp43XOrA',
+            'https://www.youtube.com/watch?v=4TWR90KJl84',
+            'https://www.youtube.com/watch?v=J_CFv1LDBqE',
+            'https://www.youtube.com/watch?v=pyf8cbqyfPs',
+            'https://www.youtube.com/watch?v=Z3A5yJpL1UU',
+            'https://www.youtube.com/watch?v=X-uJldn1b1U',
+            'https://www.youtube.com/watch?v=f5_wn8mexmM',
+            'https://www.youtube.com/watch?v=uR8Mrt1FCXg',
+            'https://www.youtube.com/watch?v=2OvyA2__High',
+            'https://www.youtube.com/watch?v=gJwScOIx4E0',
+            'https://www.youtube.com/watch?v=W3iSnJ6JRqs',
+            'https://www.youtube.com/watch?v=gRnuFC4Ualw',
+            'https://www.youtube.com/watch?v=F0B7HDiY-10',
+            'https://www.youtube.com/watch?v=OvioeS1ZZ7o',
+            'https://www.youtube.com/watch?v=ZeerrnuFiPE',
+            'https://www.youtube.com/watch?v=0vpS9009gP0',
+            'https://www.youtube.com/watch?v=x-_Josh62L0',
+            'https://www.youtube.com/watch?v=vLqKSv1Y4nc',
+            'https://www.youtube.com/watch?v=nM0xDI5R50E',
+            'https://www.youtube.com/watch?v=UwuAPyJ2kLU',
+            'https://www.youtube.com/watch?v=yWfsla_gSMc',
+            'https://www.youtube.com/watch?v=DocBf1Z4T14',
+            'https://www.youtube.com/watch?v=ur0hODA7Z2c',
+            'https://www.youtube.com/watch?v=sVTy_wW_y48',
+            'https://www.youtube.com/watch?v=ArmDp-zijuc',
+            'https://www.youtube.com/watch?v=UBURTj20HXI',
+            'https://www.youtube.com/watch?v=Qc7_zRjH808',
+            'https://www.youtube.com/watch?v=7HDeem-JaSY',
+            'https://www.youtube.com/watch?v=js1CtxSY38I',
+            'https://www.youtube.com/watch?v=D8VEhcPe3yIM',
+            'https://www.youtube.com/watch?v=P9idwbB8L2g',
+            'https://www.youtube.com/watch?v=-GQg25oP0S4',
+            'https://www.youtube.com/watch?v=6ZUIwj3WEM0',
+            'https://www.youtube.com/watch?v=pNfTK39HP4w',
+            'https://www.youtube.com/watch?v=WyiIGEHQP8o',
+            'https://www.youtube.com/watch?v=i0p1bmr0EmE',
+            'https://www.youtube.com/watch?v=rcEyU7HJ51c',
+            'https://www.youtube.com/watch?v=HLN2skIB04E',
+            'https://www.youtube.com/watch?v=Z_BhMhZpAug',
+            'https://www.youtube.com/watch?v=tyrVtwE8RaI',
+            'https://www.youtube.com/watch?v=Nu2yQ1zYDYU',
+            'https://www.youtube.com/watch?v=wNx3S6jR4mY',
+            'https://www.youtube.com/watch?v=jqE8M216470',
+            'https://www.youtube.com/watch?v=TI0DGvqKZTI',
+            'https://www.youtube.com/watch?v=d9IxdwEFk1c',
+            'https://www.youtube.com/watch?v=roughtS8y8S',
+            'https://www.youtube.com/watch?v=BA7fdSkp8ds',
+            'https://www.youtube.com/watch?v=HtJS32n6LNQ'
         ];
 
-        // The list above already has 100 entries (verified count).
-        const SONG_LIST = SONGS; // we trust the list
+        // ============================================================
+        // 3. FETCH ALL VIDEOS WITH PROGRESS
+        // ============================================================
+        async function fetchAllVideos(urls, onProgress) {
+            const results = [];
+            for (let i = 0; i < urls.length; i++) {
+                const info = await getYouTubeVideoInfo(urls[i]);
+                results.push(info);
+                if (onProgress) onProgress(i + 1, urls.length);
+            }
+            return results;
+        }
 
         // ============================================================
-        // 2. STATE
+        // 4. STATE & GAME LOGIC (same as before, but uses fetched list)
         // ============================================================
+        let SONG_LIST = [];
+
         const state = {
             round: 0,
             set: 1,
@@ -672,12 +684,8 @@
         const COLORS = ['#f9e74b', '#f9a84b', '#b07cd8', '#4b9cf9', '#5dc98a'];
         const COLOR_NAMES = ['YELLOW', 'ORANGE', 'PURPLE', 'BLUE', 'GREEN'];
 
-        // ============================================================
-        // 3. DOM REFS
-        // ============================================================
+        // DOM refs
         const $ = (sel) => document.querySelector(sel);
-        const $$ = (sel) => document.querySelectorAll(sel);
-
         const leftWrapper = $('#leftWrapper');
         const rightWrapper = $('#rightWrapper');
         const leftTitle = $('#leftTitle');
@@ -695,10 +703,10 @@
         const skipBtn = $('#skipBtn');
         const pauseBtn = $('#pauseBtn');
         const resetBtn = $('#resetBtn');
+        const loadingOverlay = $('#loadingOverlay');
+        const loadProgress = $('#loadProgress');
 
-        // ============================================================
-        // 4. HELPERS
-        // ============================================================
+        // Helpers
         function shuffleArray(arr) {
             for (let i = arr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -712,12 +720,13 @@
         }
 
         function getRandomSongs(count = 2) {
+            if (SONG_LIST.length === 0) return [];
             const shuffled = shuffleArray([...SONG_LIST]);
             return shuffled.slice(0, count);
         }
 
         function buildIframe(song) {
-            const start = song.chorus || 45;
+            const start = 45; // chorus start – you can adjust per song if desired
             return `
               <iframe
                 src="https://www.youtube.com/embed/${song.id}?start=${start}&autoplay=1&mute=1&loop=1&playlist=${song.id}"
@@ -733,12 +742,15 @@
             colorIndicator.textContent = COLOR_NAMES[index % COLORS.length];
         }
 
-        // ============================================================
-        // 5. CORE: LOAD BATTLE
-        // ============================================================
+        // Load battle
         function loadBattle() {
             clearInterval(state.countdownId);
             state.countdownId = null;
+
+            if (SONG_LIST.length < 2) {
+                // Not ready yet
+                return;
+            }
 
             let [s1, s2] = getRandomSongs(2);
             while (s1.id === s2.id) {
@@ -786,9 +798,7 @@
             autoIndicator.style.opacity = '1';
         }
 
-        // ============================================================
-        // 6. VOTING
-        // ============================================================
+        // Voting
         function handleVote(side) {
             if (!state.canVote || state.voted) return;
             state.voted = true;
@@ -827,9 +837,7 @@
             resetCountdown();
         }
 
-        // ============================================================
-        // 7. COUNTDOWN & AUTO-ADVANCE
-        // ============================================================
+        // Countdown
         function resetCountdown() {
             clearInterval(state.countdownId);
             state.countdown = 1;
@@ -851,9 +859,7 @@
             }, 1000);
         }
 
-        // ============================================================
-        // 8. CONTROLS
-        // ============================================================
+        // Controls
         function togglePause() {
             state.paused = !state.paused;
             pauseBtn.textContent = state.paused ? '▶ PLAY' : '⏸ PAUSE';
@@ -899,12 +905,28 @@
         }
 
         // ============================================================
-        // 9. INIT
+        // 5. INIT – fetch videos, then start game
         // ============================================================
-        function init() {
+        async function init() {
+            // Show loading overlay
+            loadingOverlay.classList.remove('hidden');
+
+            // Fetch all videos with progress
+            const songs = await fetchAllVideos(VIDEO_URLS, (done, total) => {
+                loadProgress.textContent = `${done} / ${total}`;
+            });
+
+            SONG_LIST = songs;
+            console.log(`✅ Loaded ${SONG_LIST.length} songs.`);
+
+            // Hide loading overlay
+            loadingOverlay.classList.add('hidden');
+
+            // Start the game
             setBackgroundColor(0);
             loadBattle();
 
+            // Event listeners
             voteLeft.addEventListener('click', () => handleVote('left'));
             voteRight.addEventListener('click', () => handleVote('right'));
             skipBtn.addEventListener('click', skipRound);
@@ -921,12 +943,12 @@
             });
         }
 
+        // Run
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
         } else {
             init();
         }
     </script>
-
 </body>
 </html>
