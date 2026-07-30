@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>K-POP MUSIC BATTLE</title>
+    <title>K-POP BATTLE</title>
 
     <!-- SPACE GROTESK - cool Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
 
     <style>
-        /* --- RESET & BASE --- */
+        /* --- RESET & BASE (same as before) --- */
         *,
         *::before,
         *::after {
@@ -31,7 +31,6 @@
             padding: 20px;
             margin: 0;
             background-color: #f9e74b;
-            /* start: yellow */
         }
 
         .container {
@@ -46,7 +45,6 @@
             border: 2px solid rgba(255, 255, 255, 0.25);
         }
 
-        /* --- HEADER --- */
         .header {
             display: flex;
             justify-content: space-between;
@@ -91,7 +89,6 @@
             font-size: 0.9em;
         }
 
-        /* --- BATTLE AREA --- */
         .battle-grid {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -148,7 +145,6 @@
             position: relative;
             width: 100%;
             padding-bottom: 56.25%;
-            /* 16:9 */
             height: 0;
             border-radius: 16px;
             overflow: hidden;
@@ -169,6 +165,8 @@
             margin-top: 14px;
             display: flex;
             justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .vote-btn {
@@ -208,12 +206,10 @@
         .vote-btn.voted-left {
             background: #1b5e20;
         }
-
         .vote-btn.voted-right {
             background: #1b5e20;
         }
 
-        /* --- VS DIVIDER --- */
         .vs-divider {
             display: flex;
             flex-direction: column;
@@ -235,7 +231,6 @@
             margin-top: 2px;
         }
 
-        /* --- VOTES DISPLAY --- */
         .votes-display {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -293,7 +288,6 @@
             font-weight: 700;
         }
 
-        /* --- AUTO ADVANCE INDICATOR --- */
         .auto-indicator {
             text-align: center;
             margin-top: 22px;
@@ -356,98 +350,84 @@
             transform: scale(0.95);
         }
 
-        /* --- RESPONSIVE --- */
+        .share-btn-wrap {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            letter-spacing: 2px;
+            padding: 8px 24px;
+            border: none;
+            border-radius: 60px;
+            background: #1a1a1a;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .share-btn:hover {
+            transform: scale(1.03);
+            background: #333;
+        }
+
+        .share-btn:active {
+            transform: scale(0.95);
+        }
+
+        .guess-mode-prompt {
+            text-align: center;
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: #1a1a1a;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 12px 24px;
+            border-radius: 60px;
+            margin-bottom: 16px;
+        }
+
+        .guess-result {
+            text-align: center;
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #1a1a1a;
+            margin-top: 10px;
+        }
+
         @media (max-width: 820px) {
-            .container {
-                padding: 18px 14px 28px;
-                border-radius: 28px;
-            }
-
-            .battle-grid {
-                grid-template-columns: 1fr;
-                gap: 18px;
-            }
-
-            .vs-divider {
-                flex-direction: row;
-                padding: 4px 0;
-                gap: 12px;
-                font-size: 1.8rem;
-            }
-
-            .vs-divider .vs-sub {
-                font-size: 0.6rem;
-                margin-top: 0;
-            }
-
-            .votes-display {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-
-            .vote-count.center-vs {
-                order: -1;
-            }
-
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-
-            .header-stats {
-                font-size: 0.8rem;
-                padding: 6px 16px;
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .video-card {
-                padding: 12px 12px 16px;
-            }
-
-            .vote-btn {
-                max-width: 100%;
-            }
-
-            .iframe-wrapper {
-                border-radius: 12px;
-            }
+            .container { padding: 18px 14px 28px; border-radius: 28px; }
+            .battle-grid { grid-template-columns: 1fr; gap: 18px; }
+            .vs-divider { flex-direction: row; padding: 4px 0; gap: 12px; font-size: 1.8rem; }
+            .vs-divider .vs-sub { font-size: 0.6rem; margin-top: 0; }
+            .votes-display { grid-template-columns: 1fr; gap: 8px; }
+            .vote-count.center-vs { order: -1; }
+            .header { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .header-stats { font-size: 0.8rem; padding: 6px 16px; width: 100%; justify-content: space-between; }
+            .video-card { padding: 12px 12px 16px; }
+            .vote-btn { max-width: 100%; }
+            .iframe-wrapper { border-radius: 12px; }
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                padding: 12px 10px 20px;
-                border-radius: 20px;
-            }
-            .header h1 {
-                font-size: 1.4rem;
-                letter-spacing: 2px;
-            }
-            .header-stats {
-                font-size: 0.7rem;
-                padding: 4px 12px;
-                flex-wrap: wrap;
-                gap: 6px;
-            }
-            .vote-btn {
-                font-size: 0.8rem;
-                padding: 8px 16px;
-            }
-            .footer-controls button {
-                font-size: 0.7rem;
-                padding: 6px 18px;
-            }
+            body { padding: 10px; }
+            .container { padding: 12px 10px 20px; border-radius: 20px; }
+            .header h1 { font-size: 1.4rem; letter-spacing: 2px; }
+            .header-stats { font-size: 0.7rem; padding: 4px 12px; flex-wrap: wrap; gap: 6px; }
+            .vote-btn { font-size: 0.8rem; padding: 8px 16px; }
+            .footer-controls button { font-size: 0.7rem; padding: 6px 18px; }
         }
 
-        /* --- UTILITY --- */
-        .hidden {
-            display: none !important;
-        }
-
+        .hidden { display: none !important; }
         .loading-placeholder {
             display: flex;
             align-items: center;
@@ -474,6 +454,11 @@
             </div>
         </div>
 
+        <!-- GUESS MODE PROMPT (hidden by default) -->
+        <div id="guessPrompt" class="guess-mode-prompt hidden">
+            YOUR FRIEND PICKED A OR B – GUESS!
+        </div>
+
         <!-- BATTLE GRID -->
         <div class="battle-grid" id="battleGrid">
             <!-- LEFT VIDEO -->
@@ -483,7 +468,7 @@
                 <div class="iframe-wrapper" id="leftWrapper">
                     <div class="loading-placeholder">LOADING …</div>
                 </div>
-                <div class="vote-btn-wrap">
+                <div class="vote-btn-wrap" id="leftBtnWrap">
                     <button class="vote-btn" id="voteLeft" data-side="left">VOTE</button>
                 </div>
             </div>
@@ -501,7 +486,7 @@
                 <div class="iframe-wrapper" id="rightWrapper">
                     <div class="loading-placeholder">LOADING …</div>
                 </div>
-                <div class="vote-btn-wrap">
+                <div class="vote-btn-wrap" id="rightBtnWrap">
                     <button class="vote-btn" id="voteRight" data-side="right">VOTE</button>
                 </div>
             </div>
@@ -520,6 +505,11 @@
                 <span class="label-txt">VOTES</span>
                 <span class="num" id="rightVotesNum">—</span>
             </div>
+        </div>
+
+        <!-- SHARE BUTTON (appears after voting) -->
+        <div id="shareContainer" class="share-btn-wrap hidden">
+            <button class="share-btn" id="shareBtn">📤 SHARE TO FRIENDS</button>
         </div>
 
         <!-- AUTO ADVANCE -->
@@ -653,7 +643,7 @@
         ];
 
         // ============================================================
-        // 2. STATE & GAME LOGIC
+        // 2. STATE
         // ============================================================
         const state = {
             round: 0,
@@ -669,6 +659,10 @@
             leftVotes: 0,
             rightVotes: 0,
             countdownId: null,
+            // guess mode
+            guessMode: false,
+            friendChoice: null, // 'a' or 'b'
+            guessMade: false,
         };
 
         const COLORS = ['#f9e74b', '#f9a84b', '#b07cd8', '#4b9cf9', '#5dc98a'];
@@ -693,8 +687,15 @@
         const skipBtn = $('#skipBtn');
         const pauseBtn = $('#pauseBtn');
         const resetBtn = $('#resetBtn');
+        const shareContainer = $('#shareContainer');
+        const shareBtn = $('#shareBtn');
+        const guessPrompt = $('#guessPrompt');
+        const leftBtnWrap = $('#leftBtnWrap');
+        const rightBtnWrap = $('#rightBtnWrap');
 
-        // Helpers
+        // ============================================================
+        // 3. HELPERS
+        // ============================================================
         function shuffleArray(arr) {
             for (let i = arr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -712,9 +713,12 @@
             return shuffled.slice(0, count);
         }
 
+        function findSongById(id) {
+            return SONG_LIST.find(s => s.id === id) || null;
+        }
+
         function buildIframe(song) {
             const start = song.chorus || 45;
-            // No autoplay, no mute, no loop – user must click play
             return `
               <iframe
                 src="https://www.youtube.com/embed/${song.id}?start=${start}"
@@ -730,10 +734,23 @@
             colorIndicator.textContent = COLOR_NAMES[index % COLORS.length];
         }
 
-        // Load battle
+        // ============================================================
+        // 4. LOAD BATTLE (normal mode)
+        // ============================================================
         function loadBattle() {
             clearInterval(state.countdownId);
             state.countdownId = null;
+
+            // Hide share button and guess prompt
+            shareContainer.classList.add('hidden');
+            guessPrompt.classList.add('hidden');
+            // Reset vote buttons to show "VOTE"
+            voteLeft.textContent = 'VOTE';
+            voteLeft.className = 'vote-btn';
+            voteLeft.disabled = false;
+            voteRight.textContent = 'VOTE';
+            voteRight.className = 'vote-btn';
+            voteRight.disabled = false;
 
             let [s1, s2] = getRandomSongs(2);
             while (s1.id === s2.id) {
@@ -752,13 +769,6 @@
 
             leftWrapper.innerHTML = buildIframe(s1);
             rightWrapper.innerHTML = buildIframe(s2);
-
-            voteLeft.textContent = 'VOTE';
-            voteLeft.className = 'vote-btn';
-            voteLeft.disabled = false;
-            voteRight.textContent = 'VOTE';
-            voteRight.className = 'vote-btn';
-            voteRight.disabled = false;
 
             leftVotesNum.textContent = '—';
             rightVotesNum.textContent = '—';
@@ -781,7 +791,9 @@
             autoIndicator.style.opacity = '1';
         }
 
-        // Voting
+        // ============================================================
+        // 5. VOTING
+        // ============================================================
         function handleVote(side) {
             if (!state.canVote || state.voted) return;
             state.voted = true;
@@ -817,10 +829,15 @@
                 voteRight.textContent = '✅ VOTED';
             }
 
+            // Show share button
+            shareContainer.classList.remove('hidden');
+
             resetCountdown();
         }
 
-        // Countdown
+        // ============================================================
+        // 6. COUNTDOWN & AUTO-ADVANCE
+        // ============================================================
         function resetCountdown() {
             clearInterval(state.countdownId);
             state.countdown = 1;
@@ -842,8 +859,144 @@
             }, 1000);
         }
 
-        // Controls
+        // ============================================================
+        // 7. SHARE FUNCTIONALITY
+        // ============================================================
+        function shareToFriends() {
+            const aId = state.leftSong.id;
+            const bId = state.rightSong.id;
+            // Determine which side the user voted for
+            const choice = voteLeft.classList.contains('voted-left') ? 'a' : 'b';
+            const baseUrl = 'https://chill-space.pages.dev/kpop';
+            const shareUrl =
+                `${baseUrl}?video_a=${aId}&video_b=${bId}&friend_choice=${choice}`;
+            const messageUrl = `https://chill-space.pages.dev/messages?text=${encodeURIComponent(shareUrl)}`;
+            window.open(messageUrl, '_blank');
+        }
+
+        // ============================================================
+        // 8. GUESS MODE
+        // ============================================================
+        function initGuessMode(videoA, videoB, friendChoice) {
+            state.guessMode = true;
+            state.friendChoice = friendChoice;
+            state.guessMade = false;
+
+            // Find song objects
+            const songA = findSongById(videoA);
+            const songB = findSongById(videoB);
+            if (!songA || !songB) {
+                // Fallback: if not found, load normal battle
+                loadBattle();
+                return;
+            }
+
+            // Set the videos
+            leftTitle.textContent = songA.title;
+            rightTitle.textContent = songB.title;
+            leftWrapper.innerHTML = buildIframe(songA);
+            rightWrapper.innerHTML = buildIframe(songB);
+
+            // Hide normal vote buttons, show guess buttons
+            voteLeft.classList.add('hidden');
+            voteRight.classList.add('hidden');
+
+            // Create guess buttons if not already present
+            // We'll reuse the vote buttons but change their text and behavior
+            voteLeft.textContent = 'GUESS A';
+            voteLeft.className = 'vote-btn';
+            voteLeft.disabled = false;
+            voteLeft.classList.remove('hidden');
+            voteRight.textContent = 'GUESS B';
+            voteRight.className = 'vote-btn';
+            voteRight.disabled = false;
+            voteRight.classList.remove('hidden');
+
+            // Remove any previous event listeners by cloning and replacing? We'll just override click.
+            // We'll store the guess handler separately.
+            // Remove old listeners by replacing the buttons with clones? Simpler: we'll use a flag.
+            // We'll attach a new click handler that checks guessMode.
+
+            // Show guess prompt
+            guessPrompt.classList.remove('hidden');
+            vsMessage.textContent = '🤔 GUESS YOUR FRIEND\'S CHOICE';
+
+            // Hide share button and auto-indicator
+            shareContainer.classList.add('hidden');
+            autoIndicator.style.opacity = '0';
+
+            // Reset stats display
+            leftVotesNum.textContent = '?';
+            rightVotesNum.textContent = '?';
+
+            // Store the song objects for later
+            state.leftSong = songA;
+            state.rightSong = songB;
+            state.voted = false; // not used in guess mode
+            state.canVote = false; // disable normal voting
+
+            // Override the vote button click handlers for guess mode
+            // We'll use a single handler with a flag
+            const guessHandler = (e) => {
+                if (state.guessMade) return;
+                const side = e.currentTarget.dataset.side;
+                // side is 'left' or 'right'
+                const guess = side === 'left' ? 'a' : 'b';
+                state.guessMade = true;
+                // Disable buttons
+                voteLeft.disabled = true;
+                voteRight.disabled = true;
+                // Show result
+                const correct = guess === state.friendChoice;
+                const resultMsg = correct ? '✅ CORRECT! 🎉' : '❌ WRONG!';
+                vsMessage.textContent = `YOU GUESSED ${guess.toUpperCase()} – ${resultMsg}`;
+                // Show which one was the friend's choice
+                if (state.friendChoice === 'a') {
+                    leftVotesNum.textContent = '⭐ FRIEND\'S PICK';
+                    rightVotesNum.textContent = '—';
+                } else {
+                    rightVotesNum.textContent = '⭐ FRIEND\'S PICK';
+                    leftVotesNum.textContent = '—';
+                }
+                // After 1.5 seconds, transition to normal game
+                setTimeout(() => {
+                    // Clean up guess mode
+                    state.guessMode = false;
+                    state.friendChoice = null;
+                    // Reset buttons
+                    voteLeft.classList.remove('hidden');
+                    voteRight.classList.remove('hidden');
+                    voteLeft.textContent = 'VOTE';
+                    voteRight.textContent = 'VOTE';
+                    voteLeft.className = 'vote-btn';
+                    voteRight.className = 'vote-btn';
+                    voteLeft.disabled = false;
+                    voteRight.disabled = false;
+                    guessPrompt.classList.add('hidden');
+                    autoIndicator.style.opacity = '1';
+                    // Start normal game from scratch (round 0)
+                    state.round = 0;
+                    state.set = 1;
+                    state.roundInSet = 0;
+                    state.colorIndex = 0;
+                    setBackgroundColor(0);
+                    loadBattle();
+                }, 1500);
+            };
+
+            // Remove old listeners and attach new ones
+            voteLeft.onclick = guessHandler;
+            voteRight.onclick = guessHandler;
+            // Also ensure data-side is set
+            voteLeft.dataset.side = 'left';
+            voteRight.dataset.side = 'right';
+        }
+
+        // ============================================================
+        // 9. CONTROLS (pause, skip, reset)
+        // ============================================================
         function togglePause() {
+            if (state.guessMode) return; // no pause in guess mode
             state.paused = !state.paused;
             pauseBtn.textContent = state.paused ? '▶ PLAY' : '⏸ PAUSE';
             if (state.paused) {
@@ -861,6 +1014,28 @@
         }
 
         function skipRound() {
+            if (state.guessMode) {
+                // If in guess mode, skip to normal game
+                state.guessMode = false;
+                state.friendChoice = null;
+                voteLeft.classList.remove('hidden');
+                voteRight.classList.remove('hidden');
+                voteLeft.textContent = 'VOTE';
+                voteRight.textContent = 'VOTE';
+                voteLeft.className = 'vote-btn';
+                voteRight.className = 'vote-btn';
+                voteLeft.disabled = false;
+                voteRight.disabled = false;
+                guessPrompt.classList.add('hidden');
+                autoIndicator.style.opacity = '1';
+                state.round = 0;
+                state.set = 1;
+                state.roundInSet = 0;
+                state.colorIndex = 0;
+                setBackgroundColor(0);
+                loadBattle();
+                return;
+            }
             if (state.paused) {
                 state.paused = false;
                 pauseBtn.textContent = '⏸ PAUSE';
@@ -872,6 +1047,21 @@
         }
 
         function resetGame() {
+            if (state.guessMode) {
+                // Reset guess mode to normal
+                state.guessMode = false;
+                state.friendChoice = null;
+                voteLeft.classList.remove('hidden');
+                voteRight.classList.remove('hidden');
+                voteLeft.textContent = 'VOTE';
+                voteRight.textContent = 'VOTE';
+                voteLeft.className = 'vote-btn';
+                voteRight.className = 'vote-btn';
+                voteLeft.disabled = false;
+                voteRight.disabled = false;
+                guessPrompt.classList.add('hidden');
+                autoIndicator.style.opacity = '1';
+            }
             clearInterval(state.countdownId);
             state.countdownId = null;
             state.round = 0;
@@ -888,19 +1078,48 @@
         }
 
         // ============================================================
-        // 3. INIT
+        // 10. INIT
         // ============================================================
         function init() {
-            setBackgroundColor(0);
-            loadBattle();
+            // Parse URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoA = urlParams.get('video_a');
+            const videoB = urlParams.get('video_b');
+            const friendChoice = urlParams.get('friend_choice');
 
-            voteLeft.addEventListener('click', () => handleVote('left'));
-            voteRight.addEventListener('click', () => handleVote('right'));
+            if (videoA && videoB && friendChoice && (friendChoice === 'a' || friendChoice === 'b')) {
+                // Enter guess mode
+                initGuessMode(videoA, videoB, friendChoice);
+                // Set background color to yellow (index 0)
+                setBackgroundColor(0);
+                // Update header counters (hide set/round)
+                setCounter.textContent = '—';
+                roundCounter.textContent = '—';
+                // Hide auto indicator countdown (already hidden in guess mode)
+            } else {
+                // Normal mode
+                setBackgroundColor(0);
+                loadBattle();
+                // Attach normal vote handlers
+                voteLeft.onclick = () => handleVote('left');
+                voteRight.onclick = () => handleVote('right');
+            }
+
+            // Share button
+            shareBtn.addEventListener('click', shareToFriends);
+
+            // Controls
             skipBtn.addEventListener('click', skipRound);
             pauseBtn.addEventListener('click', togglePause);
             resetBtn.addEventListener('click', resetGame);
 
+            // Keyboard shortcuts
             document.addEventListener('keydown', (e) => {
+                if (state.guessMode) {
+                    if (e.key === '1') { voteLeft.click(); }
+                    if (e.key === '2') { voteRight.click(); }
+                    return;
+                }
                 if (e.key === '1') handleVote('left');
                 if (e.key === '2') handleVote('right');
                 if (e.key === ' ') { e.preventDefault();
