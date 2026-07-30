@@ -13,6 +13,16 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://chill-space.pages.dev/gaming/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://chill-space.pages.dev/kpop/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://chill-space.pages.dev/crossposting.txt</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
