@@ -1693,7 +1693,32 @@
         const th_endings = ["การเดินทาง", "อนิเมะ", "อาหาร", "ฟุตบอล", "คาเฟ่", "หนังเก่า", "พระอาทิตย์ตก", "ปีนเขา", "บทกวี",
             "พอดแคสต์อาชญากรรม", "ชา", "เทคโนโลยีเรโทร"
         ];
+ (function() {
+            const hasNativeBridge = typeof AndroidTTS !== 'undefined' && AndroidTTS && typeof AndroidTTS.speak === 'function';
 
+            window.speakText = function(text, lang = 'en-US') {
+                if (!text) return;
+                if (hasNativeBridge) {
+                    AndroidTTS.speak(text, lang);
+                } else if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = lang;
+                    utterance.rate = 1;
+                    utterance.pitch = 1;
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    console.warn('TTS not supported');
+                }
+            };
+
+            window.stopSpeaking = function() {
+                if (hasNativeBridge) {
+                    AndroidTTS.stop();
+                } else if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                }
+            };
+        })();
         const avatars = [
             'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg==',
             'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
@@ -1999,23 +2024,25 @@
             `OP has been asked to explain this at least a dozen times now, and somehow the story gets a little more chaotic with every retelling.`
         ];
 
+       
+        // -------- Updated createStoryVideoShell --------
         function createStoryVideoShell() {
-            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            window.stopSpeaking(); // was: if ('speechSynthesis' in window) window.speechSynthesis.cancel();
 
             const overlay = document.createElement('div');
             overlay.className = 'story-video-overlay';
             overlay.innerHTML = `
-            <div class="story-video-box">
-              <video class="story-bg-video" src="${STORY_VIDEO_SRC}" autoplay loop muted playsinline></video>
-              <div class="story-video-scrim"></div>
-              <button type="button" class="story-close-btn" aria-label="Close">✕</button>
-              <div class="story-video-header">✨ ChillSpace AI</div>
-              <div class="story-caption-wrap"><div class="story-caption" id="storyCaption"></div></div>
-              <div class="story-controls">
-                <button type="button" class="story-play-btn" id="storyPlayBtn">⏸ Pause narration</button>
-              </div>
-            </div>
-          `;
+                <div class="story-video-box">
+                    <video class="story-bg-video" src="${STORY_VIDEO_SRC}" autoplay loop muted playsinline></video>
+                    <div class="story-video-scrim"></div>
+                    <button type="button" class="story-close-btn" aria-label="Close">✕</button>
+                    <div class="story-video-header">✨ ChillSpace AI</div>
+                    <div class="story-caption-wrap"><div class="story-caption" id="storyCaption"></div></div>
+                    <div class="story-controls">
+                        <button type="button" class="story-play-btn" id="storyPlayBtn">⏸ Pause narration</button>
+                    </div>
+                </div>
+            `;
             document.body.appendChild(overlay);
 
             const video = overlay.querySelector('.story-bg-video');
@@ -2026,7 +2053,7 @@
             video.play().catch(() => {});
 
             function close() {
-                if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+                window.stopSpeaking(); // was: if ('speechSynthesis' in window) window.speechSynthesis.cancel();
                 video.pause();
                 overlay.remove();
             }
@@ -2036,36 +2063,79 @@
             return { overlay, video, captionEl, playBtn, closeBtn, close };
         }
 
+       // -------- Updated startStoryNarration --------
         function startStoryNarration(shell, commentText, story) {
             const { captionEl, playBtn } = shell;
             const fullText = `${commentText} ${story}`;
-            const words = fullText.split(/\s+/).filter(Boolean);
-            captionEl.innerHTML = escapeHtml(words[0] || '');
-            playBtn.style.display = '';
+            captionEl.innerHTML = escapeHtml(fullText);
 
-            const wordRanges = [];
-            let acc = 0;
-            words.forEach((w, i) => {
-                wordRanges.push({ start: acc, end: acc + w.length, index: i });
-                acc += w.length + 1;
-            });
+            // Check if native bridge is available
+            const hasNative = typeof AndroidTTS !== 'undefined' && AndroidTTS && typeof AndroidTTS.speak === 'function';
 
-            function renderCaptionWindow(centerIdx) {
-                const before = 2,
-                    after = 4;
-                const start = Math.max(0, centerIdx - before);
-                const end = Math.min(words.length, centerIdx + after);
-                let html = '';
-                for (let i = start; i < end; i++) {
-                    const safeWord = escapeHtml(words[i]);
-                    html += i === centerIdx ?
-                        `<span class="story-word-active">${safeWord}</span> ` :
-                        `<span>${safeWord}</span> `;
+            if (hasNative) {
+                // Use native Android TTS – simple play/stop, no word highlighting
+                let isPlaying = false;
+                playBtn.style.display = '';
+                playBtn.textContent = '▶ Play narration';
+                playBtn.onclick = () => {
+                    if (isPlaying) {
+                        window.stopSpeaking();
+                        isPlaying = false;
+                        playBtn.textContent = '▶ Play narration';
+                    } else {
+                        window.speakText(fullText);
+                        isPlaying = true;
+                        playBtn.textContent = '⏸ Stop';
+                        // Auto-reset after a rough estimate of speech duration
+                        setTimeout(() => {
+                            if (isPlaying) {
+                                isPlaying = false;
+                                playBtn.textContent = '▶ Play narration';
+                            }
+                        }, fullText.length * 80 + 2000);
+                    }
+                };
+                // Override close to stop speech
+                const origClose = shell.close;
+                shell.close = function() {
+                    window.stopSpeaking();
+                    origClose();
+                };
+                // Also stop when overlay is removed
+                const observer = new MutationObserver(() => {
+                    if (!document.body.contains(shell.overlay)) {
+                        window.stopSpeaking();
+                        observer.disconnect();
+                    }
+                });
+                observer.observe(shell.overlay.parentNode || document.body, { childList: true, subtree: true });
+            } else if ('speechSynthesis' in window) {
+                // Fallback to Web Speech API with word highlighting
+                const words = fullText.split(/\s+/).filter(Boolean);
+                captionEl.innerHTML = escapeHtml(words[0] || '');
+                playBtn.style.display = '';
+
+                const wordRanges = [];
+                let acc = 0;
+                words.forEach((w, i) => {
+                    wordRanges.push({ start: acc, end: acc + w.length, index: i });
+                    acc += w.length + 1;
+                });
+
+                function renderCaptionWindow(centerIdx) {
+                    const before = 2, after = 4;
+                    const start = Math.max(0, centerIdx - before);
+                    const end = Math.min(words.length, centerIdx + after);
+                    let html = '';
+                    for (let i = start; i < end; i++) {
+                        const safeWord = escapeHtml(words[i]);
+                        html += i === centerIdx ?
+                            `<span class="story-word-active">${safeWord}</span> ` :
+                            `<span>${safeWord}</span> `;
+                    }
+                    captionEl.innerHTML = html;
                 }
-                captionEl.innerHTML = html;
-            }
 
-            if ('speechSynthesis' in window) {
                 const utterance = new SpeechSynthesisUtterance(fullText);
                 utterance.rate = 1;
                 utterance.pitch = 1;
@@ -2082,6 +2152,7 @@
                     playBtn.dataset.state = 'ended';
                 };
 
+                let isPaused = false;
                 playBtn.onclick = () => {
                     if (playBtn.dataset.state === 'ended') {
                         playBtn.dataset.state = '';
@@ -2103,6 +2174,7 @@
                 window.speechSynthesis.cancel();
                 window.speechSynthesis.speak(utterance);
             } else {
+                // No TTS at all
                 captionEl.textContent = fullText;
                 playBtn.style.display = 'none';
             }
