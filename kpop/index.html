@@ -1937,6 +1937,33 @@
             shareContainer.classList.remove('hidden');
             shareBtnMobile.classList.remove('hidden');
 
+// ============================================================
+// DAILY CHALLENGE TRACKING
+// ============================================================
+function updateDailyChallenge() {
+    try {
+        const raw = localStorage.getItem('chillspace_daily_challenge');
+        if (!raw) return;
+        const challenge = JSON.parse(raw);
+        // Only increment if the challenge type is 'rank_songs'
+        if (challenge.type !== 'rank_songs') return;
+        // Don't exceed the target
+        if (challenge.progress >= challenge.target) return;
+        // Increment progress
+        challenge.progress = Math.min(challenge.progress + 1, challenge.target);
+        localStorage.setItem('chillspace_daily_challenge', JSON.stringify(challenge));
+        // Dispatch a storage event to sync with the homepage (or other tabs)
+        window.dispatchEvent(new StorageEvent('storage', {
+            key: 'chillspace_daily_challenge',
+            newValue: JSON.stringify(challenge),
+            oldValue: raw,
+            storageArea: localStorage
+        }));
+    } catch (e) {
+        // Silently ignore any errors (e.g., malformed JSON)
+    }
+}
+            
             resetCountdown();
         }
 
