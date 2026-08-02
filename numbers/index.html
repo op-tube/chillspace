@@ -252,6 +252,41 @@ function startGame() {
   setInterval(updateBackground, 15000); // check every 15s
 }
 
+// ---------- Daily Challenge integration ----------
+function updateDailyChallenge() {
+  const stored = localStorage.getItem('chillspace_daily_challenge');
+  if (!stored) return;
+
+  let challenge;
+  try {
+    challenge = JSON.parse(stored);
+  } catch (e) {
+    console.warn('Invalid daily challenge data');
+    return;
+  }
+
+  // Only update if it's the 'do_numbers' challenge
+  if (challenge.type !== 'do_numbers') return;
+
+  // Cap progress at target
+  const newProgress = Math.min(challenge.progress + 1, challenge.target);
+  if (newProgress === challenge.progress) return; // already done
+
+  challenge.progress = newProgress;
+  const newValue = JSON.stringify(challenge);
+  localStorage.setItem('chillspace_daily_challenge', newValue);
+
+  // Dispatch storage event so other tabs/homepage update
+  window.dispatchEvent(new StorageEvent('storage', {
+    key: 'chillspace_daily_challenge',
+    oldValue: stored,
+    newValue: newValue,
+    url: window.location.href,
+    storageArea: localStorage
+  }));
+}
+// -------------------------------------------------
+
 function addOne() {
   player.score++;
   player.sessionScore++;
@@ -264,6 +299,8 @@ function addOne() {
   });
   save();
   updateUI();
+  // Update daily challenge (if active and of type 'do_numbers')
+  updateDailyChallenge();
 }
 
 function botTick() {
@@ -343,6 +380,7 @@ function addBonus(amount) {
   totalCount += amount;
   save();
   updateUI();
+  // Bonus points are not “number completions” – we intentionally do NOT update the daily challenge here.
 }
 
 function toggleMusic() {
