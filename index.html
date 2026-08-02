@@ -3126,21 +3126,25 @@
         }
 
         // ---- linkify: convert URLs in user-generated text to clickable <a> tags ----
-        function linkifyText(text) {
-            if (!text) return '';
-            const urlRegex = /https?:\/\/[^\s<>"']+/g;
-            let result = '';
-            let lastIndex = 0;
-            let match;
-            while ((match = urlRegex.exec(text)) !== null) {
-                result += escapeHtml(text.slice(lastIndex, match.index));
-                const url = match[0];
-                result += `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`;
-                lastIndex = urlRegex.lastIndex;
-            }
-            result += escapeHtml(text.slice(lastIndex));
-            return result;
-        }
+       function linkifyText(text) {
+    if (!text) return '';
+    const urlRegex = /https?:\/\/[^\s<>"]+/g; // keep ' removed
+    let result = '';
+    let lastIndex = 0;
+    let match;
+    while ((match = urlRegex.exec(text)) !== null) {
+        result += escapeHtml(text.slice(lastIndex, match.index));
+        let url = match[0];
+        // Trim trailing punctuation that isn't part of the URL
+        url = url.replace(/[.,!?;:]+$/, '');
+        // If the URL ends with a closing quote or bracket, trim it
+        url = url.replace(/['")\]]+$/, '');
+        result += `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`;
+        lastIndex = urlRegex.lastIndex;
+    }
+    result += escapeHtml(text.slice(lastIndex));
+    return result;
+}
 
         function avatarLabelFromSrc(src) {
             const idx = avatars.indexOf(src);
