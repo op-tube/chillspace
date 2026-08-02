@@ -60,7 +60,7 @@
 
   <!-- Example Share URLs -->
   <url>
-    <loc>https://chill-space.pages.dev/?post_creator=A+ChillSpace+User&post_content=I+love+coding&profile_picture=grey</loc>
+    <loc>https://chill-space.pages.dev/?post_creator=A+ChillSpace+User&amp;post_content=I+love+coding&amp;profile_picture=grey</loc>
     <changefreq>never</changefreq>
     <priority>0.5</priority>
   </url>
