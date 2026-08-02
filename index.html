@@ -4290,10 +4290,10 @@
                 const type = types[Math.floor(Math.random() * types.length)];
                 let target;
                 switch(type) {
-                    case 'scroll_posts': target = randInt(5, 15); break;
+                    case 'scroll_posts': target = randInt(50, 150); break;
                     case 'send_messages': target = randInt(3, 10); break;
-                    case 'rank_songs': target = randInt(3, 8); break;
-                    case 'do_numbers': target = randInt(5, 20); break;
+                    case 'rank_songs': target = randInt(5, 30); break;
+                    case 'do_numbers': target = randInt(100, 500); break;
                     default: target = 5;
                 }
                 const date = new Date().toDateString();
