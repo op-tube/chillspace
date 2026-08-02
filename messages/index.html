@@ -619,6 +619,23 @@
     return AI_PROVIDERS.find(p => p.id === id);
   }
 
+  // ---------- Daily Challenge integration ----------
+  function updateDailyChallenge() {
+    try {
+      const raw = localStorage.getItem('chillspace_daily_challenge');
+      if (!raw) return;
+      const challenge = JSON.parse(raw);
+      if (challenge.type !== 'send_messages') return;
+      if (challenge.progress < challenge.target) {
+        challenge.progress = Math.min(challenge.progress + 1, challenge.target);
+        localStorage.setItem('chillspace_daily_challenge', JSON.stringify(challenge));
+        // The homepage (in another tab) will receive the storage event automatically.
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
   // ---------- Storage helpers ----------
   function getUsername() { return localStorage.getItem(STORAGE_KEYS.username) || ""; }
   function getMyChannel() { return localStorage.getItem(STORAGE_KEYS.myChannel) || "whatsapp"; }
@@ -934,20 +951,14 @@
 
   // ---------- Render message with clickable ChillSpace links ----------
   function renderMessageWithLinks(text) {
-    // Escape the entire text first.
     let escaped = escapeHtml(text);
-    // Match chill-space.pages.dev URLs, allowing query and fragment.
-    // Allow any character except whitespace, <, >, ".
     const urlRegex = /(?:https?:\/\/)?(?:www\.)?chill-space\.pages\.dev[^\s<>"']*/gi;
-    // Replace each match with an anchor.
     let result = escaped.replace(urlRegex, function(match) {
-      // Trim trailing punctuation that are not part of the URL (., ,, ;, :).
-      // Keep ? and & and =.
       let trimmed = match;
       while (trimmed.length > 0 && /[.,;:]$/.test(trimmed)) {
         trimmed = trimmed.slice(0, -1);
       }
-      if (!trimmed) return match; // fallback
+      if (!trimmed) return match;
       let href = trimmed;
       if (!href.startsWith('http://') && !href.startsWith('https://')) {
         href = 'https://' + href;
@@ -959,7 +970,7 @@
 
   // ---------- App state ----------
   let state = {
-    view: "loading", // loading | setup | contacts | chat | share
+    view: "loading",
     activeContactId: null,
     pendingIncoming: null,
     pendingShareText: null,
@@ -1377,6 +1388,7 @@
       const contextWindow = buildContextWindowJSON(id);
 
       addMessage(id, { dir: "sent", text: text, ts: Date.now() });
+      updateDailyChallenge(); // increment challenge progress
 
       const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text);
       const linkWithContext = link + "&context_window=" + encodeURIComponent(contextWindow);
@@ -1394,6 +1406,7 @@
     }
 
     addMessage(id, { dir: "sent", text: text, ts: Date.now() });
+    updateDailyChallenge(); // increment challenge progress
 
     const link = buildChillSpaceLink(getUsername(), getMyChannel(), getMyHandle(), text, contact.channel, contact.handle);
     const outLink = getChannel(contact.channel).buildLink(contact.handle, link);
