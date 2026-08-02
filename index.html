@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ChillSpace - the human first social media platform</title>
     <style>
+        
         * {
             box-sizing: border-box;
         }
@@ -100,6 +101,100 @@
             margin: 0 auto;
             padding: 0 12px;
         }
+        /* ---- Daily Challenge Card ---- */
+        #challenge-card {
+            max-width: 680px;
+            margin: 0 auto 16px;
+            padding: 0 12px;
+        }
+        .challenge-box {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.03);
+            padding: 16px 18px;
+            border-left: 4px solid #7c3aed;
+            transition: border-color 0.3s;
+        }
+        .challenge-box.completed {
+            border-left-color: #22c55e;
+            background: #f0fdf4;
+        }
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .challenge-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: #1c1e21;
+        }
+        .challenge-badge {
+            font-size: 12px;
+            background: #e4e6eb;
+            padding: 2px 10px;
+            border-radius: 999px;
+            color: #65676b;
+            font-weight: 600;
+        }
+        .challenge-description {
+            font-size: 15px;
+            color: #1c1e21;
+            margin: 6px 0 10px;
+        }
+        .challenge-progress-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .challenge-progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #e4e6eb;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .challenge-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #7c3aed, #06b6d4);
+            border-radius: 999px;
+            transition: width 0.4s ease;
+        }
+        .challenge-progress-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #65676b;
+            white-space: nowrap;
+        }
+        .challenge-status {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #65676b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .challenge-status .complete-badge {
+            background: #22c55e;
+            color: #fff;
+            padding: 0 10px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 12px;
+            line-height: 20px;
+        }
+        .challenge-status .incomplete-badge {
+            background: #facc15;
+            color: #1c1e21;
+            padding: 0 10px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 20px;
+        }
+
         .post {
             background: #fff;
             border-radius: 12px;
@@ -1411,7 +1506,29 @@
         </div>
     </header>
 
+
     <main>
+        <!-- Daily Challenge Card -->
+        <div id="challenge-card">
+            <div class="challenge-box" id="challengeBox">
+                <div class="challenge-header">
+                    <span class="challenge-title">🎯 Daily Challenge</span>
+                    <span class="challenge-badge" id="challengeDateBadge">Today</span>
+                </div>
+                <div class="challenge-description" id="challengeDesc">Loading challenge...</div>
+                <div class="challenge-progress-wrap">
+                    <div class="challenge-progress-bar">
+                        <div class="challenge-progress-fill" id="challengeFill" style="width:0%"></div>
+                    </div>
+                    <span class="challenge-progress-text" id="challengeProgressText">0/0</span>
+                </div>
+                <div class="challenge-status" id="challengeStatus">
+                    <span class="incomplete-badge">In progress</span>
+                </div>
+            </div>
+        </div>
+
+       
         <div id="composer-wrap">
             <div id="composer">
                 <div id="composer-name-row">
@@ -4156,6 +4273,128 @@
             }
             requestAnimationFrame(step);
         }
+        
+        // ========== DAILY CHALLENGE ==========
+        (function() {
+            // Challenge types and their display names
+            const CHALLENGE_TYPES = {
+                scroll_posts: { label: 'Scroll through', unit: 'posts', link: null },
+                send_messages: { label: 'Send', unit: 'messages', link: '/messages' },
+                rank_songs: { label: 'Rank', unit: 'songs', link: '/kpop' },
+                do_numbers: { label: 'Do', unit: 'numbers', link: '/numbers' }
+            };
+
+            // Generate a random challenge for today
+            function generateDailyChallenge() {
+                const types = Object.keys(CHALLENGE_TYPES);
+                const type = types[Math.floor(Math.random() * types.length)];
+                let target;
+                switch(type) {
+                    case 'scroll_posts': target = randInt(5, 15); break;
+                    case 'send_messages': target = randInt(3, 10); break;
+                    case 'rank_songs': target = randInt(3, 8); break;
+                    case 'do_numbers': target = randInt(5, 20); break;
+                    default: target = 5;
+                }
+                const date = new Date().toDateString();
+                return { date, type, target, progress: 0 };
+            }
+
+            function randInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            // Get today's challenge from localStorage, or create new
+            function getDailyChallenge() {
+                const key = 'chillspace_daily_challenge';
+                let data;
+                try {
+                    data = JSON.parse(localStorage.getItem(key));
+                } catch(e) { data = null; }
+                const today = new Date().toDateString();
+                if (!data || data.date !== today) {
+                    data = generateDailyChallenge();
+                    localStorage.setItem(key, JSON.stringify(data));
+                }
+                return data;
+            }
+
+            // Update progress for a given type
+            function updateChallengeProgress(type, increment = 1) {
+                const data = getDailyChallenge();
+                if (data.type !== type) return; // only update if it's today's challenge
+                data.progress = Math.min(data.progress + increment, data.target);
+                localStorage.setItem('chillspace_daily_challenge', JSON.stringify(data));
+                renderChallengeCard();
+                // Also dispatch a storage event so other tabs can update
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'chillspace_daily_challenge',
+                    newValue: JSON.stringify(data),
+                    oldValue: null,
+                    storageArea: localStorage
+                }));
+            }
+
+            // Render the challenge card
+            function renderChallengeCard() {
+                const data = getDailyChallenge();
+                const typeInfo = CHALLENGE_TYPES[data.type];
+                const desc = `${typeInfo.label} ${data.target} ${typeInfo.unit} today`;
+                const progress = data.progress;
+                const target = data.target;
+                const pct = Math.min((progress / target) * 100, 100);
+                const completed = progress >= target;
+
+                document.getElementById('challengeDesc').textContent = desc;
+                document.getElementById('challengeFill').style.width = pct + '%';
+                document.getElementById('challengeProgressText').textContent = `${progress}/${target}`;
+                const statusEl = document.getElementById('challengeStatus');
+                if (completed) {
+                    statusEl.innerHTML = `<span class="complete-badge">🎉 Completed!</span>`;
+                    document.getElementById('challengeBox').classList.add('completed');
+                } else {
+                    statusEl.innerHTML = `<span class="incomplete-badge">In progress</span>`;
+                    document.getElementById('challengeBox').classList.remove('completed');
+                }
+                // Update date badge
+                const dateObj = new Date(data.date);
+                const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                document.getElementById('challengeDateBadge').textContent = dateStr;
+            }
+
+            // Listen for storage changes from other tabs (messages, numbers, kpop pages)
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'chillspace_daily_challenge') {
+                    renderChallengeCard();
+                }
+            });
+
+            // Expose update function globally so other pages can call it
+            window.updateChallengeProgress = updateChallengeProgress;
+
+            // Initial render
+            renderChallengeCard();
+
+            // ---- Integrate with scroll tracking ----
+            // We'll count posts as they are added to the feed.
+            // Override the original loadFeed and loadMorePosts to increment progress.
+            // Since those functions are defined later, we'll wrap them.
+            // We'll use a MutationObserver to detect new posts added to #feed.
+            const feed = document.getElementById('feed');
+            if (feed) {
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach(m => {
+                        m.addedNodes.forEach(node => {
+                            if (node.nodeType === 1 && node.classList && node.classList.contains('post')) {
+                                // Count this as a scroll
+                                updateChallengeProgress('scroll_posts', 1);
+                            }
+                        });
+                    });
+                });
+                observer.observe(feed, { childList: true, subtree: false });
+            }
+        })();
 
         document.addEventListener('DOMContentLoaded', () => {
             loadFeed();
