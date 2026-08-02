@@ -1696,7 +1696,7 @@
  (function() {
             const hasNativeBridge = typeof AndroidTTS !== 'undefined' && AndroidTTS && typeof AndroidTTS.speak === 'function';
 
-            window.speakText = function(text, lang = 'en-US') {
+            window.speakText = function(text, lang = 'en') {
                 if (!text) return;
                 if (hasNativeBridge) {
                     AndroidTTS.speak(text, lang);
