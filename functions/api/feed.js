@@ -28,20 +28,18 @@ export async function onRequest(context) {
     const op2 = OPINIONS[randInt(OPINIONS.length)];
     const topic2 = TOPICS[randInt(TOPICS.length)];
     const content = fillTemplate(template, op1, topic1, op2, topic2);
-    const code = randChar() + randChar() + randChar() + randChar() + randChar();
 
     posts.push({
-      id: code,
       creator: "ChillBot from ChillSpace",
       username: "@chillbot",
       avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=" + code,
       content: content,
       profile_picture: "grey",
-      code: code,
       likes: randInt(500),
       comments: randInt(50),
       created_at: new Date(Date.now() - randInt(1000*60*60*24*7)).toISOString(),
-      url: `https://chill-space.pages.dev/?post_creator=ChillBot&post_content=${encodeURIComponent(content)}&profile_picture=grey`
+      url: `https://chill-space.pages.dev/api/post/view?post_creator=ChillBot&post_content=${encodeURIComponent(content)}&profile_picture=grey`,
+      url_for_humans: `https://chill-space.pages.dev/?post_creator=ChillBot&post_content=${encodeURIComponent(content)}&profile_picture=grey`
     });
   }
 
