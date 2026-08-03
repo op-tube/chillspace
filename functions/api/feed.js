@@ -32,7 +32,7 @@ export async function onRequest(context) {
     posts.push({
       creator: "ChillBot from ChillSpace",
       username: "@chillbot",
-      avatar: "No avatar yet."
+      avatar: "No avatar yet.",
       content: content,
       profile_picture: "grey",
       likes: randInt(500),
