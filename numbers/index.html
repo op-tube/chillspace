@@ -5,147 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Number Game</title>
 <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: 'Segoe UI', sans-serif;
-        touch-action: manipulation; /* prevents double-tap zoom on iOS */
-    }
-  body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    color: white;
-    position: relative;
-    overflow-x: hidden;
-    background: #000; /* black bars for "contain" */
-  }
-  #bgFrame {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    z-index: -2;
-    filter: brightness(0.6);
-  }
-  #bgVideo {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* FIT instead of FILL */
-    z-index: -1;
-    filter: brightness(0.8);
-    display: none;
-    background: #000;
-  }
-.stats {
-    margin-top: 30px;
-    text-align: center;
-  }
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; touch-action: manipulation; }
+body { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; color: white; position: relative; overflow-x: hidden; background: #000; }
+#bgFrame { position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: -2; filter: brightness(0.6); }
+#bgVideo { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: -1; filter: brightness(0.8); display: none; background: #000; }
+.stats { margin-top: 30px; text-align: center; }
 .stat-green { color: #00ff00; font-size: 2.5rem; font-weight: 800; text-shadow: 0 0 15px #00ff00; }
 .stat-magenta { color: #ff00ff; font-size: 1.4rem; }
 .stat-gold { color: #ffdd00; font-size: 1.4rem; }
-.buttons {
-    display: flex;
-    gap: 12px;
-    margin: 20px 0;
-    flex-direction: column;
-    align-items: center;
-  }
-.btn-plus {
-    background: #ff00ff;
-    border: none;
-    padding: 16px 60px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    border-radius: 12px;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 0 15px #ff00ff;
-  }
-.btn-music {
-    background: #111;
-    border: 2px solid #00ff00;
-    padding: 12px 24px;
-    border-radius: 12px;
-    font-size: 1rem;
-    cursor: pointer;
-    color: white;
-  }
+.buttons { display: flex; gap: 12px; margin: 20px 0; flex-direction: column; align-items: center; }
+.btn-plus { background: #ff00ff; border: none; padding: 16px 60px; font-size: 1.5rem; font-weight: bold; border-radius: 12px; color: white; cursor: pointer; box-shadow: 0 0 15px #ff00ff; }
+.btn-music { background: #111; border: 2px solid #00ff00; padding: 12px 24px; border-radius: 12px; font-size: 1rem; cursor: pointer; color: white; }
 .btn-music.playing { background: #00ff00; color: #000; }
-.leaderboard {
-    width: 90%;
-    max-width: 500px;
-    background: rgba(0,0,0,0.75);
-    border: 2px solid #ff00ff;
-    border-radius: 12px;
-    padding: 15px;
-    margin-top: 20px;
-    backdrop-filter: blur(5px);
-  }
-.bar-row {
-    margin: 8px 0;
-  }
-.bar-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    margin-bottom: 4px;
-  }
-.bar {
-    height: 20px;
-    border-radius: 10px;
-    transition: width 0.4s ease;
-  }
+.leaderboard { width: 90%; max-width: 500px; background: rgba(0,0,0,0.75); border: 2px solid #ff00ff; border-radius: 12px; padding: 15px; margin-top: 20px; backdrop-filter: blur(5px); }
+.bar-row { margin: 8px 0; }
+.bar-label { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 4px; }
+.bar { height: 20px; border-radius: 10px; transition: width 0.4s ease; }
 .bar.you { background: #00ff00; box-shadow: 0 0 10px #00ff00; }
 .bar.bot { background: #a020f0; }
-  #nameInput {
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    margin-bottom: 10px;
-    width: 200px;
-    text-align: center;
-    font-size: 16px; /* FIX: prevents iOS auto-zoom */
-  }
-
-/* FIX: apply 16px to all form inputs on iOS */
-input, textarea, select {
-    font-size: 16px;
-}
-
-.share-buttons {
-    display: flex;
-    gap: 12px;
-    margin-top: 20px;
-  }
-.share-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    background-size: 60%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: #222;
-    transition: transform 0.2s;
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+#nameInput { padding: 10px; border-radius: 8px; border: none; margin-bottom: 10px; width: 200px; text-align: center; font-size: 16px; }
+input, textarea, select { font-size: 16px; }
+.share-buttons { display: flex; gap: 12px; margin-top: 20px; }
+.share-btn { width: 50px; height: 50px; border-radius: 12px; border: none; cursor: pointer; background-size: 60%; background-repeat: no-repeat; background-position: center; background-color: #222; transition: transform 0.2s; font-size: 24px; font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; }
 .share-btn:hover { transform: scale(1.1); }
 .whatsapp { background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg'); background-color: #25D366; }
 .x { background-color: #000; }
 .chill { background-image: url('https://i.ibb.co/MkvCqpXy/kmc-20260722-172909.png'); background-color: #ff00ff; }
+</style>
 </style>
 </head>
 <body>
