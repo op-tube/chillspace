@@ -3,8 +3,42 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="The placebo social media site to help you quit social media. Scroll for satisfaction, not sorrow.">
-    <title>ChillSpace - the world's first placebo social media network</title>
+    <meta name="description" content="ChillSpace - The placebo social media site to help you quit social media. Because scrolling should satisfy, not sadden.">
+     <title>ChillSpace - the world's first placebo social media network</title>
+
+    <script>
+    (function() {
+        // Get user's browser language
+        const userLang = navigator.language || navigator.userLanguage;
+        
+        // Translations for the meta description
+        const descriptions = {
+            'ru': 'ChillSpace — плацебо от социальных сетей. Листайте, публикуйте посты, общайтесь в одном месте через WhatsApp, email, Instagram и ChatGPT. Играйте в Number Game и K-pop игру. Ваши данные остаются на устройстве. Расслабьтесь в своём пространстве.',
+            'ko': 'ChillSpace — SNS의 플라시보. 스트레스 없이 스크롤하고, 게시물을 올리고, WhatsApp, 이메일, Instagram, ChatGPT로 메시지를 보내세요. 넘버 게임과 K-pop 게임도 즐기세요. 모든 데이터는 기기에 안전하게 보관됩니다. 당신만의 공간에서 편하게 쉬어가세요.',
+            'ja': 'ChillSpace — ソーシャルメディアのプラセボ。ストレスなくスクロール、投稿、WhatsApp・メール・Instagram・ChatGPTでのメッセージを一括管理。ナンバーゲームとK-popゲームも楽しめます。すべてのデータは端末に保存され、プライバシーは完全に保護されます。あなただけの空間でくつろぎましょう。',
+            'zh': 'ChillSpace — 社交媒体的安慰剂。无压力浏览、发帖，通过 WhatsApp、邮件、Instagram 和 ChatGPT 统一发送消息。还能玩数字游戏和 K-pop 游戏。所有数据仅保存在本地设备上，您的隐私完全安全。在属于自己的空间里放松吧。',
+            'zh-CN': 'ChillSpace — 社交媒体的安慰剂。无压力浏览、发帖，通过 WhatsApp、邮件、Instagram 和 ChatGPT 统一发送消息。还能玩数字游戏和 K-pop 游戏。所有数据仅保存在本地设备上，您的隐私完全安全。在属于自己的空间里放松吧。',
+            'zh-TW': 'ChillSpace — 社交媒體的安慰劑。無壓力瀏覽、發帖，通過 WhatsApp、郵件、Instagram 和 ChatGPT 統一發送消息。還能玩數字遊戲和 K-pop 遊戲。所有數據僅保存在本地設備上，您的隱私完全安全。在屬於自己的空間裡放鬆吧。'
+        };
+        
+        // Default to English
+        let description = 'ChillSpace — the placebo for social media. Scroll, post, and message across WhatsApp, email, Instagram, and ChatGPT. Play Number Game and K-pop game. Your data stays on your device. Chill out in your space.';
+        
+        // Check if user's language matches one of our translations
+        for (let lang in descriptions) {
+            if (userLang.startsWith(lang)) {
+                description = descriptions[lang];
+                break;
+            }
+        }
+        
+        // Find and update the meta description
+        const meta = document.querySelector('meta[name="description"]');
+        if (meta) {
+            meta.content = description;
+        }
+    })();
+    </script>
     <style>
         
         * {
