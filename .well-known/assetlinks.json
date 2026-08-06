@@ -4,7 +4,7 @@
     "target": {
       "namespace": "android_app",
       "package_name": "com.chillspace.app",
-      "sha256_cert_fingerprints": ["E7:FF:3E:67:BD:14:60:05:6F:8A:34:87:B6:18:13:67:C3:4C:1C:EF:84:E1:76:CA:E0:0A:64:6B:59:B3:F3:CD"]
+      "sha256_cert_fingerprints": ["62:4C:CE:C7:3A:2B:DE:48:BF:38:78:EE:7E:37:62:F1:1C:AC:66:04:13:B9:D2:D0:AE:44:31:56:BA:F9:B4:82"]
     }
   }
 ]
