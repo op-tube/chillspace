@@ -34,7 +34,12 @@
   </url>
    <url>
     <loc>https://chill-space.pages.dev/privacy</loc>
-    <changefreq>daily</changefreq>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://chill-space.pages.dev/blog/chillspace-vs-chillspace</loc>
+    <changefreq>never</changefreq>
     <priority>0.3</priority>
   </url>
 
