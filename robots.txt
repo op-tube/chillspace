@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /api/feed
+Allow: /api/template
+Allow: /numbers
+Allow: /kpop
+Allow: /about
+Allow: /blog/chillspace-vs-chillspace
+Allow: /public/sitemap.xml
+
+Sitemap: https://chill-space.pages.dev/sitemap.xml
