@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ReelSpace 릴스페이스</title>
+    <style>
+        :root {
+            --bg: #000;
+            --text: #fff;
+            --accent: #ff2d55;
+            --accent-tts: #00d4aa;
+            --overlay: rgba(0, 0, 0, 0.55);
+            --overlay-bottom: rgba(0, 0, 0, 0.85);
+            --font-main: 'Segoe UI', 'Helvetica Neue', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            --safe-bottom: env(safe-area-inset-bottom, 16px);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width: 100%; height: 100%; overflow: hidden; background: #000;
+            font-family: var(--font-main); -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none; user-select: none; touch-action: pan-y;
+        }
+        #bgVideo { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; }
+        #globalOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;
+            background: linear-gradient(0deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.35) 30%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.25) 75%, rgba(0,0,0,0.55) 100%);
+        }
+        #header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 10; padding: 14px 20px;
+            padding-top: max(14px, env(safe-area-inset-top, 14px)); display: flex;
+            align-items: center; justify-content: space-between; pointer-events: none;
+        }
+        #header .logo {
+            font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; color: #fff;
+            text-shadow: 0 1px 8px rgba(0,0,0,0.7); display: flex; align-items: baseline; gap: 8px; pointer-events: auto;
+        }
+        #header .logo .ko { font-size: 1rem; font-weight: 600; opacity: 0.85; letter-spacing: 0; }
+        #header .badge {
+            pointer-events: auto; background: rgba(255,255,255,0.18); backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.25); color: #fff;
+            padding: 7px 14px; border-radius: 24px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.01em;
+        }
+        #scrollContainer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow-y: scroll;
+            scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; z-index: 2; scroll-behavior: smooth;
+        }
+        #scrollContainer::-webkit-scrollbar { display: none; }
+        .slide {
+            width: 100%; height: 100vh; height: 100dvh; scroll-snap-align: start; scroll-snap-stop: always;
+            position: relative; display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 20px; padding-bottom: calc(20px + var(--safe-bottom) + 70px); z-index: 2;
+        }
+        .story-card {
+            position: relative; z-index: 3; max-width: 520px; width: 100%; margin: 0 auto 0 0;
+            padding: 20px 22px; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); border-radius: 18px; border: 1px solid rgba(255,255,255,0.12);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+        }
+        .story-card .story-text {
+            font-size: 1.05rem; line-height: 1.55; color: #fff; font-weight: 400;
+            letter-spacing: 0.005em; text-shadow: 0 1px 4px rgba(0,0,0,0.5); word-break: break-word;
+        }
+        .story-card .story-text .highlight { color: #ffda6b; font-weight: 700; text-shadow: 0 0 12px rgba(255,218,107,0.4); }
+        .tts-btn {
+            display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 10px 18px;
+            border-radius: 28px; border: 1.5px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; cursor: pointer;
+            font-size: 0.9rem; font-weight: 600; letter-spacing: 0.02em; transition: all 0.25s ease; z-index: 4;
+            pointer-events: auto; font-family: var(--font-main);
+        }
+        .tts-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.55); transform: scale(1.03); }
+        .tts-btn:active { transform: scale(0.95); background: rgba(255,255,255,0.25); }
+        .tts-btn.playing { background: var(--accent-tts); border-color: var(--accent-tts); animation: ttsPulse 1.2s ease-in-out infinite; box-shadow: 0 0 20px rgba(0,212,170,0.5); }
+        @keyframes ttsPulse { 0%,100% { box-shadow: 0 0 16px rgba(0,212,170,0.4); } 50% { box-shadow: 0 0 32px rgba(0,212,170,0.75); } }
+        .tts-btn .tts-icon { font-size: 1.1rem; }
+        .side-actions {
+            position: absolute; right: 14px; bottom: 140px; display: flex; flex-direction: column;
+            align-items: center; gap: 18px; z-index: 5; pointer-events: auto;
+        }
+        .side-action {
+            display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer;
+            background: none; border: none; color: #fff; font-family: var(--font-main);
+            transition: transform 0.2s ease; -webkit-tap-highlight-color: transparent; pointer-events: auto;
+        }
+        .side-action:active { transform: scale(0.85); }
+        .side-action .icon-circle {
+            width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex;
+            align-items: center; justify-content: center; font-size: 1.4rem; transition: all 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .side-action.liked .icon-circle { background: var(--accent); border-color: var(--accent); animation: heartPop 0.5s ease; }
+        @keyframes heartPop { 0%{transform:scale(1)} 30%{transform:scale(1.35)} 60%{transform:scale(0.9)} 100%{transform:scale(1)} }
+        .side-action .action-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.03em; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+        .heart-burst { position: fixed; pointer-events: none; z-index: 20; font-size: 2.5rem; animation: floatUp 1.1s ease-out forwards; opacity: 0; }
+        @keyframes floatUp { 0%{opacity:1; transform:translateY(0) scale(0.5) rotate(0deg);} 50%{opacity:0.9; transform:translateY(-50px) scale(1.2) rotate(10deg);} 100%{opacity:0; transform:translateY(-140px) scale(0.7) rotate(-15deg);} }
+        #musicIndicator {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0); z-index: 15;
+            pointer-events: none; background: rgba(0,0,0,0.75); color: #fff; padding: 10px 20px;
+            border-radius: 24px; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.03em;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); white-space: nowrap;
+        }
+        #musicIndicator.show { transform: translate(-50%,-50%) scale(1); }
+        #loadingOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 30; background: #000;
+            display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px;
+            transition: opacity 0.5s ease; pointer-events: all;
+        }
+        #loadingOverlay.hidden { opacity: 0; pointer-events: none; }
+        #loadingOverlay .loader-spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #loadingOverlay .loader-text { color: rgba(255,255,255,0.7); font-size: 0.9rem; letter-spacing: 0.04em; }
+        @media (max-width: 480px) {
+            .story-card { padding: 16px 18px; border-radius: 14px; max-width: 100%; }
+            .story-card .story-text { font-size: 0.95rem; line-height: 1.5; }
+            .side-actions { right: 8px; bottom: 120px; gap: 14px; }
+            .side-action .icon-circle { width: 38px; height: 38px; font-size: 1.2rem; }
+            .tts-btn { padding: 8px 15px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background video (muted, src set dynamically) -->
+    <video id="bgVideo" loop muted playsinline autoplay preload="auto" crossorigin="anonymous"></video>
+    <div id="globalOverlay"></div>
+    <div id="header">
+        <div class="logo">ReelSpace<span class="ko">릴스페이스</span></div>
+        <div class="badge">📖 Infinite Stories</div>
+    </div>
+    <div id="scrollContainer"></div>
+    <div id="musicIndicator">🎵 Music On</div>
+    <audio id="bgMusic" src="https://ia800705.us.archive.org/11/items/CountingUpOn1Tap/AUD-20260124-WA0004.mp3" preload="auto" loop crossorigin="anonymous"></audio>
+    <div id="loadingOverlay">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">Loading ReelSpace...</div>
+    </div>
+    <script>
+        (function() {
+            const scrollContainer = document.getElementById('scrollContainer');
+            const bgVideo = document.getElementById('bgVideo');
+            const bgMusic = document.getElementById('bgMusic');
+            const musicIndicator = document.getElementById('musicIndicator');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+
+            // ─── BACKGROUND VIDEO POOL (muted, no audio) ──────────────────
+            const bgVideoPool = [
+                "https://ia601808.us.archive.org/16/items/videoplayback-3_20251207/videoplayback%20%283%29.mp4",
+                "https://dn721606.ca.archive.org/0/items/youtube-tS2Fxw5Cjwo/tS2Fxw5Cjwo.webm",
+                "https://dn720308.ca.archive.org/0/items/youtube-9V8Iu4Zbtqs/9V8Iu4Zbtqs.webm",
+                "https://dn721909.ca.archive.org/0/items/subway-surfers-android-31-05-2024/InShot_20240531_140125669.ia.mp4",
+                "https://archive.org/download/screen-20260807-231946/screen-20260807-231946.mp4"
+            ];
+            let lastBgVideoUrl = null;
+
+            function pickRandomBgVideo() {
+                if (bgVideoPool.length === 0) return null;
+                if (bgVideoPool.length === 1) return bgVideoPool[0];
+                let newUrl;
+                do {
+                    newUrl = bgVideoPool[Math.floor(Math.random() * bgVideoPool.length)];
+                } while (newUrl === lastBgVideoUrl && bgVideoPool.length > 1);
+                return newUrl;
+            }
+
+            function setNewBgVideo() {
+                const newUrl = pickRandomBgVideo();
+                if (!newUrl) return;
+                bgVideo.src = newUrl;
+                bgVideo.load();
+                bgVideo.play().catch(err => console.log('Bg video play error:', err));
+                lastBgVideoUrl = newUrl;
+            }
+
+            // ─── TOPICS, RELATIONS, EXTENDED STORIES ──────────────────────
+            const topics = [
+                "McDonalds","knitting","orange jelly beans","sour gummy worms","collecting stamps","pineapple on pizza",
+                "reality TV shows","antique door knobs","competitive dog grooming","the mating habits of snails",
+                "artisanal mayonnaise","vintage lunch boxes","conspiracy theories about pigeons","the history of spoons",
+                "competitive staring","underwater basket weaving","extreme ironing","cheese sculpting","professional cuddling",
+                "medieval reenactment","taxidermy for beginners","the philosophy of left socks","artisanal toast",
+                "competitive yawning","the science of why cats ignore you","professional line standing","extreme napping",
+                "the art of making hospital corners","competitive waiting","the history of the high five",
+                "the economics of lemonade stands","the physics of why toast lands butter-side down",
+                "professional apology writing","the sociology of elevator silence","the anthropology of dad jokes",
+                "the psychology of why we hate our own voice","the biology of the perfect French fry",
+                "the chemistry of a perfect cup of tea","the mathematics of queue jumping","the geography of lost socks",
+                "the linguistics of baby talk","the archaeology of forgotten leftovers","the meteorology of indoor fog",
+                "the botany of weeds in sidewalk cracks","the zoology of house dust bunnies","the astronomy of ceiling stains",
+                "the oceanography of puddles","the geology of soap scum","the mythology of missing Tupperware lids",
+                "the neuroscience of procrastination","the history of mismatched socks","the philosophy of fridge magnets",
+                "the sociology of group chat names","the economics of vending machine snacks","the psychology of autocorrect fails",
+                "the biology of the office plant","the chemistry of burnt popcorn","the physics of untangling headphones",
+                "the mathematics of splitting the bill","the anthropology of emoji usage","the linguistics of passive-aggressive notes"
+            ];
+
+            const relations = [
+                "little cousin","best friend","wife","husband","sister","brother","mom","dad","grandmother",
+                "grandfather","aunt","uncle","nephew","niece","step-sister","step-brother","roommate","neighbor",
+                "boss","coworker","cat","dog","goldfish","imaginary friend","pen pal","therapist","mailman",
+                "barista","yoga instructor","dentist","Uber driver","personal trainer","hairdresser","accountant",
+                "life coach","dry cleaner","pizza delivery guy","librarian","parrot","houseplant","favorite barista",
+                "childhood nemesis"
+            ];
+
+            const storyTemplates = [
+                "Neither of them planned on bonding over <span class=\"highlight\">${topic}</span>, it just happened somewhere between the third joke and the second round of drinks. OP's <span class=\"highlight\">${rel}</span> had this way of making even the smallest detail sound worth caring about, and OP was completely gone for it by the end of the conversation. They ended up closing the place down, still talking about it like it was the most fascinating topic in the world. That night, OP realized some connections don't need grand gestures — just someone who gets excited about the same weird things you do.",
+                "OP never expected a deep conversation about <span class=\"highlight\">${topic}</span> with their <span class=\"highlight\">${rel}</span>, but that's exactly what turned a boring afternoon into a core memory. What started as a casual mention quickly spiraled into a two-hour rabbit hole of stories, theories, and laughter. By the time they looked up, the sun had set and neither had noticed. It's funny how the smallest subjects can open the biggest doors between people.",
+                "The whole thing started because <span class=\"highlight\">${rel}</span> wouldn't stop talking about <span class=\"highlight\">${topic}</span>. By the time OP realized they were genuinely interested, it was already 2 AM. They were leaning forward, asking questions, and genuinely hanging on every word. Even now, OP can't hear about <span class=\"highlight\">${topic}</span> without smiling and thinking of that late-night conversation that changed everything.",
+                "It's funny how <span class=\"highlight\">${topic}</span> became the secret language between OP and their <span class=\"highlight\">${rel}</span>. Nobody else got it, and that was the best part. A single word, a raised eyebrow — and they'd both be in stitches while everyone else looked confused. It's the kind of bond that makes you feel like you belong somewhere, even when the rest of the world feels unfamiliar.",
+                "OP used to hate <span class=\"highlight\">${topic}</span> until <span class=\"highlight\">${rel}</span> explained it like it was the most important thing in the world. Now OP has a shelf dedicated to it. The transformation was so gradual that OP didn't even notice until they caught themselves defending it passionately at a dinner party. Credit goes entirely to their <span class=\"highlight\">${rel}</span> for making the mundane feel magical.",
+                "<span class=\"highlight\">${rel}</span> brought up <span class=\"highlight\">${topic}</span> during a road trip, and suddenly the next three hours felt like five minutes. Windows down, music off, just two voices filling the car with excitement. OP remembers thinking that this was the kind of conversation you chase your whole life — the one where time bends and the outside world disappears. They arrived at their destination feeling closer than ever.",
+                "The first time OP heard <span class=\"highlight\">${rel}</span> passionately defend <span class=\"highlight\">${topic}</span>, they knew this was a person who cared about things that mattered in the weirdest way. It wasn't about being right; it was about how much heart they poured into it. OP sat back and just watched, totally captivated. That was the moment they realized they wanted this person in their life for good.",
+                "They bonded over <span class=\"highlight\">${topic}</span> at a family gathering when no one else was paying attention. <span class=\"highlight\">${rel}</span> whispered a joke about it, and OP has never felt more seen. In a room full of people talking over each other, that quiet moment felt like an anchor. From then on, every family event became bearable because they knew they'd have their little inside world to escape to.",
+                "OP didn't think <span class=\"highlight\">${topic}</span> could be emotional, but <span class=\"highlight\">${rel}</span> told a story about it that made them tear up in a parking lot. It was late, the streetlights flickering, and suddenly OP saw the depth behind the laughter. That conversation turned a lighthearted topic into something deeply personal. They never looked at <span class=\"highlight\">${topic}</span> the same way again.",
+                "If it weren't for <span class=\"highlight\">${topic}</span>, OP and their <span class=\"highlight\">${rel}</span> might have stayed strangers. Now they send each other memes about it every single day. It became the thread that wove their friendship tighter with every laugh. Even on bad days, a notification about it can turn everything around. Some friendships are built on big moments; theirs was built on this one beautiful, ridiculous shared interest.",
+                "The obsession with <span class=\"highlight\">${topic}</span> started as a joke between OP and <span class=\"highlight\">${rel}</span>, and now there's a group chat with 12 people dedicated to it. What began as a sarcastic comment turned into a full-blown community. OP still can't believe how one inside joke snowballed into something so wholesome. It just goes to show that the best things often start when you're not taking yourself too seriously.",
+                "<span class=\"highlight\">${rel}</span> once gave OP a gift related to <span class=\"highlight\">${topic}</span> that was so perfectly weird, OP knew they'd be friends for life. It wasn't expensive, but the thought behind it spoke volumes. Every time OP sees that gift, they remember the exact moment they realized they'd found their person. True friendship isn't about grand gestures — it's about knowing someone well enough to buy the perfect weird present.",
+                "During a power outage, OP and <span class=\"highlight\">${rel}</span> ended up debating <span class=\"highlight\">${topic}</span> by candlelight, and honestly, it was the most alive OP had felt in years. No screens, no distractions — just two people and a conversation that lit up the dark room. They talked until the lights came back on, and then kept talking anyway. That night reminded OP what real connection feels like.",
+                "The moment <span class=\"highlight\">${rel}</span> admitted their secret love for <span class=\"highlight\">${topic}</span>, OP realized they'd found their person. It was such a small, vulnerable confession, and yet it changed everything. From that point on, they built an entire world around that shared passion. Sometimes the strongest bonds come from the quietest admissions.",
+                "OP never thought they'd be the type to stay up late reading about <span class=\"highlight\">${topic}</span>, but <span class=\"highlight\">${rel}</span> sent one article and the rabbit hole swallowed them whole. Hours vanished as they clicked link after link, their fascination growing with each new fact. Now they're the one sending articles back, and the cycle continues. It's amazing how one person's enthusiasm can light a fire you never knew you had.",
+                "It was <span class=\"highlight\">${rel}</span> who first introduced OP to <span class=\"highlight\">${topic}</span>, and while OP rolled their eyes at first, now they can't imagine a week without it. The shift happened so naturally: curiosity, then enjoyment, then full-blown obsession. OP owes their <span class=\"highlight\">${rel}</span> a lifetime of thanks for cracking open a door they didn't even know existed.",
+                "In a world full of small talk, <span class=\"highlight\">${rel}</span> chose to ask OP about <span class=\"highlight\">${topic}</span>. That question changed everything. It wasn't just a topic — it was an invitation into a deeper, more genuine space. OP will never forget that moment of being truly seen. One question, asked with genuine interest, can alter the course of a relationship forever.",
+                "The best compliment OP ever received was <span class=\"highlight\">${rel}</span> saying they reminded them of <span class=\"highlight\">${topic}</span>. It made absolutely no sense, but it meant the world. Because to <span class=\"highlight\">${rel}</span>, that comparison was the highest praise. OP carries that strange, beautiful compliment in their heart every day.",
+                "While everyone else was arguing, <span class=\"highlight\">${rel}</span> pulled OP aside and whispered something about <span class=\"highlight\">${topic}</span> that made them both lose it laughing. That stolen moment of humor in the middle of chaos sealed their bond. They became a team after that — always finding joy in the cracks. A shared laugh can be the foundation of an unbreakable alliance.",
+                "OP's <span class=\"highlight\">${rel}</span> has a theory about <span class=\"highlight\">${topic}</span> that sounds insane, but the more OP thinks about it, the more they believe it. They've spent hours debating the finer points, drawing diagrams on napkins and laughing at how seriously they're taking it. That kind of collaborative madness doesn't come around often. When it does, you hold on tight.",
+                "The way <span class=\"highlight\">${rel}</span> talks about <span class=\"highlight\">${topic}</span> makes OP feel like they're listening to a TED Talk from a genius who also happens to be their favorite human. Every word is filled with such passion and clarity that OP can't help but be drawn in. It's a masterclass in enthusiasm, and OP is an eager student. They've learned more from those monologues than from any textbook.",
+                "A random comment about <span class=\"highlight\">${topic}</span> from <span class=\"highlight\">${rel}</span> turned into a three-hour voice call. No regrets. They covered every angle, shared every opinion, and laughed until their throats hurt. That call is now a cherished memory — proof that the best conversations need no planning. Sometimes you just fall into something incredible.",
+                "OP thought they were the only one who cared about <span class=\"highlight\">${topic}</span> until <span class=\"highlight\">${rel}</span> pulled out a notebook filled with notes on it. In that moment, OP felt a rush of belonging they hadn't felt in years. They spent the next hour reading through the notes together, adding their own thoughts in the margins. It was the beginning of a beautiful, nerdy partnership.",
+                "The truest thing <span class=\"highlight\">${rel}</span> ever said was about <span class=\"highlight\">${topic}</span>, and OP has it tattooed on their brain. Those words became a mantra, a piece of guidance that shows up exactly when needed. It's incredible how one sentence can echo through your life and keep you grounded. Some advice is just dressed up in a very specific package.",
+                "If soulmates exist, OP and <span class=\"highlight\">${rel}</span> definitely found each other through <span class=\"highlight\">${topic}</span>. It wasn't a loud, dramatic meeting — just a quiet recognition that they spoke the same language. From that point on, everything clicked. The universe might be chaotic, but that connection felt like it was written in the stars.",
+                "Every time OP hears <span class=\"highlight\">${topic}</span> mentioned now, they automatically think of <span class=\"highlight\">${rel}</span>. It's a permanent association, woven into their brain. A word, a sound, a reference — all roads lead back to that person. It's a comforting constant in a changing world.",
+                "<span class=\"highlight\">${rel}</span> turned <span class=\"highlight\">${topic}</span> into a full-blown weekend project, and OP showed up with snacks and a ridiculous amount of enthusiasm. They worked side by side, getting paint on their clothes and laughing at their own mistakes. That weekend wasn't just about the project — it was about building something together. The result sits proudly in OP's home, a reminder of teamwork and joy.",
+                "The quietest person at the party (<span class=\"highlight\">${rel}</span>) suddenly lit up when someone mentioned <span class=\"highlight\">${topic}</span>. OP fell a little bit in love right there. It was like watching a flower bloom in real time. From that moment on, OP made it their mission to keep that light shining.",
+                "OP's favorite holiday memory is <span class=\"highlight\">${rel}</span> doing an impression related to <span class=\"highlight\">${topic}</span> that made the whole room cry laughing. Even years later, someone will reference it and the laughter starts all over again. That kind of joy is timeless. It's the gift that keeps on giving.",
+                "There's a specific look <span class=\"highlight\">${rel}</span> gets when <span class=\"highlight\">${topic}</span> is brought up, and OP lives for that look. It's a mix of excitement and mischief that promises a good story is coming. OP has learned to recognize it instantly and clear their schedule. That expression alone could power a small city.",
+                "The duo nobody expected: OP, <span class=\"highlight\">${rel}</span>, and an unhealthy amount of knowledge about <span class=\"highlight\">${topic}</span>. They've become the unofficial experts among their friends, always ready with a fun fact. What started as a quirky interest has turned into a whole identity. And honestly, they wouldn't have it any other way.",
+                "They built an entire friendship on <span class=\"highlight\">${topic}</span>. Sure, other things matter, but that's the foundation. It's the safe topic they return to when life gets messy, the anchor in stormy seas. No matter what happens, they can always talk about it for hours. A solid foundation makes any relationship stronger.",
+                "OP tried to act cool when <span class=\"highlight\">${rel}</span> mentioned <span class=\"highlight\">${topic}</span>, but their face betrayed them instantly. The blush, the awkward smile — it was all out there. <span class=\"highlight\">${rel}</span> just grinned and kept talking, clearly enjoying the reaction. That vulnerability became the first brick in a very strong wall of trust.",
+                "<span class=\"highlight\">${rel}</span> once explained <span class=\"highlight\">${topic}</span> using only hand gestures, and OP understood perfectly. That's connection. No words needed, just a shared wavelength that made communication effortless. It was hilarious, but also deeply meaningful. They still reference that moment as the peak of their friendship.",
+                "The fact that <span class=\"highlight\">${rel}</span> and OP can argue for hours about <span class=\"highlight\">${topic}</span> and still hug it out is proof that some bonds are unbreakable. Voices get raised, opinions clash, but at the end there's always a mutual respect. They've learned that disagreement doesn't mean disconnection. It just means they care enough to fight for their point.",
+                "OP's <span class=\"highlight\">${rel}</span> wrote a poem about <span class=\"highlight\">${topic}</span> as a joke, and it was so good OP framed it. The rhyming was terrible, the meter was off, but the heart was undeniable. That poem now hangs in OP's hallway, a daily reminder of creative love. It's the best bad poem ever written.",
+                "The origin story of OP and <span class=\"highlight\">${rel}</span> isn't dramatic, but it does involve <span class=\"highlight\">${topic}</span> and a very confused bystander. The bystander watched them go from strangers to best friends in under an hour, all because of a shared random interest. They still laugh about that bewildered expression. Some origin stories are quiet, but they're just as powerful.",
+                "<span class=\"highlight\">${rel}</span> has a conspiracy board about <span class=\"highlight\">${topic}</span>, and OP is honored to be the only one allowed to see it. Strings, photos, wild theories — it's a masterpiece of organized chaos. OP adds a new piece every visit, contributing to the beautiful madness. It's their shared secret universe.",
+                "When OP was having a terrible day, <span class=\"highlight\">${rel}</span> sent a voice note about <span class=\"highlight\">${topic}</span> that fixed everything in under two minutes. The sheer enthusiasm in that recording acted like a reset button for OP's brain. They played it three times in a row, feeling lighter each time. Never underestimate the healing power of shared nerdiness.",
+                "They don't need words anymore; <span class=\"highlight\">${rel}</span> just raises an eyebrow about <span class=\"highlight\">${topic}</span> and OP knows exactly what's up. That silent communication is the result of years of shared context. It's efficient, hilarious, and deeply satisfying. The ultimate level of friendship is an unspoken conversation.",
+                "The group chat exploded when <span class=\"highlight\">${rel}</span> shared their hot take on <span class=\"highlight\">${topic}</span>. OP defended them until their keyboard broke. It was a fierce, chaotic, and utterly joyful defense of a shared passion. By the end, even the critics had to admit <span class=\"highlight\">${rel}</span> had a point. That's what loyalty looks like.",
+                "OP's <span class=\"highlight\">${rel}</span> has a playlist inspired by <span class=\"highlight\">${topic}</span>, and it's weirdly perfect. Every song somehow captures the vibe, even if the lyrics have nothing to do with it. OP listens to it whenever they need a boost. It's a sonic time capsule of their friendship.",
+                "The way <span class=\"highlight\">${rel}</span> says the word <span class=\"highlight\">${topic}</span> is OP's favorite sound in the universe. The inflection, the tiny smile that follows — it's pure magic. OP has secretly recorded it (with permission) just to hear it on bad days. Small things can carry enormous weight.",
+                "A five-minute chat about <span class=\"highlight\">${topic}</span> with <span class=\"highlight\">${rel}</span> gave OP more joy than a whole week of vacation. It was so simple, yet so fulfilling. They walked away feeling lighter, brighter, and more connected. Sometimes the best moments are the shortest ones.",
+                "Sometimes OP randomly texts <span class=\"highlight\">${rel}</span> just the word <span class=\"highlight\">${topic}</span> and receives an entire essay back. It's their ritual. That one-word text is a bat signal of friendship, and the response never disappoints. Reading those essays is the highlight of OP's day.",
+                "The most romantic thing OP ever heard wasn't 'I love you' — it was <span class=\"highlight\">${rel}</span> saying 'I found a new documentary about <span class=\"highlight\">${topic}</span>.' In that moment, OP knew they were completely, hopelessly gone. Nothing says devotion like wanting to share the thing you love with the person you love.",
+                "OP used to think <span class=\"highlight\">${topic}</span> was boring, but <span class=\"highlight\">${rel}</span> talked about it with such passion that OP now owns three books on the subject. The conversion was so complete that OP sometimes gives lectures to unsuspecting friends. They've become the very thing they once mocked, and they're proud of it.",
+                "When <span class=\"highlight\">${rel}</span> and OP met, they almost didn't talk. Then <span class=\"highlight\">${topic}</span> came up and they've been inseparable since. That one topic was the key that unlocked everything else. Without it, they might have stayed polite strangers. The universe works in mysterious, wonderful ways.",
+                "There's a bench in the park where <span class=\"highlight\">${rel}</span> first opened up about <span class=\"highlight\">${topic}</span>. OP walks past it and smiles every time. That bench is now a landmark in their personal history, a physical reminder of a pivotal moment. If benches could talk, that one would tell a beautiful story.",
+                "The inside jokes about <span class=\"highlight\">${topic}</span> between OP and <span class=\"highlight\">${rel}</span> could fill a book. Maybe they should write one. They've already outlined chapters and designed a cover in their heads. It would be a bestseller, at least among their friend group. Perhaps one day they'll actually sit down and write it — that would be the ultimate tribute to their bond."
+            ];
+
+            function generateStories(count) {
+                const stories = [];
+                const usedCombos = new Set();
+                const maxAttempts = count * 200;
+                let attempts = 0;
+                while (stories.length < count && attempts < maxAttempts) {
+                    const templateIndex = Math.floor(Math.random() * storyTemplates.length);
+                    const topic = topics[Math.floor(Math.random() * topics.length)];
+                    const rel = relations[Math.floor(Math.random() * relations.length)];
+                    const comboKey = `${templateIndex}|||${topic}|||${rel}`;
+                    if (!usedCombos.has(comboKey)) {
+                        usedCombos.add(comboKey);
+                        const htmlText = storyTemplates[templateIndex].replace('${topic}', topic).replace('${rel}', rel);
+                        const plainText = htmlText.replace(/<[^>]*>/g, '');
+                        stories.push({ templateId: templateIndex, topic, rel, htmlText, plainText, id: stories.length + 1 });
+                    }
+                    attempts++;
+                }
+                while (stories.length < count) {
+                    const templateIndex = Math.floor(Math.random() * storyTemplates.length);
+                    const topic = topics[Math.floor(Math.random() * topics.length)];
+                    const rel = relations[Math.floor(Math.random() * relations.length)];
+                    const htmlText = storyTemplates[templateIndex].replace('${topic}', topic).replace('${rel}', rel);
+                    const plainText = htmlText.replace(/<[^>]*>/g, '');
+                    stories.push({ templateId: templateIndex, topic, rel, htmlText, plainText, id: stories.length + 1 });
+                }
+                for (let i = stories.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [stories[i], stories[j]] = [stories[j], stories[i]];
+                }
+                stories.forEach((s, idx) => { s.id = idx + 1; });
+                return stories;
+            }
+            const allStories = generateStories(100);
+
+            function buildSlides() {
+                const fragment = document.createDocumentFragment();
+                allStories.forEach((story, index) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'slide';
+                    slide.dataset.storyId = story.id;
+                    slide.dataset.index = index;
+                    const likeCount = Math.floor(Math.random() * 95000) + 1200;
+                    const commentCount = Math.floor(Math.random() * 8000) + 80;
+                    const shareCount = Math.floor(Math.random() * 15000) + 200;
+                    slide.innerHTML = `
+                        <div class="story-card">
+                            <div class="story-text">${story.htmlText}</div>
+                            <button class="tts-btn" data-index="${index}" aria-label="Text to speech">
+                                <span class="tts-icon">🔊</span> Listen
+                            </button>
+                        </div>
+                        <div class="side-actions">
+                            <button class="side-action like-btn" data-index="${index}" aria-label="Like">
+                                <span class="icon-circle">❤️</span>
+                                <span class="action-label like-count">${formatCount(likeCount)}</span>
+                            </button>
+                            <button class="side-action" aria-label="Comment">
+                                <span class="icon-circle">💬</span>
+                                <span class="action-label">${formatCount(commentCount)}</span>
+                            </button>
+                            <button class="side-action" aria-label="Share">
+                                <span class="icon-circle">↗️</span>
+                                <span class="action-label">${formatCount(shareCount)}</span>
+                            </button>
+                            <button class="side-action bookmark-btn" data-index="${index}" aria-label="Bookmark">
+                                <span class="icon-circle">🔖</span>
+                                <span class="action-label">Save</span>
+                            </button>
+                        </div>
+                    `;
+                    fragment.appendChild(slide);
+                });
+                scrollContainer.appendChild(fragment);
+            }
+
+            function formatCount(num) {
+                if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+                if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+                return num.toString();
+            }
+
+            let activeIndex = 0;
+            let isMusicPlaying = false;
+            let musicUnlocked = false;
+            let currentTTSIndex = -1;
+            let ttsUtterance = null;
+            let autoTTSTimeout = null;
+            const likedStories = new Set();
+            const bookmarkedStories = new Set();
+
+            function setupIntersectionObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    let maxRatio = 0;
+                    let mostVisibleIndex = activeIndex;
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+                            maxRatio = entry.intersectionRatio;
+                            const idx = parseInt(entry.target.dataset.index);
+                            if (!isNaN(idx)) mostVisibleIndex = idx;
+                        }
+                    });
+                    if (mostVisibleIndex !== activeIndex && maxRatio > 0.5) {
+                        const prev = activeIndex;
+                        activeIndex = mostVisibleIndex;
+                        onSlideChange(prev, activeIndex);
+                    }
+                }, { root: scrollContainer, threshold: [0.3, 0.5, 0.6, 0.7, 0.8, 0.9] });
+                document.querySelectorAll('.slide').forEach(slide => observer.observe(slide));
+                return observer;
+            }
+
+            function onSlideChange(prev, curr) {
+                stopTTS();
+                setNewBgVideo();      // cycle background video
+                playMusic();
+                updateAllTTSButtons();
+                showMusicIndicator();
+                if (autoTTSTimeout) clearTimeout(autoTTSTimeout);
+                autoTTSTimeout = setTimeout(() => {
+                    if (activeIndex === curr && currentTTSIndex === -1) {
+                        speakStory(curr);
+                    }
+                }, 400);
+            }
+
+            function playMusic() {
+                if (!musicUnlocked) musicUnlocked = true;
+                bgMusic.volume = 0.5;
+                const playPromise = bgMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => { isMusicPlaying = true; bgMusic.loop = true; })
+                    .catch(() => { isMusicPlaying = false; });
+                }
+            }
+
+            function showMusicIndicator() {
+                musicIndicator.classList.add('show');
+                clearTimeout(musicIndicator._timeout);
+                musicIndicator._timeout = setTimeout(() => musicIndicator.classList.remove('show'), 1500);
+            }
+
+            function updateAllTTSButtons() {
+                document.querySelectorAll('.tts-btn').forEach(btn => {
+                    const idx = parseInt(btn.dataset.index);
+                    if (idx === currentTTSIndex && window.speechSynthesis?.speaking) {
+                        btn.classList.add('playing');
+                        btn.querySelector('.tts-icon').textContent = '🔊';
+                    } else {
+                        btn.classList.remove('playing');
+                        btn.querySelector('.tts-icon').textContent = '🔊';
+                    }
+                });
+            }
+
+            function stopTTS() {
+                if (window.speechSynthesis) window.speechSynthesis.cancel();
+                currentTTSIndex = -1;
+                ttsUtterance = null;
+                updateAllTTSButtons();
+            }
+
+            function speakStory(index) {
+                const story = allStories[index];
+                if (!story) return;
+                if (currentTTSIndex === index && window.speechSynthesis?.speaking) {
+                    stopTTS();
+                    return;
+                }
+                stopTTS();
+                const utterance = new SpeechSynthesisUtterance(story.plainText);
+                utterance.rate = 0.92;
+                utterance.pitch = 1.0;
+                utterance.volume = 0.9;
+                const voices = window.speechSynthesis.getVoices();
+                const engVoice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Daniel') || v.lang.startsWith('en-US'))) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+                if (engVoice) utterance.voice = engVoice;
+                utterance.onstart = () => { currentTTSIndex = index; ttsUtterance = utterance; updateAllTTSButtons(); };
+                utterance.onend = () => { if (currentTTSIndex === index) { currentTTSIndex = -1; ttsUtterance = null; } updateAllTTSButtons(); };
+                utterance.onerror = () => { currentTTSIndex = -1; ttsUtterance = null; updateAllTTSButtons(); };
+                window.speechSynthesis.speak(utterance);
+            }
+
+            function toggleLike(index, button) {
+                const key = `story-${index}`;
+                const label = button.querySelector('.like-count');
+                if (likedStories.has(key)) {
+                    likedStories.delete(key);
+                    button.classList.remove('liked');
+                    label.textContent = formatCount(Math.max(0, parseCount(label.textContent) - 1));
+                } else {
+                    likedStories.add(key);
+                    button.classList.add('liked');
+                    label.textContent = formatCount(parseCount(label.textContent) + 1);
+                    spawnHeartBurst(button);
+                }
+            }
+
+            function parseCount(str) {
+                if (str.endsWith('M')) return parseFloat(str) * 1000000;
+                if (str.endsWith('K')) return parseFloat(str) * 1000;
+                return parseInt(str) || 0;
+            }
+
+            function spawnHeartBurst(element) {
+                const rect = element.getBoundingClientRect();
+                const heart = document.createElement('div');
+                heart.className = 'heart-burst';
+                heart.textContent = '❤️';
+                heart.style.left = rect.left + rect.width/2 - 20 + 'px';
+                heart.style.top = rect.top + 'px';
+                document.body.appendChild(heart);
+                heart.addEventListener('animationend', () => heart.remove());
+            }
+
+            function toggleBookmark(index, button) {
+                const key = `story-${index}`;
+                const icon = button.querySelector('.icon-circle');
+                if (bookmarkedStories.has(key)) {
+                    bookmarkedStories.delete(key);
+                    icon.textContent = '🔖';
+                } else {
+                    bookmarkedStories.add(key);
+                    icon.textContent = '📌';
+                }
+            }
+
+            function setupEventDelegation() {
+                scrollContainer.addEventListener('click', (e) => {
+                    const ttsBtn = e.target.closest('.tts-btn');
+                    if (ttsBtn) {
+                        e.preventDefault(); e.stopPropagation();
+                        const idx = parseInt(ttsBtn.dataset.index);
+                        if (!isNaN(idx)) speakStory(idx);
+                        return;
+                    }
+                    const likeBtn = e.target.closest('.like-btn');
+                    if (likeBtn) {
+                        e.preventDefault(); e.stopPropagation();
+                        const idx = parseInt(likeBtn.dataset.index);
+                        if (!isNaN(idx)) toggleLike(idx, likeBtn);
+                        return;
+                    }
+                    const bookmarkBtn = e.target.closest('.bookmark-btn');
+                    if (bookmarkBtn) {
+                        e.preventDefault(); e.stopPropagation();
+                        const idx = parseInt(bookmarkBtn.dataset.index);
+                        if (!isNaN(idx)) toggleBookmark(idx, bookmarkBtn);
+                        return;
+                    }
+                });
+                scrollContainer.addEventListener('dblclick', (e) => {
+                    const slide = e.target.closest('.slide');
+                    if (slide) {
+                        const idx = parseInt(slide.dataset.index);
+                        const likeBtn = slide.querySelector('.like-btn');
+                        if (!isNaN(idx) && likeBtn && !likedStories.has(`story-${idx}`)) {
+                            toggleLike(idx, likeBtn);
+                        }
+                    }
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown' || e.key === 'j') { e.preventDefault(); scrollToSlide(activeIndex + 1); }
+                    else if (e.key === 'ArrowUp' || e.key === 'k') { e.preventDefault(); scrollToSlide(activeIndex - 1); }
+                    else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); speakStory(activeIndex); }
+                    else if (e.key === 'l') {
+                        e.preventDefault();
+                        const slide = document.querySelector(`.slide[data-index="${activeIndex}"]`);
+                        if (slide) {
+                            const likeBtn = slide.querySelector('.like-btn');
+                            if (likeBtn && !likedStories.has(`story-${activeIndex}`)) toggleLike(activeIndex, likeBtn);
+                        }
+                    }
+                });
+                scrollContainer.addEventListener('scroll', () => { if (!musicUnlocked) { musicUnlocked = true; playMusic(); } });
+                scrollContainer.addEventListener('touchstart', () => { if (!musicUnlocked) { musicUnlocked = true; playMusic(); } });
+            }
+
+            function scrollToSlide(index) {
+                const clamped = Math.max(0, Math.min(index, allStories.length - 1));
+                const slide = document.querySelector(`.slide[data-index="${clamped}"]`);
+                if (slide) slide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            function init() {
+                // Set initial random background video
+                setNewBgVideo();
+                buildSlides();
+                setupIntersectionObserver();
+                setupEventDelegation();
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.getVoices();
+                    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+                }
+                bgMusic.load();
+                const prom = bgMusic.play();
+                if (prom !== undefined) prom.then(() => { isMusicPlaying = true; musicUnlocked = true; bgMusic.loop = true; bgMusic.volume = 0.5; }).catch(() => { isMusicPlaying = false; });
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                    setTimeout(() => { loadingOverlay.style.display = 'none'; }, 500);
+                    if (activeIndex === 0 && currentTTSIndex === -1) {
+                        speakStory(0);
+                    }
+                }, 1000);
+                activeIndex = 0;
+                updateAllTTSButtons();
+                console.log('🚀 ReelSpace with multiple backgrounds, muted video audio, no consecutive repeats.');
+            }
+
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+            else init();
+        })();
+    </script>
+</body>
+</html>
