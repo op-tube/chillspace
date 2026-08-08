@@ -122,8 +122,8 @@
     </style>
 </head>
 <body>
-    <!-- Background video (muted, src set dynamically) -->
-    <video id="bgVideo" loop muted playsinline autoplay preload="auto" crossorigin="anonymous"></video>
+    <!-- background video (muted, no crossorigin, fallback supported) -->
+    <video id="bgVideo" loop muted playsinline autoplay preload="auto"></video>
     <div id="globalOverlay"></div>
     <div id="header">
         <div class="logo">ReelSpace<span class="ko">릴스페이스</span></div>
@@ -144,18 +144,20 @@
             const musicIndicator = document.getElementById('musicIndicator');
             const loadingOverlay = document.getElementById('loadingOverlay');
 
-            // ─── BACKGROUND VIDEO POOL (muted, no audio) ──────────────────
+            // ─── BACKGROUND VIDEO POOL (with fallback) ──────────────────
+            const defaultBgVideo = "https://ia601808.us.archive.org/16/items/videoplayback-3_20251207/videoplayback%20%283%29.mp4";
             const bgVideoPool = [
-                "https://ia601808.us.archive.org/16/items/videoplayback-3_20251207/videoplayback%20%283%29.mp4",
+                defaultBgVideo,
                 "https://dn721606.ca.archive.org/0/items/youtube-tS2Fxw5Cjwo/tS2Fxw5Cjwo.webm",
                 "https://dn720308.ca.archive.org/0/items/youtube-9V8Iu4Zbtqs/9V8Iu4Zbtqs.webm",
                 "https://dn721909.ca.archive.org/0/items/subway-surfers-android-31-05-2024/InShot_20240531_140125669.ia.mp4",
                 "https://archive.org/download/screen-20260807-231946/screen-20260807-231946.mp4"
             ];
             let lastBgVideoUrl = null;
+            let videoPlayAllowed = false; // becomes true after first user gesture
 
             function pickRandomBgVideo() {
-                if (bgVideoPool.length === 0) return null;
+                if (bgVideoPool.length === 0) return defaultBgVideo;
                 if (bgVideoPool.length === 1) return bgVideoPool[0];
                 let newUrl;
                 do {
@@ -164,13 +166,50 @@
                 return newUrl;
             }
 
+            function setBgVideoSrc(url) {
+                bgVideo.src = url;
+                bgVideo.load();
+                lastBgVideoUrl = url;
+                attemptVideoPlay();
+            }
+
+            function attemptVideoPlay() {
+                if (!bgVideo.src) return;
+                const playPromise = bgVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        // Autoplay blocked – will retry on user gesture
+                        if (!videoPlayAllowed) {
+                            enableVideoOnUserGesture();
+                        }
+                    });
+                }
+            }
+
+            function enableVideoOnUserGesture() {
+                const resumeVideo = () => {
+                    videoPlayAllowed = true;
+                    bgVideo.play().catch(() => {});
+                    document.removeEventListener('click', resumeVideo);
+                    document.removeEventListener('touchstart', resumeVideo);
+                    document.removeEventListener('scroll', resumeVideo);
+                };
+                document.addEventListener('click', resumeVideo, { once: true });
+                document.addEventListener('touchstart', resumeVideo, { once: true });
+                document.addEventListener('scroll', resumeVideo, { once: true });
+            }
+
+            // Fallback: if a video fails to load, switch to default Minecraft video
+            bgVideo.addEventListener('error', () => {
+                console.warn('Background video failed to load, falling back to default.');
+                if (bgVideo.src !== defaultBgVideo) {
+                    setBgVideoSrc(defaultBgVideo);
+                }
+            });
+
             function setNewBgVideo() {
                 const newUrl = pickRandomBgVideo();
-                if (!newUrl) return;
-                bgVideo.src = newUrl;
-                bgVideo.load();
-                bgVideo.play().catch(err => console.log('Bg video play error:', err));
-                lastBgVideoUrl = newUrl;
+                setBgVideoSrc(newUrl);
             }
 
             // ─── TOPICS, RELATIONS, EXTENDED STORIES ──────────────────────
@@ -531,8 +570,14 @@
                         }
                     }
                 });
-                scrollContainer.addEventListener('scroll', () => { if (!musicUnlocked) { musicUnlocked = true; playMusic(); } });
-                scrollContainer.addEventListener('touchstart', () => { if (!musicUnlocked) { musicUnlocked = true; playMusic(); } });
+                scrollContainer.addEventListener('scroll', () => {
+                    if (!musicUnlocked) { musicUnlocked = true; playMusic(); }
+                    if (!videoPlayAllowed) { videoPlayAllowed = true; bgVideo.play().catch(()=>{}); }
+                });
+                scrollContainer.addEventListener('touchstart', () => {
+                    if (!musicUnlocked) { musicUnlocked = true; playMusic(); }
+                    if (!videoPlayAllowed) { videoPlayAllowed = true; bgVideo.play().catch(()=>{}); }
+                });
             }
 
             function scrollToSlide(index) {
@@ -542,8 +587,8 @@
             }
 
             function init() {
-                // Set initial random background video
-                setNewBgVideo();
+                // set initial background video (will try to autoplay; if blocked, waits for user gesture)
+                setBgVideoSrc(pickRandomBgVideo());
                 buildSlides();
                 setupIntersectionObserver();
                 setupEventDelegation();
@@ -563,7 +608,7 @@
                 }, 1000);
                 activeIndex = 0;
                 updateAllTTSButtons();
-                console.log('🚀 ReelSpace with multiple backgrounds, muted video audio, no consecutive repeats.');
+                console.log('🚀 ReelSpace: videos now play with fallback and no CORS issues.');
             }
 
             if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
