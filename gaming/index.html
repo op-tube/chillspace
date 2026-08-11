@@ -173,6 +173,33 @@
             opacity: 1;
         }
 
+        /* Jump Game */
+        .btn-jump {
+            background: linear-gradient(135deg, #fee12b, #dbc277);
+            box-shadow: 0 8px 32px rgba(254, 225, 43, 0.30);
+        }
+        .btn-jump:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 16px 48px rgba(254, 225, 43, 0.45);
+        }
+        .btn-jump:hover .arrow {
+            transform: translateX(4px);
+            opacity: 1;
+        }
+
+        /* Surfer Game */
+        .btn-surf {
+            background: linear-gradient(135deg, #4999fb, #8765cc);
+            box-shadow: 0 8px 32px rgba(73, 153, 251, 0.30);
+        }
+        .btn-surf:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 16px 48px rgba(73, 153, 251, 0.45);
+        }
+        .btn-surf:hover .arrow {
+            transform: translateX(4px);
+            opacity: 1;
+        }
         /* shimmer overlay on hover */
         .big-btn::after {
             content: '';
@@ -333,6 +360,17 @@
                 <span class="arrow">→</span>
             </a>
 
+             <a href="https://chill-space.pages.dev/jump" class="big-btn btn-jump">
+                <span class="emoji">⬆️</span>
+                <span class="label">Jump Game</span>
+                <span class="arrow">→</span>
+            </a>
+
+             <a href="https://chill-space.pages.dev/surfers" class="big-btn btn-surf">
+                <span class="emoji">🏄</span>
+                <span class="label">Surfer Game</span>
+                <span class="arrow">→</span>
+            </a>
         </div>
 
         <!-- Divider -->
@@ -349,6 +387,9 @@
                 <span class="emoji-sm">💬</span> ChillSpace Messages
             </a>
 
+            <a href="/shop" class="small-btn">
+                <span class="emoji-sm">🛍️</span> ChillSpace Shop
+            </a>
         </div>
 
         <div class="footer">—</div>
