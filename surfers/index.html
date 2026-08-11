@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ChillSpace Surfers</title>
+<style>
+  html, body { margin:0; padding:0; height:100%; width:100%; overflow:hidden; background:#87CEEB; font-family:sans-serif; }
+  canvas { display:block; width:100%; height:100%; background:#87CEEB; }
+  #ui {
+    position:absolute; top:10px; left:10px; color:white; font-size:20px; z-index:10;
+    text-shadow: 2px 2px 4px black;
+  }
+  #hint {
+    position:absolute; bottom:10px; width:100%; text-align:center; color:white; z-index:10;
+    text-shadow: 2px 2px 4px black;
+  }
+ .hidden { display: none; }
+</style>
+</head>
+<body>
+<div id="ui">Score: <span id="score">0</span></div>
+<div id="hint">← → to move lanes | ↑ to jump | ↓ to slide</div>
+<canvas id="game"></canvas>
+
+<script>
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const params = new URLSearchParams(window.location.search);
+const autoplay = params.get('autoplay') === '1';
+if (autoplay) {
+  document.getElementById('ui').classList.add('hidden');
+  document.getElementById('hint').classList.add('hidden');
+}
+
+let player = { lane: 1, y: canvas.height - 150, vy: 0, sliding: false, jump: false };
+let obstacles = [];
+let coins = [];
+let speed = autoplay? 8 : 5;
+let score = 0;
+let frame = 0;
+let lastSpawnTime = 0;
+const SPAWN_COOLDOWN = 300;
+
+const laneX = [canvas.width/3 - 50, canvas.width/2 - 50, canvas.width*2/3 - 50];
+let zigzagOffset = 0;
+
+// gradient cycle
+const gradients = [
+  ['#87CEEB', '#98FB98'],
+  ['#98FB98', '#FFD700'],
+  ['#FFD700', '#FFA500'],
+  ['#FFA500', '#9370DB'],
+  ['#9370DB', '#87CEEB']
+];
+let gradIndex = 0;
+let nextGradIndex = 1;
+let gradTransition = 0;
+
+function lerpColor(a, b, amount) {
+  const ah = parseInt(a.replace('#',''), 16);
+  const bh = parseInt(b.replace('#',''), 16);
+  const ar = ah >> 16, ag = (ah >> 8) & 0xff, ab = ah & 0xff;
+  const br = bh >> 16, bg = (bh >> 8) & 0xff, bb = bh & 0xff;
+  const rr = ar + (br - ar) * amount;
+  const rg = ag + (bg - ag) * amount;
+  const rb = ab + (bb - ab) * amount;
+  return `rgb(${Math.round(rr)},${Math.round(rg)},${Math.round(rb)})`;
+}
+
+function getBackgroundGradient(dt) {
+  gradTransition += dt / 4000;
+  if (gradTransition >= 1) {
+    gradTransition = 0;
+    gradIndex = nextGradIndex;
+    nextGradIndex = (nextGradIndex + 1) % gradients.length;
+  }
+  const top = lerpColor(gradients[gradIndex][0], gradients[nextGradIndex][0], gradTransition);
+  const bottom = lerpColor(gradients[gradIndex][1], gradients[nextGradIndex][1], gradTransition);
+  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  grad.addColorStop(0, top);
+  grad.addColorStop(1, bottom);
+  return grad;
+}
+
+function spawn(time) {
+  if (time - lastSpawnTime < SPAWN_COOLDOWN) return;
+  if (Math.random() < 0.02) {
+    let lane = Math.floor(Math.random()*3);
+    lastSpawnTime = time;
+    if (Math.random() < 0.6) {
+      obstacles.push({ lane: lane, y: -100 });
+    } else {
+      coins.push({ lane: lane, y: -50, collected: false });
+    }
+  }
+}
+
+function update(time, dt) {
+  frame++;
+  score += 0.1;
+  document.getElementById('score').innerText = Math.floor(score);
+  zigzagOffset += speed * 0.5;
+
+  if (player.jump) {
+    player.vy += 0.8;
+    player.y += player.vy;
+    if (player.y > canvas.height - 150) {
+      player.y = canvas.height - 150;
+      player.jump = false;
+      player.vy = 0;
+    }
+  }
+
+  obstacles.forEach(o => o.y += speed);
+  coins.forEach(c => c.y += speed);
+  obstacles = obstacles.filter(o => o.y < canvas.height + 100);
+  coins = coins.filter(c => c.y < canvas.height + 100);
+
+  if (!autoplay) {
+    obstacles.forEach(o => {
+      if (o.lane === player.lane && o.y > player.y - 50 && o.y < player.y + 50) {
+        alert('Game Over! Score: ' + Math.floor(score));
+        score = 0; obstacles = []; coins = [];
+      }
+    });
+  }
+
+  coins.forEach(c => {
+    if (!c.collected && c.lane === player.lane && c.y > player.y - 50 && c.y < player.y + 50) {
+      c.collected = true;
+      score += 10;
+      if (navigator.vibrate) navigator.vibrate(50);
+    }
+  });
+
+  if (frame % 600 === 0 &&!autoplay) speed += 0.5;
+  spawn(time);
+}
+
+function drawZigZag() {
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  ctx.lineWidth = 3;
+  const spacing = 60;
+  for (let y = -spacing; y < canvas.height + spacing; y += spacing) {
+    ctx.beginPath();
+    let offset = (y + zigzagOffset) % (spacing * 2);
+    for (let x = 0; x < canvas.width; x += 20) {
+      let zig = (Math.floor(x / 20) % 2 === 0)? 10 : -10;
+      let yy = y + offset + zig;
+      if (x === 0) ctx.moveTo(x, yy);
+      else ctx.lineTo(x, yy);
+    }
+    ctx.stroke();
+  }
+}
+
+function draw(time, dt) {
+  ctx.fillStyle = getBackgroundGradient(dt);
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  drawZigZag();
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+  ctx.lineWidth = 4;
+  ctx.setLineDash([20,20]);
+  ctx.beginPath();
+  ctx.moveTo(canvas.width/3, 0); ctx.lineTo(canvas.width/3, canvas.height);
+  ctx.moveTo(canvas.width*2/3, 0); ctx.lineTo(canvas.width*2/3, canvas.height);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.fillStyle = '#FF69B4';
+  let h = player.sliding? 30 : 50;
+  ctx.fillRect(laneX[player.lane], player.y - h, 40, h);
+
+  obstacles.forEach(o => {
+    ctx.fillStyle = '#333';
+    ctx.fillRect(laneX[o.lane], o.y, 40, 60);
+  });
+
+  coins.forEach(c => {
+    if (!c.collected) {
+      ctx.fillStyle = 'gold';
+      ctx.beginPath();
+      ctx.arc(laneX[c.lane] + 20, c.y + 10, 10, 0, Math.PI*2);
+      ctx.fill();
+    }
+  });
+}
+
+let lastTime = performance.now();
+function loop(now) {
+  let dt = now - lastTime;
+  lastTime = now;
+  update(now, dt);
+  draw(now, dt);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+// controls
+if (!autoplay) {
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft' && player.lane > 0) player.lane--;
+    if (e.key === 'ArrowRight' && player.lane < 2) player.lane++;
+    if (e.key === 'ArrowUp' &&!player.jump) { player.jump = true; player.vy = -15; }
+    if (e.key === 'ArrowDown') { player.sliding = true; setTimeout(()=>player.sliding=false, 500); }
+  });
+  let touchStartX = 0;
+  canvas.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+  canvas.addEventListener('touchend', e => {
+    let dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx > 0 && player.lane < 2) player.lane++;
+      if (dx < 0 && player.lane > 0) player.lane--;
+    }
+  });
+}
+</script>
+</body>
+</html>
