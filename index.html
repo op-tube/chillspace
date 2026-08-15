@@ -4,43 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="ChillSpace - The placebo social media site to help you quit social media. Because scrolling should satisfy, not sadden.">
-     <title>ChillSpace - the world's first placebo social media network</title>
+    <title>ChillSpace - the world's first placebo social media network</title>
 
     <script>
-    (function() {
-        // Get user's browser language
-        const userLang = navigator.language || navigator.userLanguage;
-        
-        // Translations for the meta description
-        const descriptions = {
-            'ru': 'ChillSpace — плацебо от социальных сетей. Листайте, публикуйте посты, общайтесь в одном месте через WhatsApp, email, Instagram и ChatGPT. Играйте в Number Game и K-pop игру. Ваши данные остаются на устройстве. Расслабьтесь в своём пространстве.',
-            'ko': 'ChillSpace — SNS의 플라시보. 스트레스 없이 스크롤하고, 게시물을 올리고, WhatsApp, 이메일, Instagram, ChatGPT로 메시지를 보내세요. 넘버 게임과 K-pop 게임도 즐기세요. 모든 데이터는 기기에 안전하게 보관됩니다. 당신만의 공간에서 편하게 쉬어가세요.',
-            'ja': 'ChillSpace — ソーシャルメディアのプラセボ。ストレスなくスクロール、投稿、WhatsApp・メール・Instagram・ChatGPTでのメッセージを一括管理。ナンバーゲームとK-popゲームも楽しめます。すべてのデータは端末に保存され、プライバシーは完全に保護されます。あなただけの空間でくつろぎましょう。',
-            'zh': 'ChillSpace — 社交媒体的安慰剂。无压力浏览、发帖，通过 WhatsApp、邮件、Instagram 和 ChatGPT 统一发送消息。还能玩数字游戏和 K-pop 游戏。所有数据仅保存在本地设备上，您的隐私完全安全。在属于自己的空间里放松吧。',
-            'zh-CN': 'ChillSpace — 社交媒体的安慰剂。无压力浏览、发帖，通过 WhatsApp、邮件、Instagram 和 ChatGPT 统一发送消息。还能玩数字游戏和 K-pop 游戏。所有数据仅保存在本地设备上，您的隐私完全安全。在属于自己的空间里放松吧。',
-            'zh-TW': 'ChillSpace — 社交媒體的安慰劑。無壓力瀏覽、發帖，通過 WhatsApp、郵件、Instagram 和 ChatGPT 統一發送消息。還能玩數字遊戲和 K-pop 遊戲。所有數據僅保存在本地設備上，您的隱私完全安全。在屬於自己的空間裡放鬆吧。'
-        };
-        
-        // Default to English
-        let description = 'ChillSpace - The placebo social media site to help you quit social media. Because scrolling should satisfy, not sadden.';
-        
-        // Check if user's language matches one of our translations
-        for (let lang in descriptions) {
-            if (userLang.startsWith(lang)) {
-                description = descriptions[lang];
-                break;
+        (function() {
+            const userLang = navigator.language || navigator.userLanguage;
+            const descriptions = {
+                'ru': 'ChillSpace — плацебо от социальных сетей. Листайте, публикуйте посты, общайтесь в одном месте через WhatsApp, email, Instagram и ChatGPT. Играйте в Number Game и K-pop игру. Ваши данные остаются на устройстве. Расслабьтесь в своём пространстве.',
+                'ko': 'ChillSpace — SNS의 플라시보. 스트레스 없이 스크롤하고, 게시물을 올리고, WhatsApp, 이메일, Instagram, ChatGPT로 메시지를 보내세요. 넘버 게임과 K-pop 게임도 즐기세요. 모든 데이터는 기기에 안전하게 보관됩니다. 당신만의 공간에서 편하게 쉬어가세요.',
+                'ja': 'ChillSpace — ソーシャルメディアのプラセボ。ストレスなくスクロール、投稿、WhatsApp・メール・Instagram・ChatGPTでのメッセージを一括管理。ナンバーゲームとK-popゲームも楽しめます。すべてのデータは端末に保存され、プライバシーは完全に保護されます。あなただけの空間でくつろぎましょう。',
+                'zh': 'ChillSpace — 社交媒体的安慰剂。无压力浏览、发帖，通过 WhatsApp、邮件、Instagram 和 ChatGPT 统一发送消息。还能玩数字游戏和 K-pop 游戏。所有数据仅保存在本地设备上，您的隐私完全安全。在属于自己的空间里放松吧。',
+                'zh-CN': 'ChillSpace — 社交媒体的安慰剂。无压力浏览、发帖，通过 WhatsApp、邮件、Instagram 和 ChatGPT 统一发送消息。还能玩数字游戏和 K-pop 游戏。所有数据仅保存在本地设备上，您的隐私完全安全。在属于自己的空间里放松吧。',
+                'zh-TW': 'ChillSpace — 社交媒體的安慰劑。無壓力瀏覽、發帖，通過 WhatsApp、郵件、Instagram 和 ChatGPT 統一發送消息。還能玩數字遊戲和 K-pop 遊戲。所有數據僅保存在本地設備上，您的隱私完全安全。在屬於自己的空間裡放鬆吧。'
+            };
+            let description = 'ChillSpace - The placebo social media site to help you quit social media. Because scrolling should satisfy, not sadden.';
+            for (let lang in descriptions) {
+                if (userLang.startsWith(lang)) {
+                    description = descriptions[lang];
+                    break;
+                }
             }
-        }
-        
-        // Find and update the meta description
-        const meta = document.querySelector('meta[name="description"]');
-        if (meta) {
-            meta.content = description;
-        }
-    })();
+            const meta = document.querySelector('meta[name="description"]');
+            if (meta) meta.content = description;
+        })();
     </script>
     <style>
-        
         * {
             box-sizing: border-box;
         }
@@ -81,6 +69,11 @@
             background-clip: text;
             color: transparent;
         }
+        .logo h1 {
+            font-size: 26px;
+            margin: 0;
+            font-weight: 800;
+        }
 
         .header-btn {
             background: #1877f2;
@@ -109,7 +102,6 @@
         .header-btn:active {
             transform: scale(0.97);
         }
-
         .header-btn.gaming-btn {
             background: #7c3aed;
             box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
@@ -118,7 +110,6 @@
             background: #6d28d9;
             box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
         }
-
         .header-btn.dm-btn {
             background: #06b6d4;
             box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3);
@@ -126,6 +117,14 @@
         .header-btn.dm-btn:hover {
             background: #0891b2;
             box-shadow: 0 4px 12px rgba(6, 182, 212, 0.35);
+        }
+        .header-btn.friends-btn {
+            background: #f59e0b;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        }
+        .header-btn.friends-btn:hover {
+            background: #d97706;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
         }
 
         main {
@@ -136,7 +135,6 @@
             margin: 0 auto;
             padding: 0 12px;
         }
-        /* ---- Daily Challenge Card ---- */
         #challenge-card {
             max-width: 680px;
             margin: 0 auto 16px;
@@ -145,7 +143,7 @@
         .challenge-box {
             background: #fff;
             border-radius: 12px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.03);
             padding: 16px 18px;
             border-left: 4px solid #7c3aed;
             transition: border-color 0.3s;
@@ -263,6 +261,10 @@
             align-items: center;
             gap: 10px;
             padding: 0 16px;
+            cursor: pointer;
+        }
+        .post-head:hover .name {
+            color: #1877f2;
         }
         .avatar {
             width: 40px;
@@ -275,6 +277,7 @@
         }
         .meta {
             min-width: 0;
+            flex: 1;
         }
         .name {
             font-weight: 600;
@@ -283,6 +286,26 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            transition: color .15s;
+        }
+        .name-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .friend-badge {
+            font-size: 10px;
+            background: #e4e6eb;
+            padding: 1px 8px;
+            border-radius: 999px;
+            color: #65676b;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .friend-badge.is-friend {
+            background: #dbeafe;
+            color: #1877f2;
         }
         .time {
             font-size: 13px;
@@ -312,6 +335,7 @@
             margin-top: 8px;
             padding: 6px 12px 0;
             gap: 4px;
+            flex-wrap: wrap;
         }
         .actions button {
             flex: 1;
@@ -329,6 +353,7 @@
             gap: 6px;
             transition: background .15s;
             user-select: none;
+            min-width: 44px;
         }
         .actions button:hover {
             background: #f2f3f5;
@@ -346,8 +371,20 @@
         .actions button.ai-btn:hover {
             background: #f3f0ff;
         }
+        .actions button.friend-btn {
+            color: #f59e0b;
+            font-size: 13px;
+        }
+        .actions button.friend-btn:hover {
+            background: #fef3c7;
+        }
+        .actions button.friend-btn.is-friend {
+            color: #1877f2;
+        }
+        .actions button.friend-btn.is-friend:hover {
+            background: #dbeafe;
+        }
 
-        /* ---- Notification bell ---- */
         #bell-wrap {
             position: relative;
             display: flex;
@@ -449,7 +486,6 @@
             overflow: hidden;
         }
 
-        /* ---- Story/question posts ---- */
         .post-question {
             font-size: 18px;
             font-weight: 700;
@@ -557,7 +593,6 @@
             opacity: 0.85;
         }
 
-        /* ---- Political polls ---- */
         .poll-wrap {
             padding: 10px 16px 4px;
         }
@@ -668,7 +703,6 @@
             object-fit: cover;
         }
 
-        /* ---- Live Debates ---- */
         .live-badge {
             color: #fff;
             background: #e41e3f;
@@ -782,7 +816,6 @@
             text-decoration: underline;
         }
 
-        /* ---- ChillSpace personalities ---- */
         .personality-row {
             position: relative;
             padding: 0 16px 10px;
@@ -890,7 +923,6 @@
             border-color: #1877f2;
         }
 
-        /* ---- "What's on your mind?" composer ---- */
         #composer-wrap {
             max-width: 680px;
             margin: 0 auto 16px;
@@ -1156,6 +1188,8 @@
             padding: 18px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
             animation: popIn .15s ease both;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         @keyframes popIn {
             from {
@@ -1215,7 +1249,6 @@
             background: #166fe5;
         }
 
-        /* ---- Repost menu ---- */
         .repost-menu {
             position: fixed;
             background: #fff;
@@ -1255,7 +1288,6 @@
             margin: 4px 12px;
         }
 
-        /* ---- TikTok/Reddit-story style AI video modal ---- */
         .story-video-overlay {
             position: fixed;
             inset: 0;
@@ -1434,7 +1466,6 @@
         .load-more:active {
             transform: scale(0.97);
         }
-
         #loadMore {
             display: none !important;
         }
@@ -1482,12 +1513,229 @@
             line-height: 1.4;
         }
 
+        /* ---- Sensory Toy ---- */
+        .sensory-toy-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 20px;
+            animation: fadeIn .25s ease both;
+            backdrop-filter: blur(4px);
+        }
+        .sensory-toy-box {
+            background: #fff;
+            border-radius: 24px;
+            padding: 30px 28px 24px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: popIn .3s ease both;
+        }
+        .sensory-toy-box .toy-title {
+            font-weight: 700;
+            font-size: 20px;
+            margin-bottom: 4px;
+            color: #1c1e21;
+        }
+        .sensory-toy-box .toy-sub {
+            font-size: 14px;
+            color: #65676b;
+            margin-bottom: 16px;
+        }
+        .squishy-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 16px 0 20px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        .squishy-wrap {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            transition: transform 0.08s ease;
+        }
+        .squishy-wrap:active {
+            transform: scale(0.92);
+        }
+        .squishy-wrap.crack-anim .squishy-inner {
+            animation: squishPop 0.35s ease;
+        }
+        @keyframes squishPop {
+            0% {
+                transform: scale(1);
+            }
+            30% {
+                transform: scale(1.25) rotate(-6deg);
+            }
+            60% {
+                transform: scale(0.85) rotate(4deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        .squishy-outer {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            transition: background 0.3s;
+            box-shadow: inset 0 -8px 20px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+        .squishy-inner {
+            position: absolute;
+            inset: 18px;
+            border-radius: 50%;
+            transition: background 0.3s, transform 0.15s ease;
+            box-shadow: inset 0 -4px 12px rgba(0, 0, 0, 0.10), 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+        .squishy-crack-lines {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .squishy-crack-lines.show {
+            opacity: 1;
+        }
+        .squishy-crack-lines svg {
+            width: 100%;
+            height: 100%;
+        }
+        .squishy-crack-lines line {
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            opacity: 0.7;
+        }
+        .squishy-tap-hint {
+            font-size: 12px;
+            color: #8a8d91;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+        .squishy-counter {
+            font-size: 13px;
+            color: #65676b;
+            margin-top: 10px;
+            background: #f0f2f5;
+            padding: 6px 14px;
+            border-radius: 999px;
+            display: inline-block;
+        }
+        .sensory-toy-box .modal-actions {
+            justify-content: center;
+            margin-top: 16px;
+        }
+        .sensory-toy-box .modal-actions button {
+            padding: 10px 28px;
+            border-radius: 999px;
+            font-weight: 700;
+            background: #1877f2;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background .15s;
+        }
+        .sensory-toy-box .modal-actions button:hover {
+            background: #166fe5;
+        }
+
+        /* ---- Profile Modal ---- */
+        .profile-posts {
+            margin-top: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            border-top: 1px solid #e4e6eb;
+            padding-top: 12px;
+        }
+        .profile-posts .post {
+            margin-bottom: 12px;
+            padding: 10px 0 6px;
+            border-radius: 10px;
+            background: #f9fafb;
+            box-shadow: none;
+            border: 1px solid #e4e6eb;
+        }
+        .profile-posts .post .post-head {
+            padding: 0 12px;
+        }
+        .profile-posts .post .post-content {
+            padding: 0 12px 6px;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        .profile-posts .post .actions {
+            padding: 2px 10px 0;
+            margin-top: 4px;
+            border-top: none;
+        }
+        .profile-posts .post .actions button {
+            font-size: 12px;
+            padding: 4px 2px;
+        }
+        .profile-empty {
+            color: #8a8d91;
+            font-size: 14px;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .profile-friend-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 6px 0 12px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            background: #f0f2f5;
+            font-size: 14px;
+        }
+        .profile-friend-status .friend-toggle {
+            background: #1877f2;
+            color: #fff;
+            border: none;
+            padding: 4px 14px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background .15s;
+            margin-left: auto;
+        }
+        .profile-friend-status .friend-toggle:hover {
+            background: #166fe5;
+        }
+        .profile-friend-status .friend-toggle.is-friend {
+            background: #e4e6eb;
+            color: #1c1e21;
+        }
+        .profile-friend-status .friend-toggle.is-friend:hover {
+            background: #d8dadf;
+        }
+        .profile-avatar-large {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e4e6eb;
+        }
+
         @media (max-width: 420px) {
             .header-inner {
                 height: 54px;
                 padding: 0 12px;
             }
             .logo {
+                font-size: 23px;
+            }
+            .logo h1 {
                 font-size: 23px;
             }
             .header-btn {
@@ -1522,6 +1770,16 @@
                 right: 12px !important;
                 transform: none !important;
             }
+            .squishy-wrap {
+                width: 140px;
+                height: 140px;
+            }
+            .squishy-inner {
+                inset: 14px;
+            }
+            .sensory-toy-box {
+                padding: 20px 16px 18px;
+            }
         }
     </style>
 </head>
@@ -1535,15 +1793,14 @@
                     <div class="notif-header">Notifications</div>
                     <div id="notif-list"></div>
                 </div>
+                <button id="friendsHeaderBtn" class="header-btn friends-btn" onclick="openFriendsModal()">👥 Friends</button>
                 <a href="/messages" class="header-btn dm-btn">DM</a>
                 <a href="/gaming" class="header-btn gaming-btn">gaming</a>
             </div>
         </div>
     </header>
 
-
     <main>
-        <!-- Daily Challenge Card -->
         <div id="challenge-card">
             <div class="challenge-box" id="challengeBox">
                 <div class="challenge-header">
@@ -1563,7 +1820,6 @@
             </div>
         </div>
 
-       
         <div id="composer-wrap">
             <div id="composer">
                 <div id="composer-name-row">
@@ -1590,7 +1846,8 @@
         <div id="sentinel"></div>
         <div id="loader" class="loader">Loading more...</div>
         <button id="loadMore" class="load-more">Load more</button>
-        <div class="disclaimer">If you want to share or cross-post ChillSpace posts, you can share the link https://chill-space.pages.dev/?post_creator=(creator)&post_content=(content)&profile_picture=grey
+        <div class="disclaimer">
+            If you want to share or cross-post ChillSpace posts, you can share the link https://chill-space.pages.dev/?post_creator=(creator)&post_content=(content)&profile_picture=grey
             <br> And if you wish to create a post, you can go to that link but with your own name in the creator field and what you wish to post in the content field.
             <br> As ChillSpace is built primarily for humans, posts you create will only go through if a human visits that link. If you are a human, congrats, that's you! Just visit the link you created! If you aren't, you have to send your human the link for the post to go through.
             <br> If you can't read any posts, you likely have JavaScript turned off. Turn it on in your browser settings, or alternatively try https://chill-space.pages.dev/api/feed or https://chill-space.pages.dev/api/post?(sameParametersAsThisPage) if you have been sent a specific post (a link with URL parameters)
@@ -1598,7 +1855,577 @@
     </main>
 
     <script>
-        const firstNames = ["Alex", "Jordan", "Casey", "Taylor", "Morgan", "Riley", "Jamie", "Avery", "Drew", "Quinn", "Sam", "Blake",
+        // ============================================================
+        //  FRIEND SYSTEM
+        // ============================================================
+        function getFriends() {
+            try {
+                return JSON.parse(localStorage.getItem('chillspace_friends')) || [];
+            } catch { return []; }
+        }
+
+        function saveFriends(friends) {
+            try { localStorage.setItem('chillspace_friends', JSON.stringify(friends)); } catch (e) {}
+        }
+
+        function isFriend(name) {
+            if (!name) return false;
+            return getFriends().some(f => f.toLowerCase() === name.toLowerCase());
+        }
+
+        function addFriend(name) {
+            if (!name) return false;
+            const friends = getFriends();
+            const normalized = name.trim();
+            if (!friends.some(f => f.toLowerCase() === normalized.toLowerCase())) {
+                friends.push(normalized);
+                saveFriends(friends);
+                return true;
+            }
+            return false;
+        }
+
+        function removeFriend(name) {
+            if (!name) return false;
+            const friends = getFriends();
+            const filtered = friends.filter(f => f.toLowerCase() !== name.toLowerCase());
+            if (filtered.length !== friends.length) {
+                saveFriends(filtered);
+                return true;
+            }
+            return false;
+        }
+
+        function toggleFriend(name) {
+            if (!name) return;
+            if (isFriend(name)) {
+                removeFriend(name);
+                showToast(`Removed ${name} from friends`);
+            } else {
+                addFriend(name);
+                showToast(`Added ${name} as a friend! 🎉`);
+            }
+            // Refresh feed to update friend badges and post frequency
+            refreshFeed();
+        }
+
+        // ---- Weighted name selection for friend boosting ----
+        function getWeightedNamePair() {
+            const friends = getFriends();
+            // If no friends, or random chance, pick random
+            if (friends.length === 0 || Math.random() < 0.35) {
+                return { first: rand(firstNames), last: rand(lastNames), full: `${rand(firstNames)} ${rand(lastNames)}` };
+            }
+            // Boost friends: 60% chance to pick a friend
+            if (Math.random() < 0.60) {
+                const friend = rand(friends);
+                // Try to split friend name into first/last, or use as-is
+                const parts = friend.split(' ');
+                if (parts.length >= 2) {
+                    return { first: parts[0], last: parts.slice(1).join(' '), full: friend };
+                } else {
+                    // Just use the friend name directly
+                    return { first: friend, last: '', full: friend };
+                }
+            }
+            return { first: rand(firstNames), last: rand(lastNames), full: `${rand(firstNames)} ${rand(lastNames)}` };
+        }
+
+        function getWeightedName() {
+            const p = getWeightedNamePair();
+            return p.full;
+        }
+
+        // ============================================================
+        //  SENSORY TOY (every 75 posts)
+        // ============================================================
+        const SENSORY_INTERVAL = 75;
+        const SENSORY_SOUND_URL = 'https://ia600604.us.archive.org/34/items/cheap-sense-cs/cheap-sense-cs.mp3';
+
+        function getSensoryCounter() {
+            try {
+                return parseInt(localStorage.getItem('chillspace_sensory_counter')) || 0;
+            } catch { return 0; }
+        }
+
+        function setSensoryCounter(val) {
+            try { localStorage.setItem('chillspace_sensory_counter', String(val)); } catch (e) {}
+        }
+
+        function incrementSensoryCounter() {
+            let c = getSensoryCounter() + 1;
+            setSensoryCounter(c);
+            if (c >= SENSORY_INTERVAL) {
+                setSensoryCounter(0);
+                showSensoryToy();
+            }
+        }
+
+        function randomColor() {
+            const hue = Math.floor(Math.random() * 360);
+            const sat = 50 + Math.floor(Math.random() * 40);
+            const lig = 45 + Math.floor(Math.random() * 35);
+            return `hsl(${hue}, ${sat}%, ${lig}%)`;
+        }
+
+        function randomLightColor() {
+            const hue = Math.floor(Math.random() * 360);
+            const sat = 40 + Math.floor(Math.random() * 45);
+            const lig = 60 + Math.floor(Math.random() * 30);
+            return `hsl(${hue}, ${sat}%, ${lig}%)`;
+        }
+
+        function showSensoryToy() {
+            const outerColor = randomColor();
+            const innerColor = randomLightColor();
+
+            // Make sure inner is visibly different
+            const overlay = document.createElement('div');
+            overlay.className = 'sensory-toy-overlay';
+            overlay.innerHTML = `
+            <div class="sensory-toy-box">
+              <div class="toy-title">🧴 Wax-Crack Squishy</div>
+              <div class="toy-sub">Tap the squishy to crack the wax!</div>
+              <div class="squishy-container" id="squishyContainer">
+                <div class="squishy-wrap" id="squishyWrap">
+                  <div class="squishy-outer" style="background:${outerColor};"></div>
+                  <div class="squishy-inner" style="background:${innerColor};"></div>
+                  <div class="squishy-crack-lines" id="crackLines">
+                    <svg viewBox="0 0 100 100">
+                      <line x1="30" y1="20" x2="55" y2="45" stroke="${outerColor}" />
+                      <line x1="55" y1="45" x2="40" y2="70" stroke="${outerColor}" />
+                      <line x1="55" y1="45" x2="75" y2="55" stroke="${outerColor}" />
+                      <line x1="75" y1="55" x2="85" y2="80" stroke="${outerColor}" />
+                      <line x1="40" y1="70" x2="20" y2="85" stroke="${outerColor}" />
+                      <line x1="55" y1="45" x2="70" y2="30" stroke="${outerColor}" />
+                      <line x1="70" y1="30" x2="90" y2="20" stroke="${outerColor}" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div class="squishy-tap-hint">👆 tap to crack</div>
+              <div class="squishy-counter">✨ sensory break #${Math.floor(getSensoryCounter() / SENSORY_INTERVAL) + 1}</div>
+              <div class="modal-actions">
+                <button id="sensoryDismissBtn">Close</button>
+              </div>
+            </div>
+          `;
+            document.body.appendChild(overlay);
+
+            const wrap = overlay.querySelector('#squishyWrap');
+            const crackLines = overlay.querySelector('#crackLines');
+            const container = overlay.querySelector('#squishyContainer');
+            let audio = null;
+            let cracked = false;
+
+            function playCrackSound() {
+                try {
+                    audio = new Audio(SENSORY_SOUND_URL);
+                    audio.volume = 0.7;
+                    audio.play().catch(() => {});
+                } catch (e) {}
+            }
+
+            function doCrack() {
+                if (cracked) return;
+                cracked = true;
+                playCrackSound();
+                wrap.classList.add('crack-anim');
+                crackLines.classList.add('show');
+                // Also add a subtle visual pulse on the outer
+                const outer = wrap.querySelector('.squishy-outer');
+                outer.style.transition = 'box-shadow 0.2s';
+                outer.style.boxShadow = 'inset 0 -8px 20px rgba(0,0,0,0.25), 0 8px 30px rgba(0,0,0,0.2), 0 0 40px rgba(255,200,100,0.15)';
+                setTimeout(() => {
+                    outer.style.boxShadow = 'inset 0 -8px 20px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.12)';
+                }, 400);
+                // Change inner color slightly
+                const inner = wrap.querySelector('.squishy-inner');
+                const currentBg = inner.style.background;
+                inner.style.transition = 'background 0.4s';
+                // Slightly shift the inner color
+                const newColor = randomLightColor();
+                inner.style.background = newColor;
+                setTimeout(() => {
+                    wrap.classList.remove('crack-anim');
+                }, 400);
+            }
+
+            container.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!cracked) {
+                    doCrack();
+                }
+            });
+
+            container.addEventListener('touchstart', (e) => {
+                if (!cracked) {
+                    doCrack();
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            // Also crack on space/enter for accessibility
+            wrap.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    if (!cracked) doCrack();
+                }
+            });
+            wrap.setAttribute('tabindex', '0');
+            wrap.setAttribute('role', 'button');
+            wrap.setAttribute('aria-label', 'Crack the wax squishy');
+
+            overlay.querySelector('#sensoryDismissBtn').addEventListener('click', () => {
+                if (audio) { audio.pause();
+                    audio.currentTime = 0; }
+                overlay.remove();
+            });
+
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    if (audio) { audio.pause();
+                        audio.currentTime = 0; }
+                    overlay.remove();
+                }
+            });
+
+            // Auto-close after 15s if not interacted
+            setTimeout(() => {
+                if (overlay.parentNode) {
+                    if (audio) { audio.pause();
+                        audio.currentTime = 0; }
+                    overlay.remove();
+                }
+            }, 15000);
+
+            // If user clicks anywhere on the overlay background, close
+            // but we already handle that above
+        }
+
+        // ============================================================
+        //  PROFILE VIEW
+        // ============================================================
+        function openProfile(name, avatarSrc) {
+            if (!name) return;
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            const initial = name.charAt(0).toUpperCase();
+            const avatarHtml = avatarSrc ?
+                `<img class="profile-avatar-large" src="${avatarSrc}" alt="${escapeHtml(name)}">` :
+                `<div class="profile-avatar-large" style="background:linear-gradient(135deg,#1877f2,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;font-weight:700;">${escapeHtml(initial)}</div>`;
+
+            const isF = isFriend(name);
+            const friendStatusHtml = `
+            <div class="profile-friend-status">
+              <span>${isF ? '✅ Friend' : '👤 Not a friend'}</span>
+              <button class="friend-toggle ${isF ? 'is-friend' : ''}" id="profileFriendToggle">
+                ${isF ? 'Remove friend' : 'Add friend'}
+              </button>
+            </div>
+          `;
+
+            overlay.innerHTML = `
+            <div class="modal-box" style="max-width:480px;">
+              <div class="modal-title" style="display:flex;align-items:center;gap:12px;">
+                ${avatarHtml}
+                <span>${escapeHtml(name)}</span>
+              </div>
+              ${friendStatusHtml}
+              <div style="font-weight:600;font-size:14px;color:#65676b;margin:4px 0 8px;">📝 Posts by ${escapeHtml(name)}</div>
+              <div class="profile-posts" id="profilePosts">
+                <div class="loader show" style="display:block;">Loading posts...</div>
+              </div>
+              <div class="modal-actions">
+                <button class="modal-cancel" id="profileCloseBtn">Close</button>
+              </div>
+            </div>
+          `;
+            document.body.appendChild(overlay);
+
+            // Handle friend toggle
+            overlay.querySelector('#profileFriendToggle').addEventListener('click', function() {
+                const isNow = isFriend(name);
+                if (isNow) {
+                    removeFriend(name);
+                    this.textContent = 'Add friend';
+                    this.classList.remove('is-friend');
+                    this.closest('.profile-friend-status').querySelector('span').textContent = '👤 Not a friend';
+                    showToast(`Removed ${name} from friends`);
+                } else {
+                    addFriend(name);
+                    this.textContent = 'Remove friend';
+                    this.classList.add('is-friend');
+                    this.closest('.profile-friend-status').querySelector('span').textContent = '✅ Friend';
+                    showToast(`Added ${name} as a friend! 🎉`);
+                }
+                // Refresh feed to update friend badges
+                refreshFeed();
+            });
+
+            // Close
+            overlay.querySelector('#profileCloseBtn').addEventListener('click', () => overlay.remove());
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+
+            // Generate profile posts
+            const postsContainer = overlay.querySelector('#profilePosts');
+            // Clear loader
+            postsContainer.innerHTML = '';
+
+            // Generate 6-10 posts with this name
+            const count = 6 + Math.floor(Math.random() * 5);
+            for (let i = 0; i < count; i++) {
+                const postEl = createPostWithName(name, i);
+                postsContainer.appendChild(postEl);
+            }
+
+            if (postsContainer.children.length === 0) {
+                postsContainer.innerHTML = `<div class="profile-empty">No posts from ${escapeHtml(name)} yet.</div>`;
+            }
+        }
+
+        function createPostWithName(name, i) {
+            const avatar = rand(avatars);
+            const minutes = Math.floor(Math.random() * 59) + 1;
+            const time = `${minutes}m ago`;
+            const content = makeContent();
+            const likeBase = Math.floor(Math.random() * 9999);
+
+            const el = document.createElement('article');
+            el.className = 'post';
+            el.style.animationDelay = `${i * 30}ms`;
+            el.innerHTML = `
+            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
+              <img class="avatar" src="${avatar}" alt="">
+              <div class="meta">
+                <div class="name">${escapeHtml(name)}</div>
+                <div class="time">${time} · 🌐</div>
+              </div>
+            </div>
+            <div class="post-content" dir="auto">${content}</div>
+            <div class="actions">
+              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
+              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+              <button type="button" class="friend-btn ${isFriend(name) ? 'is-friend' : ''}" onclick="event.stopPropagation();toggleFriend('${escapeHtml(name)}')">
+                ${isFriend(name) ? '✅ Friend' : '➕ Add friend'}
+              </button>
+            </div>
+          `;
+            return el;
+        }
+
+        // ============================================================
+        //  FRIENDS LIST MODAL
+        // ============================================================
+        function openFriendsModal() {
+            const friends = getFriends();
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            let listHtml = '';
+            if (friends.length === 0) {
+                listHtml = `<div class="profile-empty">No friends yet. Add some from posts!</div>`;
+            } else {
+                listHtml = friends.map(f => `
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f2f5;">
+                <span style="font-weight:600;">${escapeHtml(f)}</span>
+                <button class="friend-toggle is-friend" style="margin-left:auto;padding:2px 12px;border-radius:999px;border:none;background:#e4e6eb;cursor:pointer;font-weight:600;font-size:12px;" onclick="removeFriend('${escapeHtml(f)}');this.closest('div').remove();showToast('Removed ${escapeHtml(f)}');refreshFeed();">Remove</button>
+                <button style="padding:2px 12px;border-radius:999px;border:none;background:#1877f2;color:#fff;cursor:pointer;font-weight:600;font-size:12px;" onclick="openProfile('${escapeHtml(f)}');document.querySelector('.modal-overlay').remove();">View</button>
+              </div>
+            `).join('');
+            }
+
+            overlay.innerHTML = `
+            <div class="modal-box" style="max-width:400px;">
+              <div class="modal-title">👥 Your Friends (${friends.length})</div>
+              <div style="max-height:300px;overflow-y:auto;">${listHtml}</div>
+              <div class="modal-actions">
+                <button class="modal-cancel" id="friendsCloseBtn">Close</button>
+              </div>
+            </div>
+          `;
+            document.body.appendChild(overlay);
+            overlay.querySelector('#friendsCloseBtn').addEventListener('click', () => overlay.remove());
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+        }
+
+        // ============================================================
+        //  REFRESH FEED (reloads with friend boosting)
+        // ============================================================
+        function refreshFeed() {
+            // Preserve pinned posts? For simplicity, we'll reload the feed.
+            // We'll remove all posts except pinned ones and re-generate.
+            const feed = document.getElementById('feed');
+            const pinned = feed.querySelectorAll('.pinned-post');
+            // Remove all non-pinned posts
+            const children = feed.children;
+            const toRemove = [];
+            for (let i = 0; i < children.length; i++) {
+                if (!children[i].classList.contains('pinned-post')) {
+                    toRemove.push(children[i]);
+                }
+            }
+            toRemove.forEach(el => el.remove());
+
+            // Re-generate posts, preserving pinned ones at top
+            // We'll generate 12 posts with friend boosting
+            const adPosition = 3;
+            const available = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11].filter(p => p !== adPosition);
+            const shuffled = available.sort(() => Math.random() - 0.5);
+            const storyPositions = new Set([shuffled[0], shuffled[1]]);
+            const pollPosition = shuffled[2];
+            const debatePosition = shuffled[3];
+
+            // We'll insert after the pinned posts
+            let insertAfter = feed.lastChild;
+            // If there are pinned posts, they should be at the beginning
+            // Actually, just append after existing pinned posts
+            const pinnedCount = pinned.length;
+            const referenceNode = pinnedCount > 0 ? pinned[pinnedCount - 1] : null;
+
+            let adDone = false;
+            const newPosts = [];
+            for (let i = 0; i < 12; i++) {
+                let el;
+                if (i === adPosition && !adDone) {
+                    el = makeAdPost();
+                    adDone = true;
+                } else if (storyPositions.has(i)) {
+                    el = makeStoryPost(i);
+                } else if (i === pollPosition) {
+                    el = makePollPost(i);
+                } else if (i === debatePosition) {
+                    el = makeDebatePost(i);
+                } else {
+                    el = createPostWithFriendBoost(i);
+                }
+                newPosts.push(el);
+            }
+
+            // Insert after reference node
+            if (referenceNode && referenceNode.parentNode === feed) {
+                newPosts.forEach(el => {
+                    feed.insertBefore(el, referenceNode.nextSibling);
+                });
+            } else {
+                newPosts.forEach(el => feed.appendChild(el));
+            }
+        }
+
+        function createPostWithFriendBoost(i) {
+            const name = getWeightedName();
+            const avatar = rand(avatars);
+            const minutes = Math.floor(Math.random() * 59) + 1;
+            const time = `${minutes}m ago`;
+            const content = makeContent();
+            const likeBase = Math.floor(Math.random() * 9999);
+            const isF = isFriend(name);
+
+            const el = document.createElement('article');
+            el.className = 'post';
+            el.style.animationDelay = `${i * 40}ms`;
+            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
+            el.innerHTML = `
+            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
+              <img class="avatar" src="${avatar}" alt="">
+              <div class="meta">
+                <div class="name-wrap"><span class="name">${escapeHtml(name)}</span> ${friendBadge}</div>
+                <div class="time">${time} · 🌐</div>
+              </div>
+            </div>
+            <div class="post-content" dir="auto">${content}</div>
+            <div class="actions">
+              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
+              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+              <button type="button" class="friend-btn ${isF ? 'is-friend' : ''}" onclick="event.stopPropagation();toggleFriend('${escapeHtml(name)}')">
+                ${isF ? '✅ Friend' : '➕ Add friend'}
+              </button>
+            </div>
+          `;
+            return el;
+        }
+
+        // ---- Override original createPost to use friend boost ----
+        const originalCreatePost = window.createPost;
+        window.createPost = function(i) {
+            return createPostWithFriendBoost(i);
+        };
+
+        // ---- Also override loadFeed to use friend boost ----
+        const originalLoadFeed = window.loadFeed;
+        window.loadFeed = function() {
+            const feed = document.getElementById('feed');
+            const adPosition = 3;
+            const available = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11].filter(p => p !== adPosition);
+            const shuffled = available.sort(() => Math.random() - 0.5);
+            const storyPositions = new Set([shuffled[0], shuffled[1]]);
+            const pollPosition = shuffled[2];
+            const debatePosition = shuffled[3];
+
+            let adDone = false;
+            for (let i = 0; i < 12; i++) {
+                let el;
+                if (i === adPosition && !adDone) {
+                    el = makeAdPost();
+                    adDone = true;
+                } else if (storyPositions.has(i)) {
+                    el = makeStoryPost(i);
+                } else if (i === pollPosition) {
+                    el = makePollPost(i);
+                } else if (i === debatePosition) {
+                    el = makeDebatePost(i);
+                } else {
+                    el = createPostWithFriendBoost(i);
+                }
+                feed.appendChild(el);
+                // Increment sensory counter for each post
+                incrementSensoryCounter();
+            }
+        };
+
+        // ---- Override loadMorePosts to use friend boost and sensory ----
+        const originalLoadMore = window.loadMorePosts;
+        window.loadMorePosts = function(count = 8) {
+            if (loading) return;
+            loading = true;
+            const loader = document.getElementById('loader');
+            loader.classList.add('show');
+
+            setTimeout(() => {
+                const feed = document.getElementById('feed');
+                const start = feed.children.length;
+                for (let i = 0; i < count; i++) {
+                    const r = Math.random();
+                    let el;
+                    if (r < 0.2) {
+                        el = makeStoryPost(start + i);
+                    } else if (r < 0.32) {
+                        el = makePollPost(start + i);
+                    } else if (r < 0.42) {
+                        el = makeDebatePost(start + i);
+                    } else {
+                        el = createPostWithFriendBoost(start + i);
+                    }
+                    feed.appendChild(el);
+                    incrementSensoryCounter();
+                }
+                loading = false;
+                loader.classList.remove('show');
+            }, 350);
+        };
+
+        // ---- Also patch the original post generation in the feed load ----
+        // We'll override the global functions used in the original loadFeed.
+
+        // ============================================================
+        //  EXISTING CODE (preserved with minimal changes)
+        // ============================================================
+
+        const firstNames = ["Alex", "Jordan", "Casey", "Taylor", "Morgan", "Riley", "Jamie", "Avery", "Drew", "Quinn", "Sam",
+            "Blake",
             "Charlie", "Finley", "Rowan", "Min-jun", "Yuki", "Aisha", "Hana", "Kenji", "Layla", "Soo-jin", "Hiro", "Amir",
             "Mei", "Arjun", "Priya", "Dmitri", "Anastasia", "Somchai", "Niran"
         ];
@@ -1728,9 +2555,9 @@
         const th_endings = ["การเดินทาง", "อนิเมะ", "อาหาร", "ฟุตบอล", "คาเฟ่", "หนังเก่า", "พระอาทิตย์ตก", "ปีนเขา", "บทกวี",
             "พอดแคสต์อาชญากรรม", "ชา", "เทคโนโลยีเรโทร"
         ];
- (function() {
-            const hasNativeBridge = typeof AndroidTTS !== 'undefined' && AndroidTTS && typeof AndroidTTS.speak === 'function';
 
+        (function() {
+            const hasNativeBridge = typeof AndroidTTS !== 'undefined' && AndroidTTS && typeof AndroidTTS.speak === 'function';
             window.speakText = function(text, lang = 'en') {
                 if (!text) return;
                 if (hasNativeBridge) {
@@ -1745,7 +2572,6 @@
                     console.warn('TTS not supported');
                 }
             };
-
             window.stopSpeaking = function() {
                 if (hasNativeBridge) {
                     AndroidTTS.stop();
@@ -1754,6 +2580,7 @@
                 }
             };
         })();
+
         const avatars = [
             'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg==',
             'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
@@ -1777,7 +2604,6 @@
 
         const pinnableLines = linesB.filter(l => !l.includes('number-game-btn'));
 
-        // ---- Story question posts ----
         const storyOpeners = ["Guys", "People", "ChillSpacers", "Friends"];
         const storyAdjs = ["craziest", "most insane", "funniest", "most shocking"];
 
@@ -1854,7 +2680,6 @@
             }
         }
 
-        // ---- "See the full story" data ----
         const fullStories = {
             "My old school friend is now a billionaire.": "In high school, Leo was the guy who traded his sandwich for a shiny holographic Charizard card, which everyone thought was a terrible deal. Ten years later, OP bumped into him at a diner. It turned out Leo had kept trading up — from cards, to vintage sneakers, to a tech startup domain name he bought for $12. He casually paid for OP's $8 pancakes by pulling a black card out of a wallet that probably cost more than OP's car.",
             "I left my husband over a video game.": "It wasn't just any video game; it was a high-stakes co-op puzzle game. They were on the final level, needing perfect coordination to open the escape hatch. OP's husband accidentally dropped a digital boulder on their character, laughed hysterically, and then saved the game, trapping OP forever. Looking at him sitting on the couch, totally unbothered by his betrayal, they realised: if he won't save me from a digital boulder, how can I trust him in real life? They packed their bags that night.",
@@ -2059,11 +2884,8 @@
             `OP has been asked to explain this at least a dozen times now, and somehow the story gets a little more chaotic with every retelling.`
         ];
 
-       
-        // -------- Updated createStoryVideoShell --------
         function createStoryVideoShell() {
-            window.stopSpeaking(); // was: if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-
+            window.stopSpeaking();
             const overlay = document.createElement('div');
             overlay.className = 'story-video-overlay';
             overlay.innerHTML = `
@@ -2079,36 +2901,28 @@
                 </div>
             `;
             document.body.appendChild(overlay);
-
             const video = overlay.querySelector('.story-bg-video');
             const captionEl = overlay.querySelector('#storyCaption');
             const playBtn = overlay.querySelector('#storyPlayBtn');
             const closeBtn = overlay.querySelector('.story-close-btn');
-
             video.play().catch(() => {});
 
             function close() {
-                window.stopSpeaking(); // was: if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+                window.stopSpeaking();
                 video.pause();
                 overlay.remove();
             }
             closeBtn.addEventListener('click', close);
             overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
-
             return { overlay, video, captionEl, playBtn, closeBtn, close };
         }
 
-       // -------- Updated startStoryNarration --------
         function startStoryNarration(shell, commentText, story) {
             const { captionEl, playBtn } = shell;
             const fullText = `${commentText} ${story}`;
             captionEl.innerHTML = escapeHtml(fullText);
-
-            // Check if native bridge is available
             const hasNative = typeof AndroidTTS !== 'undefined' && AndroidTTS && typeof AndroidTTS.speak === 'function';
-
             if (hasNative) {
-                // Use native Android TTS – simple play/stop, no word highlighting
                 let isPlaying = false;
                 playBtn.style.display = '';
                 playBtn.textContent = '▶ Play narration';
@@ -2121,7 +2935,6 @@
                         window.speakText(fullText);
                         isPlaying = true;
                         playBtn.textContent = '⏸ Stop';
-                        // Auto-reset after a rough estimate of speech duration
                         setTimeout(() => {
                             if (isPlaying) {
                                 isPlaying = false;
@@ -2130,13 +2943,11 @@
                         }, fullText.length * 80 + 2000);
                     }
                 };
-                // Override close to stop speech
                 const origClose = shell.close;
                 shell.close = function() {
                     window.stopSpeaking();
                     origClose();
                 };
-                // Also stop when overlay is removed
                 const observer = new MutationObserver(() => {
                     if (!document.body.contains(shell.overlay)) {
                         window.stopSpeaking();
@@ -2145,11 +2956,9 @@
                 });
                 observer.observe(shell.overlay.parentNode || document.body, { childList: true, subtree: true });
             } else if ('speechSynthesis' in window) {
-                // Fallback to Web Speech API with word highlighting
                 const words = fullText.split(/\s+/).filter(Boolean);
                 captionEl.innerHTML = escapeHtml(words[0] || '');
                 playBtn.style.display = '';
-
                 const wordRanges = [];
                 let acc = 0;
                 words.forEach((w, i) => {
@@ -2158,7 +2967,8 @@
                 });
 
                 function renderCaptionWindow(centerIdx) {
-                    const before = 2, after = 4;
+                    const before = 2,
+                        after = 4;
                     const start = Math.max(0, centerIdx - before);
                     const end = Math.min(words.length, centerIdx + after);
                     let html = '';
@@ -2170,23 +2980,19 @@
                     }
                     captionEl.innerHTML = html;
                 }
-
                 const utterance = new SpeechSynthesisUtterance(fullText);
                 utterance.rate = 1;
                 utterance.pitch = 1;
-
                 utterance.onboundary = (e) => {
                     if (typeof e.charIndex !== 'number') return;
                     const match = wordRanges.find(r => e.charIndex >= r.start && e.charIndex < r.end);
                     if (match) renderCaptionWindow(match.index);
                 };
-
                 utterance.onend = () => {
                     captionEl.innerHTML = `<span class="story-word-active">The End ✨</span>`;
                     playBtn.textContent = '🔁 Replay narration';
                     playBtn.dataset.state = 'ended';
                 };
-
                 let isPaused = false;
                 playBtn.onclick = () => {
                     if (playBtn.dataset.state === 'ended') {
@@ -2205,11 +3011,9 @@
                         playBtn.textContent = '⏸ Pause narration';
                     }
                 };
-
                 window.speechSynthesis.cancel();
                 window.speechSynthesis.speak(utterance);
             } else {
-                // No TTS at all
                 captionEl.textContent = fullText;
                 playBtn.style.display = 'none';
             }
@@ -2233,17 +3037,17 @@
             const opener = rand(storyOpeners);
             const adj = rand(storyAdjs);
             const question = `${opener}, what are your ${adj} stories?`;
-            const name = `${rand(firstNames)} ${rand(lastNames)}`;
+            const name = getWeightedName();
             const avatar = rand(avatars);
             const minutes = Math.floor(Math.random() * 59) + 1;
             const likeBase = Math.floor(Math.random() * 9999);
+            const isF = isFriend(name);
 
             const el = document.createElement('article');
             el.className = 'post';
             el.style.animationDelay = `${i*40}ms`;
 
             const commentCount = Math.floor(Math.random() * 23) + 8;
-
             const typePool = [];
             for (let c = 0; c < commentCount; c++) {
                 typePool.push(c % 3);
@@ -2252,13 +3056,11 @@
                 const j = Math.floor(Math.random() * (c + 1));
                 [typePool[c], typePool[j]] = [typePool[j], typePool[c]];
             }
-
             const gradients = [
                 '135deg,#f97316,#ec4899', '135deg,#06b6d4,#1877f2', '135deg,#7c3aed,#ec4899',
                 '135deg,#10b981,#06b6d4', '135deg,#f59e0b,#ef4444', '135deg,#8b5cf6,#3b82f6',
                 '135deg,#14b8a6,#84cc16', '135deg,#f43f5e,#f97316'
             ];
-
             let commentsHtml = '';
             for (let c = 0; c < commentCount; c++) {
                 const cName = `${rand(firstNames)} ${rand(lastNames)}`;
@@ -2285,11 +3087,12 @@
               </div>${fullStoryBtn}`;
             }
 
+            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
             el.innerHTML = `
-            <div class="post-head">
+            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
               <img class="avatar" src="${avatar}" alt="">
               <div class="meta">
-                <div class="name">${name}</div>
+                <div class="name-wrap"><span class="name">${escapeHtml(name)}</span> ${friendBadge}</div>
                 <div class="time">${minutes}m ago · 🌐</div>
               </div>
             </div>
@@ -2299,6 +3102,9 @@
               <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
               <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
               <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+              <button type="button" class="friend-btn ${isF ? 'is-friend' : ''}" onclick="event.stopPropagation();toggleFriend('${escapeHtml(name)}')">
+                ${isF ? '✅ Friend' : '➕ Add friend'}
+              </button>
             </div>
             <button type="button" class="show-comments-btn" onclick="toggleStoryComments(this)">💬 Show comments (${commentCount})</button>
             <div class="story-comments">${commentsHtml}</div>
@@ -2313,7 +3119,6 @@
         }
         window.toggleStoryComments = toggleStoryComments;
 
-        // ---- Ad post ----
         function makeAdPost() {
             const el = document.createElement('article');
             el.className = 'post post-ad';
@@ -2338,7 +3143,7 @@
             return el;
         }
 
-        // ---- Live Debates ----
+        // ---- Live Debates (preserved) ----
         const debateSubjects = {
             music: ["Taylor Swift", "BTS", "Drake", "Miley Cyrus", "Beyoncé", "Ed Sheeran", "Ariana Grande", "The Weeknd",
                 "Billie Eilish", "Bad Bunny", "Dua Lipa", "Kendrick Lamar", "Olivia Rodrigo", "Travis Scott", "Doja Cat",
@@ -2437,10 +3242,11 @@
 
         function makeDebatePost(i, category) {
             const cat = category || rand(['music', 'football', 'politics']);
-            const name = `${rand(firstNames)} ${rand(lastNames)}`;
+            const name = getWeightedName();
             const avatar = rand(avatars);
             const likeBase = Math.floor(Math.random() * 500);
             const { text, subjects } = makeDebateLine(cat);
+            const isF = isFriend(name);
 
             const el = document.createElement('article');
             el.className = 'post debate-post';
@@ -2450,12 +3256,13 @@
             el.dataset.relayCount = '0';
             el.dataset.userJoined = '0';
 
+            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
             const likeId = `dbt-like-${i}-${Date.now()}`;
             el.innerHTML = `
-            <div class="post-head">
+            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
               <img class="avatar" src="${avatar}" alt="">
               <div class="meta">
-                <div class="name">${name}<span class="live-badge">● LIVE</span></div>
+                <div class="name-wrap"><span class="name">${escapeHtml(name)}</span> ${friendBadge}<span class="live-badge">● LIVE</span></div>
                 <div class="time">Just now · 🌐</div>
               </div>
             </div>
@@ -2465,6 +3272,9 @@
               <button type="button" class="debate-join-btn" onclick="openDebateJoinModal(this)">🔥 Join debate</button>
               <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
               <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+              <button type="button" class="friend-btn ${isF ? 'is-friend' : ''}" onclick="event.stopPropagation();toggleFriend('${escapeHtml(name)}')">
+                ${isF ? '✅ Friend' : '➕ Add friend'}
+              </button>
             </div>
           `;
 
@@ -2496,11 +3306,14 @@
                     const cat = el.dataset.category;
                     const anchor = el.dataset.lastSubject;
                     const { text, subjects } = makeDebateLine(cat, anchor);
-                    const name = `${rand(firstNames)} ${rand(lastNames)}`;
-                    const avatar = rand(avatars);
+                    const newName = getWeightedName();
+                    const newAvatar = rand(avatars);
+                    const isF = isFriend(newName);
+                    const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
                     el.querySelector('.post-content').textContent = text;
-                    el.querySelector('.post-head .name').innerHTML = `${name}<span class="live-badge">● LIVE</span>`;
-                    el.querySelector('.post-head .avatar').src = avatar;
+                    el.querySelector('.post-head .name-wrap').innerHTML =
+                        `<span class="name">${escapeHtml(newName)}</span> ${friendBadge}<span class="live-badge">● LIVE</span>`;
+                    el.querySelector('.post-head .avatar').src = newAvatar;
                     el.dataset.lastSubject = subjects[subjects.length - 1];
                     el.dataset.relayCount = String(count + 1);
                     el.classList.remove('swapping');
@@ -2547,10 +3360,11 @@
 
             setTimeout(() => {
                 postEl.querySelector('.post-content').textContent = userText;
-                postEl.querySelector('.post-head .name').innerHTML = `You<span class="live-badge">● LIVE</span>`;
+                postEl.querySelector('.post-head .name-wrap').innerHTML =
+                    `You<span class="live-badge">● LIVE</span>`;
                 const avatarEl = postEl.querySelector('.post-head .avatar');
                 if (avatarEl) avatarEl.outerHTML =
-                `<div class="comment-avatar" style="width:40px;height:40px;font-size:17px;font-weight:800;">Y</div>`;
+                    `<div class="comment-avatar" style="width:40px;height:40px;font-size:17px;font-weight:800;">Y</div>`;
                 postEl.classList.remove('swapping');
 
                 const cat = postEl.dataset.category;
@@ -2575,13 +3389,15 @@
                     setTimeout(() => {
                         if (!document.body.contains(postEl)) return;
                         const { text, subjects } = makeDebateLine(useCategory, postEl.dataset.lastSubject);
-                        const name = `${rand(firstNames)} ${rand(lastNames)}`;
-                        const avatar = rand(avatars);
+                        const newName = getWeightedName();
+                        const newAvatar = rand(avatars);
+                        const isF = isFriend(newName);
+                        const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
                         postEl.querySelector('.post-content').textContent = text;
-                        postEl.querySelector('.post-head .name').innerHTML =
-                            `${name}<span class="live-badge">● LIVE</span>`;
+                        postEl.querySelector('.post-head .name-wrap').innerHTML =
+                            `<span class="name">${escapeHtml(newName)}</span> ${friendBadge}<span class="live-badge">● LIVE</span>`;
                         const avEl = postEl.querySelector('.comment-avatar') || postEl.querySelector('.avatar');
-                        if (avEl) avEl.outerHTML = `<img class="avatar" src="${avatar}" alt="">`;
+                        if (avEl) avEl.outerHTML = `<img class="avatar" src="${newAvatar}" alt="">`;
                         postEl.dataset.lastSubject = subjects[subjects.length - 1];
                         postEl.dataset.relayCount = '1';
                         postEl.classList.remove('swapping');
@@ -2596,10 +3412,11 @@
             const count = Math.floor(Math.random() * 3) + 2;
             const pollPols = shuffled.slice(0, count);
 
-            const name = `${rand(firstNames)} ${rand(lastNames)}`;
+            const name = getWeightedName();
             const avatar = rand(avatars);
             const minutes = Math.floor(Math.random() * 59) + 1;
             const likeBase = Math.floor(Math.random() * 3000);
+            const isF = isFriend(name);
 
             const votes = pollPols.map(() => Math.floor(Math.random() * 900) + 50);
             const totalVotes = votes.reduce((a, b) => a + b, 0);
@@ -2635,14 +3452,15 @@
               </div>`;
             }
 
+            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
             const el = document.createElement('article');
             el.className = 'post';
             el.style.animationDelay = `${i * 40}ms`;
             el.innerHTML = `
-            <div class="post-head">
+            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
               <img class="avatar" src="${avatar}" alt="">
               <div class="meta">
-                <div class="name">${name}</div>
+                <div class="name-wrap"><span class="name">${escapeHtml(name)}</span> ${friendBadge}</div>
                 <div class="time">${minutes}m ago · 🌐</div>
               </div>
             </div>
@@ -2656,6 +3474,9 @@
               <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
               <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
               <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+              <button type="button" class="friend-btn ${isF ? 'is-friend' : ''}" onclick="event.stopPropagation();toggleFriend('${escapeHtml(name)}')">
+                ${isF ? '✅ Friend' : '➕ Add friend'}
+              </button>
             </div>
             <button type="button" class="show-poll-comments-btn" onclick="togglePollComments(this)">💬 Show comments (${commentCount})</button>
             <div class="poll-comments">${pollCommentsHtml}</div>
@@ -2694,7 +3515,6 @@
             return `Unpopular opinion: ${pol}'s ${topic} policy is ${judgement} for ${beneficiary}.`;
         }
 
-        // ============ LIVE DEBATES ============
         const musicians = [
             "Taylor Swift", "Drake", "BTS", "Beyoncé", "Ed Sheeran", "Ariana Grande", "The Weeknd",
             "Billie Eilish", "Bad Bunny", "Dua Lipa", "Kendrick Lamar", "Miley Cyrus", "Harry Styles",
@@ -2778,147 +3598,6 @@
             return null;
         }
 
-        function makeDebatePost(i) {
-            const category = rand(['music', 'football', 'politics']);
-            const opener = debateOpener(category);
-            const pool = debateCategoryPool(category);
-            const mentioned = pool.find(n => opener.includes(n));
-
-            const name = `${rand(firstNames)} ${rand(lastNames)}`;
-            const avatar = rand(avatars);
-            const likeBase = Math.floor(Math.random() * 500);
-
-            const el = document.createElement('article');
-            el.className = 'post debate-post';
-            el.style.animationDelay = `${i * 40}ms`;
-            el.dataset.category = category;
-            el.dataset.lastName = mentioned || rand(pool);
-            el.dataset.userJoined = '0';
-
-            el.innerHTML = `
-            <div class="post-head">
-              <img class="avatar" src="${avatar}" alt="">
-              <div class="meta">
-                <div class="name">${name}<span class="live-badge">LIVE</span></div>
-                <div class="time">Just now · 🌐</div>
-              </div>
-            </div>
-            <div class="post-content" dir="auto">${opener}</div>
-            <div class="actions">
-              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
-              <button type="button" class="debate-join-btn" onclick="joinDebate(this)">🔥 Join debate</button>
-              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
-              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
-            </div>
-          `;
-
-            startDebateRelay(el);
-            return el;
-        }
-
-        function startDebateRelay(el) {
-            const interval = setInterval(() => {
-                if (!document.body.contains(el)) { clearInterval(interval); return; }
-                if (el.dataset.pauseUntil && Date.now() < parseInt(el.dataset.pauseUntil, 10)) return;
-
-                const category = el.dataset.category;
-                const prevName = el.dataset.lastName;
-                const { text, nextName } = debateReply(category, prevName);
-                const newName = `${rand(firstNames)} ${rand(lastNames)}`;
-                const newAvatar = rand(avatars);
-
-                el.classList.add('swapping');
-                setTimeout(() => {
-                    const nameEl = el.querySelector('.name');
-                    const avatarEl = el.querySelector('.avatar');
-                    const contentEl = el.querySelector('.post-content');
-                    nameEl.innerHTML = `${newName}<span class="live-badge">LIVE</span>`;
-                    avatarEl.src = newAvatar;
-                    contentEl.textContent = text;
-                    el.dataset.lastName = nextName;
-                    el.classList.remove('swapping');
-                }, 150);
-            }, 2000);
-            el._debateInterval = interval;
-        }
-
-        function joinDebate(btn) {
-            const postEl = btn.closest('.post');
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay';
-            overlay.innerHTML = `
-            <div class="modal-box">
-              <div class="modal-title">Join the debate</div>
-              <textarea class="modal-textarea" placeholder="Share your hot take..." autofocus></textarea>
-              <div class="modal-actions">
-                <button type="button" class="modal-cancel">Cancel</button>
-                <button type="button" class="modal-post">Post</button>
-              </div>
-            </div>
-          `;
-            document.body.appendChild(overlay);
-            const textarea = overlay.querySelector('.modal-textarea');
-            setTimeout(() => textarea.focus(), 0);
-
-            function close() { overlay.remove(); }
-            overlay.querySelector('.modal-cancel').addEventListener('click', close);
-            overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
-
-            overlay.querySelector('.modal-post').addEventListener('click', () => {
-                const text = textarea.value.trim();
-                if (!text) return;
-                close();
-                injectUserIntoDebate(postEl, text);
-            });
-        }
-        window.joinDebate = joinDebate;
-
-        function injectUserIntoDebate(postEl, text) {
-            postEl.dataset.pauseUntil = String(Date.now() + 2200);
-
-            postEl.classList.add('swapping');
-            setTimeout(() => {
-                const nameEl = postEl.querySelector('.name');
-                const avatarEl = postEl.querySelector('.avatar');
-                const contentEl = postEl.querySelector('.post-content');
-                nameEl.innerHTML = `You<span class="live-badge">LIVE</span>`;
-                avatarEl.src = '';
-                avatarEl.style.background = 'linear-gradient(135deg,#1877f2,#7c3aed)';
-                contentEl.textContent = text;
-                postEl.classList.remove('swapping');
-
-                const detected = detectAnyDebateName(text);
-                if (detected) {
-                    postEl.dataset.category = detected.category;
-                    postEl.dataset.lastName = detected.name;
-                }
-
-                setTimeout(() => {
-                    if (!document.body.contains(postEl)) return;
-                    const category = postEl.dataset.category;
-                    const prevName = postEl.dataset.lastName;
-                    const { text: replyText, nextName } = debateReply(category, prevName);
-                    const replyName = `${rand(firstNames)} ${rand(lastNames)}`;
-                    const replyAvatar = rand(avatars);
-
-                    postEl.classList.add('swapping');
-                    setTimeout(() => {
-                        const nameEl2 = postEl.querySelector('.name');
-                        const avatarEl2 = postEl.querySelector('.avatar');
-                        const contentEl2 = postEl.querySelector('.post-content');
-                        avatarEl2.style.background = '';
-                        nameEl2.innerHTML = `${replyName}<span class="live-badge">LIVE</span>`;
-                        avatarEl2.src = replyAvatar;
-                        contentEl2.textContent = replyText;
-                        postEl.dataset.lastName = nextName;
-                        postEl.classList.remove('swapping');
-                    }, 150);
-                }, 2200);
-            }, 150);
-        }
-        window.injectUserIntoDebate = injectUserIntoDebate;
-        // ============ END LIVE DEBATES ============
-
         function makeContent(allowLinesB = true) {
             const r = Math.random();
             if (r < 0.10) {
@@ -2963,7 +3642,7 @@
             }
         }
 
-        // ---- Like button: random base count per post, toggles on/off ----
+        // ---- Like button ----
         function toggleLike(btn) {
             const liked = btn.dataset.liked === '1';
             let base = parseInt(btn.dataset.base, 10);
@@ -2983,7 +3662,7 @@
         }
         window.toggleLike = toggleLike;
 
-        // ---- Comment button: popup composer that shows comment on post ----
+        // ---- Comment modal ----
         function openCommentModal(btn) {
             const postEl = btn.closest('.post');
             const overlay = document.createElement('div');
@@ -3003,7 +3682,6 @@
             setTimeout(() => textarea.focus(), 0);
 
             function close() { overlay.remove(); }
-
             overlay.querySelector('.modal-cancel').addEventListener('click', close);
             overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
 
@@ -3018,7 +3696,7 @@
         }
         window.openCommentModal = openCommentModal;
 
-        // ---- Append a comment bubble to a post and start ticking likes ----
+        // ---- appendComment ----
         function appendComment(postEl, name, colorLabel, text) {
             let section = postEl.querySelector('.comments-section');
             if (!section) {
@@ -3026,13 +3704,11 @@
                 section.className = 'comments-section';
                 postEl.appendChild(section);
             }
-
             const existingShareBtn = section.querySelector('.share-comments-btn');
             if (existingShareBtn) existingShareBtn.remove();
 
             const displayName = (name && name.trim()) ? name.trim() : 'You';
             const initial = displayName.charAt(0).toUpperCase();
-
             const item = document.createElement('div');
             item.className = 'comment-item';
             item.dataset.commentName = displayName;
@@ -3058,9 +3734,7 @@
             section.appendChild(metaRow);
 
             startTickingLikes(likesEl, false);
-
             ensureShareButton(postEl, section);
-
             return item;
         }
 
@@ -3075,17 +3749,14 @@
 
         function addReply(parentItem, name, colorLabel, text) {
             if (!parentItem) return null;
-
             let repliesEl = parentItem.querySelector(':scope > .comment-replies');
             if (!repliesEl) {
                 repliesEl = document.createElement('div');
                 repliesEl.className = 'comment-replies';
                 parentItem.appendChild(repliesEl);
             }
-
             const displayName = (name && name.trim()) ? name.trim() : 'You';
             const initial = displayName.charAt(0).toUpperCase();
-
             const item = document.createElement('div');
             item.className = 'comment-item reply-item';
             item.dataset.commentName = displayName;
@@ -3100,12 +3771,10 @@
             </div>
           `;
             repliesEl.appendChild(item);
-
             const metaRow = document.createElement('div');
             metaRow.className = 'comment-meta-row';
             metaRow.appendChild(buildReplyButton(item));
             item.appendChild(metaRow);
-
             return item;
         }
 
@@ -3126,11 +3795,9 @@
             document.body.appendChild(overlay);
             const textarea = overlay.querySelector('.modal-textarea');
             setTimeout(() => textarea.focus(), 0);
-
             function close() { overlay.remove(); }
             overlay.querySelector('.modal-cancel').addEventListener('click', close);
             overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
-
             overlay.querySelector('.modal-post').addEventListener('click', () => {
                 const text = textarea.value.trim();
                 if (!text) return;
@@ -3160,26 +3827,23 @@
             return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
-        // ---- linkify: convert URLs in user-generated text to clickable <a> tags ----
-       function linkifyText(text) {
-    if (!text) return '';
-    const urlRegex = /https?:\/\/[^\s<>"]+/g; // keep ' removed
-    let result = '';
-    let lastIndex = 0;
-    let match;
-    while ((match = urlRegex.exec(text)) !== null) {
-        result += escapeHtml(text.slice(lastIndex, match.index));
-        let url = match[0];
-        // Trim trailing punctuation that isn't part of the URL
-        url = url.replace(/[.,!?;:]+$/, '');
-        // If the URL ends with a closing quote or bracket, trim it
-        url = url.replace(/['")\]]+$/, '');
-        result += `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`;
-        lastIndex = urlRegex.lastIndex;
-    }
-    result += escapeHtml(text.slice(lastIndex));
-    return result;
-}
+        function linkifyText(text) {
+            if (!text) return '';
+            const urlRegex = /https?:\/\/[^\s<>"]+/g;
+            let result = '';
+            let lastIndex = 0;
+            let match;
+            while ((match = urlRegex.exec(text)) !== null) {
+                result += escapeHtml(text.slice(lastIndex, match.index));
+                let url = match[0];
+                url = url.replace(/[.,!?;:]+$/, '');
+                url = url.replace(/['")\]]+$/, '');
+                result += `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`;
+                lastIndex = urlRegex.lastIndex;
+            }
+            result += escapeHtml(text.slice(lastIndex));
+            return result;
+        }
 
         function avatarLabelFromSrc(src) {
             const idx = avatars.indexOf(src);
@@ -3218,33 +3882,25 @@
         function getPostLink(postEl) {
             const base = window.location.origin + window.location.pathname;
             if (!postEl) return base;
-
             const mediaParts = getPostMediaParams(postEl);
-
             if (postEl.dataset.postParam) {
                 return appendQueryParams(`${base}?post=${encodeURIComponent(postEl.dataset.postParam)}`, mediaParts);
             }
-
             if (postEl.classList.contains('post-ad')) {
                 return base;
             }
-
             const nameEl = postEl.querySelector('.name');
             const contentEl = postEl.querySelector('.post-content, .post-question');
             if (!nameEl || !contentEl) return base;
-
             if (contentEl.querySelector('.number-game-btn')) return base;
-
             const firstNode = nameEl.childNodes[0];
             const name = (firstNode && firstNode.nodeType === Node.TEXT_NODE) ?
                 firstNode.textContent.trim() :
                 nameEl.textContent.trim();
             const content = contentEl.textContent.trim();
             if (!name || !content) return base;
-
             const avatarImg = postEl.querySelector('.avatar');
             const colorLabel = avatarImg ? avatarLabelFromSrc(avatarImg.getAttribute('src')) : 'grey';
-
             return appendQueryParams(buildContentPostLink(name, colorLabel, content), mediaParts);
         }
         window.getPostLink = getPostLink;
@@ -3256,30 +3912,14 @@
         }
         window.getCurrentUserName = getCurrentUserName;
 
-        function getLastCommentInfo(postEl) {
-            const section = postEl.querySelector('.comments-section');
-            if (!section) return null;
-            const items = section.querySelectorAll('.comment-item');
-            if (!items.length) return null;
-            const last = items[items.length - 1];
-            const name = last.dataset.commentName;
-            const colorLabel = last.dataset.commentColor;
-            const textEl = last.querySelector('.comment-text');
-            const content = textEl ? textEl.textContent.trim() : '';
-            if (!name || !content) return null;
-            return { name, colorLabel, content };
-        }
-
         function getCommentChain(postEl) {
             const section = postEl.querySelector('.comments-section');
             if (!section) return [];
-
             const topItems = Array.from(section.children).filter(
                 child => child.classList && child.classList.contains('comment-item') && !child.classList.contains(
                 'reply-item')
             );
             if (!topItems.length) return [];
-
             const chain = [];
             let current = topItems[topItems.length - 1];
             while (current) {
@@ -3289,7 +3929,6 @@
                 const content = textEl ? textEl.textContent.trim() : '';
                 if (!name || !content) break;
                 chain.push({ name, colorLabel, content });
-
                 const repliesEl = current.querySelector(':scope > .comment-replies');
                 const replyItems = repliesEl ? repliesEl.querySelectorAll(':scope > .comment-item') : null;
                 current = (replyItems && replyItems.length) ? replyItems[replyItems.length - 1] : null;
@@ -3301,7 +3940,6 @@
             const link = getPostLink(postEl);
             const chain = getCommentChain(postEl);
             if (!chain.length) return link;
-
             const parts = [];
             chain.forEach((c, i) => {
                 const prefix = i === 0 ? 'comment' : `reply${i}`;
@@ -3309,11 +3947,9 @@
                 parts.push(`${prefix}_profile_picture=${encodeURIComponent(c.colorLabel || 'grey')}`);
                 parts.push(`${prefix}_content=${encodeURIComponent(c.content)}`);
             });
-
             return appendQueryParams(link, parts);
         }
 
-        // ---- Share post with comment ----
         async function sharePostWithComment(postEl) {
             const link = getPostLinkWithComment(postEl);
             const data = { title: 'ChillSpace', url: link };
@@ -3326,18 +3962,13 @@
         }
         window.sharePostWithComment = sharePostWithComment;
 
-        // ---- Repost menu with three options ----
         function openRepostMenu(btn) {
-            // Close any existing repost menu
             document.querySelectorAll('.repost-menu').forEach(m => m.remove());
-
             const postEl = btn.closest('.post');
             const link = getPostLink(postEl);
             const encodedLink = encodeURIComponent(link);
-
             const menu = document.createElement('div');
             menu.className = 'repost-menu';
-
             menu.innerHTML = `
             <button type="button" class="repost-menu-item" data-action="messages">
               <span class="repost-icon">✉️</span> ChillSpace Messages
@@ -3350,92 +3981,67 @@
               <span class="repost-icon">⋯</span> More
             </button>
           `;
-
             document.body.appendChild(menu);
-
-            // Position the menu near the clicked button
             const rect = btn.getBoundingClientRect();
             let left = rect.left;
             let top = rect.bottom + 6;
-            // Keep it on screen
             const menuWidth = 220;
             if (left + menuWidth > window.innerWidth - 12) {
                 left = Math.max(12, window.innerWidth - menuWidth - 12);
             }
             menu.style.left = left + 'px';
             menu.style.top = top + 'px';
-
-            // If it would overflow below, open upward
             requestAnimationFrame(() => {
                 const menuRect = menu.getBoundingClientRect();
                 if (menuRect.bottom > window.innerHeight - 12) {
                     menu.style.top = (rect.top - menuRect.height - 6) + 'px';
                 }
             });
-
-            // Handle clicks
             menu.querySelectorAll('.repost-menu-item').forEach(item => {
                 item.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const action = item.dataset.action;
                     menu.remove();
-
                     if (action === 'messages') {
-                        const messagesUrl =
-                            `https://chill-space.pages.dev/messages?text=${encodedLink}`;
-                        window.open(messagesUrl, '_blank', 'noopener');
+                        window.open(`https://chill-space.pages.dev/messages?text=${encodedLink}`, '_blank', 'noopener');
                     } else if (action === 'repost') {
-                        const repostUrl =
-                            `https://chill-space.pages.dev/?post_intent=${encodedLink}`;
-                        window.open(repostUrl, '_blank', 'noopener');
+                        window.open(`https://chill-space.pages.dev/?post_intent=${encodedLink}`, '_blank', 'noopener');
                     } else if (action === 'more') {
-                        // Open the regular share menu
                         const data = { title: 'ChillSpace', url: link };
                         if (navigator.share) {
                             navigator.share(data).catch(() => {});
                         } else {
-                            const tweet = encodeURIComponent(link);
-                            window.open(`https://twitter.com/intent/tweet?text=${tweet}`, '_blank', 'noopener');
+                            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(link)}`, '_blank',
+                                'noopener');
                         }
                     }
                 });
             });
-
-            // Close menu on outside click
             const closeHandler = (e) => {
                 if (!menu.contains(e.target) && e.target !== btn) {
                     menu.remove();
                     document.removeEventListener('click', closeHandler);
                 }
             };
-            setTimeout(() => {
-                document.addEventListener('click', closeHandler);
-            }, 10);
+            setTimeout(() => { document.addEventListener('click', closeHandler); }, 10);
         }
         window.openRepostMenu = openRepostMenu;
 
-        // ---- ChillSpace AI ----
         function chillAI(btn) {
             const postEl = btn.closest('.post');
-
             const customResponse = postEl ? postEl.dataset.aiResponse : '';
             if (customResponse) {
                 showAIToast(escapeHtml(customResponse));
                 return;
             }
-
             const contentEl = postEl ? postEl.querySelector('.post-content') : null;
             const text = contentEl ? contentEl.textContent.trim() : '';
-
             const p1 = /^(.+?)\s+which makes sense because I'?ve always loved (.+?)\.?$/i;
             const p2 = /^(how|why)\s+is\s+(.+?)\s+(so\s+(?:underrated|popular))\s+in\s+(.+?)\??$/i;
-
             const nonLatin = /[\u0080-\u024F\u0370-\u03FF\u0400-\u04FF\u0600-\u06FF\u0900-\u097F\u0E00-\u0E7F\u1100-\u11FF\u3000-\u9FFF\uAC00-\uD7AF]/;
-
             let msg;
             const m1 = text.match(p1);
             const m2 = text.match(p2);
-
             if (m1) {
                 const activity = m1[1].trim();
                 const thing = m1[2].trim().replace(/\.$/, '');
@@ -3460,7 +4066,6 @@
                 msg =
                     "I don't yet know how to analyse this post. You could try asking a third-party AI or using your brain to interpret the post yourself.";
             }
-
             showAIToast(msg);
         }
         window.chillAI = chillAI;
@@ -3480,6 +4085,7 @@
         window.showAIToast = showAIToast;
 
         function showToast(msg) {
+            document.querySelectorAll('.toast:not(.ai-toast)').forEach(t => t.remove());
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.textContent = msg;
@@ -3492,10 +4098,7 @@
         }
         window.showToast = showToast;
 
-        // ==========================================================================
-        // ---- Shareable / pinned post via URL parameter (?post=XXXXXXX) ----
-        // ==========================================================================
-
+        // ---- URL param pinned posts ----
         function charToIndex(ch) {
             const v = parseInt(ch, 36);
             return Number.isNaN(v) ? 0 : v;
@@ -3505,7 +4108,6 @@
             if (!param) return null;
             const p = param.toLowerCase().replace(/[^0-9a-z]/g, '');
             if (!p.length) return null;
-
             const at = i => charToIndex(p[i] || '0');
             const typeIdx = at(0);
             const starterIdx = at(1);
@@ -3514,10 +4116,8 @@
             const firstIdx = at(4);
             const lastIdx = at(5);
             const avatarIdx = at(6);
-
             const name = `${firstNames[firstIdx % firstNames.length]} ${lastNames[lastIdx % lastNames.length]}`;
             const avatar = avatars[avatarIdx % avatars.length];
-
             let content;
             switch (typeIdx % 4) {
                 case 0:
@@ -3541,7 +4141,6 @@
                     content = `I ${verb} my ${rel} over ${topic}.`;
                 }
             }
-
             return { name, avatar, content, raw: p };
         }
 
@@ -3556,9 +4155,7 @@
         function buildPinnedPost(param) {
             const decoded = decodePostParam(param);
             if (!decoded) return null;
-
             const likeBase = hashToRange(decoded.raw, 9999);
-
             const el = document.createElement('article');
             el.className = 'post pinned-post';
             el.dataset.postParam = decoded.raw;
@@ -3583,11 +4180,9 @@
 
         function buildPinnedPostFromContent(name, colorLabel, content) {
             if (!name || !content) return null;
-
             const idx = avatarLabels.indexOf((colorLabel || '').toLowerCase());
             const avatar = avatars[idx !== -1 ? idx : 0];
             const likeBase = hashToRange(name + content, 9999);
-
             const el = document.createElement('article');
             el.className = 'post pinned-post';
             el.innerHTML = `
@@ -3614,7 +4209,6 @@
             const postParam = params.get('post');
             const creatorParam = params.get('post_creator');
             const contentParam = params.get('post_content');
-
             let el = null;
             if (postParam) {
                 el = buildPinnedPost(postParam);
@@ -3622,13 +4216,10 @@
                 el = buildPinnedPostFromContent(creatorParam, params.get('profile_picture'), contentParam);
             }
             if (!el) return;
-
             const feed = document.getElementById('feed');
             feed.insertBefore(el, feed.firstChild);
-
             const aiResponseParam = params.get('chillspace_ai_response');
             if (aiResponseParam) el.dataset.aiResponse = aiResponseParam;
-
             const imgSrcParam = params.get('img_src');
             if (imgSrcParam && /^https?:\/\//i.test(imgSrcParam)) {
                 const contentEl = el.querySelector('.post-content, .post-question');
@@ -3641,7 +4232,6 @@
                 if (contentEl) contentEl.insertAdjacentElement('afterend', img);
                 else el.insertBefore(img, el.querySelector('.actions'));
             }
-
             const videoSrcParam = params.get('video_src');
             if (videoSrcParam) {
                 const videoHtml = buildVideoEmbedHtml(videoSrcParam);
@@ -3651,14 +4241,12 @@
                     else el.insertAdjacentHTML('afterbegin', videoHtml);
                 }
             }
-
             const commentCreator = params.get('comment_creator');
             const commentContent = params.get('comment_content');
             let commentItem = null;
             if (commentCreator && commentContent) {
                 commentItem = appendComment(el, commentCreator, params.get('comment_profile_picture'), commentContent);
             }
-
             let parentItem = commentItem;
             let level = 1;
             while (parentItem) {
@@ -3671,95 +4259,12 @@
             }
         }
 
-        function createPost(i) {
-            const name = `${rand(firstNames)} ${rand(lastNames)}`;
-            const avatar = rand(avatars);
-            const minutes = Math.floor(Math.random() * 59) + 1;
-            const time = `${minutes}m ago`;
-            const content = makeContent();
-            const likeBase = Math.floor(Math.random() * 9999);
-
-            const el = document.createElement('article');
-            el.className = 'post';
-            el.style.animationDelay = `${i*40}ms`;
-            el.innerHTML = `
-            <div class="post-head">
-              <img class="avatar" src="${avatar}" alt="">
-              <div class="meta">
-                <div class="name">${name}</div>
-                <div class="time">${time} · 🌐</div>
-              </div>
-            </div>
-            <div class="post-content" dir="auto">${content}</div>
-            <div class="actions">
-              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
-              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
-              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
-              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
-            </div>
-          `;
-            return el;
-        }
-
-        function loadFeed() {
-            const feed = document.getElementById('feed');
-            const adPosition = 3;
-            const available = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11].filter(p => p !== adPosition);
-            const shuffled = available.sort(() => Math.random() - 0.5);
-            const storyPositions = new Set([shuffled[0], shuffled[1]]);
-            const pollPosition = shuffled[2];
-            const debatePosition = shuffled[3];
-
-            let adDone = false;
-            for (let i = 0; i < 12; i++) {
-                if (i === adPosition && !adDone) {
-                    if (autoscrollOn) {
-                        feed.appendChild(createPost(i));
-                    } else {
-                        feed.appendChild(makeAdPost());
-                    }
-                    adDone = true;
-                }
-                if (storyPositions.has(i)) {
-                    feed.appendChild(makeStoryPost(i));
-                } else if (i === pollPosition) {
-                    feed.appendChild(makePollPost(i));
-                } else if (i === debatePosition) {
-                    feed.appendChild(makeDebatePost(i));
-                } else {
-                    feed.appendChild(createPost(i));
-                }
-            }
-        }
+        // ---- Original createPost (overridden above) ----
+        // We already override createPost with createPostWithFriendBoost
 
         let loading = false;
 
-        function loadMorePosts(count = 8) {
-            if (loading) return;
-            loading = true;
-            const loader = document.getElementById('loader');
-            loader.classList.add('show');
-
-            setTimeout(() => {
-                const feed = document.getElementById('feed');
-                const start = feed.children.length;
-                for (let i = 0; i < count; i++) {
-                    const r = Math.random();
-                    if (r < 0.2) {
-                        feed.appendChild(makeStoryPost(start + i));
-                    } else if (r < 0.32) {
-                        feed.appendChild(makePollPost(start + i));
-                    } else if (r < 0.42) {
-                        feed.appendChild(makeDebatePost(start + i));
-                    } else {
-                        feed.appendChild(createPost(start + i));
-                    }
-                }
-                loading = false;
-                loader.classList.remove('show');
-            }, 350);
-        }
-
+        // ---- setupInfiniteScroll ----
         function setupInfiniteScroll() {
             const sentinel = document.getElementById('sentinel');
             const observer = new IntersectionObserver((entries) => {
@@ -3776,7 +4281,7 @@
             observer.observe(sentinel);
         }
 
-        // ---- "What's on your mind?" composer ----
+        // ---- Image/Video helpers ----
         function openImageGuideModal() {
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay';
@@ -3796,9 +4301,7 @@
             </div>
           `;
             document.body.appendChild(overlay);
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) overlay.remove();
-            });
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
         }
         window.openImageGuideModal = openImageGuideModal;
 
@@ -3819,9 +4322,7 @@
             </div>
           `;
             document.body.appendChild(overlay);
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) overlay.remove();
-            });
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
         }
         window.openVideoGuideModal = openVideoGuideModal;
 
@@ -3831,35 +4332,30 @@
 
         function normalizeYouTubeEmbedUrl(urlRaw) {
             let u = urlRaw.trim();
-
             const shortMatch = u.match(/youtu\.be\/([a-zA-Z0-9_-]+)/i);
             if (shortMatch) {
                 return `https://www.youtube.com/embed/${shortMatch[1]}`;
             }
-
             u = u.replace(/m\.youtube/i, 'youtube');
             u = u.replace(/\/watch\?v=/i, '/embed/');
             u = u.replace(/\/shorts\//i, '/embed/');
-
             const embedMatch = u.match(/^(https?:\/\/(?:www\.)?youtube\.com\/embed\/[a-zA-Z0-9_-]+)/i);
             if (embedMatch) return embedMatch[1];
-
             return u;
         }
 
         function buildVideoEmbedHtml(urlRaw) {
             const url = (urlRaw || '').trim();
             if (!/^https?:\/\//i.test(url)) return '';
-
             if (isYouTubeUrl(url)) {
                 const embedUrl = normalizeYouTubeEmbedUrl(url);
                 return `<div class="post-video-wrap" data-original-src="${escapeHtml(url)}"><iframe class="post-video" src="${escapeHtml(embedUrl)}" title="Embedded video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>`;
             }
-
             return `<video class="post-video" src="${escapeHtml(url)}" data-original-src="${escapeHtml(url)}" controls playsinline preload="metadata" onerror="this.remove()"></video>`;
         }
         window.buildVideoEmbedHtml = buildVideoEmbedHtml;
 
+        // ---- Composer ----
         function setupComposer() {
             const input = document.getElementById('composer-input');
             const postRow = document.getElementById('composer-post-row');
@@ -3889,16 +4385,13 @@
             postBtn.addEventListener('click', () => {
                 const text = input.value.trim();
                 if (!text) return;
-
                 const displayName = getCurrentUserName();
                 const initial = displayName.charAt(0).toUpperCase();
-
                 const imageUrlRaw = imageInput.value.trim();
                 const hasImage = /^https?:\/\//i.test(imageUrlRaw);
                 const imageHtml = hasImage ?
                     `<img class="post-image" src="${escapeHtml(imageUrlRaw)}" alt="" loading="lazy" onerror="this.remove()">` :
                     '';
-
                 const videoUrlRaw = videoInput.value.trim();
                 const videoHtml = buildVideoEmbedHtml(videoUrlRaw);
 
@@ -3926,16 +4419,16 @@
               </div>
             `;
                 feed.insertBefore(el, feed.firstChild);
-
                 const likeBtn = el.querySelector('.like-btn');
                 startTickingLikes(likeBtn, true);
-
                 input.value = '';
                 imageInput.value = '';
                 videoInput.value = '';
                 postBtn.disabled = true;
                 postRow.classList.remove('visible');
                 input.blur();
+                // Increment sensory counter for user post
+                incrementSensoryCounter();
             });
 
             document.addEventListener('click', (e) => {
@@ -3968,14 +4461,12 @@
         function setupBell() {
             const count = Math.floor(Math.random() * 7) + 2;
             document.getElementById('bell-badge').textContent = count;
-
             const notifList = document.getElementById('notif-list');
             for (let n = 0; n < count; n++) {
                 const name1 = `${rand(firstNames)} ${rand(lastNames)}`;
                 const isRepost = Math.random() < 0.35 && n > 0;
                 let html = '';
                 const initial = name1[0];
-
                 if (isRepost) {
                     const name2 = `${rand(firstNames)} ${rand(lastNames)}`;
                     const previewPost = makeContent(false);
@@ -3998,10 +4489,8 @@
                 }
                 notifList.insertAdjacentHTML('beforeend', html);
             }
-
             const bellBtn = document.getElementById('bellBtn');
             const panel = document.getElementById('notif-panel');
-
             bellBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 panel.classList.toggle('open');
@@ -4016,12 +4505,8 @@
             });
         }
 
-        // ==========================================================================
-        // ---- ChillSpace personalities ----
-        // ==========================================================================
-
+        // ---- Personalities (preserved) ----
         const personalityTraits = ['Sarcastic', 'Loving', 'Annoying', 'Supportive', 'Chaotic'];
-
         const traitColors = {
             Sarcastic: 'red',
             Loving: 'purple',
@@ -4092,25 +4577,20 @@
             if (political) {
                 return { topic: political[1].trim(), ending: 'politics' };
             }
-
             const story = text.match(/^I\s+.+?\s+my\s+(.+?)\s+over\s+(.+?)\.?$/i);
             if (story) {
                 return { topic: story[1].trim(), ending: story[2].trim().replace(/\.$/, '') };
             }
-
             const m = text.match(/^(.+?)\s+which makes sense because I'?ve always loved (.+?)\.?$/i);
             if (!m) return null;
-
             const rawActivity = m[1].trim();
             const ending = m[2].trim().replace(/\.$/, '');
-
             let matchedStarter = null;
             starters.forEach(s => {
                 if (rawActivity.toLowerCase().startsWith(s.toLowerCase() + ' ')) {
                     if (!matchedStarter || s.length > matchedStarter.length) matchedStarter = s;
                 }
             });
-
             let topic;
             if (matchedStarter) {
                 const topicPart = rawActivity.slice(matchedStarter.length).trim();
@@ -4119,7 +4599,6 @@
             } else {
                 topic = rawActivity.replace(/^I\s+/i, '');
             }
-
             return { topic, ending };
         }
 
@@ -4127,9 +4606,7 @@
             try {
                 const raw = localStorage.getItem('chillspace_personalities');
                 return raw ? JSON.parse(raw) : [];
-            } catch (e) {
-                return [];
-            }
+            } catch (e) { return []; }
         }
 
         function savePersonalities(list) {
@@ -4159,7 +4636,6 @@
                 appendComment(postEl, personality.name, traitColors[personality.trait] || 'grey', replyText);
                 return;
             }
-
             if (postEl.classList.contains('debate-post') && postEl.dataset.lastName) {
                 const topic = postEl.dataset.lastName;
                 const ending = postEl.dataset.category || 'this';
@@ -4168,11 +4644,9 @@
                 appendComment(postEl, personality.name, traitColors[personality.trait] || 'grey', replyText);
                 return;
             }
-
             const contentEl = postEl.querySelector('.post-content, .post-question');
             const postText = contentEl ? contentEl.textContent.trim() : '';
             const parsed = parseChillPost(postText);
-
             let replyText;
             if (parsed) {
                 const templates = personalityTemplates[personality.trait] || personalityTemplates.Sarcastic;
@@ -4180,20 +4654,17 @@
             } else {
                 replyText = userGeneratedResponses[personality.trait] || userGeneratedResponses.Sarcastic;
             }
-
             appendComment(postEl, personality.name, traitColors[personality.trait] || 'grey', replyText);
         }
 
         function attachPersonalityRow(postEl) {
             if (!postEl || !postEl.classList || !postEl.classList.contains('post')) return;
             if (postEl.querySelector(':scope > .personality-row')) return;
-
             const row = document.createElement('div');
             row.className = 'personality-row';
             row.innerHTML =
                 `<button type="button" class="personality-btn">🎭 Reply with ChillSpace personality</button>`;
             row.querySelector('.personality-btn').addEventListener('click', (e) => togglePersonalityMenu(e.currentTarget));
-
             const actions = postEl.querySelector(':scope > .actions');
             if (actions) {
                 actions.insertAdjacentElement('afterend', row);
@@ -4205,9 +4676,7 @@
         function setupPersonalityRows() {
             const feed = document.getElementById('feed');
             if (!feed) return;
-
             feed.querySelectorAll('.post').forEach(attachPersonalityRow);
-
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach((m) => {
                     m.addedNodes.forEach((node) => {
@@ -4229,11 +4698,9 @@
                 openPersonalityMenuEl = null;
                 if (sameBtn) return;
             }
-
             const postEl = btn.closest('.post');
             const menu = document.createElement('div');
             menu.className = 'personality-menu';
-
             let itemsHtml = '';
             if (personalities.length === 0) {
                 itemsHtml += `<div class="personality-menu-empty">No personalities yet — create one below 👇</div>`;
@@ -4245,7 +4712,6 @@
             }
             itemsHtml += `<button type="button" class="personality-menu-item personality-menu-create">+ Create a personality</button>`;
             menu.innerHTML = itemsHtml;
-
             menu.querySelectorAll('.personality-menu-item:not(.personality-menu-create)').forEach(el => {
                 el.addEventListener('click', () => {
                     const p = personalities.find(pp => pp.id === el.dataset.id);
@@ -4262,12 +4728,10 @@
                     openCreatePersonalityModal();
                 });
             }
-
             if (!btn.dataset.personalityMenuId) {
                 btn.dataset.personalityMenuId = 'pm' + Math.random().toString(36).slice(2);
             }
             menu.dataset.forBtn = btn.dataset.personalityMenuId;
-
             document.body.appendChild(menu);
             const rect = btn.getBoundingClientRect();
             menu.style.left = `${rect.left}px`;
@@ -4277,9 +4741,7 @@
             if (rect.bottom + 6 + menuHeight > window.innerHeight) {
                 menu.style.top = `${Math.max(6, rect.top - menuHeight - 6)}px`;
             }
-
             openPersonalityMenuEl = menu;
-
             setTimeout(() => {
                 document.addEventListener('click', function handler(e) {
                     if (!menu.isConnected) {
@@ -4313,7 +4775,6 @@
             </div>
           `;
             document.body.appendChild(overlay);
-
             let selectedTrait = null;
             overlay.querySelectorAll('.trait-option').forEach(traitBtn => {
                 traitBtn.addEventListener('click', () => {
@@ -4322,12 +4783,10 @@
                     selectedTrait = traitBtn.dataset.trait;
                 });
             });
-
             const nameInput = overlay.querySelector('.personality-name-input');
             const close = () => overlay.remove();
             overlay.querySelector('.modal-cancel').addEventListener('click', close);
             overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
-
             overlay.querySelector('.modal-post').addEventListener('click', () => {
                 const name = nameInput.value.trim();
                 if (!name || !selectedTrait) {
@@ -4347,12 +4806,10 @@
             const params = new URLSearchParams(window.location.search);
             const intent = params.get('post_intent');
             if (intent === null) return;
-
             const input = document.getElementById('composer-input');
             const postRow = document.getElementById('composer-post-row');
             const postBtn = document.getElementById('composer-post-btn');
             if (!input) return;
-
             input.value = intent;
             postRow.classList.add('visible');
             postBtn.disabled = input.value.trim().length === 0;
@@ -4361,16 +4818,12 @@
 
         function setupAutoScroll() {
             if (!autoscrollOn) return;
-
             const PIXELS_PER_SECOND = 60;
             const PAUSE_AFTER_MANUAL_SCROLL_MS = 2500;
-
             let lastTime = null;
             let pausedUntil = 0;
 
-            function pauseBriefly() {
-                pausedUntil = performance.now() + PAUSE_AFTER_MANUAL_SCROLL_MS;
-            }
+            function pauseBriefly() { pausedUntil = performance.now() + PAUSE_AFTER_MANUAL_SCROLL_MS; }
             window.addEventListener('wheel', pauseBriefly, { passive: true });
             window.addEventListener('touchmove', pauseBriefly, { passive: true });
 
@@ -4384,10 +4837,9 @@
             }
             requestAnimationFrame(step);
         }
-        
+
         // ========== DAILY CHALLENGE ==========
         (function() {
-            // Challenge types and their display names
             const CHALLENGE_TYPES = {
                 scroll_posts: { label: 'Scroll through', unit: 'posts', link: null },
                 send_messages: { label: 'Send', unit: 'messages', link: '/messages' },
@@ -4395,33 +4847,38 @@
                 do_numbers: { label: 'Do', unit: 'numbers', link: '/numbers' }
             };
 
-            // Generate a random challenge for today
+            function randInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
             function generateDailyChallenge() {
                 const types = Object.keys(CHALLENGE_TYPES);
                 const type = types[Math.floor(Math.random() * types.length)];
                 let target;
-                switch(type) {
-                    case 'scroll_posts': target = randInt(50, 150); break;
-                    case 'send_messages': target = randInt(3, 10); break;
-                    case 'rank_songs': target = randInt(5, 30); break;
-                    case 'do_numbers': target = randInt(100, 500); break;
-                    default: target = 5;
+                switch (type) {
+                    case 'scroll_posts':
+                        target = randInt(50, 150);
+                        break;
+                    case 'send_messages':
+                        target = randInt(3, 10);
+                        break;
+                    case 'rank_songs':
+                        target = randInt(5, 30);
+                        break;
+                    case 'do_numbers':
+                        target = randInt(100, 500);
+                        break;
+                    default:
+                        target = 5;
                 }
                 const date = new Date().toDateString();
                 return { date, type, target, progress: 0 };
             }
 
-            function randInt(min, max) {
-                return Math.floor(Math.random() * (max - min + 1)) + min;
-            }
-
-            // Get today's challenge from localStorage, or create new
             function getDailyChallenge() {
                 const key = 'chillspace_daily_challenge';
                 let data;
-                try {
-                    data = JSON.parse(localStorage.getItem(key));
-                } catch(e) { data = null; }
+                try { data = JSON.parse(localStorage.getItem(key)); } catch (e) { data = null; }
                 const today = new Date().toDateString();
                 if (!data || data.date !== today) {
                     data = generateDailyChallenge();
@@ -4430,23 +4887,20 @@
                 return data;
             }
 
-            // Update progress for a given type
-            function updateChallengeProgress(type, increment = 1) {
+            window.updateChallengeProgress = function(type, increment = 1) {
                 const data = getDailyChallenge();
-                if (data.type !== type) return; // only update if it's today's challenge
+                if (data.type !== type) return;
                 data.progress = Math.min(data.progress + increment, data.target);
                 localStorage.setItem('chillspace_daily_challenge', JSON.stringify(data));
                 renderChallengeCard();
-                // Also dispatch a storage event so other tabs can update
                 window.dispatchEvent(new StorageEvent('storage', {
                     key: 'chillspace_daily_challenge',
                     newValue: JSON.stringify(data),
                     oldValue: null,
                     storageArea: localStorage
                 }));
-            }
+            };
 
-            // Render the challenge card
             function renderChallengeCard() {
                 const data = getDailyChallenge();
                 const typeInfo = CHALLENGE_TYPES[data.type];
@@ -4455,7 +4909,6 @@
                 const target = data.target;
                 const pct = Math.min((progress / target) * 100, 100);
                 const completed = progress >= target;
-
                 document.getElementById('challengeDesc').textContent = desc;
                 document.getElementById('challengeFill').style.width = pct + '%';
                 document.getElementById('challengeProgressText').textContent = `${progress}/${target}`;
@@ -4467,38 +4920,26 @@
                     statusEl.innerHTML = `<span class="incomplete-badge">In progress</span>`;
                     document.getElementById('challengeBox').classList.remove('completed');
                 }
-                // Update date badge
                 const dateObj = new Date(data.date);
                 const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                 document.getElementById('challengeDateBadge').textContent = dateStr;
             }
 
-            // Listen for storage changes from other tabs (messages, numbers, kpop pages)
             window.addEventListener('storage', (e) => {
                 if (e.key === 'chillspace_daily_challenge') {
                     renderChallengeCard();
                 }
             });
-
-            // Expose update function globally so other pages can call it
-            window.updateChallengeProgress = updateChallengeProgress;
-
-            // Initial render
             renderChallengeCard();
 
-            // ---- Integrate with scroll tracking ----
-            // We'll count posts as they are added to the feed.
-            // Override the original loadFeed and loadMorePosts to increment progress.
-            // Since those functions are defined later, we'll wrap them.
-            // We'll use a MutationObserver to detect new posts added to #feed.
+            // Challenge scroll tracking via MutationObserver
             const feed = document.getElementById('feed');
             if (feed) {
                 const observer = new MutationObserver((mutations) => {
                     mutations.forEach(m => {
                         m.addedNodes.forEach(node => {
                             if (node.nodeType === 1 && node.classList && node.classList.contains('post')) {
-                                // Count this as a scroll
-                                updateChallengeProgress('scroll_posts', 1);
+                                window.updateChallengeProgress('scroll_posts', 1);
                             }
                         });
                     });
@@ -4507,8 +4948,33 @@
             }
         })();
 
+        // ---- Ecto artifact link handler ----
+        document.addEventListener("click", function(e) {
+            var a = e.target.closest("[data-product-id]");
+            if (!a) return;
+            e.preventDefault();
+            var pid = a.getAttribute("data-product-id");
+            if (pid) parent.postMessage({ type: "ecto-artifact-link-click", productId: pid }, "*");
+        });
+
+        // ---- Init ----
         document.addEventListener('DOMContentLoaded', () => {
-            loadFeed();
+            // Ensure the feed is loaded with friend-boosted posts
+            // We override loadFeed above, but we need to call it.
+            // However, the original loadFeed was already called in the inline script.
+            // We'll replace the function and call it again.
+            // But we need to prevent duplicate loading.
+            // We'll clear the feed and re-load.
+            const feed = document.getElementById('feed');
+            // Keep pinned posts
+            const pinned = feed.querySelectorAll('.pinned-post');
+            feed.innerHTML = '';
+            pinned.forEach(p => feed.appendChild(p));
+
+            // Load the feed using our overridden function
+            window.loadFeed();
+
+            // Load pinned post from URL
             loadPinnedPostFromURL();
             setupInfiniteScroll();
             setupComposer();
@@ -4516,48 +4982,17 @@
             setupAutoScroll();
             setupBell();
             setupPersonalityRows();
+
+            // Expose functions globally
+            window.openFriendsModal = openFriendsModal;
+            window.openProfile = openProfile;
+            window.toggleFriend = toggleFriend;
+            window.refreshFeed = refreshFeed;
+            window.getFriends = getFriends;
+            window.addFriend = addFriend;
+            window.removeFriend = removeFriend;
+            window.isFriend = isFriend;
         });
-    </script>
-    <script>
-        (function() {
-            document.addEventListener("click", function(e) {
-                var a = e.target.closest("[data-product-id]");
-                if (!a) return;
-                e.preventDefault();
-                var pid = a.getAttribute("data-product-id");
-                if (pid) parent.postMessage({ type: "ecto-artifact-link-click", productId: pid }, "*")
-            })
-        })();
-    </script>
-    <script type="application/json" id="ai-api-docs">
-        {
-            "name": "ChillSpace API",
-            "description": "Generate and share random opinion posts. All endpoints return JSON and support CORS.",
-            "base_url": "https://chill-space.pages.dev/api",
-            "endpoints": [{
-                "path": "/feed",
-                "method": "GET",
-                "description": "Get 20 random generated posts",
-                "example": "https://chill-space.pages.dev/api/feed"
-            }, {
-                "path": "/post/{code}",
-                "method": "GET",
-                "description": "Generate a post from a 5-character code. Code chars: 0-9A-Z",
-                "example": "https://chill-space.pages.dev/api/post/0L3M9",
-                "code_format": "ABCDE = Template + Opinion1 + Topic1 + Opinion2 + Topic2"
-            }, {
-                "path": "/post",
-                "method": "GET",
-                "description": "Render a custom post directly via URL params",
-                "params": {
-                    "post_creator": "string",
-                    "post_content": "string",
-                    "profile_picture": "string - default grey"
-                },
-                "example": "https://chill-space.pages.dev/api/post?post_creator=A+ChillSpace+User&post_content=I+love+coding&profile_picture=grey"
-            }],
-            "share_url_format": "https://chill-space.pages.dev/?post_creator=...&post_content=...&profile_picture=..."
-        }
     </script>
 </body>
 </html>
