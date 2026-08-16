@@ -307,6 +307,10 @@
             background: #dbeafe;
             color: #1877f2;
         }
+        .friend-badge.is-following {
+            background: #e4e6eb;
+            color: #65676b;
+        }
         .time {
             font-size: 13px;
             color: #65676b;
@@ -371,18 +375,37 @@
         .actions button.ai-btn:hover {
             background: #f3f0ff;
         }
-        .actions button.friend-btn {
-            color: #f59e0b;
-            font-size: 13px;
+
+        .follow-btn {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 999px;
+            border: none;
+            background: #1877f2;
+            color: #fff;
+            cursor: pointer;
+            transition: background .15s, opacity .15s;
+            white-space: nowrap;
+            line-height: 1.6;
         }
-        .actions button.friend-btn:hover {
-            background: #fef3c7;
+        .follow-btn:hover {
+            background: #166fe5;
         }
-        .actions button.friend-btn.is-friend {
-            color: #1877f2;
+        .follow-btn.is-friend {
+            background: #22c55e;
+            color: #fff;
         }
-        .actions button.friend-btn.is-friend:hover {
-            background: #dbeafe;
+        .follow-btn.is-friend:hover {
+            background: #16a34a;
+        }
+        .follow-btn.is-following {
+            background: #e4e6eb;
+            color: #65676b;
+            cursor: default;
+        }
+        .follow-btn.is-following:hover {
+            background: #e4e6eb;
         }
 
         #bell-wrap {
@@ -1555,12 +1578,14 @@
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
+            position: relative;
         }
         .squishy-wrap {
             position: relative;
             width: 180px;
             height: 180px;
             transition: transform 0.08s ease;
+            touch-action: none;
         }
         .squishy-wrap:active {
             transform: scale(0.92);
@@ -1596,24 +1621,15 @@
             transition: background 0.3s, transform 0.15s ease;
             box-shadow: inset 0 -4px 12px rgba(0, 0, 0, 0.10), 0 4px 16px rgba(0, 0, 0, 0.06);
         }
-        .squishy-crack-lines {
+        /* Crack canvas overlay */
+        .squishy-crack-canvas {
             position: absolute;
             inset: 0;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .squishy-crack-lines.show {
-            opacity: 1;
-        }
-        .squishy-crack-lines svg {
             width: 100%;
             height: 100%;
-        }
-        .squishy-crack-lines line {
-            stroke-width: 2.5;
-            stroke-linecap: round;
-            opacity: 0.7;
+            pointer-events: none;
+            border-radius: 50%;
+            z-index: 2;
         }
         .squishy-tap-hint {
             font-size: 12px;
@@ -1648,13 +1664,15 @@
             background: #166fe5;
         }
 
-        /* ---- Profile Modal ---- */
+        /* Profile modal */
         .profile-posts {
             margin-top: 12px;
             max-height: 400px;
             overflow-y: auto;
             border-top: 1px solid #e4e6eb;
             padding-top: 12px;
+            position: relative;
+            min-height: 60px;
         }
         .profile-posts .post {
             margin-bottom: 12px;
@@ -1666,6 +1684,7 @@
         }
         .profile-posts .post .post-head {
             padding: 0 12px;
+            cursor: default;
         }
         .profile-posts .post .post-content {
             padding: 0 12px 6px;
@@ -1713,11 +1732,16 @@
             background: #166fe5;
         }
         .profile-friend-status .friend-toggle.is-friend {
-            background: #e4e6eb;
-            color: #1c1e21;
+            background: #22c55e;
+            color: #fff;
         }
         .profile-friend-status .friend-toggle.is-friend:hover {
-            background: #d8dadf;
+            background: #16a34a;
+        }
+        .profile-friend-status .friend-toggle.is-following {
+            background: #e4e6eb;
+            color: #65676b;
+            cursor: default;
         }
         .profile-avatar-large {
             width: 72px;
@@ -1725,6 +1749,21 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #e4e6eb;
+        }
+
+        .profile-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 0;
+        }
+        .profile-loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e4e6eb;
+            border-top-color: #1877f2;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
 
         @media (max-width: 420px) {
@@ -1780,6 +1819,10 @@
             .sensory-toy-box {
                 padding: 20px 16px 18px;
             }
+            .follow-btn {
+                font-size: 10px;
+                padding: 1px 8px;
+            }
         }
     </style>
 </head>
@@ -1793,7 +1836,7 @@
                     <div class="notif-header">Notifications</div>
                     <div id="notif-list"></div>
                 </div>
-                <button id="friendsHeaderBtn" class="header-btn friends-btn" onclick="openFriendsModal()">👥 Friends</button>
+                <button id="friendsHeaderBtn" class="header-btn friends-btn" onclick="openFriendsModal()">👥 Connections</button>
                 <a href="/messages" class="header-btn dm-btn">DM</a>
                 <a href="/gaming" class="header-btn gaming-btn">gaming</a>
             </div>
@@ -1856,16 +1899,32 @@
 
     <script>
         // ============================================================
-        //  FRIEND SYSTEM
+        //  FOLLOW / FRIEND SYSTEM (replaces old friend system)
         // ============================================================
-        function getFriends() {
-            try {
-                return JSON.parse(localStorage.getItem('chillspace_friends')) || [];
-            } catch { return []; }
+        // Storage keys:
+        // 'chillspace_following' : array of usernames you follow
+        // 'chillspace_friends'   : array of usernames who are mutual (they followed you back)
+        // We no longer store 'friends' as before; 'friends' now means mutual.
+
+        function getFollowing() {
+            try { return JSON.parse(localStorage.getItem('chillspace_following')) || []; } catch { return []; }
         }
 
-        function saveFriends(friends) {
-            try { localStorage.setItem('chillspace_friends', JSON.stringify(friends)); } catch (e) {}
+        function saveFollowing(list) {
+            try { localStorage.setItem('chillspace_following', JSON.stringify(list)); } catch (e) {}
+        }
+
+        function getFriends() {
+            try { return JSON.parse(localStorage.getItem('chillspace_friends')) || []; } catch { return []; }
+        }
+
+        function saveFriends(list) {
+            try { localStorage.setItem('chillspace_friends', JSON.stringify(list)); } catch (e) {}
+        }
+
+        function isFollowing(name) {
+            if (!name) return false;
+            return getFollowing().some(f => f.toLowerCase() === name.toLowerCase());
         }
 
         function isFriend(name) {
@@ -1873,79 +1932,716 @@
             return getFriends().some(f => f.toLowerCase() === name.toLowerCase());
         }
 
-        function addFriend(name) {
+        function followUser(name) {
+            if (!name || isFollowing(name) || isFriend(name)) return false;
+            const following = getFollowing();
+            following.push(name.trim());
+            saveFollowing(following);
+            // Schedule follow-back with 80% chance within 15 seconds
+            scheduleFollowBack(name);
+            return true;
+        }
+
+        function unfollowUser(name) {
             if (!name) return false;
-            const friends = getFriends();
-            const normalized = name.trim();
-            if (!friends.some(f => f.toLowerCase() === normalized.toLowerCase())) {
-                friends.push(normalized);
-                saveFriends(friends);
+            let following = getFollowing();
+            const filtered = following.filter(f => f.toLowerCase() !== name.toLowerCase());
+            if (filtered.length !== following.length) {
+                saveFollowing(filtered);
                 return true;
             }
             return false;
         }
 
-        function removeFriend(name) {
-            if (!name) return false;
-            const friends = getFriends();
-            const filtered = friends.filter(f => f.toLowerCase() !== name.toLowerCase());
-            if (filtered.length !== friends.length) {
-                saveFriends(filtered);
-                return true;
-            }
-            return false;
+        // Schedule follow-back
+        function scheduleFollowBack(name) {
+            const delay = Math.random() * 15000; // 0-15 seconds
+            setTimeout(() => {
+                // 80% chance they follow back
+                if (Math.random() < 0.8) {
+                    // Add to friends (mutual)
+                    const friends = getFriends();
+                    if (!friends.some(f => f.toLowerCase() === name.toLowerCase())) {
+                        friends.push(name.trim());
+                        saveFriends(friends);
+                        // Show popup
+                        showToast(`🎉 ${name} followed you back! You are now friends!`);
+                        // Update any open profile modals or UI
+                        refreshAllFollowButtons();
+                    }
+                } else {
+                    // 20% chance nothing happens
+                    // Optionally show a toast? We'll skip.
+                }
+            }, delay);
         }
 
-        function toggleFriend(name) {
+        function refreshAllFollowButtons() {
+            // Update all follow buttons on the page (posts and profile modals)
+            document.querySelectorAll('.follow-btn').forEach(btn => {
+                const name = btn.dataset.username;
+                if (name) {
+                    updateFollowButton(btn, name);
+                }
+            });
+        }
+
+        function updateFollowButton(btn, name) {
             if (!name) return;
             if (isFriend(name)) {
-                removeFriend(name);
-                showToast(`Removed ${name} from friends`);
+                btn.textContent = 'Friends';
+                btn.className = 'follow-btn is-friend';
+                btn.disabled = true;
+            } else if (isFollowing(name)) {
+                btn.textContent = 'Following';
+                btn.className = 'follow-btn is-following';
+                btn.disabled = true;
             } else {
-                addFriend(name);
-                showToast(`Added ${name} as a friend! 🎉`);
+                btn.textContent = 'Follow';
+                btn.className = 'follow-btn';
+                btn.disabled = false;
             }
-            // Refresh feed to update friend badges and post frequency
-            refreshFeed();
         }
 
-        // ---- Weighted name selection for friend boosting ----
+        function handleFollowClick(btn, name) {
+            if (!name) return;
+            if (isFriend(name) || isFollowing(name)) return;
+            if (followUser(name)) {
+                // Immediately update button to "Following"
+                btn.textContent = 'Following';
+                btn.className = 'follow-btn is-following';
+                btn.disabled = true;
+                showToast(`You followed ${name}`);
+            }
+        }
+
+        // ============================================================
+        //  PROFILE VIEW with loading animation
+        // ============================================================
+        function openProfile(name, avatarSrc) {
+            if (!name) return;
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            const initial = name.charAt(0).toUpperCase();
+            const avatarHtml = avatarSrc ?
+                `<img class="profile-avatar-large" src="${avatarSrc}" alt="${escapeHtml(name)}">` :
+                `<div class="profile-avatar-large" style="background:linear-gradient(135deg,#1877f2,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;font-weight:700;">${escapeHtml(initial)}</div>`;
+
+            // Determine status text and button state
+            let statusText, buttonHtml;
+            if (isFriend(name)) {
+                statusText = '👫 Friends';
+                buttonHtml = `<button class="friend-toggle is-friend" disabled>Friends</button>`;
+            } else if (isFollowing(name)) {
+                statusText = '👤 You follow them';
+                buttonHtml = `<button class="friend-toggle is-following" disabled>Following</button>`;
+            } else {
+                statusText = '👤 Not following';
+                buttonHtml = `<button class="friend-toggle" id="profileFollowBtn">Follow</button>`;
+            }
+
+            const friendStatusHtml = `
+            <div class="profile-friend-status">
+              <span>${statusText}</span>
+              ${buttonHtml}
+            </div>
+          `;
+
+            overlay.innerHTML = `
+            <div class="modal-box" style="max-width:480px;">
+              <div class="modal-title" style="display:flex;align-items:center;gap:12px;">
+                ${avatarHtml}
+                <span>${escapeHtml(name)}</span>
+              </div>
+              ${friendStatusHtml}
+              <div style="font-weight:600;font-size:14px;color:#65676b;margin:4px 0 8px;">📝 Posts by ${escapeHtml(name)}</div>
+              <div class="profile-posts" id="profilePosts">
+                <div class="profile-loading"><div class="spinner"></div></div>
+              </div>
+              <div class="modal-actions">
+                <button class="modal-cancel" id="profileCloseBtn">Close</button>
+              </div>
+            </div>
+          `;
+            document.body.appendChild(overlay);
+
+            // Handle follow button in profile
+            const profileFollowBtn = overlay.querySelector('#profileFollowBtn');
+            if (profileFollowBtn) {
+                profileFollowBtn.addEventListener('click', function() {
+                    if (isFriend(name) || isFollowing(name)) return;
+                    if (followUser(name)) {
+                        this.textContent = 'Following';
+                        this.className = 'friend-toggle is-following';
+                        this.disabled = true;
+                        // Update status text
+                        const statusSpan = this.closest('.profile-friend-status').querySelector('span');
+                        if (statusSpan) statusSpan.textContent = '👤 You follow them';
+                        showToast(`You followed ${name}`);
+                        // Also update any posts on the page
+                        refreshAllFollowButtons();
+                    }
+                });
+            }
+
+            // Close
+            overlay.querySelector('#profileCloseBtn').addEventListener('click', () => overlay.remove());
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+
+            // Generate profile posts with a delay to show loading
+            const postsContainer = overlay.querySelector('#profilePosts');
+            // Show loading for at least 300ms
+            setTimeout(() => {
+                // Clear loading
+                postsContainer.innerHTML = '';
+                const count = 6 + Math.floor(Math.random() * 5);
+                for (let i = 0; i < count; i++) {
+                    const postEl = createProfilePost(name, i);
+                    postsContainer.appendChild(postEl);
+                }
+                if (postsContainer.children.length === 0) {
+                    postsContainer.innerHTML = `<div class="profile-empty">No posts from ${escapeHtml(name)} yet.</div>`;
+                }
+            }, 400); // simulate loading
+        }
+
+        function createProfilePost(name, i) {
+            const avatar = rand(avatars);
+            const minutes = Math.floor(Math.random() * 59) + 1;
+            const time = `${minutes}m ago`;
+            const content = makeContent();
+            const likeBase = Math.floor(Math.random() * 9999);
+
+            const el = document.createElement('article');
+            el.className = 'post';
+            el.style.animationDelay = `${i * 30}ms`;
+            el.innerHTML = `
+            <div class="post-head">
+              <img class="avatar" src="${avatar}" alt="">
+              <div class="meta">
+                <div class="name">${escapeHtml(name)}</div>
+                <div class="time">${time} · 🌐</div>
+              </div>
+            </div>
+            <div class="post-content" dir="auto">${content}</div>
+            <div class="actions">
+              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
+              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+            </div>
+          `;
+            return el;
+        }
+
+        // ============================================================
+        //  FRIENDS / CONNECTIONS MODAL
+        // ============================================================
+        function openFriendsModal() {
+            const following = getFollowing();
+            const friends = getFriends();
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            let listHtml = '';
+            if (following.length === 0 && friends.length === 0) {
+                listHtml = `<div class="profile-empty">No connections yet. Follow someone from posts!</div>`;
+            } else {
+                if (friends.length > 0) {
+                    listHtml += `<div style="font-weight:700;font-size:14px;color:#1877f2;margin:4px 0 6px;">👫 Friends (mutual)</div>`;
+                    listHtml += friends.map(f => `
+                <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #f0f2f5;">
+                  <span style="font-weight:600;">${escapeHtml(f)}</span>
+                  <button style="padding:2px 12px;border-radius:999px;border:none;background:#22c55e;color:#fff;cursor:pointer;font-weight:600;font-size:12px;margin-left:auto;" onclick="openProfile('${escapeHtml(f)}');document.querySelector('.modal-overlay').remove();">View</button>
+                </div>
+              `).join('');
+                }
+                if (following.length > 0) {
+                    if (friends.length > 0) listHtml +=
+                    `<div style="border-top:1px solid #e4e6eb;margin:8px 0;"></div>`;
+                    listHtml += `<div style="font-weight:700;font-size:14px;color:#65676b;margin:4px 0 6px;">👤 Following</div>`;
+                    listHtml += following.map(f => `
+                <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #f0f2f5;">
+                  <span style="font-weight:600;">${escapeHtml(f)}</span>
+                  <button style="padding:2px 12px;border-radius:999px;border:none;background:#e4e6eb;color:#1c1e21;cursor:pointer;font-weight:600;font-size:12px;margin-left:auto;" onclick="unfollowUser('${escapeHtml(f)}');this.closest('div').remove();showToast('Unfollowed ${escapeHtml(f)}');refreshAllFollowButtons();">Unfollow</button>
+                  <button style="padding:2px 12px;border-radius:999px;border:none;background:#1877f2;color:#fff;cursor:pointer;font-weight:600;font-size:12px;" onclick="openProfile('${escapeHtml(f)}');document.querySelector('.modal-overlay').remove();">View</button>
+                </div>
+              `).join('');
+                }
+            }
+
+            overlay.innerHTML = `
+            <div class="modal-box" style="max-width:400px;">
+              <div class="modal-title">👥 Your Connections</div>
+              <div style="max-height:300px;overflow-y:auto;">${listHtml}</div>
+              <div class="modal-actions">
+                <button class="modal-cancel" id="connectionsCloseBtn">Close</button>
+              </div>
+            </div>
+          `;
+            document.body.appendChild(overlay);
+            overlay.querySelector('#connectionsCloseBtn').addEventListener('click', () => overlay.remove());
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+        }
+
+        // ============================================================
+        //  POST GENERATION with follow/friends UI and reduced friend frequency (3%)
+        // ============================================================
+
+        // We'll keep the weighted name selection but now we only boost friends (mutual) at 3% chance.
         function getWeightedNamePair() {
             const friends = getFriends();
-            // If no friends, or random chance, pick random
-            if (friends.length === 0 || Math.random() < 0.35) {
-                return { first: rand(firstNames), last: rand(lastNames), full: `${rand(firstNames)} ${rand(lastNames)}` };
-            }
-            // Boost friends: 60% chance to pick a friend
-            if (Math.random() < 0.60) {
+            // If we have friends and random chance <= 3%, pick a friend
+            if (friends.length > 0 && Math.random() < 0.03) {
                 const friend = rand(friends);
-                // Try to split friend name into first/last, or use as-is
                 const parts = friend.split(' ');
                 if (parts.length >= 2) {
                     return { first: parts[0], last: parts.slice(1).join(' '), full: friend };
                 } else {
-                    // Just use the friend name directly
                     return { first: friend, last: '', full: friend };
                 }
             }
+            // Otherwise random
             return { first: rand(firstNames), last: rand(lastNames), full: `${rand(firstNames)} ${rand(lastNames)}` };
         }
 
         function getWeightedName() {
-            const p = getWeightedNamePair();
-            return p.full;
+            return getWeightedNamePair().full;
         }
 
+        // ---- Base post creation with follow button ----
+        function createPostWithFollow(i, overrideName) {
+            const name = overrideName || getWeightedName();
+            const avatar = rand(avatars);
+            const minutes = Math.floor(Math.random() * 59) + 1;
+            const time = `${minutes}m ago`;
+            const content = makeContent();
+            const likeBase = Math.floor(Math.random() * 9999);
+
+            const isF = isFriend(name);
+            const isFol = isFollowing(name);
+            let followBtnText = 'Follow';
+            let btnClass = 'follow-btn';
+            let disabled = false;
+            if (isF) {
+                followBtnText = 'Friends';
+                btnClass = 'follow-btn is-friend';
+                disabled = true;
+            } else if (isFol) {
+                followBtnText = 'Following';
+                btnClass = 'follow-btn is-following';
+                disabled = true;
+            }
+
+            const el = document.createElement('article');
+            el.className = 'post';
+            el.style.animationDelay = `${i * 40}ms`;
+            // Add friend badge if mutual
+            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
+            el.innerHTML = `
+            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
+              <img class="avatar" src="${avatar}" alt="">
+              <div class="meta">
+                <div class="name-wrap">
+                  <span class="name">${escapeHtml(name)}</span>
+                  ${friendBadge}
+                  <button class="${btnClass}" data-username="${escapeHtml(name)}" onclick="event.stopPropagation();handleFollowClick(this, '${escapeHtml(name)}')" ${disabled ? 'disabled' : ''}>${followBtnText}</button>
+                </div>
+                <div class="time">${time} · 🌐</div>
+              </div>
+            </div>
+            <div class="post-content" dir="auto">${content}</div>
+            <div class="actions">
+              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
+              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+            </div>
+          `;
+            return el;
+        }
+
+        // ---- Override original createPost ----
+        window.createPost = function(i) {
+            return createPostWithFollow(i);
+        };
+
+        // ---- Story posts with follow button ----
+        function makeStoryPost(i) {
+            const opener = rand(storyOpeners);
+            const adj = rand(storyAdjs);
+            const question = `${opener}, what are your ${adj} stories?`;
+            const name = getWeightedName();
+            const avatar = rand(avatars);
+            const minutes = Math.floor(Math.random() * 59) + 1;
+            const likeBase = Math.floor(Math.random() * 9999);
+            const isF = isFriend(name);
+            const isFol = isFollowing(name);
+            let followBtnText = 'Follow';
+            let btnClass = 'follow-btn';
+            let disabled = false;
+            if (isF) {
+                followBtnText = 'Friends';
+                btnClass = 'follow-btn is-friend';
+                disabled = true;
+            } else if (isFol) {
+                followBtnText = 'Following';
+                btnClass = 'follow-btn is-following';
+                disabled = true;
+            }
+
+            const el = document.createElement('article');
+            el.className = 'post';
+            el.style.animationDelay = `${i*40}ms`;
+
+            const commentCount = Math.floor(Math.random() * 23) + 8;
+            const typePool = [];
+            for (let c = 0; c < commentCount; c++) {
+                typePool.push(c % 3);
+            }
+            for (let c = typePool.length - 1; c > 0; c--) {
+                const j = Math.floor(Math.random() * (c + 1));
+                [typePool[c], typePool[j]] = [typePool[j], typePool[c]];
+            }
+            const gradients = [
+                '135deg,#f97316,#ec4899', '135deg,#06b6d4,#1877f2', '135deg,#7c3aed,#ec4899',
+                '135deg,#10b981,#06b6d4', '135deg,#f59e0b,#ef4444', '135deg,#8b5cf6,#3b82f6',
+                '135deg,#14b8a6,#84cc16', '135deg,#f43f5e,#f97316'
+            ];
+            let commentsHtml = '';
+            for (let c = 0; c < commentCount; c++) {
+                const cName = `${rand(firstNames)} ${rand(lastNames)}`;
+                const cInitial = cName[0];
+                const grad = gradients[c % gradients.length];
+                const type = typePool[c];
+                let commentText;
+                if (type === 0) {
+                    commentText = `I ${rand(storyVerbs)} my ${rand(storyRelations)} over ${rand(storyTopics)}.`;
+                } else if (type === 1) {
+                    commentText = makeEventComment();
+                } else {
+                    commentText = makeKnowSomeoneComment();
+                }
+                const fullStoryBtn =
+                    `<button type="button" class="full-story-btn" data-story="${commentText.replace(/"/g,'&quot;')}" onclick="showFullStory(this)">✨ See the full story with ChillSpace AI</button>`;
+                commentsHtml += `
+              <div class="story-comment-item">
+                <div class="story-comment-avatar" style="background:linear-gradient(${grad})">${cInitial}</div>
+                <div class="story-comment-bubble">
+                  <div class="story-comment-name">${cName}</div>
+                  ${commentText}
+                </div>
+              </div>${fullStoryBtn}`;
+            }
+
+            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
+            el.innerHTML = `
+            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
+              <img class="avatar" src="${avatar}" alt="">
+              <div class="meta">
+                <div class="name-wrap">
+                  <span class="name">${escapeHtml(name)}</span>
+                  ${friendBadge}
+                  <button class="${btnClass}" data-username="${escapeHtml(name)}" onclick="event.stopPropagation();handleFollowClick(this, '${escapeHtml(name)}')" ${disabled ? 'disabled' : ''}>${followBtnText}</button>
+                </div>
+                <div class="time">${minutes}m ago · 🌐</div>
+              </div>
+            </div>
+            <div class="post-question post-content">${question}</div>
+            <div class="actions">
+              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
+              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+            </div>
+            <button type="button" class="show-comments-btn" id="storyCommentsBtn-${i}">💬 Show comments (${commentCount})</button>
+            <div class="story-comments">${commentsHtml}</div>
+          `;
+
+            // Attach event listener to the show-comments button
+            const commentsBtn = el.querySelector('.show-comments-btn');
+            const commentsSection = el.querySelector('.story-comments');
+            if (commentsBtn && commentsSection) {
+                commentsBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isOpen = commentsSection.classList.toggle('open');
+                    this.textContent = isOpen ? '🔼 Hide comments' : `💬 Show comments (${commentCount})`;
+                });
+            }
+
+            return el;
+        }
+
+        // ---- Poll posts with follow button ----
+        function makePollPost(i) {
+            const shuffled = [...politicians].sort(() => Math.random() - 0.5);
+            const count = Math.floor(Math.random() * 3) + 2;
+            const pollPols = shuffled.slice(0, count);
+
+            const name = getWeightedName();
+            const avatar = rand(avatars);
+            const minutes = Math.floor(Math.random() * 59) + 1;
+            const likeBase = Math.floor(Math.random() * 3000);
+            const isF = isFriend(name);
+            const isFol = isFollowing(name);
+            let followBtnText = 'Follow';
+            let btnClass = 'follow-btn';
+            let disabled = false;
+            if (isF) {
+                followBtnText = 'Friends';
+                btnClass = 'follow-btn is-friend';
+                disabled = true;
+            } else if (isFol) {
+                followBtnText = 'Following';
+                btnClass = 'follow-btn is-following';
+                disabled = true;
+            }
+
+            const votes = pollPols.map(() => Math.floor(Math.random() * 900) + 50);
+            const totalVotes = votes.reduce((a, b) => a + b, 0);
+            const pollId = `poll-${i}-${Date.now()}`;
+
+            const optionsHtml = pollPols.map((pol, idx) => `
+            <button type="button" class="poll-option" data-poll="${pollId}" data-idx="${idx}" onclick="votePoll(this)">
+              <div class="poll-bar" style="width:0%"></div>
+              <div class="poll-option-inner">
+                <span>${pol}</span>
+                <span class="poll-pct" style="display:none">${Math.round(votes[idx]/totalVotes*100)}%</span>
+              </div>
+            </button>`).join('');
+
+            const commentCount = Math.floor(Math.random() * 4) + 2;
+            let pollCommentsHtml = '';
+            for (let c = 0; c < commentCount; c++) {
+                const cName = `${rand(firstNames)} ${rand(lastNames)}`;
+                const pol = rand(pollPols);
+                const topic = rand(politicalTopics);
+                const judgement = rand(politicalJudgements);
+                const beneficiary = rand(politicalBeneficiaries);
+                const grad = ['135deg,#f97316,#ec4899', '135deg,#06b6d4,#1877f2', '135deg,#7c3aed,#ec4899',
+                    '135deg,#10b981,#06b6d4'
+                ][c % 4];
+                pollCommentsHtml += `
+              <div class="story-comment-item">
+                <div class="story-comment-avatar" style="background:linear-gradient(${grad})">${cName[0]}</div>
+                <div class="story-comment-bubble">
+                  <div class="story-comment-name">${cName}</div>
+                  Unpopular opinion: ${pol}'s ${topic} policy is ${judgement} for ${beneficiary}.
+                </div>
+              </div>`;
+            }
+
+            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
+            const el = document.createElement('article');
+            el.className = 'post';
+            el.style.animationDelay = `${i * 40}ms`;
+            el.innerHTML = `
+            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
+              <img class="avatar" src="${avatar}" alt="">
+              <div class="meta">
+                <div class="name-wrap">
+                  <span class="name">${escapeHtml(name)}</span>
+                  ${friendBadge}
+                  <button class="${btnClass}" data-username="${escapeHtml(name)}" onclick="event.stopPropagation();handleFollowClick(this, '${escapeHtml(name)}')" ${disabled ? 'disabled' : ''}>${followBtnText}</button>
+                </div>
+                <div class="time">${minutes}m ago · 🌐</div>
+              </div>
+            </div>
+            <div class="poll-wrap">
+              <div class="poll-question">Who has the best policies right now?</div>
+              <div class="poll-options" id="${pollId}">${optionsHtml}</div>
+              <div class="poll-total" id="${pollId}-total" style="display:none">${totalVotes.toLocaleString()} votes</div>
+            </div>
+            <div class="actions">
+              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
+              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+            </div>
+            <button type="button" class="show-poll-comments-btn" id="pollCommentsBtn-${i}">💬 Show comments (${commentCount})</button>
+            <div class="poll-comments">${pollCommentsHtml}</div>
+          `;
+
+            // Attach event listener for poll comments
+            const pollCommentsBtn = el.querySelector('.show-poll-comments-btn');
+            const pollCommentsSection = el.querySelector('.poll-comments');
+            if (pollCommentsBtn && pollCommentsSection) {
+                pollCommentsBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isOpen = pollCommentsSection.classList.toggle('open');
+                    const count = pollCommentsSection.querySelectorAll('.story-comment-item').length;
+                    this.textContent = isOpen ? '🔼 Hide comments' : `💬 Show comments (${count})`;
+                });
+            }
+
+            return el;
+        }
+
+        // ---- Debate posts with follow button ----
+        function makeDebatePost(i, category) {
+            const cat = category || rand(['music', 'football', 'politics']);
+            const name = getWeightedName();
+            const avatar = rand(avatars);
+            const likeBase = Math.floor(Math.random() * 500);
+            const { text, subjects } = makeDebateLine(cat);
+            const isF = isFriend(name);
+            const isFol = isFollowing(name);
+            let followBtnText = 'Follow';
+            let btnClass = 'follow-btn';
+            let disabled = false;
+            if (isF) {
+                followBtnText = 'Friends';
+                btnClass = 'follow-btn is-friend';
+                disabled = true;
+            } else if (isFol) {
+                followBtnText = 'Following';
+                btnClass = 'follow-btn is-following';
+                disabled = true;
+            }
+
+            const el = document.createElement('article');
+            el.className = 'post debate-post';
+            el.style.animationDelay = `${i * 40}ms`;
+            el.dataset.category = cat;
+            el.dataset.lastSubject = subjects[subjects.length - 1];
+            el.dataset.relayCount = '0';
+            el.dataset.userJoined = '0';
+
+            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
+            const likeId = `dbt-like-${i}-${Date.now()}`;
+            el.innerHTML = `
+            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
+              <img class="avatar" src="${avatar}" alt="">
+              <div class="meta">
+                <div class="name-wrap">
+                  <span class="name">${escapeHtml(name)}</span>
+                  ${friendBadge}
+                  <button class="${btnClass}" data-username="${escapeHtml(name)}" onclick="event.stopPropagation();handleFollowClick(this, '${escapeHtml(name)}')" ${disabled ? 'disabled' : ''}>${followBtnText}</button>
+                  <span class="live-badge">● LIVE</span>
+                </div>
+                <div class="time">Just now · 🌐</div>
+              </div>
+            </div>
+            <div class="post-content">${text}</div>
+            <div class="actions">
+              <button type="button" class="like-btn" id="${likeId}" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+              <button type="button" class="debate-join-btn" onclick="openDebateJoinModal(this)">🔥 Join debate</button>
+              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
+              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+            </div>
+          `;
+
+            startDebateRelay(el);
+            return el;
+        }
+
+        // ---- Ad post (no follow) ----
+        function makeAdPost() {
+            const el = document.createElement('article');
+            el.className = 'post post-ad';
+            el.style.animationDelay = '0ms';
+            el.innerHTML = `
+            <div class="post-head">
+              <div class="comment-avatar" style="width:40px;height:40px;font-size:15px;font-weight:800;background:linear-gradient(135deg,#1877f2,#06b6d4);">CS</div>
+              <div class="meta">
+                <div class="name">ChillSpace <span class="post-ad-label">Ad</span></div>
+                <div class="time">Sponsored · 🌐</div>
+              </div>
+            </div>
+            <div class="post-content">Wanna check social media? Always check ChillSpace first!</div>
+            <video class="ad-video" src="https://ia601602.us.archive.org/23/items/chillspace-ad-15s/chillspace-ad-15s.mp4" autoplay controls muted playsinline loop preload="auto"></video>
+            <div class="actions">
+              <button type="button" class="like-btn" data-base="0" onclick="toggleLike(this)">👍 0</button>
+              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
+              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+            </div>
+          `;
+            return el;
+        }
+
+        // ---- Override loadFeed and loadMorePosts to use new post creators ----
+        let loading = false;
+
+        function loadFeed() {
+            const feed = document.getElementById('feed');
+            const adPosition = 3;
+            const available = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11].filter(p => p !== adPosition);
+            const shuffled = available.sort(() => Math.random() - 0.5);
+            const storyPositions = new Set([shuffled[0], shuffled[1]]);
+            const pollPosition = shuffled[2];
+            const debatePosition = shuffled[3];
+
+            let adDone = false;
+            for (let i = 0; i < 12; i++) {
+                let el;
+                if (i === adPosition && !adDone) {
+                    el = makeAdPost();
+                    adDone = true;
+                } else if (storyPositions.has(i)) {
+                    el = makeStoryPost(i);
+                } else if (i === pollPosition) {
+                    el = makePollPost(i);
+                } else if (i === debatePosition) {
+                    el = makeDebatePost(i);
+                } else {
+                    el = createPostWithFollow(i);
+                }
+                feed.appendChild(el);
+                incrementSensoryCounter();
+            }
+        }
+
+        function loadMorePosts(count = 8) {
+            if (loading) return;
+            loading = true;
+            const loader = document.getElementById('loader');
+            loader.classList.add('show');
+
+            setTimeout(() => {
+                const feed = document.getElementById('feed');
+                const start = feed.children.length;
+                for (let i = 0; i < count; i++) {
+                    const r = Math.random();
+                    let el;
+                    if (r < 0.2) {
+                        el = makeStoryPost(start + i);
+                    } else if (r < 0.32) {
+                        el = makePollPost(start + i);
+                    } else if (r < 0.42) {
+                        el = makeDebatePost(start + i);
+                    } else {
+                        el = createPostWithFollow(start + i);
+                    }
+                    feed.appendChild(el);
+                    incrementSensoryCounter();
+                }
+                loading = false;
+                loader.classList.remove('show');
+            }, 350);
+        }
+
+        // ---- Override window.loadFeed and loadMorePosts ----
+        window.loadFeed = loadFeed;
+        window.loadMorePosts = loadMorePosts;
+
+        // ---- Refresh feed (for when following changes) ----
+        function refreshFeed() {
+            const feed = document.getElementById('feed');
+            const pinned = feed.querySelectorAll('.pinned-post');
+            feed.innerHTML = '';
+            pinned.forEach(p => feed.appendChild(p));
+            loadFeed();
+        }
+        window.refreshFeed = refreshFeed;
+
         // ============================================================
-        //  SENSORY TOY (every 75 posts)
+        //  SENSORY TOY - updated with per-press crack, 0.7s sound, permanent cracks
         // ============================================================
         const SENSORY_INTERVAL = 75;
         const SENSORY_SOUND_URL = 'https://ia600604.us.archive.org/34/items/cheap-sense-cs/cheap-sense-cs.mp3';
 
         function getSensoryCounter() {
-            try {
-                return parseInt(localStorage.getItem('chillspace_sensory_counter')) || 0;
-            } catch { return 0; }
+            try { return parseInt(localStorage.getItem('chillspace_sensory_counter')) || 0; } catch { return 0; }
         }
 
         function setSensoryCounter(val) {
@@ -1979,7 +2675,6 @@
             const outerColor = randomColor();
             const innerColor = randomLightColor();
 
-            // Make sure inner is visibly different
             const overlay = document.createElement('div');
             overlay.className = 'sensory-toy-overlay';
             overlay.innerHTML = `
@@ -1990,17 +2685,7 @@
                 <div class="squishy-wrap" id="squishyWrap">
                   <div class="squishy-outer" style="background:${outerColor};"></div>
                   <div class="squishy-inner" style="background:${innerColor};"></div>
-                  <div class="squishy-crack-lines" id="crackLines">
-                    <svg viewBox="0 0 100 100">
-                      <line x1="30" y1="20" x2="55" y2="45" stroke="${outerColor}" />
-                      <line x1="55" y1="45" x2="40" y2="70" stroke="${outerColor}" />
-                      <line x1="55" y1="45" x2="75" y2="55" stroke="${outerColor}" />
-                      <line x1="75" y1="55" x2="85" y2="80" stroke="${outerColor}" />
-                      <line x1="40" y1="70" x2="20" y2="85" stroke="${outerColor}" />
-                      <line x1="55" y1="45" x2="70" y2="30" stroke="${outerColor}" />
-                      <line x1="70" y1="30" x2="90" y2="20" stroke="${outerColor}" />
-                    </svg>
-                  </div>
+                  <canvas class="squishy-crack-canvas" id="crackCanvas"></canvas>
                 </div>
               </div>
               <div class="squishy-tap-hint">👆 tap to crack</div>
@@ -2013,412 +2698,144 @@
             document.body.appendChild(overlay);
 
             const wrap = overlay.querySelector('#squishyWrap');
-            const crackLines = overlay.querySelector('#crackLines');
             const container = overlay.querySelector('#squishyContainer');
+            const canvas = overlay.querySelector('#crackCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Set canvas size
+            function resizeCanvas() {
+                const rect = wrap.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+            resizeCanvas();
+
             let audio = null;
-            let cracked = false;
+            let stopTimeout = null;
 
             function playCrackSound() {
                 try {
-                    audio = new Audio(SENSORY_SOUND_URL);
-                    audio.volume = 0.7;
-                    audio.play().catch(() => {});
+                    if (!audio) {
+                        audio = new Audio(SENSORY_SOUND_URL);
+                        audio.volume = 0.7;
+                    }
+                    if (audio.paused || audio.ended) {
+                        audio.currentTime = 0;
+                        audio.play().catch(() => {});
+                    }
+                    // Clear previous stop timeout and set new one for 0.7s later
+                    if (stopTimeout) clearTimeout(stopTimeout);
+                    stopTimeout = setTimeout(() => {
+                        if (audio && !audio.paused) {
+                            audio.pause();
+                            audio.currentTime = 0;
+                        }
+                        stopTimeout = null;
+                    }, 700);
                 } catch (e) {}
             }
 
-            function doCrack() {
-                if (cracked) return;
-                cracked = true;
+            // Draw a crack at given coordinates (relative to canvas) - permanent
+            function drawCrack(x, y) {
+                const w = canvas.width;
+                const h = canvas.height;
+                const numLines = 4 + Math.floor(Math.random() * 4);
+                ctx.save();
+                ctx.lineWidth = 2.5;
+                ctx.strokeStyle = outerColor;
+                ctx.shadowColor = 'rgba(0,0,0,0.2)';
+                ctx.shadowBlur = 4;
+                ctx.lineCap = 'round';
+
+                for (let i = 0; i < numLines; i++) {
+                    const angle = Math.random() * 2 * Math.PI;
+                    const length = 10 + Math.random() * 35;
+                    const endX = x + Math.cos(angle) * length;
+                    const endY = y + Math.sin(angle) * length;
+                    const cpX = x + Math.cos(angle + 0.3) * (length * 0.6);
+                    const cpY = y + Math.sin(angle + 0.3) * (length * 0.6);
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.quadraticCurveTo(cpX, cpY, endX, endY);
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+
+            // Handle interaction
+            function handlePress(e) {
+                e.preventDefault();
+                const rect = wrap.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                let clientX, clientY;
+                if (e.touches) {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+                const x = (clientX - rect.left) * scaleX;
+                const y = (clientY - rect.top) * scaleY;
+                const clampedX = Math.min(Math.max(x, 0), canvas.width);
+                const clampedY = Math.min(Math.max(y, 0), canvas.height);
+
+                // Draw crack permanently
+                drawCrack(clampedX, clampedY);
+
+                // Play sound with 0.7s extension
                 playCrackSound();
+
+                // Animate squishy
                 wrap.classList.add('crack-anim');
-                crackLines.classList.add('show');
-                // Also add a subtle visual pulse on the outer
+                setTimeout(() => {
+                    wrap.classList.remove('crack-anim');
+                }, 400);
+
+                // Slight outer glow
                 const outer = wrap.querySelector('.squishy-outer');
                 outer.style.transition = 'box-shadow 0.2s';
                 outer.style.boxShadow = 'inset 0 -8px 20px rgba(0,0,0,0.25), 0 8px 30px rgba(0,0,0,0.2), 0 0 40px rgba(255,200,100,0.15)';
                 setTimeout(() => {
                     outer.style.boxShadow = 'inset 0 -8px 20px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.12)';
                 }, 400);
-                // Change inner color slightly
-                const inner = wrap.querySelector('.squishy-inner');
-                const currentBg = inner.style.background;
-                inner.style.transition = 'background 0.4s';
-                // Slightly shift the inner color
-                const newColor = randomLightColor();
-                inner.style.background = newColor;
-                setTimeout(() => {
-                    wrap.classList.remove('crack-anim');
-                }, 400);
             }
 
             container.addEventListener('click', (e) => {
                 e.stopPropagation();
-                if (!cracked) {
-                    doCrack();
-                }
+                handlePress(e);
             });
-
             container.addEventListener('touchstart', (e) => {
-                if (!cracked) {
-                    doCrack();
-                    e.preventDefault();
-                }
+                handlePress(e);
+                e.preventDefault();
             }, { passive: false });
 
-            // Also crack on space/enter for accessibility
-            wrap.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    if (!cracked) doCrack();
-                }
-            });
-            wrap.setAttribute('tabindex', '0');
-            wrap.setAttribute('role', 'button');
-            wrap.setAttribute('aria-label', 'Crack the wax squishy');
-
+            // Close
             overlay.querySelector('#sensoryDismissBtn').addEventListener('click', () => {
                 if (audio) { audio.pause();
                     audio.currentTime = 0; }
+                if (stopTimeout) clearTimeout(stopTimeout);
                 overlay.remove();
             });
-
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
                     if (audio) { audio.pause();
                         audio.currentTime = 0; }
+                    if (stopTimeout) clearTimeout(stopTimeout);
                     overlay.remove();
                 }
             });
-
-            // Auto-close after 15s if not interacted
+            // Auto-close after 15s
             setTimeout(() => {
                 if (overlay.parentNode) {
                     if (audio) { audio.pause();
                         audio.currentTime = 0; }
+                    if (stopTimeout) clearTimeout(stopTimeout);
                     overlay.remove();
                 }
             }, 15000);
-
-            // If user clicks anywhere on the overlay background, close
-            // but we already handle that above
         }
-
-        // ============================================================
-        //  PROFILE VIEW
-        // ============================================================
-        function openProfile(name, avatarSrc) {
-            if (!name) return;
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay';
-            const initial = name.charAt(0).toUpperCase();
-            const avatarHtml = avatarSrc ?
-                `<img class="profile-avatar-large" src="${avatarSrc}" alt="${escapeHtml(name)}">` :
-                `<div class="profile-avatar-large" style="background:linear-gradient(135deg,#1877f2,#7c3aed);display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;font-weight:700;">${escapeHtml(initial)}</div>`;
-
-            const isF = isFriend(name);
-            const friendStatusHtml = `
-            <div class="profile-friend-status">
-              <span>${isF ? '✅ Friend' : '👤 Not a friend'}</span>
-              <button class="friend-toggle ${isF ? 'is-friend' : ''}" id="profileFriendToggle">
-                ${isF ? 'Remove friend' : 'Add friend'}
-              </button>
-            </div>
-          `;
-
-            overlay.innerHTML = `
-            <div class="modal-box" style="max-width:480px;">
-              <div class="modal-title" style="display:flex;align-items:center;gap:12px;">
-                ${avatarHtml}
-                <span>${escapeHtml(name)}</span>
-              </div>
-              ${friendStatusHtml}
-              <div style="font-weight:600;font-size:14px;color:#65676b;margin:4px 0 8px;">📝 Posts by ${escapeHtml(name)}</div>
-              <div class="profile-posts" id="profilePosts">
-                <div class="loader show" style="display:block;">Loading posts...</div>
-              </div>
-              <div class="modal-actions">
-                <button class="modal-cancel" id="profileCloseBtn">Close</button>
-              </div>
-            </div>
-          `;
-            document.body.appendChild(overlay);
-
-            // Handle friend toggle
-            overlay.querySelector('#profileFriendToggle').addEventListener('click', function() {
-                const isNow = isFriend(name);
-                if (isNow) {
-                    removeFriend(name);
-                    this.textContent = 'Add friend';
-                    this.classList.remove('is-friend');
-                    this.closest('.profile-friend-status').querySelector('span').textContent = '👤 Not a friend';
-                    showToast(`Removed ${name} from friends`);
-                } else {
-                    addFriend(name);
-                    this.textContent = 'Remove friend';
-                    this.classList.add('is-friend');
-                    this.closest('.profile-friend-status').querySelector('span').textContent = '✅ Friend';
-                    showToast(`Added ${name} as a friend! 🎉`);
-                }
-                // Refresh feed to update friend badges
-                refreshFeed();
-            });
-
-            // Close
-            overlay.querySelector('#profileCloseBtn').addEventListener('click', () => overlay.remove());
-            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
-
-            // Generate profile posts
-            const postsContainer = overlay.querySelector('#profilePosts');
-            // Clear loader
-            postsContainer.innerHTML = '';
-
-            // Generate 6-10 posts with this name
-            const count = 6 + Math.floor(Math.random() * 5);
-            for (let i = 0; i < count; i++) {
-                const postEl = createPostWithName(name, i);
-                postsContainer.appendChild(postEl);
-            }
-
-            if (postsContainer.children.length === 0) {
-                postsContainer.innerHTML = `<div class="profile-empty">No posts from ${escapeHtml(name)} yet.</div>`;
-            }
-        }
-
-        function createPostWithName(name, i) {
-            const avatar = rand(avatars);
-            const minutes = Math.floor(Math.random() * 59) + 1;
-            const time = `${minutes}m ago`;
-            const content = makeContent();
-            const likeBase = Math.floor(Math.random() * 9999);
-
-            const el = document.createElement('article');
-            el.className = 'post';
-            el.style.animationDelay = `${i * 30}ms`;
-            el.innerHTML = `
-            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
-              <img class="avatar" src="${avatar}" alt="">
-              <div class="meta">
-                <div class="name">${escapeHtml(name)}</div>
-                <div class="time">${time} · 🌐</div>
-              </div>
-            </div>
-            <div class="post-content" dir="auto">${content}</div>
-            <div class="actions">
-              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
-              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
-              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
-              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
-              <button type="button" class="friend-btn ${isFriend(name) ? 'is-friend' : ''}" onclick="event.stopPropagation();toggleFriend('${escapeHtml(name)}')">
-                ${isFriend(name) ? '✅ Friend' : '➕ Add friend'}
-              </button>
-            </div>
-          `;
-            return el;
-        }
-
-        // ============================================================
-        //  FRIENDS LIST MODAL
-        // ============================================================
-        function openFriendsModal() {
-            const friends = getFriends();
-            const overlay = document.createElement('div');
-            overlay.className = 'modal-overlay';
-            let listHtml = '';
-            if (friends.length === 0) {
-                listHtml = `<div class="profile-empty">No friends yet. Add some from posts!</div>`;
-            } else {
-                listHtml = friends.map(f => `
-              <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f2f5;">
-                <span style="font-weight:600;">${escapeHtml(f)}</span>
-                <button class="friend-toggle is-friend" style="margin-left:auto;padding:2px 12px;border-radius:999px;border:none;background:#e4e6eb;cursor:pointer;font-weight:600;font-size:12px;" onclick="removeFriend('${escapeHtml(f)}');this.closest('div').remove();showToast('Removed ${escapeHtml(f)}');refreshFeed();">Remove</button>
-                <button style="padding:2px 12px;border-radius:999px;border:none;background:#1877f2;color:#fff;cursor:pointer;font-weight:600;font-size:12px;" onclick="openProfile('${escapeHtml(f)}');document.querySelector('.modal-overlay').remove();">View</button>
-              </div>
-            `).join('');
-            }
-
-            overlay.innerHTML = `
-            <div class="modal-box" style="max-width:400px;">
-              <div class="modal-title">👥 Your Friends (${friends.length})</div>
-              <div style="max-height:300px;overflow-y:auto;">${listHtml}</div>
-              <div class="modal-actions">
-                <button class="modal-cancel" id="friendsCloseBtn">Close</button>
-              </div>
-            </div>
-          `;
-            document.body.appendChild(overlay);
-            overlay.querySelector('#friendsCloseBtn').addEventListener('click', () => overlay.remove());
-            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
-        }
-
-        // ============================================================
-        //  REFRESH FEED (reloads with friend boosting)
-        // ============================================================
-        function refreshFeed() {
-            // Preserve pinned posts? For simplicity, we'll reload the feed.
-            // We'll remove all posts except pinned ones and re-generate.
-            const feed = document.getElementById('feed');
-            const pinned = feed.querySelectorAll('.pinned-post');
-            // Remove all non-pinned posts
-            const children = feed.children;
-            const toRemove = [];
-            for (let i = 0; i < children.length; i++) {
-                if (!children[i].classList.contains('pinned-post')) {
-                    toRemove.push(children[i]);
-                }
-            }
-            toRemove.forEach(el => el.remove());
-
-            // Re-generate posts, preserving pinned ones at top
-            // We'll generate 12 posts with friend boosting
-            const adPosition = 3;
-            const available = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11].filter(p => p !== adPosition);
-            const shuffled = available.sort(() => Math.random() - 0.5);
-            const storyPositions = new Set([shuffled[0], shuffled[1]]);
-            const pollPosition = shuffled[2];
-            const debatePosition = shuffled[3];
-
-            // We'll insert after the pinned posts
-            let insertAfter = feed.lastChild;
-            // If there are pinned posts, they should be at the beginning
-            // Actually, just append after existing pinned posts
-            const pinnedCount = pinned.length;
-            const referenceNode = pinnedCount > 0 ? pinned[pinnedCount - 1] : null;
-
-            let adDone = false;
-            const newPosts = [];
-            for (let i = 0; i < 12; i++) {
-                let el;
-                if (i === adPosition && !adDone) {
-                    el = makeAdPost();
-                    adDone = true;
-                } else if (storyPositions.has(i)) {
-                    el = makeStoryPost(i);
-                } else if (i === pollPosition) {
-                    el = makePollPost(i);
-                } else if (i === debatePosition) {
-                    el = makeDebatePost(i);
-                } else {
-                    el = createPostWithFriendBoost(i);
-                }
-                newPosts.push(el);
-            }
-
-            // Insert after reference node
-            if (referenceNode && referenceNode.parentNode === feed) {
-                newPosts.forEach(el => {
-                    feed.insertBefore(el, referenceNode.nextSibling);
-                });
-            } else {
-                newPosts.forEach(el => feed.appendChild(el));
-            }
-        }
-
-        function createPostWithFriendBoost(i) {
-            const name = getWeightedName();
-            const avatar = rand(avatars);
-            const minutes = Math.floor(Math.random() * 59) + 1;
-            const time = `${minutes}m ago`;
-            const content = makeContent();
-            const likeBase = Math.floor(Math.random() * 9999);
-            const isF = isFriend(name);
-
-            const el = document.createElement('article');
-            el.className = 'post';
-            el.style.animationDelay = `${i * 40}ms`;
-            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
-            el.innerHTML = `
-            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
-              <img class="avatar" src="${avatar}" alt="">
-              <div class="meta">
-                <div class="name-wrap"><span class="name">${escapeHtml(name)}</span> ${friendBadge}</div>
-                <div class="time">${time} · 🌐</div>
-              </div>
-            </div>
-            <div class="post-content" dir="auto">${content}</div>
-            <div class="actions">
-              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
-              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
-              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
-              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
-              <button type="button" class="friend-btn ${isF ? 'is-friend' : ''}" onclick="event.stopPropagation();toggleFriend('${escapeHtml(name)}')">
-                ${isF ? '✅ Friend' : '➕ Add friend'}
-              </button>
-            </div>
-          `;
-            return el;
-        }
-
-        // ---- Override original createPost to use friend boost ----
-        const originalCreatePost = window.createPost;
-        window.createPost = function(i) {
-            return createPostWithFriendBoost(i);
-        };
-
-        // ---- Also override loadFeed to use friend boost ----
-        const originalLoadFeed = window.loadFeed;
-        window.loadFeed = function() {
-            const feed = document.getElementById('feed');
-            const adPosition = 3;
-            const available = [1, 2, 4, 5, 6, 7, 8, 9, 10, 11].filter(p => p !== adPosition);
-            const shuffled = available.sort(() => Math.random() - 0.5);
-            const storyPositions = new Set([shuffled[0], shuffled[1]]);
-            const pollPosition = shuffled[2];
-            const debatePosition = shuffled[3];
-
-            let adDone = false;
-            for (let i = 0; i < 12; i++) {
-                let el;
-                if (i === adPosition && !adDone) {
-                    el = makeAdPost();
-                    adDone = true;
-                } else if (storyPositions.has(i)) {
-                    el = makeStoryPost(i);
-                } else if (i === pollPosition) {
-                    el = makePollPost(i);
-                } else if (i === debatePosition) {
-                    el = makeDebatePost(i);
-                } else {
-                    el = createPostWithFriendBoost(i);
-                }
-                feed.appendChild(el);
-                // Increment sensory counter for each post
-                incrementSensoryCounter();
-            }
-        };
-
-        // ---- Override loadMorePosts to use friend boost and sensory ----
-        const originalLoadMore = window.loadMorePosts;
-        window.loadMorePosts = function(count = 8) {
-            if (loading) return;
-            loading = true;
-            const loader = document.getElementById('loader');
-            loader.classList.add('show');
-
-            setTimeout(() => {
-                const feed = document.getElementById('feed');
-                const start = feed.children.length;
-                for (let i = 0; i < count; i++) {
-                    const r = Math.random();
-                    let el;
-                    if (r < 0.2) {
-                        el = makeStoryPost(start + i);
-                    } else if (r < 0.32) {
-                        el = makePollPost(start + i);
-                    } else if (r < 0.42) {
-                        el = makeDebatePost(start + i);
-                    } else {
-                        el = createPostWithFriendBoost(start + i);
-                    }
-                    feed.appendChild(el);
-                    incrementSensoryCounter();
-                }
-                loading = false;
-                loader.classList.remove('show');
-            }, 350);
-        };
-
-        // ---- Also patch the original post generation in the feed load ----
-        // We'll override the global functions used in the original loadFeed.
 
         // ============================================================
         //  EXISTING CODE (preserved with minimal changes)
@@ -2805,21 +3222,18 @@
                     positiveRelationshipStoryTemplates;
                 return rand(templates)(rel, topic);
             }
-
             m = commentText.match(/^My\s+(.+?)\s+(?:was\s+)?(?:cancelled because of|postponed because of|ruined by|full of arguments because of|made perfect by|happened because of)\s+(.+?)\.?$/i);
             if (m) {
                 const event = m[1].trim();
                 const culprit = m[2].trim().replace(/\.$/, '');
                 return rand(eventStoryTemplates)(event, culprit);
             }
-
             m = commentText.match(/^My\s+(.+?)\s+(?:is now a|was a|is a)\s+(.+?)\.?$/i);
             if (m) {
                 const rel = m[1].trim();
                 const role = m[2].trim().replace(/\.$/, '');
                 return rand(knowSomeoneStoryTemplates)(rel, role);
             }
-
             return rand(genericStoryTemplates)();
         }
 
@@ -3033,116 +3447,6 @@
         }
         window.showFullStory = showFullStory;
 
-        function makeStoryPost(i) {
-            const opener = rand(storyOpeners);
-            const adj = rand(storyAdjs);
-            const question = `${opener}, what are your ${adj} stories?`;
-            const name = getWeightedName();
-            const avatar = rand(avatars);
-            const minutes = Math.floor(Math.random() * 59) + 1;
-            const likeBase = Math.floor(Math.random() * 9999);
-            const isF = isFriend(name);
-
-            const el = document.createElement('article');
-            el.className = 'post';
-            el.style.animationDelay = `${i*40}ms`;
-
-            const commentCount = Math.floor(Math.random() * 23) + 8;
-            const typePool = [];
-            for (let c = 0; c < commentCount; c++) {
-                typePool.push(c % 3);
-            }
-            for (let c = typePool.length - 1; c > 0; c--) {
-                const j = Math.floor(Math.random() * (c + 1));
-                [typePool[c], typePool[j]] = [typePool[j], typePool[c]];
-            }
-            const gradients = [
-                '135deg,#f97316,#ec4899', '135deg,#06b6d4,#1877f2', '135deg,#7c3aed,#ec4899',
-                '135deg,#10b981,#06b6d4', '135deg,#f59e0b,#ef4444', '135deg,#8b5cf6,#3b82f6',
-                '135deg,#14b8a6,#84cc16', '135deg,#f43f5e,#f97316'
-            ];
-            let commentsHtml = '';
-            for (let c = 0; c < commentCount; c++) {
-                const cName = `${rand(firstNames)} ${rand(lastNames)}`;
-                const cInitial = cName[0];
-                const grad = gradients[c % gradients.length];
-                const type = typePool[c];
-                let commentText;
-                if (type === 0) {
-                    commentText = `I ${rand(storyVerbs)} my ${rand(storyRelations)} over ${rand(storyTopics)}.`;
-                } else if (type === 1) {
-                    commentText = makeEventComment();
-                } else {
-                    commentText = makeKnowSomeoneComment();
-                }
-                const fullStoryBtn =
-                    `<button type="button" class="full-story-btn" data-story="${commentText.replace(/"/g,'&quot;')}" onclick="showFullStory(this)">✨ See the full story with ChillSpace AI</button>`;
-                commentsHtml += `
-              <div class="story-comment-item">
-                <div class="story-comment-avatar" style="background:linear-gradient(${grad})">${cInitial}</div>
-                <div class="story-comment-bubble">
-                  <div class="story-comment-name">${cName}</div>
-                  ${commentText}
-                </div>
-              </div>${fullStoryBtn}`;
-            }
-
-            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
-            el.innerHTML = `
-            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
-              <img class="avatar" src="${avatar}" alt="">
-              <div class="meta">
-                <div class="name-wrap"><span class="name">${escapeHtml(name)}</span> ${friendBadge}</div>
-                <div class="time">${minutes}m ago · 🌐</div>
-              </div>
-            </div>
-            <div class="post-question post-content">${question}</div>
-            <div class="actions">
-              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
-              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
-              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
-              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
-              <button type="button" class="friend-btn ${isF ? 'is-friend' : ''}" onclick="event.stopPropagation();toggleFriend('${escapeHtml(name)}')">
-                ${isF ? '✅ Friend' : '➕ Add friend'}
-              </button>
-            </div>
-            <button type="button" class="show-comments-btn" onclick="toggleStoryComments(this)">💬 Show comments (${commentCount})</button>
-            <div class="story-comments">${commentsHtml}</div>
-          `;
-            return el;
-        }
-
-        function toggleStoryComments(btn) {
-            const section = btn.nextElementSibling;
-            const open = section.classList.toggle('open');
-            btn.textContent = open ? '🔼 Hide comments' : '💬 Show comments (8)';
-        }
-        window.toggleStoryComments = toggleStoryComments;
-
-        function makeAdPost() {
-            const el = document.createElement('article');
-            el.className = 'post post-ad';
-            el.style.animationDelay = '0ms';
-            el.innerHTML = `
-            <div class="post-head">
-              <div class="comment-avatar" style="width:40px;height:40px;font-size:15px;font-weight:800;background:linear-gradient(135deg,#1877f2,#06b6d4);">CS</div>
-              <div class="meta">
-                <div class="name">ChillSpace <span class="post-ad-label">Ad</span></div>
-                <div class="time">Sponsored · 🌐</div>
-              </div>
-            </div>
-            <div class="post-content">Wanna check social media? Always check ChillSpace first!</div>
-            <video class="ad-video" src="https://ia601602.us.archive.org/23/items/chillspace-ad-15s/chillspace-ad-15s.mp4" autoplay controls muted playsinline loop preload="auto"></video>
-            <div class="actions">
-              <button type="button" class="like-btn" data-base="0" onclick="toggleLike(this)">👍 0</button>
-              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
-              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
-              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
-            </div>
-          `;
-            return el;
-        }
-
         // ---- Live Debates (preserved) ----
         const debateSubjects = {
             music: ["Taylor Swift", "BTS", "Drake", "Miley Cyrus", "Beyoncé", "Ed Sheeran", "Ariana Grande", "The Weeknd",
@@ -3240,48 +3544,6 @@
             return null;
         }
 
-        function makeDebatePost(i, category) {
-            const cat = category || rand(['music', 'football', 'politics']);
-            const name = getWeightedName();
-            const avatar = rand(avatars);
-            const likeBase = Math.floor(Math.random() * 500);
-            const { text, subjects } = makeDebateLine(cat);
-            const isF = isFriend(name);
-
-            const el = document.createElement('article');
-            el.className = 'post debate-post';
-            el.style.animationDelay = `${i * 40}ms`;
-            el.dataset.category = cat;
-            el.dataset.lastSubject = subjects[subjects.length - 1];
-            el.dataset.relayCount = '0';
-            el.dataset.userJoined = '0';
-
-            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
-            const likeId = `dbt-like-${i}-${Date.now()}`;
-            el.innerHTML = `
-            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
-              <img class="avatar" src="${avatar}" alt="">
-              <div class="meta">
-                <div class="name-wrap"><span class="name">${escapeHtml(name)}</span> ${friendBadge}<span class="live-badge">● LIVE</span></div>
-                <div class="time">Just now · 🌐</div>
-              </div>
-            </div>
-            <div class="post-content">${text}</div>
-            <div class="actions">
-              <button type="button" class="like-btn" id="${likeId}" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
-              <button type="button" class="debate-join-btn" onclick="openDebateJoinModal(this)">🔥 Join debate</button>
-              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
-              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
-              <button type="button" class="friend-btn ${isF ? 'is-friend' : ''}" onclick="event.stopPropagation();toggleFriend('${escapeHtml(name)}')">
-                ${isF ? '✅ Friend' : '➕ Add friend'}
-              </button>
-            </div>
-          `;
-
-            startDebateRelay(el);
-            return el;
-        }
-
         function startDebateRelay(el) {
             const maxRelays = Math.floor(Math.random() * 4) + 3;
 
@@ -3309,10 +3571,23 @@
                     const newName = getWeightedName();
                     const newAvatar = rand(avatars);
                     const isF = isFriend(newName);
+                    const isFol = isFollowing(newName);
+                    let followBtnText = 'Follow';
+                    let btnClass = 'follow-btn';
+                    let disabled = false;
+                    if (isF) {
+                        followBtnText = 'Friends';
+                        btnClass = 'follow-btn is-friend';
+                        disabled = true;
+                    } else if (isFol) {
+                        followBtnText = 'Following';
+                        btnClass = 'follow-btn is-following';
+                        disabled = true;
+                    }
                     const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
                     el.querySelector('.post-content').textContent = text;
                     el.querySelector('.post-head .name-wrap').innerHTML =
-                        `<span class="name">${escapeHtml(newName)}</span> ${friendBadge}<span class="live-badge">● LIVE</span>`;
+                        `<span class="name">${escapeHtml(newName)}</span> ${friendBadge} <button class="${btnClass}" data-username="${escapeHtml(newName)}" onclick="event.stopPropagation();handleFollowClick(this, '${escapeHtml(newName)}')" ${disabled ? 'disabled' : ''}>${followBtnText}</button> <span class="live-badge">● LIVE</span>`;
                     el.querySelector('.post-head .avatar').src = newAvatar;
                     el.dataset.lastSubject = subjects[subjects.length - 1];
                     el.dataset.relayCount = String(count + 1);
@@ -3392,10 +3667,23 @@
                         const newName = getWeightedName();
                         const newAvatar = rand(avatars);
                         const isF = isFriend(newName);
+                        const isFol = isFollowing(newName);
+                        let followBtnText = 'Follow';
+                        let btnClass = 'follow-btn';
+                        let disabled = false;
+                        if (isF) {
+                            followBtnText = 'Friends';
+                            btnClass = 'follow-btn is-friend';
+                            disabled = true;
+                        } else if (isFol) {
+                            followBtnText = 'Following';
+                            btnClass = 'follow-btn is-following';
+                            disabled = true;
+                        }
                         const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
                         postEl.querySelector('.post-content').textContent = text;
                         postEl.querySelector('.post-head .name-wrap').innerHTML =
-                            `<span class="name">${escapeHtml(newName)}</span> ${friendBadge}<span class="live-badge">● LIVE</span>`;
+                            `<span class="name">${escapeHtml(newName)}</span> ${friendBadge} <button class="${btnClass}" data-username="${escapeHtml(newName)}" onclick="event.stopPropagation();handleFollowClick(this, '${escapeHtml(newName)}')" ${disabled ? 'disabled' : ''}>${followBtnText}</button> <span class="live-badge">● LIVE</span>`;
                         const avEl = postEl.querySelector('.comment-avatar') || postEl.querySelector('.avatar');
                         if (avEl) avEl.outerHTML = `<img class="avatar" src="${newAvatar}" alt="">`;
                         postEl.dataset.lastSubject = subjects[subjects.length - 1];
@@ -3405,83 +3693,6 @@
                     }, 220);
                 }, 1600 + Math.random() * 800);
             }, 220);
-        }
-
-        function makePollPost(i) {
-            const shuffled = [...politicians].sort(() => Math.random() - 0.5);
-            const count = Math.floor(Math.random() * 3) + 2;
-            const pollPols = shuffled.slice(0, count);
-
-            const name = getWeightedName();
-            const avatar = rand(avatars);
-            const minutes = Math.floor(Math.random() * 59) + 1;
-            const likeBase = Math.floor(Math.random() * 3000);
-            const isF = isFriend(name);
-
-            const votes = pollPols.map(() => Math.floor(Math.random() * 900) + 50);
-            const totalVotes = votes.reduce((a, b) => a + b, 0);
-            const pollId = `poll-${i}-${Date.now()}`;
-
-            const optionsHtml = pollPols.map((pol, idx) => `
-            <button type="button" class="poll-option" data-poll="${pollId}" data-idx="${idx}" onclick="votePoll(this)">
-              <div class="poll-bar" style="width:0%"></div>
-              <div class="poll-option-inner">
-                <span>${pol}</span>
-                <span class="poll-pct" style="display:none">${Math.round(votes[idx]/totalVotes*100)}%</span>
-              </div>
-            </button>`).join('');
-
-            const commentCount = Math.floor(Math.random() * 4) + 2;
-            let pollCommentsHtml = '';
-            for (let c = 0; c < commentCount; c++) {
-                const cName = `${rand(firstNames)} ${rand(lastNames)}`;
-                const pol = rand(pollPols);
-                const topic = rand(politicalTopics);
-                const judgement = rand(politicalJudgements);
-                const beneficiary = rand(politicalBeneficiaries);
-                const grad = ['135deg,#f97316,#ec4899', '135deg,#06b6d4,#1877f2', '135deg,#7c3aed,#ec4899',
-                    '135deg,#10b981,#06b6d4'
-                ][c % 4];
-                pollCommentsHtml += `
-              <div class="story-comment-item">
-                <div class="story-comment-avatar" style="background:linear-gradient(${grad})">${cName[0]}</div>
-                <div class="story-comment-bubble">
-                  <div class="story-comment-name">${cName}</div>
-                  Unpopular opinion: ${pol}'s ${topic} policy is ${judgement} for ${beneficiary}.
-                </div>
-              </div>`;
-            }
-
-            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
-            const el = document.createElement('article');
-            el.className = 'post';
-            el.style.animationDelay = `${i * 40}ms`;
-            el.innerHTML = `
-            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
-              <img class="avatar" src="${avatar}" alt="">
-              <div class="meta">
-                <div class="name-wrap"><span class="name">${escapeHtml(name)}</span> ${friendBadge}</div>
-                <div class="time">${minutes}m ago · 🌐</div>
-              </div>
-            </div>
-            <div class="poll-wrap">
-              <div class="poll-question">Who has the best policies right now?</div>
-              <div class="poll-options" id="${pollId}">${optionsHtml}</div>
-              <div class="poll-total" id="${pollId}-total" style="display:none">${totalVotes.toLocaleString()} votes</div>
-            </div>
-            <div class="actions">
-              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
-              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
-              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
-              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
-              <button type="button" class="friend-btn ${isF ? 'is-friend' : ''}" onclick="event.stopPropagation();toggleFriend('${escapeHtml(name)}')">
-                ${isF ? '✅ Friend' : '➕ Add friend'}
-              </button>
-            </div>
-            <button type="button" class="show-poll-comments-btn" onclick="togglePollComments(this)">💬 Show comments (${commentCount})</button>
-            <div class="poll-comments">${pollCommentsHtml}</div>
-          `;
-            return el;
         }
 
         function votePoll(btn) {
@@ -4259,11 +4470,6 @@
             }
         }
 
-        // ---- Original createPost (overridden above) ----
-        // We already override createPost with createPostWithFriendBoost
-
-        let loading = false;
-
         // ---- setupInfiniteScroll ----
         function setupInfiniteScroll() {
             const sentinel = document.getElementById('sentinel');
@@ -4427,7 +4633,6 @@
                 postBtn.disabled = true;
                 postRow.classList.remove('visible');
                 input.blur();
-                // Increment sensory counter for user post
                 incrementSensoryCounter();
             });
 
@@ -4932,7 +5137,6 @@
             });
             renderChallengeCard();
 
-            // Challenge scroll tracking via MutationObserver
             const feed = document.getElementById('feed');
             if (feed) {
                 const observer = new MutationObserver((mutations) => {
@@ -4959,22 +5163,11 @@
 
         // ---- Init ----
         document.addEventListener('DOMContentLoaded', () => {
-            // Ensure the feed is loaded with friend-boosted posts
-            // We override loadFeed above, but we need to call it.
-            // However, the original loadFeed was already called in the inline script.
-            // We'll replace the function and call it again.
-            // But we need to prevent duplicate loading.
-            // We'll clear the feed and re-load.
             const feed = document.getElementById('feed');
-            // Keep pinned posts
             const pinned = feed.querySelectorAll('.pinned-post');
             feed.innerHTML = '';
             pinned.forEach(p => feed.appendChild(p));
-
-            // Load the feed using our overridden function
-            window.loadFeed();
-
-            // Load pinned post from URL
+            loadFeed();
             loadPinnedPostFromURL();
             setupInfiniteScroll();
             setupComposer();
@@ -4983,15 +5176,18 @@
             setupBell();
             setupPersonalityRows();
 
-            // Expose functions globally
+            // Expose functions
             window.openFriendsModal = openFriendsModal;
             window.openProfile = openProfile;
             window.toggleFriend = toggleFriend;
             window.refreshFeed = refreshFeed;
+            window.getFollowing = getFollowing;
             window.getFriends = getFriends;
-            window.addFriend = addFriend;
-            window.removeFriend = removeFriend;
+            window.followUser = followUser;
+            window.unfollowUser = unfollowUser;
+            window.isFollowing = isFollowing;
             window.isFriend = isFriend;
+            window.handleFollowClick = handleFollowClick;
         });
     </script>
 </body>
