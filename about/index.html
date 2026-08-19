@@ -7,6 +7,72 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- ─── STRUCTURED DATA ─── -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [{
+                "@type": "AboutPage",
+                "@id": "https://chill-space.pages.dev/about/#aboutpage",
+                "url": "https://chill-space.pages.dev/about/",
+                "name": "About ChillSpace",
+                "description": "Learn what ChillSpace is, why it exists, and how it differs from traditional social media.",
+                "isPartOf": {
+                    "@id": "https://chill-space.pages.dev/#website"
+                },
+                "mainEntity": {
+                    "@type": "Article",
+                    "headline": "What is ChillSpace?",
+                    "alternativeHeadline": "Placebo Social Media – A Simulated Network",
+                    "description": "ChillSpace is a deliberately low‑stakes, algorithm‑free social platform designed to mimic the rituals of social media without the addictive dopamine hits.",
+                    "author": {
+                        "@type": "Person",
+                        "name": "The ChillSpace Team"
+                    },
+                    "datePublished": "2026-08-19",
+                    "about": {
+                        "@type": "Thing",
+                        "name": "Placebo social media",
+                        "description": "A type of social network that imitates the features of mainstream platforms (posts, likes, comments) but removes psychological hooks such as infinite scroll, personalization algorithms, and notification overload."
+                    }
+                }
+            }, {
+                "@type": "FAQPage",
+                "@id": "https://chill-space.pages.dev/about/#faq",
+                "mainEntity": [{
+                    "@type": "Question",
+                    "name": "What is ChillSpace?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "ChillSpace is a placebo social media network – a simulated social platform that offers the rituals of interaction (posting, liking, commenting) without the addictive dopamine loops found on mainstream sites."
+                    }
+                }, {
+                    "@type": "Question",
+                    "name": "Why does ChillSpace exist?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "It was created to provide a space for people who enjoy the social aspects of sharing and connecting, but want to avoid the psychological manipulation, algorithmic feeds, and endless engagement tactics typical of commercial social media."
+                    }
+                }, {
+                    "@type": "Question",
+                    "name": "How is ChillSpace different from other social media?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "ChillSpace has no algorithmic timeline, no infinite scroll, no push notifications, and no engagement‑optimization. Posts appear in chronological order, interactions are low‑pressure, and the entire experience is intentionally ‘dumbed down’ to mimic a social feed without the addictive feedback."
+                    }
+                }, {
+                    "@type": "Question",
+                    "name": "Is ChillSpace a real social network?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes and no – it functions as a real platform where you can create posts, follow others, and interact, but its design philosophy is to be a ‘placebo’ version, so you get the feel of social media without the harmful psychological effects."
+                    }
+                }]
+            }]
+        }
+    </script>
+
     <style>
         /* ── Reset & Base ── */
         *,
@@ -25,10 +91,9 @@
             --text-primary: #f0f0ff;
             --text-secondary: rgba(240, 240, 255, 0.7);
             --text-muted: rgba(240, 240, 255, 0.4);
-            --accent-teal: #00d4ff;
-            --accent-purple: #7c3aed;
-            --accent-pink: #ec4899;
-            --accent-amber: #f59e0b;
+            /* Randomised accents will overwrite these */
+            --accent-1: #00d4ff;
+            --accent-2: #7c3aed;
             --font-display: 'Space Grotesk', sans-serif;
             --font-body: 'Inter', sans-serif;
             --radius: 20px;
@@ -74,7 +139,7 @@
             height: 600px;
             top: -10%;
             left: -10%;
-            background: var(--accent-purple);
+            background: var(--accent-2);
             animation-duration: 25s;
         }
 
@@ -83,7 +148,7 @@
             height: 500px;
             bottom: -10%;
             right: -10%;
-            background: var(--accent-teal);
+            background: var(--accent-1);
             animation-duration: 20s;
             animation-delay: -5s;
         }
@@ -93,7 +158,7 @@
             height: 400px;
             top: 40%;
             left: 50%;
-            background: var(--accent-pink);
+            background: var(--accent-2);
             animation-duration: 18s;
             animation-delay: -10s;
             opacity: 0.15;
@@ -137,7 +202,7 @@
             background: var(--bg-primary);
         }
         ::-webkit-scrollbar-thumb {
-            background: var(--accent-teal);
+            background: var(--accent-1);
             border-radius: 10px;
         }
 
@@ -187,7 +252,7 @@
             width: 36px;
             height: 36px;
             border-radius: 10px;
-            background: linear-gradient(135deg, var(--accent-teal), var(--accent-purple));
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -219,7 +284,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--accent-teal);
+            background: var(--accent-1);
             transition: width 0.3s ease;
             border-radius: 2px;
         }
@@ -241,7 +306,7 @@
         .nav-cta {
             padding: 8px 20px;
             border-radius: 50px;
-            background: linear-gradient(135deg, var(--accent-teal), var(--accent-purple));
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
             color: #fff !important;
             font-weight: 600;
             font-size: 0.85rem;
@@ -274,7 +339,7 @@
             border: 1px solid rgba(0, 212, 255, 0.12);
             font-size: 0.8rem;
             font-weight: 500;
-            color: var(--accent-teal);
+            color: var(--accent-1);
             margin-bottom: 28px;
             backdrop-filter: blur(10px);
         }
@@ -283,7 +348,7 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--accent-teal);
+            background: var(--accent-1);
             animation: pulseDot 2s ease-in-out infinite;
         }
 
@@ -306,7 +371,7 @@
             letter-spacing: -0.03em;
             line-height: 1.05;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, #fff 30%, var(--accent-teal) 70%, var(--accent-purple));
+            background: linear-gradient(135deg, #fff 30%, var(--accent-1) 70%, var(--accent-2));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -358,7 +423,7 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: var(--accent-teal);
+            color: var(--accent-1);
             margin-bottom: 12px;
             background: rgba(0, 212, 255, 0.06);
             padding: 4px 16px;
@@ -376,7 +441,7 @@
         }
 
         .section-title .highlight {
-            background: linear-gradient(135deg, var(--accent-teal), var(--accent-purple));
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -439,7 +504,7 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-teal), var(--accent-purple), transparent);
+            background: linear-gradient(90deg, transparent, var(--accent-1), var(--accent-2), transparent);
             opacity: 0;
             transition: opacity 0.4s ease;
         }
@@ -562,7 +627,7 @@
             font-weight: 700;
             font-size: 3.2rem;
             line-height: 1;
-            background: linear-gradient(135deg, var(--accent-teal), var(--accent-purple));
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -635,7 +700,7 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-teal), var(--accent-purple));
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -657,6 +722,66 @@
             color: var(--text-secondary);
             font-size: 0.92rem;
             line-height: 1.6;
+        }
+
+        /* ── FAQ Section ── */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 48px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius);
+            padding: 24px 32px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .faq-item .question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            user-select: none;
+        }
+
+        .faq-item .question .toggle {
+            font-size: 1.4rem;
+            color: var(--accent-1);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item .answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .faq-item.open .answer {
+            max-height: 300px;
+            padding-top: 16px;
+        }
+
+        .faq-item.open .question .toggle {
+            transform: rotate(45deg);
         }
 
         /* ── CTA ── */
@@ -684,7 +809,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 30% 40%, rgba(0, 212, 255, 0.04), transparent 60%);
+            background: radial-gradient(circle at 30% 40%, var(--accent-1), transparent 60%);
+            opacity: 0.08;
             pointer-events: none;
         }
 
@@ -711,7 +837,7 @@
             gap: 10px;
             padding: 14px 40px;
             border-radius: 50px;
-            background: linear-gradient(135deg, var(--accent-teal), var(--accent-purple));
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
             color: #fff;
             font-weight: 600;
             font-size: 1rem;
@@ -786,6 +912,9 @@
             }
             .card {
                 padding: 28px 24px;
+            }
+            .faq-item {
+                padding: 20px 24px;
             }
         }
 
@@ -1036,6 +1165,60 @@
         </div>
     </section>
 
+    <!-- ─── FAQ Section ─── -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-label fade-in">Got Questions?</span>
+                <h2 class="section-title fade-in delay-1">
+                    Frequently <span class="highlight">Asked</span>
+                </h2>
+                <p class="section-desc centered fade-in delay-2">
+                    Everything you need to know about ChillSpace.
+                </p>
+            </div>
+
+            <div class="faq-list fade-in delay-3">
+                <div class="faq-item open">
+                    <div class="question">
+                        <span>What is ChillSpace?</span>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="answer">
+                        ChillSpace is a placebo social media network – a simulated social platform that offers the rituals of interaction (posting, liking, commenting) without the addictive dopamine loops found on mainstream sites.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="question">
+                        <span>Why does ChillSpace exist?</span>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="answer">
+                        It was created to provide a space for people who enjoy the social aspects of sharing and connecting, but want to avoid the psychological manipulation, algorithmic feeds, and endless engagement tactics typical of commercial social media.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="question">
+                        <span>How is ChillSpace different from other social media?</span>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="answer">
+                        ChillSpace has no algorithmic timeline, no infinite scroll, no push notifications, and no engagement‑optimization. Posts appear in chronological order, interactions are low‑pressure, and the entire experience is intentionally ‘dumbed down’ to mimic a social feed without the addictive feedback.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="question">
+                        <span>Is ChillSpace a real social network?</span>
+                        <span class="toggle">+</span>
+                    </div>
+                    <div class="answer">
+                        Yes and no – it functions as a real platform where you can create posts, follow others, and interact, but its design philosophy is to be a ‘placebo’ version, so you get the feel of social media without the harmful psychological effects.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ─── CTA ─── -->
     <section class="cta-section">
         <div class="container">
@@ -1076,6 +1259,20 @@
 
     <!-- ─── Scripts ─── -->
     <script>
+        // ── Random Theme ──
+        (function randomTheme() {
+            const colors = [
+                { name: 'green', c1: '#22c55e', c2: '#16a34a' },
+                { name: 'blue', c1: '#3b82f6', c2: '#2563eb' },
+                { name: 'orange', c1: '#f97316', c2: '#ea580c' },
+                { name: 'purple', c1: '#8b5cf6', c2: '#7c3aed' }
+            ];
+            const selected = colors[Math.floor(Math.random() * colors.length)];
+            document.documentElement.style.setProperty('--accent-1', selected.c1);
+            document.documentElement.style.setProperty('--accent-2', selected.c2);
+            // also update the glow orbs if needed (they use --accent-1/2 already)
+        })();
+
         // ── Scroll Reveal ──
         (function() {
             const reveals = document.querySelectorAll('.reveal');
@@ -1092,9 +1289,6 @@
             });
 
             reveals.forEach(el => observer.observe(el));
-
-            // Also observe cards and steps that use fade-in but might benefit from re-trigger
-            // We'll just let the fade-in class handle initial load.
         })();
 
         // ── Navbar background on scroll ──
@@ -1125,7 +1319,14 @@
             });
         });
 
-        console.log('🌊 ChillSpace · about page vibing');
+        // ── FAQ Toggle ──
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('open');
+            });
+        });
+
+        console.log('🌊 ChillSpace · about page vibing with random theme');
     </script>
 
 </body>
