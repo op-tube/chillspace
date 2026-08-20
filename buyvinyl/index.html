@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BuyVinyl – Love for Music. Music for Dopamine.</title>
+    <meta name="description" content="BuyVinyl – the dopest vinyl store for pop & K-pop fans. Fake albums, real artists, all the dopamine vibes. From ChillSpace." />
+    <link rel="canonical" href="https://chill-space.pages.dev/buyvinyl/" />
+
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "BuyVinyl",
+            "description": "Love for Music. Music for Dopamine.",
+            "url": "https://chill-space.pages.dev/buyvinyl/",
+            "publisher": {
+                "@type": "Organization",
+                "name": "ChillSpace"
+            }
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://chill-space.pages.dev/" },
+                { "@type": "ListItem", "position": 2, "name": "BuyVinyl", "item": "https://chill-space.pages.dev/buyvinyl/" }
+            ]
+        }
+    </script>
+
+    <style>
+        /* ---------- RESET & BASE ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            background: #faf8ff;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 107, 157, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(79, 195, 247, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 217, 61, 0.04) 0%, transparent 70%);
+            min-height: 100vh;
+            color: #1a1a2e;
+            padding: 0 20px 60px;
+        }
+
+        /* ---------- SCROLLBAR ---------- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0ecff;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ff6b9d, #9b59b6);
+            border-radius: 10px;
+        }
+
+        /* ---------- HEADER ---------- */
+        .header {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 0 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            border-bottom: 2px solid rgba(255, 107, 157, 0.15);
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #ff6b9d, #9b59b6, #4fc3f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .brand .sub {
+            font-size: 0.85rem;
+            color: #8884b8;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .brand .sub a {
+            color: #8884b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .brand .sub a:hover {
+            color: #ff6b9d;
+        }
+
+        .brand .slogan {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #6c68a0;
+            margin-top: 4px;
+            font-style: italic;
+            -webkit-text-fill-color: #6c68a0;
+            background: none;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .cart-btn {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            padding: 4px 8px;
+            border-radius: 12px;
+            background: rgba(255, 107, 157, 0.08);
+            line-height: 1;
+        }
+        .cart-btn:hover {
+            transform: scale(1.12);
+            background: rgba(255, 107, 157, 0.16);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, #ff6b9d, #e84393);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            min-width: 22px;
+            height: 22px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 6px;
+            box-shadow: 0 2px 12px rgba(255, 107, 157, 0.4);
+            transition: transform 0.2s;
+        }
+        .cart-badge.pop {
+            animation: badgePop 0.35s ease;
+        }
+
+        @keyframes badgePop {
+            0% {
+                transform: scale(0.5);
+            }
+            70% {
+                transform: scale(1.3);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .backlink {
+            font-size: 0.8rem;
+            color: #a8a4d0;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 107, 157, 0.12);
+            transition: all 0.25s;
+        }
+        .backlink:hover {
+            background: rgba(255, 107, 157, 0.10);
+            border-color: #ff6b9d;
+            color: #ff6b9d;
+            transform: translateY(-1px);
+        }
+
+        /* ---------- GRID ---------- */
+        .grid-container {
+            max-width: 1400px;
+            margin: 32px auto 0;
+        }
+
+        .grid-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .grid-title span {
+            background: linear-gradient(135deg, #ff6b9d, #f9a825);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .grid-sub {
+            color: #8884b8;
+            margin-bottom: 24px;
+            font-size: 1.05rem;
+        }
+
+        .vinyl-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 28px;
+        }
+
+        /* ---------- VINYL CARD ---------- */
+        .vinyl-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 20px 18px 22px;
+            box-shadow: 0 8px 32px rgba(155, 89, 182, 0.08), 0 2px 8px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .vinyl-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 16px 48px rgba(155, 89, 182, 0.14), 0 4px 16px rgba(255, 107, 157, 0.06);
+            border-color: rgba(255, 107, 157, 0.20);
+        }
+
+        .vinyl-card .vinyl-svg-wrap {
+            width: 100%;
+            max-width: 180px;
+            aspect-ratio: 1/1;
+            margin: 0 auto 12px;
+            transition: transform 0.4s ease;
+        }
+        .vinyl-card:hover .vinyl-svg-wrap {
+            transform: rotate(-4deg) scale(1.02);
+        }
+
+        .vinyl-card .vinyl-svg-wrap svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 50%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .vinyl-card .artist {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-top: 4px;
+            letter-spacing: -0.3px;
+        }
+
+        .vinyl-card .album {
+            font-size: 0.9rem;
+            color: #6c68a0;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .vinyl-card .price {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #2d2b55;
+            margin-top: 8px;
+            background: linear-gradient(135deg, #ff6b9d, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .vinyl-card .add-btn {
+            margin-top: 14px;
+            padding: 10px 28px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            background: linear-gradient(135deg, #ff6b9d, #e84393);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.30);
+            width: 100%;
+            max-width: 160px;
+            letter-spacing: 0.3px;
+        }
+        .vinyl-card .add-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 24px rgba(255, 107, 157, 0.45);
+        }
+        .vinyl-card .add-btn:active {
+            transform: scale(0.95);
+        }
+        .vinyl-card .add-btn.added {
+            background: linear-gradient(135deg, #6bcb77, #2ecc71);
+            box-shadow: 0 4px 16px rgba(107, 203, 119, 0.35);
+        }
+
+        /* ---------- CART SIDEBAR ---------- */
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(26, 26, 46, 0.40);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: none;
+            justify-content: flex-end;
+            animation: fadeIn 0.3s ease;
+        }
+        .cart-overlay.open {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .cart-sidebar {
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 28px 24px 30px;
+            box-shadow: -8px 0 40px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(60px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0ecff;
+        }
+
+        .cart-header h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #8884b8;
+            transition: transform 0.2s;
+            padding: 4px 8px;
+            border-radius: 10px;
+        }
+        .cart-close:hover {
+            transform: rotate(90deg);
+            color: #ff6b9d;
+            background: rgba(255, 107, 157, 0.06);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 0 12px;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 40px 0;
+            color: #a8a4d0;
+            font-size: 1.1rem;
+        }
+        .cart-empty .big-emoji {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 10px;
+            border-radius: 16px;
+            background: #f8f6ff;
+            margin-bottom: 10px;
+            transition: background 0.2s;
+        }
+        .cart-item:hover {
+            background: #f0ecff;
+        }
+
+        .cart-item .mini-vinyl {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .cart-item .info {
+            flex: 1;
+            text-align: left;
+        }
+        .cart-item .info .artist {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #1a1a2e;
+        }
+        .cart-item .info .album {
+            font-size: 0.8rem;
+            color: #8884b8;
+        }
+        .cart-item .info .price {
+            font-weight: 700;
+            color: #2d2b55;
+            font-size: 0.9rem;
+        }
+
+        .cart-item .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cart-item .qty-control button {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 30px;
+            background: #e8e4f8;
+            color: #4a4678;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-item .qty-control button:hover {
+            background: #ff6b9d;
+            color: #fff;
+        }
+        .cart-item .qty-control .qty-num {
+            font-weight: 700;
+            min-width: 24px;
+            text-align: center;
+            color: #1a1a2e;
+        }
+
+        .cart-item .remove-btn {
+            background: none;
+            border: none;
+            color: #ccc8e8;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 4px;
+        }
+        .cart-item .remove-btn:hover {
+            color: #ff6b9d;
+        }
+
+        .cart-footer {
+            padding-top: 16px;
+            border-top: 2px solid #f0ecff;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+        }
+        .cart-total .total-price {
+            background: linear-gradient(135deg, #ff6b9d, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .buy-now-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ff6b9d, #e84393);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(255, 107, 157, 0.30);
+            letter-spacing: 0.5px;
+        }
+        .buy-now-btn:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 6px 32px rgba(255, 107, 157, 0.45);
+        }
+        .buy-now-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ---------- CHECKOUT MODAL ---------- */
+        .checkout-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(26, 26, 46, 0.55);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.4s ease;
+        }
+        .checkout-overlay.open {
+            display: flex;
+        }
+
+        .checkout-box {
+            background: #ffffff;
+            border-radius: 40px;
+            max-width: 580px;
+            width: 100%;
+            padding: 40px 36px 44px;
+            text-align: center;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.12);
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(40px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .checkout-box .step-icon {
+            font-size: 3.6rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .checkout-box h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .checkout-box .sub-text {
+            color: #8884b8;
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 60px;
+            height: 60px;
+            margin: 12px auto 16px;
+            border-radius: 50%;
+            border: 5px solid #f0ecff;
+            border-top-color: #ff6b9d;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Tracking */
+        .tracking-container {
+            margin: 20px 0 12px;
+            padding: 0 4px;
+        }
+
+        .tracking-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-align: left;
+            padding: 8px 0;
+        }
+
+        .tracking-step {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 8px 12px;
+            border-radius: 14px;
+            background: #f8f6ff;
+            transition: all 0.4s ease;
+            opacity: 0.3;
+            transform: scale(0.97);
+        }
+        .tracking-step.active {
+            opacity: 1;
+            transform: scale(1);
+            background: #f0ecff;
+            box-shadow: 0 2px 12px rgba(155, 89, 182, 0.06);
+        }
+        .tracking-step .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ddd8f0;
+            flex-shrink: 0;
+            transition: background 0.4s;
+        }
+        .tracking-step.active .dot {
+            background: #6bcb77;
+            box-shadow: 0 0 0 4px rgba(107, 203, 119, 0.20);
+        }
+        .tracking-step .step-label {
+            font-weight: 600;
+            color: #1a1a2e;
+            font-size: 0.95rem;
+        }
+        .tracking-step .step-location {
+            font-size: 0.8rem;
+            color: #8884b8;
+            margin-left: auto;
+            font-weight: 500;
+        }
+
+        /* Delivery arrived */
+        .arrived-vinyl {
+            width: 140px;
+            height: 140px;
+            margin: 8px auto 16px;
+            animation: spinVinyl 3s linear infinite;
+        }
+        @keyframes spinVinyl {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .arrived-vinyl svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 50%;
+            box-shadow: 0 8px 40px rgba(255, 107, 157, 0.20);
+        }
+
+        .checkout-box .close-checkout {
+            margin-top: 24px;
+            padding: 12px 40px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            background: #f0ecff;
+            color: #4a4678;
+            transition: all 0.25s;
+        }
+        .checkout-box .close-checkout:hover {
+            background: #ff6b9d;
+            color: #fff;
+            transform: scale(1.03);
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 700px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .brand h1 {
+                font-size: 1.8rem;
+            }
+            .header-actions {
+                justify-content: space-between;
+                width: 100%;
+            }
+            .vinyl-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 16px;
+            }
+            .vinyl-card {
+                padding: 14px 12px 18px;
+            }
+            .cart-sidebar {
+                max-width: 100%;
+                padding: 20px 16px 24px;
+            }
+            .checkout-box {
+                padding: 28px 20px 32px;
+            }
+            .checkout-box h2 {
+                font-size: 1.6rem;
+            }
+            .grid-title {
+                font-size: 1.4rem;
+            }
+            .backlink {
+                font-size: 0.7rem;
+                padding: 4px 12px;
+            }
+        }
+
+        @media (max-width: 440px) {
+            .vinyl-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 12px;
+            }
+            .vinyl-card .vinyl-svg-wrap {
+                max-width: 130px;
+            }
+            .vinyl-card .artist {
+                font-size: 0.9rem;
+            }
+            .vinyl-card .add-btn {
+                font-size: 0.8rem;
+                padding: 8px 16px;
+                max-width: 130px;
+            }
+        }
+
+        /* ---------- UTILITY ---------- */
+        .hidden {
+            display: none !important;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #ff6b9d, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* small pulse for dopamine */
+        .dopamine-pulse {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 157, 0.15);
+            }
+            50% {
+                box-shadow: 0 0 0 12px rgba(255, 107, 157, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header">
+        <div class="brand">
+            <h1>💿 BuyVinyl</h1>
+            <div class="sub">
+                from <a href="https://chill-space.pages.dev/" target="_blank">ChillSpace</a>
+            </div>
+            <div class="slogan">✨ Love for Music. Music for Dopamine.</div>
+        </div>
+        <div class="header-actions">
+            <a href="https://chill-space.pages.dev/" target="_blank" class="backlink" aria-label="Back to ChillSpace">
+                🏠 ChillSpace
+            </a>
+            <button class="cart-btn" id="cartToggle" aria-label="Open cart">
+                🛒
+                <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========== GRID ========== -->
+    <main class="grid-container">
+        <div class="grid-title">
+            🎵 New Vinyl Drops <span>·</span> Pop &amp; K-Pop
+        </div>
+        <div class="grid-sub">🌈 Every vinyl is a unique colour — just like your music taste.</div>
+
+        <div class="vinyl-grid" id="vinylGrid"></div>
+    </main>
+
+    <!-- ========== CART SIDEBAR ========== -->
+    <div class="cart-overlay" id="cartOverlay">
+        <div class="cart-sidebar" id="cartSidebar">
+            <div class="cart-header">
+                <h2>🛒 Your Cart</h2>
+                <button class="cart-close" id="cartClose" aria-label="Close cart">✕</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <div class="cart-empty">
+                    <span class="big-emoji">🧺</span>
+                    Your cart is empty.<br />Go grab some vinyl!
+                </div>
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Total</span>
+                    <span class="total-price" id="cartTotal">$0.00</span>
+                </div>
+                <button class="buy-now-btn" id="buyNowBtn">💳 Buy Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== CHECKOUT MODAL ========== -->
+    <div class="checkout-overlay" id="checkoutOverlay">
+        <div class="checkout-box" id="checkoutBox">
+            <!-- Dynamic content injected by JS -->
+            <div id="checkoutContent"></div>
+        </div>
+    </div>
+
+    <!-- ========== AUDIO (hidden) ========== -->
+    <audio id="audioPlayer" style="display:none;"></audio>
+
+    <script>
+        // ============================================================
+        //  DATA
+        // ============================================================
+        const ARTISTS = [
+            // Pop
+            'Taylor Swift',
+            'Ed Sheeran',
+            'Ariana Grande',
+            'Billie Eilish',
+            'Harry Styles',
+            'Dua Lipa',
+            'Olivia Rodrigo',
+            'The Weeknd',
+            'Justin Bieber',
+            'Lady Gaga',
+            'Katy Perry',
+            'Bruno Mars',
+            // K-pop
+            'BTS',
+            'BLACKPINK',
+            'TWICE',
+            'EXO',
+            'Stray Kids',
+            'ITZY',
+            'aespa',
+            'IVE',
+            'NewJeans',
+            'SEVENTEEN',
+            'NCT 127',
+            'ENHYPEN'
+        ];
+
+        const ALBUMS = [
+            'Neon Dreams',
+            'Midnight Pulse',
+            'Golden Horizon',
+            'Starlight Echo',
+            'Velvet Skies',
+            'Crimson Wave',
+            'Electric Love',
+            'Moonlit Dance',
+            'Sunset Boulevard',
+            'Cherry Blossom',
+            'Cosmic Hearts',
+            'Diamond Dust',
+            'Forever Young',
+            'Paradise Found',
+            'Rhythm & Soul',
+            'Shining Star',
+            'Urban Legends',
+            'Wildflower',
+            'Zenith',
+            'Aurora',
+            'Eclipse',
+            'Infinity',
+            'Lunar Tide',
+            'Solar Flare',
+            'Neon Lights',
+            'Fever Dream',
+            'Glow Stick',
+            'After Hours',
+            'Midnight Sun',
+            'Crystal Clear'
+        ];
+
+        // Pick 20 products: 10 pop + 10 k-pop
+        function buildProducts() {
+            const popArtists = ARTISTS.slice(0, 12);
+            const kpopArtists = ARTISTS.slice(12);
+            const shuffledPop = shuffleArray([...popArtists]);
+            const shuffledKpop = shuffleArray([...kpopArtists]);
+            const selectedPop = shuffledPop.slice(0, 10);
+            const selectedKpop = shuffledKpop.slice(0, 10);
+            const combined = [...selectedPop, ...selectedKpop];
+
+            const shuffledAlbums = shuffleArray([...ALBUMS]);
+
+            return combined.map((artist, i) => {
+                const album = shuffledAlbums[i % shuffledAlbums.length];
+                const price = (29.99 + Math.random() * 10).toFixed(2);
+                return {
+                    id: i,
+                    artist,
+                    album,
+                    price: parseFloat(price),
+                    color: generateVibrantColor(),
+                };
+            });
+        }
+
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function generateVibrantColor() {
+            const hue = Math.floor(Math.random() * 360);
+            const sat = 70 + Math.floor(Math.random() * 25);
+            const lig = 55 + Math.floor(Math.random() * 30);
+            return `hsl(${hue}, ${sat}%, ${lig}%)`;
+        }
+
+        // ============================================================
+        //  VINYL SVG GENERATOR
+        // ============================================================
+        function vinylSVG(color, size = 180) {
+            const r = size / 2;
+            const labelR = r * 0.34;
+            const center = r;
+            return `
+            <svg viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+              <!-- outer disc -->
+              <circle cx="${center}" cy="${center}" r="${r - 2}" fill="#1a1a1a" />
+              <!-- subtle shine -->
+              <circle cx="${center}" cy="${center}" r="${r - 2}" fill="url(#shine)" opacity="0.15" />
+              <!-- grooves -->
+              ${Array.from({ length: 12 }, (_, i) => {
+                const rr = r - 8 - i * 6.5;
+                if (rr < labelR + 8) return '';
+                return `<circle cx="${center}" cy="${center}" r="${rr}" fill="none" stroke="#2a2a2a" stroke-width="0.6" opacity="0.5" />`;
+              }).join('')}
+              <!-- label -->
+              <circle cx="${center}" cy="${center}" r="${labelR}" fill="${color}" />
+              <circle cx="${center}" cy="${center}" r="${labelR - 2}" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
+              <!-- label text (subtle) -->
+              <text x="${center}" y="${center - 6}" font-size="${labelR * 0.22}" font-weight="700" fill="rgba(255,255,255,0.85)" text-anchor="middle" font-family="sans-serif">♬</text>
+              <text x="${center}" y="${center + 14}" font-size="${labelR * 0.16}" font-weight="500" fill="rgba(255,255,255,0.60)" text-anchor="middle" font-family="sans-serif">VINYL</text>
+              <!-- centre hole -->
+              <circle cx="${center}" cy="${center}" r="${r * 0.038}" fill="#1a1a1a" />
+              <!-- reflection highlight -->
+              <ellipse cx="${center - r * 0.2}" cy="${center - r * 0.3}" rx="${r * 0.35}" ry="${r * 0.12}" fill="rgba(255,255,255,0.04)" transform="rotate(-30, ${center - r * 0.2}, ${center - r * 0.3})" />
+              <defs>
+                <radialGradient id="shine" cx="40%" cy="35%" r="60%">
+                  <stop offset="0%" stop-color="#fff" stop-opacity="0.5" />
+                  <stop offset="60%" stop-color="#fff" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+            </svg>
+          `;
+        }
+
+        // ============================================================
+        //  STATE
+        // ============================================================
+        let products = [];
+        let cart = {}; // productId -> quantity
+        let checkoutTimer = null;
+        let audioPlaying = false;
+        let audioSource = null;
+        const AUDIO_URLS = [
+            'https://dn710306.ca.archive.org/0/items/CountingUpOn1Tap/AUD-20260124-WA0004.mp3',
+            'https://ia800804.us.archive.org/33/items/copyr_3_rr/song.mp3'
+        ];
+
+        // Tracking locations (fake but fun)
+        const TRACKING_LOCATIONS = [
+            '🎚️ Vinyl Press · Seoul',
+            '📦 Distribution Hub · Tokyo',
+            '✈️ Cargo Transit · Singapore',
+            '🌍 Sorting Centre · Dubai',
+            '🚚 On the Road · London',
+            '📬 Local Depot · New York',
+            '🚴‍♂️ Out for Delivery · Your Town',
+            '🏠 Arrived at Your Doorstep!'
+        ];
+
+        // ============================================================
+        //  DOM REFS
+        // ============================================================
+        const grid = document.getElementById('vinylGrid');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const cartBadge = document.getElementById('cartBadge');
+        const cartToggle = document.getElementById('cartToggle');
+        const cartClose = document.getElementById('cartClose');
+        const buyNowBtn = document.getElementById('buyNowBtn');
+        const checkoutOverlay = document.getElementById('checkoutOverlay');
+        const checkoutContent = document.getElementById('checkoutContent');
+        const audioEl = document.getElementById('audioPlayer');
+
+        // ============================================================
+        //  RENDER GRID
+        // ============================================================
+        function renderGrid() {
+            grid.innerHTML = '';
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'vinyl-card';
+                card.dataset.id = p.id;
+
+                const svg = vinylSVG(p.color, 180);
+
+                card.innerHTML = `
+              <div class="vinyl-svg-wrap">${svg}</div>
+              <div class="artist">${p.artist}</div>
+              <div class="album">${p.album}</div>
+              <div class="price">$${p.price.toFixed(2)}</div>
+              <button class="add-btn" data-id="${p.id}">➕ Add to Cart</button>
+            `;
+
+                const btn = card.querySelector('.add-btn');
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    addToCart(p.id);
+                    // visual feedback
+                    btn.textContent = '✅ Added!';
+                    btn.classList.add('added');
+                    setTimeout(() => {
+                        btn.textContent = '➕ Add to Cart';
+                        btn.classList.remove('added');
+                    }, 800);
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        // ============================================================
+        //  CART
+        // ============================================================
+        function addToCart(id) {
+            if (!cart[id]) cart[id] = 0;
+            cart[id]++;
+            updateCartUI();
+            // animate badge
+            const badge = cartBadge;
+            badge.classList.remove('pop');
+            void badge.offsetWidth;
+            badge.classList.add('pop');
+        }
+
+        function removeFromCart(id) {
+            if (cart[id]) {
+                cart[id]--;
+                if (cart[id] <= 0) delete cart[id];
+                updateCartUI();
+            }
+        }
+
+        function changeQty(id, delta) {
+            if (!cart[id]) cart[id] = 0;
+            cart[id] += delta;
+            if (cart[id] <= 0) delete cart[id];
+            updateCartUI();
+        }
+
+        function getCartTotal() {
+            let total = 0;
+            let count = 0;
+            for (const id in cart) {
+                const qty = cart[id];
+                const product = products.find(p => p.id === parseInt(id));
+                if (product) {
+                    total += product.price * qty;
+                    count += qty;
+                }
+            }
+            return { total, count };
+        }
+
+        function updateCartUI() {
+            const { total, count } = getCartTotal();
+            cartBadge.textContent = count;
+            cartTotal.textContent = `$${total.toFixed(2)}`;
+
+            // render items
+            const ids = Object.keys(cart);
+            if (ids.length === 0) {
+                cartItems.innerHTML = `
+              <div class="cart-empty">
+                <span class="big-emoji">🧺</span>
+                Your cart is empty.<br />Go grab some vinyl!
+              </div>
+            `;
+                buyNowBtn.disabled = true;
+                return;
+            }
+
+            buyNowBtn.disabled = false;
+            let html = '';
+            for (const id of ids) {
+                const qty = cart[id];
+                const product = products.find(p => p.id === parseInt(id));
+                if (!product) continue;
+                const color = product.color;
+                html += `
+              <div class="cart-item" data-id="${id}">
+                <div class="mini-vinyl" style="background: ${color};"></div>
+                <div class="info">
+                  <div class="artist">${product.artist}</div>
+                  <div class="album">${product.album}</div>
+                  <div class="price">$${product.price.toFixed(2)}</div>
+                </div>
+                <div class="qty-control">
+                  <button class="qty-dec" data-id="${id}">−</button>
+                  <span class="qty-num">${qty}</span>
+                  <button class="qty-inc" data-id="${id}">+</button>
+                </div>
+                <button class="remove-btn" data-id="${id}" aria-label="Remove">✕</button>
+              </div>
+            `;
+            }
+            cartItems.innerHTML = html;
+
+            // attach events
+            cartItems.querySelectorAll('.qty-dec').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    changeQty(parseInt(btn.dataset.id), -1);
+                });
+            });
+            cartItems.querySelectorAll('.qty-inc').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    changeQty(parseInt(btn.dataset.id), 1);
+                });
+            });
+            cartItems.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.dataset.id);
+                    delete cart[id];
+                    updateCartUI();
+                });
+            });
+        }
+
+        // ============================================================
+        //  CART SIDEBAR TOGGLE
+        // ============================================================
+        function openCart() {
+            cartOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCart() {
+            cartOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        cartToggle.addEventListener('click', openCart);
+        cartClose.addEventListener('click', closeCart);
+        cartOverlay.addEventListener('click', (e) => {
+            if (e.target === cartOverlay) closeCart();
+        });
+
+        // ============================================================
+        //  CHECKOUT FLOW
+        // ============================================================
+        function startCheckout() {
+            const { count } = getCartTotal();
+            if (count === 0) return;
+
+            // close cart
+            closeCart();
+
+            // open checkout modal
+            checkoutOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            // clear any previous audio
+            audioEl.pause();
+            audioEl.src = '';
+            audioPlaying = false;
+
+            // Step 1: Order placed
+            let step = 0;
+            const steps = [
+                { icon: '📦', title: 'Order placed!', sub: 'Your order is on its way...', showSpinner: true },
+                { icon: '🚚', title: 'Your order is being delivered', sub: 'Tracking your vinyl...', showSpinner: false },
+                { icon: '🏠', title: 'Your vinyl has arrived!', sub: 'Time to spin it! 🎶', showSpinner: false },
+            ];
+
+            let trackingIndex = 0;
+            let trackingInterval = null;
+            let arrivedTimeout = null;
+
+            function renderStep(stepIndex) {
+                const s = steps[stepIndex];
+                let html = `
+              <span class="step-icon">${s.icon}</span>
+              <h2>${s.title}</h2>
+              <p class="sub-text">${s.sub}</p>
+            `;
+
+                if (s.showSpinner) {
+                    html += `<div class="spinner"></div>`;
+                }
+
+                if (stepIndex === 1) {
+                    // tracking
+                    html += `
+                <div class="tracking-container">
+                  <div class="tracking-steps" id="trackingSteps">
+                    ${TRACKING_LOCATIONS.map((loc, i) => `
+                      <div class="tracking-step ${i === 0 ? 'active' : ''}" data-idx="${i}">
+                        <span class="dot"></span>
+                        <span class="step-label">${loc}</span>
+                        <span class="step-location">${i < TRACKING_LOCATIONS.length - 1 ? '⏳' : '🎯'}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              `;
+                }
+
+                if (stepIndex === 2) {
+                    // arrived - spinning vinyl with the color of the first product in cart
+                    const firstId = Object.keys(cart)[0];
+                    const firstProduct = products.find(p => p.id === parseInt(firstId));
+                    const color = firstProduct ? firstProduct.color : '#ff6b9d';
+                    const svg = vinylSVG(color, 200);
+                    html += `
+                <div class="arrived-vinyl">${svg}</div>
+                <p style="color:#6c68a0; font-size:0.95rem; margin-top:4px;">🎵 Your vinyl is spinning!</p>
+                <button class="close-checkout" id="closeCheckoutBtn">🔄 Keep Shopping</button>
+              `;
+                }
+
+                checkoutContent.innerHTML = html;
+
+                // if step 2, attach close handler
+                if (stepIndex === 2) {
+                    const closeBtn = document.getElementById('closeCheckoutBtn');
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', () => {
+                            closeCheckout();
+                        });
+                    }
+                    // play audio
+                    playRandomAudio();
+                }
+
+                // if step 1, start tracking progression
+                if (stepIndex === 1) {
+                    startTracking();
+                }
+            }
+
+            function startTracking() {
+                // clear any previous tracking
+                if (trackingInterval) clearInterval(trackingInterval);
+
+                // show first step active
+                const stepsEl = document.querySelectorAll('.tracking-step');
+                if (stepsEl.length) {
+                    stepsEl.forEach((el, i) => {
+                        el.classList.toggle('active', i === 0);
+                    });
+                }
+
+                let current = 0;
+                trackingInterval = setInterval(() => {
+                    current++;
+                    if (current >= TRACKING_LOCATIONS.length) {
+                        clearInterval(trackingInterval);
+                        trackingInterval = null;
+                        // move to arrived step
+                        setTimeout(() => {
+                            renderStep(2);
+                        }, 400);
+                        return;
+                    }
+                    const stepsEl = document.querySelectorAll('.tracking-step');
+                    if (stepsEl.length) {
+                        stepsEl.forEach((el, i) => {
+                            el.classList.toggle('active', i === current);
+                        });
+                        // update location text
+                        const labels = stepsEl.forEach((el, i) => {
+                            const locSpan = el.querySelector('.step-location');
+                            if (locSpan) {
+                                if (i === current) {
+                                    locSpan.textContent = '📍';
+                                } else if (i < current) {
+                                    locSpan.textContent = '✅';
+                                } else {
+                                    locSpan.textContent = '⏳';
+                                }
+                            }
+                        });
+                    }
+                }, 1800);
+            }
+
+            // Step 0: Order placed with spinner
+            renderStep(0);
+
+            // After 3s, go to step 1 (tracking)
+            setTimeout(() => {
+                renderStep(1);
+            }, 3000);
+
+            // After 30s total from start, go to step 2 (arrived)
+            const totalDelay = 30000;
+            arrivedTimeout = setTimeout(() => {
+                if (trackingInterval) {
+                    clearInterval(trackingInterval);
+                    trackingInterval = null;
+                }
+                renderStep(2);
+            }, totalDelay);
+
+            // Store timeouts for cleanup
+            window.__checkoutTimeouts = { arrivedTimeout };
+        }
+
+        function closeCheckout() {
+            if (window.__checkoutTimeouts) {
+                if (window.__checkoutTimeouts.arrivedTimeout) {
+                    clearTimeout(window.__checkoutTimeouts.arrivedTimeout);
+                }
+            }
+            if (window.__trackingInterval) {
+                clearInterval(window.__trackingInterval);
+                window.__trackingInterval = null;
+            }
+            // clear cart
+            cart = {};
+            updateCartUI();
+            checkoutOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+            audioEl.pause();
+            audioEl.src = '';
+            audioPlaying = false;
+        }
+
+        // ============================================================
+        //  AUDIO
+        // ============================================================
+        function playRandomAudio() {
+            if (audioPlaying) return;
+            const url = AUDIO_URLS[Math.floor(Math.random() * AUDIO_URLS.length)];
+            audioEl.src = url;
+            audioEl.volume = 0.6;
+            audioEl.play().catch(() => { /* ignore autoplay blocking */ });
+            audioPlaying = true;
+            audioEl.onended = () => {
+                audioPlaying = false;
+            };
+        }
+
+        // ============================================================
+        //  BUY NOW
+        // ============================================================
+        buyNowBtn.addEventListener('click', startCheckout);
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+        products = buildProducts();
+        renderGrid();
+        updateCartUI();
+
+        // Close checkout with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (checkoutOverlay.classList.contains('open')) {
+                    // only if not in arrived state with close button
+                    const hasClose = document.getElementById('closeCheckoutBtn');
+                    if (hasClose) {
+                        closeCheckout();
+                    }
+                }
+                if (cartOverlay.classList.contains('open')) {
+                    closeCart();
+                }
+            }
+        });
+
+        // ============================================================
+        //  SEO / AI: Add product schema dynamically
+        // ============================================================
+        (function addProductSchema() {
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            const items = products.slice(0, 12).map(p => ({
+                '@type': 'Product',
+                'name': `${p.artist} – ${p.album}`,
+                'description': `Vinyl record by ${p.artist}, album "${p.album}".`,
+                'offers': {
+                    '@type': 'Offer',
+                    'price': p.price.toFixed(2),
+                    'priceCurrency': 'USD',
+                    'availability': 'https://schema.org/InStock',
+                },
+                'brand': {
+                    '@type': 'Brand',
+                    'name': p.artist,
+                }
+            }));
+            script.textContent = JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'ItemList',
+                'itemListElement': items.map((item, idx) => ({
+                    '@type': 'ListItem',
+                    'position': idx + 1,
+                    'item': item,
+                })),
+            });
+            document.head.appendChild(script);
+        })();
+
+        console.log('💿 BuyVinyl loaded — Love for Music. Music for Dopamine.');
+        console.log('✨ From ChillSpace: https://chill-space.pages.dev/');
+    </script>
+</body>
+</html>
