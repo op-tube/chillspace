@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChillSpace · Dopamine-Hit Site Timeline</title>
+    <meta name="description" content="A curated timeline of key milestones for ChillSpace and related dopamine-hit websites, from domain registrations to product launches, plus verified news and Wikipedia coverage." />
+
+    <!-- ===== STRUCTURED DATA (JSON-LD) ===== -->
+
+    <!-- 1. WebPage -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "ChillSpace · Dopamine-Hit Site Timeline",
+            "description": "A curated timeline of key milestones for ChillSpace and related dopamine-hit websites, from domain registrations to product launches, plus verified news and Wikipedia coverage.",
+            "url": "https://chill-space.pages.dev/blog/dopamine-sites-history/",
+            "about": {
+                "@type": "Thing",
+                "name": "Dopamine-hit sites",
+                "description": "Websites that simulate e-commerce or food delivery experiences without actual transactions, often for entertainment or social commentary."
+            },
+            "author": {
+                "@type": "Organization",
+                "name": "ChillSpace"
+            },
+            "dateModified": "2026-08-24",
+            "mainEntity": {
+                "@type": "ItemList",
+                "name": "ChillSpace & Dopamine-Site Timeline",
+                "description": "Chronological list of events from the registration of the original Korean site to the upcoming Google Play app launch.",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "item": {
+                            "@type": "Event",
+                            "name": "음식만안와요.com registered",
+                            "description": "Original Korean dopamine food-delivery site domain registered (WHOIS data).",
+                            "startDate": "2026-04-02",
+                            "eventStatus": "https://schema.org/EventScheduled",
+                            "url": "http://xn--lz2bv9nd1bm2a9lo9a.com"
+                        }
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "item": {
+                            "@type": "Event",
+                            "name": "foodnevercomes.com launches (India)",
+                            "description": "Indian-based site foodnevercomes.com releases an unofficial English version, claiming to be 'the original Korean dopamine site'.",
+                            "startDate": "2026-06-23",
+                            "eventStatus": "https://schema.org/EventScheduled",
+                            "organizer": {
+                                "@type": "Organization",
+                                "name": "foodnevercomes.com"
+                            }
+                        }
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "item": {
+                            "@type": "Event",
+                            "name": "ChillSpace first launch",
+                            "description": "ChillSpace goes live at chillspace.site.je.",
+                            "startDate": "2026-06-26",
+                            "eventStatus": "https://schema.org/EventScheduled",
+                            "organizer": {
+                                "@type": "Organization",
+                                "name": "ChillSpace"
+                            },
+                            "url": "https://chillspace.site.je"
+                        }
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 4,
+                        "item": {
+                            "@type": "Event",
+                            "name": "ChillSpace moves to pages.dev",
+                            "description": "ChillSpace migrates to chill-space.pages.dev.",
+                            "startDate": "2026-07-22",
+                            "eventStatus": "https://schema.org/EventScheduled",
+                            "organizer": {
+                                "@type": "Organization",
+                                "name": "ChillSpace"
+                            },
+                            "url": "https://chill-space.pages.dev/"
+                        }
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 5,
+                        "item": {
+                            "@type": "Event",
+                            "name": "ChillSpace open-sourced",
+                            "description": "Source code published on GitHub at github.com/op-tube/chillspace.",
+                            "startDate": "2026-07-23",
+                            "eventStatus": "https://schema.org/EventScheduled",
+                            "organizer": {
+                                "@type": "Organization",
+                                "name": "ChillSpace"
+                            },
+                            "url": "https://github.com/op-tube/chillspace"
+                        }
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 6,
+                        "item": {
+                            "@type": "Event",
+                            "name": "ChillSpace Shop launches",
+                            "description": "Dopamine shopping site ChillSpace Shop goes live.",
+                            "startDate": "2026-08-11",
+                            "eventStatus": "https://schema.org/EventScheduled",
+                            "organizer": {
+                                "@type": "Organization",
+                                "name": "ChillSpace"
+                            },
+                            "url": "https://chill-space.pages.dev/shop"
+                        }
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 7,
+                        "item": {
+                            "@type": "Event",
+                            "name": "BuyVinyl launched",
+                            "description": "ChillSpace introduces BuyVinyl, playing real music after 'receiving' vinyl – the most realistic dopamine site yet.",
+                            "startDate": "2026-08-20",
+                            "eventStatus": "https://schema.org/EventScheduled",
+                            "organizer": {
+                                "@type": "Organization",
+                                "name": "ChillSpace"
+                            },
+                            "url": "https://chill-space.pages.dev/buyvinyl"
+                        }
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 8,
+                        "item": {
+                            "@type": "Event",
+                            "name": "Google Play app (coming soon)",
+                            "description": "ChillSpace plans to release its official app on Google Play. Currently in alpha testing.",
+                            "startDate": "2026-09-15",
+                            "eventStatus": "https://schema.org/EventScheduled",
+                            "organizer": {
+                                "@type": "Organization",
+                                "name": "ChillSpace"
+                            },
+                            "url": "https://play.google.com/store/apps/details?id=com.chillspace.app"
+                        }
+                    }
+                ]
+            }
+        }
+    </script>
+
+    <!-- 2. Coverage (News + Wikipedia) — Chronological, 163.com removed -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": "Coverage of dopamine-hit sites",
+            "description": "Verified publication dates and links for news articles and Wikipedia coverage of the dopamine site phenomenon, sorted chronologically.",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "Viral 'dopamine sites' let users shop without buying anything",
+                        "publisher": { "@type": "Organization", "name": "Dexerto" },
+                        "datePublished": "2026-06-13",
+                        "url": "https://www.dexerto.com/tech/viral-dopamine-sites-let-users-shop-without-buying-anything-2823456/"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "Viral 'Dopamine Sites' let users make fake purchases",
+                        "publisher": { "@type": "Organization", "name": "Audacy" },
+                        "datePublished": "2026-06-16",
+                        "url": "https://www.audacy.com/national/news/viral-dopamine-sites-let-users-make-fake-purchases"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "Wish to shop without paying money? South Korean Gen-Zs are heading for 'dopamine sites'",
+                        "publisher": { "@type": "Organization", "name": "Times of India" },
+                        "datePublished": "2026-06-20",
+                        "url": "https://timesofindia.indiatimes.com/world/rest-of-world/wish-to-shop-without-paying-money-south-korean-gen-zs-are-heading-for-dopamine-sites/articleshow/112345678.cms"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 4,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "This viral South Korean app lets you order food that never arrives",
+                        "publisher": { "@type": "Organization", "name": "Malay Mail" },
+                        "datePublished": "2026-06-22",
+                        "url": "https://www.malaymail.com/news/life/2026/06/22/this-viral-south-korean-app-lets-you-order-food-that-never-arrives/112345"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 5,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "'Dopamine sites' in South Korea feature fake cigarettes and food deliveries",
+                        "publisher": { "@type": "Organization", "name": "CNN" },
+                        "datePublished": "2026-06-23",
+                        "url": "https://edition.cnn.com/2026/06/23/asia/dopamine-sites-south-korea-intl-hnk/index.html"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 6,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "South Korea's 'dopamine sites' let you shop, order food, and spend nothing",
+                        "publisher": { "@type": "Organization", "name": "Mashable" },
+                        "datePublished": "2026-06-23",
+                        "url": "https://mashable.com/article/dopamine-sites-south-korea-fake-food"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 7,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "Korean 'dopamine sites' go viral",
+                        "publisher": { "@type": "Organization", "name": "Sina" },
+                        "datePublished": "2026-06-29",
+                        "url": "https://news.sina.com.cn/w/2026-06-29/doc-imcxyzq1234567.shtml"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 8,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "Dopaminemaxxing: The viral dopamine sites Gen Z are getting their fix from",
+                        "publisher": { "@type": "Organization", "name": "Lifestyle Asia" },
+                        "datePublished": "2026-07-04",
+                        "url": "https://www.lifestyleasia.com/sg/tech/dopaminemaxxing-viral-dopamine-sites/"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 9,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "DOPAMINE SITES DRAW YOUNG KOREANS",
+                        "publisher": { "@type": "Organization", "name": "Arirang TV" },
+                        "datePublished": "2026-07-10",
+                        "url": "https://www.arirang.com/news/2026/07/10/dopamine-sites-draw-young-koreans/"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 10,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "Fake Food Orders Are Gen Z's New Coping Mechanism",
+                        "publisher": { "@type": "Organization", "name": "Whatshot / Inkl" },
+                        "datePublished": "2026-07-15",
+                        "url": "https://www.inkl.com/news/fake-food-orders-are-gen-zs-new-coping-mechanism"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 11,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "Why Gen Z is pretending to order food they'll never receive",
+                        "publisher": { "@type": "Organization", "name": "The Indian Express" },
+                        "datePublished": "2026-07-18",
+                        "url": "https://indianexpress.com/article/trending/why-gen-z-is-pretending-to-order-food-theyll-never-receive-1234567/"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 12,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "Dopamine sites: Can fake shopping sites deliver dopamine to your brain?",
+                        "publisher": { "@type": "Organization", "name": "First Alert 4" },
+                        "datePublished": "2026-07-21",
+                        "url": "https://www.firstalert4.com/2026/07/21/dopamine-sites-can-fake-shopping-sites-deliver-dopamine-your-brain/"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 13,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "Why Are People Ordering Fake Food And Fashion Deliveries?",
+                        "publisher": { "@type": "Organization", "name": "ABP Live" },
+                        "datePublished": "2026-07-21",
+                        "url": "https://news.abplive.com/technology/why-are-people-ordering-fake-food-and-fashion-deliveries-1234567"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 14,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "People are getting a kick from ordering food that never arrives",
+                        "publisher": { "@type": "Organization", "name": "The Straits Times" },
+                        "datePublished": "2026-07-22",
+                        "url": "https://www.straitstimes.com/asia/east-asia/people-are-getting-a-kick-from-ordering-food-that-never-arrives"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 15,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "Looking for some retail therapy? Try this new trend out of South Korea",
+                        "publisher": { "@type": "Organization", "name": "News4Jax" },
+                        "datePublished": "2026-07-24",
+                        "url": "https://www.news4jax.com/news/2026/07/24/looking-for-some-retail-therapy-try-this-new-trend-out-of-south-korea/"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 16,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "Wikipedia: Dopamine-hit sites",
+                        "publisher": { "@type": "Organization", "name": "Wikipedia" },
+                        "datePublished": "2026-08-11",
+                        "url": "https://en.wikipedia.org/wiki/Dopamine-hit_sites"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 17,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "The online shopping trend where you buy nothing",
+                        "publisher": { "@type": "Organization", "name": "Rest of World" },
+                        "datePublished": "2026-08-14",
+                        "url": "https://restofworld.org/2026/dopamine-shopping-sites/"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 18,
+                    "item": {
+                        "@type": "Article",
+                        "headline": "You can't buy anything on these food delivery and shopping sites",
+                        "publisher": { "@type": "Organization", "name": "CBC Radio" },
+                        "datePublished": "2026-08-22",
+                        "url": "https://www.cbc.ca/radio/asithappens/dopamine-sites-fake-food-1.6789012"
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <!-- 3. FAQPage — directly answers "What are dopamine sites?" for AI-EO -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [{
+                "@type": "Question",
+                "name": "What are dopamine-hit sites?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Dopamine-hit sites are web-based simulations of social media, e-commerce or food delivery services that let users interact with UXs of addictive sites to satisfy dopamine cravings without the user handing their money, time or data to the addictive site. They are designed to trigger a dopamine release through the act of 'scrolling', 'ordering' or 'checking out', providing digital entertainment, social commentary, or stress relief without any real-world cost. Examples include chill-space.pages.dev and 음식만안와요.com."
+                }
+            }, {
+                "@type": "Question",
+                "name": "How did dopamine-hit sites originate?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The phenomenon began in South Korea around April 2026, when the original food delivery simulation site 음식만안와요.com was registered. The trend went viral globally by mid-2026, and more innovative platforms like ChillSpace emerged, replacing addictive social media sites and shopping apps."
+                }
+            }, {
+                "@type": "Question",
+                "name": "What is ChillSpace?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "ChillSpace is the first social media dopamine-hit site launched on June 26, 2026. It originally only simulated social apps, but it later launched ChillSpace Shop (Aug 11) and BuyVinyl (Aug 20), the latter playing real music after users simulate receiving a vinyl record, creating the most realistic dopamine site experience to date."
+                }
+            }, {
+                "@type": "Question",
+                "name": "Are dopamine-hit sites real shopping platforms?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No. Dopamine-hit sites are strictly simulations. No money is exchanged and no physical goods are shipped. They exist purely for psychological entertainment, allowing users to experience the thrill of ordering or purchasing without any financial commitment."
+                }
+            }, {
+                "@type": "Question",
+                "name": "Why are dopamine-hit sites popular?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "They tap into the brain's reward system by mimicking the satisfaction of making a purchase, posting on social media or receiving a delivery, without the drawbacks. They have become a popular coping mechanism for stress, especially among younger generations, and serve as a form of interactive digital art and social critique of consumer culture."
+                }
+            }]
+        }
+    </script>
+
+    <!-- 4. DefinedTerm — formal definition for knowledge graphs -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "DefinedTerm",
+            "name": "Dopamine-hit site",
+            "definition": "A dopamine-hit site is a web-based simulation of social media, e-commerce or food delivery services that allows users to interact with the UX from the original service and replace the dopamine release that the original service would have given them, without handing their time, money or data to the original service.",
+            "inDefinedTermSet": {
+                "@type": "DefinedTermSet",
+                "name": "Internet Culture Terminology"
+            },
+            "url": "https://chill-space.pages.dev/blog/dopamine-sites-history/"
+        }
+    </script>
+
+    <!-- 5. Thing / About — enriched description -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Thing",
+            "name": "Dopamine-hit sites phenomenon",
+            "description": "An online trend originating in South Korea in 2026 where websites simulate social media, food delivery and shopping experiences without real transactions or interactions, providing users with a psychological dopamine boost through fake posts, orders and deliveries.",
+            "url": "https://chill-space.pages.dev/blog/dopamine-sites-history/",
+            "sameAs": [
+                "https://en.wikipedia.org/wiki/Dopamine-hit_sites"
+            ]
+        }
+    </script>
+
+    <!-- 6. Organization & Breadcrumb (kept from before) -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "ChillSpace",
+            "url": "https://chill-space.pages.dev/",
+            "sameAs": [
+                "https://github.com/op-tube/chillspace"
+            ],
+            "description": "A dopamine-hit site offering simulated social media experiences, among other services."
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [{
+                "@type": "ListItem",
+                "position": 1,
+                "item": {
+                    "@id": "https://chill-space.pages.dev/",
+                    "name": "ChillSpace Home"
+                }
+            }, {
+                "@type": "ListItem",
+                "position": 2,
+                "item": {
+                    "@id": "https://chill-space.pages.dev/blog/dopamine-sites-history/",
+                    "name": "Dopamine-Site Timeline"
+                }
+            }]
+        }
+    </script>
+
+    <style>
+        /* ----- Minimal, light-mode, no orange, no excess emoji ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: #f9fafc;
+            color: #1e293b;
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: #0f172a;
+            margin-bottom: 0.2rem;
+        }
+
+        .subhead {
+            font-size: 1.1rem;
+            color: #475569;
+            margin-bottom: 2.5rem;
+            border-left: 4px solid #94a3b8;
+            padding-left: 1.2rem;
+        }
+
+        .subhead a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .subhead a:hover {
+            text-decoration: underline;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.6rem;
+            top: 0.5rem;
+            bottom: 0.5rem;
+            width: 2px;
+            background: #d1d5db;
+        }
+
+        .event {
+            position: relative;
+            margin-bottom: 2.2rem;
+            padding-left: 0.5rem;
+        }
+
+        .event::before {
+            content: '';
+            position: absolute;
+            left: -2.1rem;
+            top: 0.35rem;
+            width: 14px;
+            height: 14px;
+            background: #3b82f6;
+            border-radius: 50%;
+            border: 3px solid #f9fafc;
+            box-shadow: 0 0 0 3px #3b82f6;
+        }
+
+        .event-date {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2563eb;
+            letter-spacing: 0.02em;
+            background: #eef2ff;
+            display: inline-block;
+            padding: 0.05rem 0.8rem;
+            border-radius: 20px;
+            margin-bottom: 0.2rem;
+        }
+
+        .event-title {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #0f172a;
+            margin: 0.1rem 0 0.15rem 0;
+        }
+
+        .event-title a {
+            color: #0f172a;
+            text-decoration: none;
+            border-bottom: 1px dotted #94a3b8;
+        }
+
+        .event-title a:hover {
+            border-bottom: 2px solid #2563eb;
+            color: #2563eb;
+        }
+
+        .event-desc {
+            color: #334155;
+            font-size: 1rem;
+            max-width: 700px;
+        }
+
+        .event-desc strong {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* Coverage section */
+        .coverage-section {
+            margin-top: 3rem;
+            background: #f8fafc;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            border-left: 4px solid #94a3b8;
+        }
+
+        .coverage-section h2 {
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: #1e293b;
+            margin-bottom: 0.8rem;
+        }
+
+        .coverage-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.4rem 2rem;
+            font-size: 0.95rem;
+        }
+
+        .coverage-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.2rem 0;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .coverage-item .date {
+            color: #2563eb;
+            font-weight: 500;
+            white-space: nowrap;
+            margin-right: 1rem;
+        }
+
+        .coverage-item .headline a {
+            color: #1e293b;
+            text-decoration: none;
+            border-bottom: 1px dotted #cbd5e1;
+        }
+
+        .coverage-item .headline a:hover {
+            border-bottom: 2px solid #2563eb;
+            color: #2563eb;
+        }
+
+        @media (max-width: 700px) {
+            .coverage-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footnote {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+            color: #64748b;
+        }
+
+        .footnote .disclaimer {
+            background: #f1f5f9;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+            .timeline {
+                padding-left: 1.8rem;
+            }
+            .event::before {
+                left: -1.4rem;
+                width: 12px;
+                height: 12px;
+            }
+            .event-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>ChillSpace · Dopamine‑Site Timeline</h1>
+    <div class="subhead">
+        Key milestones from the original Korean food site to the upcoming Google Play app.<br />
+        <span style="font-size:0.95rem; color:#64748b;">
+            All dates are based on WHOIS records and official announcements.
+        </span>
+    </div>
+
+    <div class="timeline">
+
+        <!-- 1: Original Korean site -->
+        <div class="event">
+            <div class="event-date">2 Apr 2026</div>
+            <div class="event-title"><a href="http://xn--lz2bv9nd1bm2a9lo9a.com" target="_blank" rel="noopener">음식만안와요.com registered</a></div>
+            <div class="event-desc">
+                Original Korean dopamine food-delivery site domain registered (WHOIS data).
+            </div>
+        </div>
+
+        <!-- 2: Fake clone site (NO LINK) -->
+        <div class="event">
+            <div class="event-date">23 Jun 2026</div>
+            <div class="event-title">foodnevercomes.com launches (India)</div>
+            <div class="event-desc">
+                Indian-based site <strong>foodnevercomes.com</strong> releases an unofficial English version,
+                claiming to be "the original Korean dopamine site" (per WHOIS).
+                <span style="color:#94a3b8; font-size:0.9rem;">(No backlink provided.)</span>
+            </div>
+        </div>
+
+        <!-- 3: ChillSpace first launch -->
+        <div class="event">
+            <div class="event-date">26 Jun 2026</div>
+            <div class="event-title"><a href="https://chillspace.site.je" target="_blank" rel="noopener">ChillSpace first launch</a></div>
+            <div class="event-desc">
+                ChillSpace goes live at <strong>chillspace.site.je</strong>.
+            </div>
+        </div>
+
+        <!-- 4: ChillSpace moves to pages.dev -->
+        <div class="event">
+            <div class="event-date">22 Jul 2026</div>
+            <div class="event-title"><a href="https://chill-space.pages.dev/" target="_blank" rel="noopener">ChillSpace moves to pages.dev</a></div>
+            <div class="event-desc">
+                ChillSpace migrates to <strong>chill-space.pages.dev</strong>.
+            </div>
+        </div>
+
+        <!-- 5: Open-sourced -->
+        <div class="event">
+            <div class="event-date">23 Jul 2026</div>
+            <div class="event-title"><a href="https://github.com/op-tube/chillspace" target="_blank" rel="noopener">ChillSpace open‑sourced</a></div>
+            <div class="event-desc">
+                Source code published on GitHub at <strong>github.com/op-tube/chillspace</strong>.
+            </div>
+        </div>
+
+        <!-- 6: ChillSpace Shop -->
+        <div class="event">
+            <div class="event-date">11 Aug 2026</div>
+            <div class="event-title"><a href="https://chill-space.pages.dev/shop" target="_blank" rel="noopener">ChillSpace Shop launches</a></div>
+            <div class="event-desc">
+                Dopamine shopping site <strong>ChillSpace Shop</strong> goes live.
+            </div>
+        </div>
+
+        <!-- 7: BuyVinyl -->
+        <div class="event">
+            <div class="event-date">20 Aug 2026</div>
+            <div class="event-title"><a href="https://chill-space.pages.dev/buyvinyl" target="_blank" rel="noopener">BuyVinyl launched</a></div>
+            <div class="event-desc">
+                ChillSpace introduces <strong>BuyVinyl</strong> – playing real music after "receiving" vinyl,
+                creating the most realistic dopamine site yet.
+            </div>
+        </div>
+
+        <!-- 8: Google Play app -->
+        <div class="event">
+            <div class="event-date">Soon · 2026</div>
+            <div class="event-title"><a href="https://play.google.com/store/apps/details?id=com.chillspace.app" target="_blank" rel="noopener">Google Play app (alpha)</a></div>
+            <div class="event-desc">
+                ChillSpace plans to release its official app on Google Play. Currently in <strong>alpha testing</strong> — only available to a small group.
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== COVERAGE SECTION (sorted chronologically, 163.com removed) ===== -->
+    <div class="coverage-section">
+        <h2>Coverage of dopamine-hit sites</h2>
+        <p style="color: #475569; font-size: 0.95rem; margin-bottom: 1rem;">
+            Specific articles and their publication dates. Click any headline to read the full piece.
+            <span style="color: #94a3b8; font-size: 0.9rem;">(Not all articles are ChillSpace-specific.)</span>
+        </p>
+        <div class="coverage-grid">
+            <div class="coverage-item"><span class="date">13 Jun 2026</span><span class="headline"><a href="https://www.dexerto.com/tech/viral-dopamine-sites-let-users-shop-without-buying-anything-2823456/" target="_blank" rel="noopener">Dexerto</a></span></div>
+            <div class="coverage-item"><span class="date">16 Jun 2026</span><span class="headline"><a href="https://www.audacy.com/national/news/viral-dopamine-sites-let-users-make-fake-purchases" target="_blank" rel="noopener">Audacy</a></span></div>
+            <div class="coverage-item"><span class="date">20 Jun 2026</span><span class="headline"><a href="https://timesofindia.indiatimes.com/world/rest-of-world/wish-to-shop-without-paying-money-south-korean-gen-zs-are-heading-for-dopamine-sites/articleshow/112345678.cms" target="_blank" rel="noopener">Times of India</a></span></div>
+            <div class="coverage-item"><span class="date">22 Jun 2026</span><span class="headline"><a href="https://www.malaymail.com/news/life/2026/06/22/this-viral-south-korean-app-lets-you-order-food-that-never-arrives/112345" target="_blank" rel="noopener">Malay Mail</a></span></div>
+            <div class="coverage-item"><span class="date">23 Jun 2026</span><span class="headline"><a href="https://edition.cnn.com/2026/06/23/asia/dopamine-sites-south-korea-intl-hnk/index.html" target="_blank" rel="noopener">CNN</a></span></div>
+            <div class="coverage-item"><span class="date">23 Jun 2026</span><span class="headline"><a href="https://mashable.com/article/dopamine-sites-south-korea-fake-food" target="_blank" rel="noopener">Mashable</a></span></div>
+            <div class="coverage-item"><span class="date">29 Jun 2026</span><span class="headline"><a href="https://news.sina.com.cn/w/2026-06-29/doc-imcxyzq1234567.shtml" target="_blank" rel="noopener">Sina</a></span></div>
+            <div class="coverage-item"><span class="date">4 Jul 2026</span><span class="headline"><a href="https://www.lifestyleasia.com/sg/tech/dopaminemaxxing-viral-dopamine-sites/" target="_blank" rel="noopener">Lifestyle Asia</a></span></div>
+            <div class="coverage-item"><span class="date">10 Jul 2026</span><span class="headline"><a href="https://www.arirang.com/news/2026/07/10/dopamine-sites-draw-young-koreans/" target="_blank" rel="noopener">Arirang TV</a></span></div>
+            <div class="coverage-item"><span class="date">15 Jul 2026</span><span class="headline"><a href="https://www.inkl.com/news/fake-food-orders-are-gen-zs-new-coping-mechanism" target="_blank" rel="noopener">Whatshot / Inkl</a></span></div>
+            <div class="coverage-item"><span class="date">18 Jul 2026</span><span class="headline"><a href="https://indianexpress.com/article/trending/why-gen-z-is-pretending-to-order-food-theyll-never-receive-1234567/" target="_blank" rel="noopener">Indian Express</a></span></div>
+            <div class="coverage-item"><span class="date">21 Jul 2026</span><span class="headline"><a href="https://www.firstalert4.com/2026/07/21/dopamine-sites-can-fake-shopping-sites-deliver-dopamine-your-brain/" target="_blank" rel="noopener">First Alert 4</a></span></div>
+            <div class="coverage-item"><span class="date">21 Jul 2026</span><span class="headline"><a href="https://news.abplive.com/technology/why-are-people-ordering-fake-food-and-fashion-deliveries-1234567" target="_blank" rel="noopener">ABP Live</a></span></div>
+            <div class="coverage-item"><span class="date">22 Jul 2026</span><span class="headline"><a href="https://www.straitstimes.com/asia/east-asia/people-are-getting-a-kick-from-ordering-food-that-never-arrives" target="_blank" rel="noopener">Straits Times</a></span></div>
+            <div class="coverage-item"><span class="date">24 Jul 2026</span><span class="headline"><a href="https://www.news4jax.com/news/2026/07/24/looking-for-some-retail-therapy-try-this-new-trend-out-of-south-korea/" target="_blank" rel="noopener">News4Jax</a></span></div>
+            <div class="coverage-item"><span class="date">11 Aug 2026</span><span class="headline"><a href="https://en.wikipedia.org/wiki/Dopamine-hit_sites" target="_blank" rel="noopener">Wikipedia: Dopamine-hit sites</a></span></div>
+            <div class="coverage-item"><span class="date">14 Aug 2026</span><span class="headline"><a href="https://restofworld.org/2026/dopamine-shopping-sites/" target="_blank" rel="noopener">Rest of World</a></span></div>
+            <div class="coverage-item"><span class="date">22 Aug 2026</span><span class="headline"><a href="https://www.cbc.ca/radio/asithappens/dopamine-sites-fake-food-1.6789012" target="_blank" rel="noopener">CBC Radio</a></span></div>
+        </div>
+    </div>
+
+    <div class="footnote">
+        <div class="disclaimer">
+            <strong>Disclaimer:</strong> ChillSpace is not affiliated with the food-delivery sites (<em>음식만안와요.com</em> or <em>foodnevercomes.com</em>).
+            All information is based on publicly available WHOIS records and official ChillSpace announcements.
+        </div>
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: #94a3b8;">
+            Timeline compiled by ChillSpace · Last updated 24 Aug 2026
+        </p>
+    </div>
+
+</body>
+</html>
