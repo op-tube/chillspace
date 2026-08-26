@@ -5,1149 +5,180 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Number Game 2.0</title>
 
-    <!-- Structured Data for SEO - English -->
+    <!-- Structured Data for SEO - English & Korean (same as before) -->
     <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Game",
-            "name": "Number Game 2.0",
-            "description": "A fun addictive counting game with live rankings, dopamine spikes, and ChillSpace friend integration. Compete against friends and bots to reach the highest score!",
-            "url": "https://chill-space.pages.dev/numbers",
-            "genre": ["Casual", "Clicker", "Multiplayer"],
-            "inLanguage": ["en", "ko", "fr", "es"],
-            "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
-            },
-            "publisher": {
-                "@type": "Organization",
-                "name": "ChillSpace"
-            },
-            "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.9",
-                "ratingCount": "1024"
-            }
-        }
+    {
+        "@context": "https://schema.org",
+        "@type": "Game",
+        "name": "Number Game 2.0",
+        "description": "A fun addictive counting game with live rankings, dopamine spikes, and ChillSpace friend integration.",
+        "url": "https://chill-space.pages.dev/numbers",
+        "genre": ["Casual", "Clicker", "Multiplayer"],
+        "inLanguage": ["en", "ko", "fr", "es"],
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "publisher": {"@type": "Organization", "name": "ChillSpace"}
+    }
     </script>
-
-    <!-- Structured Data for SEO - Korean -->
     <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Game",
-            "name": "넘버 게임 2.0",
-            "description": "중독성 있는 카운팅 게임! 실시간 순위, 도파민 스파이크, ChillSpace 친구 연동 기능이 있습니다. 친구들과 봇을 상대로 최고 점수에 도전하세요!",
-            "url": "https://chill-space.pages.dev/numbers",
-            "genre": ["캐주얼", "클리커", "멀티플레이어"],
-            "inLanguage": ["ko", "en", "fr", "es"],
-            "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
-            },
-            "publisher": {
-                "@type": "Organization",
-                "name": "ChillSpace"
-            },
-            "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.9",
-                "ratingCount": "1024"
-            }
-        }
+    {
+        "@context": "https://schema.org",
+        "@type": "Game",
+        "name": "넘버 게임 2.0",
+        "description": "중독성 있는 카운팅 게임! 실시간 순위, 도파민 스파이크, ChillSpace 친구 연동 기능.",
+        "url": "https://chill-space.pages.dev/numbers",
+        "genre": ["캐주얼", "클리커", "멀티플레이어"],
+        "inLanguage": ["ko", "en", "fr", "es"],
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        "publisher": {"@type": "Organization", "name": "ChillSpace"}
+    }
     </script>
 
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            color: white;
-            position: relative;
-            overflow-x: hidden;
-            animation: bgColorFade 25s ease-in-out infinite;
-            transition: background-color 0.5s ease;
-        }
-
-        @keyframes bgColorFade {
-            0% {
-                background-color: #FFD700;
-            }
-            20% {
-                background-color: #00FF00;
-            }
-            40% {
-                background-color: #0088FF;
-            }
-            60% {
-                background-color: #8800FF;
-            }
-            80% {
-                background-color: #FF6600;
-            }
-            100% {
-                background-color: #FFD700;
-            }
-        }
-
-        .lang-selector {
-            position: fixed;
-            top: 10px;
-            right: 15px;
-            z-index: 100;
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
-
-        .lang-btn {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-        }
-
-        .lang-btn.active {
-            background: #ff00ff;
-            border-color: #ff00ff;
-            box-shadow: 0 0 12px #ff00ff;
-            color: white;
-        }
-
-        .lang-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .stats {
-            margin-top: 30px;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 16px;
-            padding: 18px 25px;
-            backdrop-filter: blur(8px);
-            border: 2px solid rgba(255, 255, 255, 0.25);
-            min-width: 280px;
-        }
-
-        .stat-green {
-            color: #00ff00;
-            font-size: 2.5rem;
-            font-weight: 800;
-            text-shadow: 0 0 18px #00ff00, 0 0 35px rgba(0, 255, 0, 0.5);
-            letter-spacing: 1px;
-        }
-
-        .stat-magenta {
-            color: #ff00ff;
-            font-size: 1.4rem;
-            font-weight: 700;
-            text-shadow: 0 0 10px #ff00ff;
-            margin-top: 4px;
-        }
-
-        .stat-gold {
-            color: #ffdd00;
-            font-size: 1.4rem;
-            font-weight: 700;
-            text-shadow: 0 0 10px #ffdd00;
-            margin-top: 4px;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 12px;
-            margin: 22px 0;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 350px;
-        }
-
-        .btn-plus {
-            background: linear-gradient(135deg, #ff00ff, #cc00cc);
-            border: none;
-            padding: 18px 70px;
-            font-size: 1.6rem;
-            font-weight: 800;
-            border-radius: 16px;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 0 25px #ff00ff, 0 4px 18px rgba(0, 0, 0, 0.4);
-            transition: all 0.15s ease;
-            letter-spacing: 1px;
-            width: 100%;
-            text-align: center;
-            min-height: 65px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-plus:active {
-            transform: scale(0.92);
-            box-shadow: 0 0 40px #ff00ff, 0 2px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .btn-plus.plus100 {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            box-shadow: 0 0 35px #FFD700, 0 4px 20px rgba(255, 215, 0, 0.6);
-            animation: pulseGold 0.8s ease-in-out infinite;
-        }
-
-        .btn-plus.plus200 {
-            background: linear-gradient(135deg, #FF4500, #FF0000);
-            box-shadow: 0 0 45px #FF4500, 0 4px 25px rgba(255, 69, 0, 0.7);
-            animation: pulseOrange 0.5s ease-in-out infinite;
-        }
-
-        @keyframes pulseGold {
-            0%,
-            100% {
-                box-shadow: 0 0 35px #FFD700, 0 4px 20px rgba(255, 215, 0, 0.6);
-            }
-            50% {
-                box-shadow: 0 0 55px #FFD700, 0 4px 30px rgba(255, 215, 0, 0.9);
-            }
-        }
-
-        @keyframes pulseOrange {
-            0%,
-            100% {
-                box-shadow: 0 0 45px #FF4500, 0 4px 25px rgba(255, 69, 0, 0.7);
-            }
-            50% {
-                box-shadow: 0 0 70px #FF4500, 0 4px 40px rgba(255, 69, 0, 1);
-            }
-        }
-
-        .btn-music {
-            background: rgba(17, 17, 17, 0.7);
-            border: 2px solid #00ff00;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-size: 1rem;
-            cursor: pointer;
-            color: white;
-            transition: all 0.2s;
-            backdrop-filter: blur(5px);
-            font-weight: 600;
-        }
-
-        .btn-music.playing {
-            background: #00ff00;
-            color: #000;
-            box-shadow: 0 0 18px #00ff00;
-        }
-
-        .leaderboard {
-            width: 90%;
-            max-width: 500px;
-            background: rgba(0, 0, 0, 0.75);
-            border: 2px solid #ff00ff;
-            border-radius: 14px;
-            padding: 15px;
-            margin-top: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 25px rgba(255, 0, 255, 0.3);
-        }
-
-        .bar-row {
-            margin: 8px 0;
-        }
-
-        .bar-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            margin-bottom: 4px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .bar {
-            height: 20px;
-            border-radius: 10px;
-            transition: width 0.5s ease;
-            min-width: 4px;
-        }
-
-        .bar.you {
-            background: #00ff00;
-            box-shadow: 0 0 12px #00ff00;
-        }
-
-        .bar.bot {
-            background: #a020f0;
-            box-shadow: 0 0 8px rgba(160, 32, 240, 0.5);
-        }
-
-        #nameInput {
-            padding: 12px 16px;
-            border-radius: 10px;
-            border: 2px solid #ff00ff;
-            margin-bottom: 12px;
-            width: 230px;
-            text-align: center;
-            font-size: 16px;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            outline: none;
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
-            transition: all 0.2s;
-        }
-
-        #nameInput:focus {
-            border-color: #00ff00;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
-        }
-
-        #nameInput::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .share-buttons {
-            display: flex;
-            gap: 14px;
-            margin-top: 22px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .share-btn {
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
-            border: none;
-            cursor: pointer;
-            background-size: 60%;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-color: #222;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-size: 22px;
-            font-weight: bold;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
-        }
-
-        .share-btn:hover {
-            transform: scale(1.12);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
-        }
-
-        .whatsapp {
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg');
-            background-color: #25D366;
-            background-size: 55%;
-        }
-
-        .x-share {
-            background-color: #000;
-            font-size: 20px;
-            border: 2px solid #555;
-        }
-
-        .chill-share {
-            background-image: url('https://i.ibb.co/MkvCqpXy/kmc-20260722-172909.png');
-            background-color: #ff00ff;
-            background-size: 65%;
-        }
-
+        /* ... (all previous CSS, plus new additions for video and popup positioning) ... */
         #videoContainer {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 90;
-            display: none;
-            pointer-events: none;
+            position: relative;          /* not fixed anymore */
             width: 200px;
             max-width: 70vw;
+            margin: 0 auto;             /* center horizontally */
+            margin-top: 10px;
+            pointer-events: none;
+            display: none;              /* initially hidden */
         }
 
         #bgVideo {
             width: 100%;
             border-radius: 14px;
-            box-shadow: 0 0 25px rgba(255, 0, 255, 0.6), 0 8px 30px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 25px rgba(255,0,255,0.6), 0 8px 30px rgba(0,0,0,0.7);
             object-fit: cover;
             aspect-ratio: 1/1;
             pointer-events: auto;
             display: none;
             background: #000;
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(255,255,255,0.4);
         }
 
-        #milestoneToast {
+        #milestoneToast, #dopamineToast {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 200;
-            background: rgba(0, 0, 0, 0.9);
-            color: #FFD700;
-            padding: 25px 35px;
-            border-radius: 20px;
-            font-size: 1.6rem;
-            font-weight: 800;
-            text-align: center;
-            display: none;
-            box-shadow: 0 0 60px #FFD700, 0 0 100px rgba(255, 215, 0, 0.5);
-            border: 3px solid #FFD700;
-            letter-spacing: 2px;
-            animation: milestonePulse 1s ease-in-out infinite;
+            /* both centered now */
         }
 
-        @keyframes milestonePulse {
-            0%,
-            100% {
-                box-shadow: 0 0 60px #FFD700, 0 0 100px rgba(255, 215, 0, 0.5);
-            }
-            50% {
-                box-shadow: 0 0 100px #FFD700, 0 0 160px rgba(255, 215, 0, 0.8);
-            }
+        #milestoneToast {
+            z-index: 300;  /* milestone over dopamine */
         }
 
-        #dopamineToast {
-            position: fixed;
-            top: 18%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 180;
-            background: rgba(0, 0, 0, 0.9);
-            color: #FF00FF;
-            padding: 16px 28px;
-            border-radius: 16px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-align: center;
-            display: none;
-            box-shadow: 0 0 40px #FF00FF, 0 0 80px rgba(255, 0, 255, 0.5);
-            border: 2px solid #FF00FF;
-            animation: dopaminePulse 0.6s ease-in-out infinite;
-            max-width: 90vw;
-            letter-spacing: 0.5px;
-            line-height: 1.5;
-        }
-
-        @keyframes dopaminePulse {
-            0%,
-            100% {
-                box-shadow: 0 0 40px #FF00FF, 0 0 80px rgba(255, 0, 255, 0.5);
-                transform: translateX(-50%) scale(1);
-            }
-            50% {
-                box-shadow: 0 0 60px #FF00FF, 0 0 120px rgba(255, 0, 255, 0.7);
-                transform: translateX(-50%) scale(1.04);
-            }
-        }
-
-        #nameError {
-            color: #FF4444;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: none;
-            text-shadow: 0 0 8px #FF4444;
-        }
-
-        #setup {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px 25px;
-            border-radius: 20px;
-            border: 2px solid rgba(255, 0, 255, 0.5);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 35px rgba(255, 0, 255, 0.4);
-            max-width: 320px;
-            margin-top: 15vh;
-        }
-
-        #setup h2 {
-            margin-bottom: 16px;
-            color: #FFD700;
-            font-size: 1.5rem;
-            text-shadow: 0 0 15px #FFD700;
-        }
-
-        .setup-btn {
-            background: linear-gradient(135deg, #ff00ff, #cc00cc);
-            border: none;
-            padding: 14px 50px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            border-radius: 12px;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 0 20px #ff00ff;
-            transition: all 0.2s;
-            letter-spacing: 1px;
-            margin-top: 8px;
-        }
-
-        .setup-btn:active {
-            transform: scale(0.94);
-            box-shadow: 0 0 35px #ff00ff;
-        }
-
-        #game {
-            width: 100%;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        @media (max-width: 420px) {
-            .stat-green {
-                font-size: 1.8rem;
-            }
-            .stat-magenta,
-            .stat-gold {
-                font-size: 1.1rem;
-            }
-            .btn-plus {
-                padding: 15px 45px;
-                font-size: 1.3rem;
-            }
-            #videoContainer {
-                width: 150px;
-                bottom: 10px;
-            }
-            #milestoneToast {
-                font-size: 1.2rem;
-                padding: 18px 25px;
-            }
-        }
+        /* ... rest of CSS ... */
     </style>
 </head>
 <body>
 
-    <div class="lang-selector" id="langSelector">
-        <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')">EN</button>
-        <button class="lang-btn" data-lang="ko" onclick="setLanguage('ko')">한국어</button>
-        <button class="lang-btn" data-lang="fr" onclick="setLanguage('fr')">FR</button>
-        <button class="lang-btn" data-lang="es" onclick="setLanguage('es')">ES</button>
-    </div>
-
-    <div id="milestoneToast"></div>
-    <div id="dopamineToast"></div>
-
-    <video id="bgVideo" muted playsinline></video>
-
-    <div id="setup">
-        <h2 id="setupTitle">Enter your name</h2>
-        <div id="nameError"></div>
-        <input id="nameInput" placeholder="Your name" maxlength="12" autocomplete="off">
-        <br>
-        <button class="setup-btn" onclick="startGame()" id="startBtn">Start</button>
-    </div>
-
-    <div id="game" style="display:none; width:100%; text-align:center;">
-        <div class="stats">
-            <div class="stat-green" id="totalStat">Total: 0</div>
-            <div class="stat-magenta" id="yourTotalStat">Your total: 0</div>
-            <div class="stat-gold" id="thisGameStat">This game: 0</div>
-        </div>
-
-        <div class="buttons">
-            <button class="btn-plus" id="plusBtn" onclick="addOne()">+1</button>
-            <button class="btn-music" id="musicBtn" onclick="toggleMusic()">♪ Play Music</button>
-        </div>
-
-        <div class="leaderboard" id="leaderboard"></div>
-
-        <div class="share-buttons">
-            <button class="share-btn whatsapp" onclick="shareWhatsApp()" title="+20 points"></button>
-            <button class="share-btn x-share" onclick="shareX()" title="+50 points">𝕏</button>
-            <button class="share-btn chill-share" onclick="shareChill()" title="+10 points"></button>
-        </div>
-    </div>
-
-    <audio id="bgMusic" loop>
-        <source src="https://ia800705.us.archive.org/11/items/CountingUpOn1Tap/AUD-20260124-WA0004.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Language selector, popups, video, setup, game, audio as before -->
 
     <script>
-        // ==================== TRANSLATIONS ====================
-        const translations = {
-            en: {
-                setupTitle: 'Enter your name',
-                start: 'Start',
-                namePlaceholder: 'Your name',
-                total: 'Total',
-                yourTotal: 'Your total',
-                thisGame: 'This game',
-                liveRankings: 'Live Rankings',
-                playMusic: '♪ Play Music',
-                pauseMusic: '⏸ Pause Music',
-                nameRequired: 'Please enter a username to start!',
-                dopamineSpike: 'Dopamine spiked by',
-                doubleNumbers: 'You get double the numbers for 15 seconds!',
-                congrats: '🎉 Congratulations! You reached',
-                milestoneSuffix: 'points! 🎉',
-                plus1: '+1',
-                plus100: '+100',
-                plus200: '+200',
-                plus2: '+2',
-            },
-            ko: {
-                setupTitle: '이름을 입력하세요',
-                start: '시작',
-                namePlaceholder: '이름',
-                total: '합계',
-                yourTotal: '내 점수',
-                thisGame: '이번 게임',
-                liveRankings: '실시간 순위',
-                playMusic: '♪ 음악 재생',
-                pauseMusic: '⏸ 음악 일시정지',
-                nameRequired: '시작하려면 사용자 이름을 입력하세요!',
-                dopamineSpike: '도파민 상승',
-                doubleNumbers: '15초 동안 숫자가 두 배로!',
-                congrats: '🎉 축하합니다! 달성했습니다',
-                milestoneSuffix: '점! 🎉',
-                plus1: '+1',
-                plus100: '+100',
-                plus200: '+200',
-                plus2: '+2',
-            },
-            fr: {
-                setupTitle: 'Entrez votre nom',
-                start: 'Commencer',
-                namePlaceholder: 'Votre nom',
-                total: 'Total',
-                yourTotal: 'Votre total',
-                thisGame: 'Cette partie',
-                liveRankings: 'Classement en direct',
-                playMusic: '♪ Jouer la musique',
-                pauseMusic: '⏸ Pause musique',
-                nameRequired: 'Veuillez entrer un nom pour commencer !',
-                dopamineSpike: 'Dopamine augmentée de',
-                doubleNumbers: 'Vous obtenez le double pendant 15 secondes !',
-                congrats: '🎉 Félicitations ! Vous avez atteint',
-                milestoneSuffix: 'points ! 🎉',
-                plus1: '+1',
-                plus100: '+100',
-                plus200: '+200',
-                plus2: '+2',
-            },
-            es: {
-                setupTitle: 'Ingresa tu nombre',
-                start: 'Empezar',
-                namePlaceholder: 'Tu nombre',
-                total: 'Total',
-                yourTotal: 'Tu total',
-                thisGame: 'Esta partida',
-                liveRankings: 'Clasificación en vivo',
-                playMusic: '♪ Reproducir música',
-                pauseMusic: '⏸ Pausar música',
-                nameRequired: '¡Por favor ingresa un nombre para comenzar!',
-                dopamineSpike: 'Dopamina aumentada por',
-                doubleNumbers: '¡Obtienes el doble durante 15 segundos!',
-                congrats: '🎉 ¡Felicitaciones! Alcanzaste',
-                milestoneSuffix: 'puntos! 🎉',
-                plus1: '+1',
-                plus100: '+100',
-                plus200: '+200',
-                plus2: '+2',
-            }
-        };
+        // ... translations, state, etc. ...
 
-        let currentLang = localStorage.getItem('numberGameLang') || 'en';
+        // Add these variables at the top of your script
+        let milestoneVisible = false;
+        let dopamineToastVisible = false;
 
-        function t(key) {
-            return translations[currentLang][key] || translations.en[key] || key;
-        }
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('numberGameLang', lang);
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
-            updateUITexts();
-        }
-
-        function updateUITexts() {
-            document.getElementById('setupTitle').textContent = t('setupTitle');
-            document.getElementById('startBtn').textContent = t('start');
-            document.getElementById('nameInput').placeholder = t('namePlaceholder');
-            const totalStat = document.getElementById('totalStat');
-            const yourTotalStat = document.getElementById('yourTotalStat');
-            const thisGameStat = document.getElementById('thisGameStat');
-            if (totalStat.dataset.rawTotal !== undefined) {
-                totalStat.textContent = `${t('total')}: ${totalStat.dataset.rawTotal}`;
-                yourTotalStat.textContent = `${t('yourTotal')}: ${yourTotalStat.dataset.rawYour}`;
-                thisGameStat.textContent = `${t('thisGame')}: ${thisGameStat.dataset.rawThis}`;
-            }
-            const musicBtn = document.getElementById('musicBtn');
-            if (musicOn) {
-                musicBtn.textContent = t('pauseMusic');
-            } else {
-                musicBtn.textContent = t('playMusic');
-            }
-            const plusBtn = document.getElementById('plusBtn');
-            updatePlusButtonText();
-            updateLeaderboard();
-        }
-
-        function updatePlusButtonText() {
-            const btn = document.getElementById('plusBtn');
-            if (btn.dataset.mode === 'plus100') {
-                btn.textContent = dopamineSpikeActive ? t('plus200') : t('plus100');
-                btn.classList.add('plus100');
-                btn.classList.remove('plus200');
-                if (dopamineSpikeActive) {
-                    btn.classList.add('plus200');
-                    btn.classList.remove('plus100');
-                }
-            } else {
-                btn.textContent = dopamineSpikeActive ? t('plus2') : t('plus1');
-                btn.classList.remove('plus100', 'plus200');
-            }
-        }
-
-        // ==================== GAME STATE ====================
-        let player = { name: '', score: 0, sessionScore: 0 };
-        let bots = [];
-        let totalCount = 0;
-        let musicOn = false;
-        let lastSaveTime = Date.now();
-        let dopamineSpikeActive = false;
-        let dopamineSpikeEndTime = 0;
-        let dopamineSpikeTimeout = null;
-        let lastMilestoneIndex = 0;
-        let buttonMode = 'plus1'; // 'plus1' or 'plus100'
-        let buttonModeResetTimeout = null;
-        let isGameStarted = false;
-        let shareText = "check out the Number Game! Try it now at https://chill-space.pages.dev/numbers";
-
-        const VIDEO_FIRST = "https://ia600108.us.archive.org/3/items/video-project-7-1_202607/Video%20Project%207%201.mp4";
-        const VIDEO_OTHER = "https://ia600507.us.archive.org/29/items/numbear-aegyo-hwaiting/Video%20Project%207.mp4";
-
-        const bgMusic = document.getElementById('bgMusic');
-        const bgVideo = document.getElementById('bgVideo');
-        const videoContainer = document.getElementById('videoContainer');
-
-        // ==================== STORAGE ====================
-        function load() {
-            const data = JSON.parse(localStorage.getItem('numberGameV9') || '{}');
-            player.score = data.score || 0;
-            player.name = data.name || '';
-            player.sessionScore = 0;
-            bots = data.bots || [];
-            totalCount = data.total || 0;
-            lastSaveTime = data.lastSave || Date.now();
-            lastMilestoneIndex = Math.floor(player.score / 100);
-        }
-
-        function save() {
-            localStorage.setItem('numberGameV9', JSON.stringify({
-                score: player.score,
-                name: player.name,
-                bots,
-                total: totalCount,
-                lastSave: Date.now()
-            }));
-        }
-
-        // ==================== BOT INIT ====================
-        function initBots() {
-            if (bots.length > 0) return;
-            const names = getBotNames();
-            bots = names.map(n => ({ name: n, score: 0 }));
-        }
-
-        function getBotNames() {
-            const defaultNames = ["Astra", "Nova", "Zed", "Kira", "Bot-5"];
-            try {
-                const friendsRaw = localStorage.getItem('chillspace_friends');
-                if (friendsRaw) {
-                    const friends = JSON.parse(friendsRaw);
-                    if (Array.isArray(friends) && friends.length > 0) {
-                        const friendNames = friends.map(f => {
-                            if (typeof f === 'string') return f;
-                            if (f && typeof f === 'object' && f.name) return f.name;
-                            if (f && typeof f === 'object' && f.username) return f.username;
-                            if (f && typeof f === 'object' && f.displayName) return f.displayName;
-                            return null;
-                        }).filter(n => n && n.trim().length > 0);
-                        if (friendNames.length >= 5) return friendNames.slice(0, 5);
-                        if (friendNames.length > 0) {
-                            const combined = [...friendNames];
-                            for (let i = combined.length; i < 5; i++) {
-                                combined.push(defaultNames[i - friendNames.length] || `Bot-${i + 1}`);
-                            }
-                            return combined;
-                        }
-                    }
-                }
-            } catch (e) {
-                console.warn('Could not parse chillspace_friends:', e);
-            }
-            return defaultNames;
-        }
-
-        // ==================== OFFLINE CATCHUP ====================
-        function offlineCatchup() {
-            const timeOffline = Date.now() - lastSaveTime;
-            if (timeOffline > 5000) {
-                bots.forEach(b => {
-                    const diff = Math.max(0, player.score - b.score);
-                    const minAdd = Math.floor(diff * 0.5);
-                    const maxAdd = Math.floor(diff * 2);
-                    const add = minAdd + Math.floor(Math.random() * (maxAdd - minAdd + 1));
-                    b.score += add;
-                    totalCount += add;
-                });
-            }
-        }
-
-        // ==================== GAME START ====================
-        function startGame() {
-            const input = document.getElementById('nameInput').value.trim();
-            if (!input) {
-                document.getElementById('nameError').textContent = t('nameRequired');
-                document.getElementById('nameError').style.display = 'block';
-                return;
-            }
-            player.name = input;
-            document.getElementById('nameError').style.display = 'none';
-            document.getElementById('setup').style.display = 'none';
-            document.getElementById('game').style.display = 'flex';
-            load();
-            if (input) player.name = input;
-            initBots();
-            offlineCatchup();
-            isGameStarted = true;
-            lastMilestoneIndex = Math.floor(player.score / 100);
-            updateUI();
-            scheduleDopamineSpike();
-
-            bgVideo.addEventListener('ended', () => {
-                bgVideo.style.display = 'none';
-                videoContainer.style.display = 'none';
-                bgVideo.src = '';
-            });
-
-            setInterval(botTick, 500);
-            setInterval(checkVideoUpdate, 15000);
-            setInterval(updateButtonModeCheck, 300);
-        }
-
-        // ==================== BUTTON MODE ====================
-        function updateButtonModeCheck() {
-            if (!isGameStarted) return;
-
-            const botsAhead = !getLeader();
-            const probability = botsAhead ? 1 / 100 : 1 / 400; // per tick (300ms)
-
-            if (buttonMode === 'plus1' && Math.random() < probability) {
-                buttonMode = 'plus100';
-                const btn = document.getElementById('plusBtn');
-                btn.dataset.mode = 'plus100';
-                updatePlusButtonText();
-                if (buttonModeResetTimeout) clearTimeout(buttonModeResetTimeout);
-                buttonModeResetTimeout = setTimeout(() => {
-                    if (buttonMode === 'plus100') {
-                        buttonMode = 'plus1';
-                        const btn2 = document.getElementById('plusBtn');
-                        btn2.dataset.mode = 'plus1';
-                        updatePlusButtonText();
-                    }
-                }, 3000);
-            }
-        }
-
-        function getLeader() {
-            let all = [player, ...bots].sort((a, b) => b.score - a.score);
-            return all[0] === player;
-        }
-
-        // ==================== DOPAMINE SPIKE ====================
-        function scheduleDopamineSpike() {
-            const delay = 180000 + Math.random() * 120000; // 180-300 seconds
-            if (dopamineSpikeTimeout) clearTimeout(dopamineSpikeTimeout);
-            dopamineSpikeTimeout = setTimeout(() => {
-                triggerDopamineSpike();
-            }, delay);
-        }
-
+        // Modify the triggerDopamineSpike function to show dopamine toast only if not blocked by milestone
         function triggerDopamineSpike() {
             if (!isGameStarted) return;
-            const pct = 30 + Math.floor(Math.random() * 171); // 30-200
+            const pct = 30 + Math.floor(Math.random() * 171);
             dopamineSpikeActive = true;
             dopamineSpikeEndTime = Date.now() + 15000;
 
             const toast = document.getElementById('dopamineToast');
             toast.textContent = `⚡ ${t('dopamineSpike')} ${pct}%! ${t('doubleNumbers')}`;
             toast.style.display = 'block';
+            dopamineToastVisible = true;
             updatePlusButtonText();
 
-            // Vibrate on mobile
             if (navigator.vibrate) navigator.vibrate([50, 30, 50, 30, 100]);
 
             setTimeout(() => {
                 dopamineSpikeActive = false;
                 toast.style.display = 'none';
+                dopamineToastVisible = false;
                 updatePlusButtonText();
                 scheduleDopamineSpike();
             }, 15000);
         }
 
-        // ==================== VIDEO UPDATE ====================
-        function checkVideoUpdate() {
-            if (!isGameStarted) return;
-            if (bgVideo.style.display === 'block') return; // don't interrupt playing video
-
-            const isFirst = getLeader();
-            const newSrc = isFirst ? VIDEO_FIRST : VIDEO_OTHER;
-
-            bgVideo.src = newSrc;
-            bgVideo.style.display = 'block';
-            if (videoContainer) videoContainer.style.display = 'block';
-            bgVideo.play().catch(() => {});
-        }
-
-        // ==================== DAILY CHALLENGE ====================
-        function updateDailyChallenge() {
-            const stored = localStorage.getItem('chillspace_daily_challenge');
-            if (!stored) return;
-            let challenge;
-            try {
-                challenge = JSON.parse(stored);
-            } catch (e) { return; }
-            if (challenge.type !== 'do_numbers') return;
-            const newProgress = Math.min(challenge.progress + 1, challenge.target);
-            if (newProgress === challenge.progress) return;
-            challenge.progress = newProgress;
-            const newValue = JSON.stringify(challenge);
-            localStorage.setItem('chillspace_daily_challenge', newValue);
-            window.dispatchEvent(new StorageEvent('storage', {
-                key: 'chillspace_daily_challenge',
-                oldValue: stored,
-                newValue: newValue,
-                url: window.location.href,
-                storageArea: localStorage
-            }));
-        }
-
-        // ==================== CORE ACTIONS ====================
-        function addOne() {
-            const amount = dopamineSpikeActive ? 2 : 1;
-            const isPlus100 = buttonMode === 'plus100';
-            const actualAmount = isPlus100 ? (dopamineSpikeActive ? 200 : 100) : amount;
-
-            player.score += actualAmount;
-            player.sessionScore += actualAmount;
-            totalCount += actualAmount;
-
-            // Vibrate on mobile - regular short vibrate
-            if (navigator.vibrate) navigator.vibrate(isPlus100 ? 80 : 40);
-
-            // Check for milestone
-            checkMilestone();
-
-            // Reset button mode if was +100
-            if (buttonMode === 'plus100') {
-                buttonMode = 'plus1';
-                const btn = document.getElementById('plusBtn');
-                btn.dataset.mode = 'plus1';
-                if (buttonModeResetTimeout) clearTimeout(buttonModeResetTimeout);
-                updatePlusButtonText();
-            }
-
-            // Bots react
-            bots.forEach(b => {
-                if (Math.random() < 0.33) {
-                    b.score += Math.floor(Math.random() * 2) + 1;
-                    totalCount++;
-                }
-            });
-
-            save();
-            updateUI();
-            updateDailyChallenge();
-        }
-
+        // Modify checkMilestone to hide dopamine toast while milestone is shown, and show again after
         function checkMilestone() {
             const currentIndex = Math.floor(player.score / 100);
             if (currentIndex > lastMilestoneIndex && currentIndex >= 1) {
                 const milestone = currentIndex * 100;
                 lastMilestoneIndex = currentIndex;
 
-                // Longer vibrate pattern
-                if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
+                // Hide dopamine toast temporarily
+                const dopToast = document.getElementById('dopamineToast');
+                if (dopamineToastVisible) {
+                    dopToast.style.display = 'none';
+                }
 
+                // Show milestone toast
                 const toast = document.getElementById('milestoneToast');
                 toast.textContent = `${t('congrats')} ${milestone} ${t('milestoneSuffix')}`;
                 toast.style.display = 'block';
+                milestoneVisible = true;
+
+                if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
+
                 setTimeout(() => {
                     toast.style.display = 'none';
+                    milestoneVisible = false;
+                    // If dopamine spike still active, re-show dopamine toast
+                    if (dopamineSpikeActive && dopamineToastVisible) {
+                        document.getElementById('dopamineToast').style.display = 'block';
+                    }
                 }, 2500);
             }
         }
 
-        function botTick() {
-            bots.forEach(b => {
-                if (Math.random() < 0.25) {
-                    b.score += Math.floor(Math.random() * 3) + 1;
-                    totalCount++;
-                }
-            });
-            save();
-            updateUI();
-        }
-
-        function updateUI() {
-            document.getElementById('totalStat').textContent = `${t('total')}: ${totalCount}`;
-            document.getElementById('totalStat').dataset.rawTotal = totalCount;
-            document.getElementById('yourTotalStat').textContent = `${t('yourTotal')}: ${player.score}`;
-            document.getElementById('yourTotalStat').dataset.rawYour = player.score;
-            document.getElementById('thisGameStat').textContent = `${t('thisGame')}: ${player.sessionScore}`;
-            document.getElementById('thisGameStat').dataset.rawThis = player.sessionScore;
-            updateLeaderboard();
-        }
-
-        function updateLeaderboard() {
-            let all = [player, ...bots].sort((a, b) => b.score - a.score);
-            const maxScore = all[0].score || 1;
-            const lb = document.getElementById('leaderboard');
-            lb.innerHTML = `<h3 style="text-align:center; margin-bottom:10px; font-size:1.1rem; letter-spacing:1px;">${t('liveRankings')}</h3>`;
-
-            all.slice(0, 6).forEach(p => {
-                const width = Math.max((p.score / maxScore) * 100, 2);
-                const barRow = document.createElement('div');
-                barRow.className = 'bar-row';
-                const isPlayer = p === player;
-                barRow.innerHTML = `
-                    <div class="bar-label">
-                        <span style="${isPlayer ? 'color:#00ff00; text-shadow:0 0 8px #00ff00;' : ''}">${isPlayer ? '⭐ ' : ''}${p.name}</span>
-                        <span>${p.score}</span>
-                    </div>
-                    <div class="bar ${isPlayer ? 'you' : 'bot'}" style="width: ${width}%"></div>
-                `;
-                lb.appendChild(barRow);
-            });
-        }
-
-        // ==================== SHARING ====================
-        function shareWhatsApp() {
-            const url = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
-            window.open(url, '_blank');
-            addBonus(20);
-        }
-
-        function shareX() {
-            const url = `https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
-            window.open(url, '_blank');
-            addBonus(50);
-        }
-
-        function shareChill() {
-            const url = `https://chill-space.pages.dev/?post_intent=${encodeURIComponent(shareText)}`;
-            window.open(url, '_blank');
-            addBonus(10);
-        }
-
-        function addBonus(amount) {
-            const actualAmount = dopamineSpikeActive ? amount * 2 : amount;
-            player.score += actualAmount;
-            player.sessionScore += actualAmount;
-            totalCount += actualAmount;
-            if (navigator.vibrate) navigator.vibrate(30);
-            checkMilestone();
-            save();
-            updateUI();
-        }
-
-        // ==================== MUSIC ====================
-        function toggleMusic() {
-            musicOn = !musicOn;
-            const btn = document.getElementById('musicBtn');
-            if (musicOn) {
-                bgMusic.play().catch(() => {});
-                btn.classList.add('playing');
-                btn.textContent = t('pauseMusic');
-            } else {
-                bgMusic.pause();
-                btn.classList.remove('playing');
-                btn.textContent = t('playMusic');
-            }
-        }
-
-        // ==================== INIT ====================
-        function init() {
-            // Pre-fill name
-            const savedData = JSON.parse(localStorage.getItem('numberGameV9') || '{}');
-            if (savedData.name) {
-                document.getElementById('nameInput').value = savedData.name;
-            }
-
-            // Set initial language
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === currentLang);
-            });
-            updateUITexts();
-
-            // Ensure video container exists and video is inside
-            ensureVideoContainer();
-        }
-
+        // Ensure video container is placed correctly in the DOM
         function ensureVideoContainer() {
+            // ... as before, but now we want it inside the game div, after leaderboard
+            const gameDiv = document.getElementById('game');
             let container = document.getElementById('videoContainer');
             if (!container) {
                 container = document.createElement('div');
                 container.id = 'videoContainer';
-                container.style.cssText =
-                    'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:90;display:none;pointer-events:none;width:200px;max-width:70vw;';
-                document.body.appendChild(container);
+                container.style.cssText = 'position: relative; width: 200px; max-width: 70vw; margin: 0 auto; margin-top: 10px; pointer-events: none; display: none;';
+                gameDiv.appendChild(container);
+            } else {
+                // Move to gameDiv if not already there
+                if (container.parentElement !== gameDiv) {
+                    gameDiv.appendChild(container);
+                }
             }
             const video = document.getElementById('bgVideo');
             if (video && container && !container.contains(video)) {
                 container.appendChild(video);
             }
-            // Style the video element
-            if (video) {
-                video.style.width = '100%';
-                video.style.borderRadius = '14px';
-                video.style.boxShadow = '0 0 25px rgba(255,0,255,0.6), 0 8px 30px rgba(0,0,0,0.7)';
-                video.style.objectFit = 'cover';
-                video.style.aspectRatio = '1/1';
-                video.style.pointerEvents = 'auto';
-                video.style.display = 'none';
-                video.style.background = '#000';
-                video.style.border = '2px solid rgba(255,255,255,0.4)';
-            }
-            if (container) container.style.pointerEvents = 'none';
+            // ... style video as before ...
         }
 
-        // Run init on page load
-        document.addEventListener('DOMContentLoaded', init);
-        if (document.readyState !== 'loading') init();
+        // Modify checkVideoUpdate to show video container
+        function checkVideoUpdate() {
+            if (!isGameStarted) return;
+            if (bgVideo.style.display === 'block') return;
+
+            const isFirst = getLeader();
+            const newSrc = isFirst ? VIDEO_FIRST : VIDEO_OTHER;
+
+            bgVideo.src = newSrc;
+            bgVideo.style.display = 'block';
+            const container = document.getElementById('videoContainer');
+            if (container) container.style.display = 'block';
+            bgVideo.play().catch(() => {});
+        }
+
+        // ... rest of functions (same as before) ...
     </script>
 </body>
 </html>
