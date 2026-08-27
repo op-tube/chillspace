@@ -114,7 +114,7 @@ export async function onRequest({ request, params }) {
     likes: randInt(500),
     comments: randInt(50),
     created_at: new Date(Date.now() - randInt(1000*60*60*24*7)).toISOString(),
-    url: `https://chill-space.pages.dev/?code=${code}`
+    url: `https://chillspace.ai/?code=${code}`
   }, null, 2), {
     status: 200,
     headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
