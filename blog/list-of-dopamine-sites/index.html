@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ===== DYNAMIC META TAGS (language-based) ===== -->
+    <script>
+        (function() {
+            // Detect the user's preferred language from the browser
+            var userLang = navigator.language || navigator.languages?.[0] || 'en';
+            // If the language starts with 'ko', set Korean; otherwise English
+            var lang = userLang.toLowerCase().startsWith('ko') ? 'ko' : 'en';
+
+            var title = lang === 'ko' ?
+                '도파민 사이트 목록 | ChillSpace' :
+                'List of Dopamine Sites | ChillSpace';
+
+            var desc = lang === 'ko' ?
+                '도파민 중독을 대체하는 사이트 목록입니다. ChillSpace, ReelSpace, ChillSpace Shop, BuyVinyl, Number Game 및 외부 도파민 대체 사이트를 소개합니다.' :
+                'A curated list of dopamine-replacement sites. Includes ChillSpace, ReelSpace, ChillSpace Shop, BuyVinyl, Number Game, and external dopamine alternatives.';
+
+            var keywords = lang === 'ko' ?
+                '도파민, 중독, 대체, ChillSpace, ReelSpace, 쇼핑, 게임, 음식 배달, 금연' :
+                'dopamine, addiction, replacement, ChillSpace, ReelSpace, shopping, gaming, food delivery, smoking cessation';
+
+            // Write meta tags dynamically
+            document.write('<title>' + title + '</title>');
+            document.write('<meta name="description" content="' + desc + '" />');
+            document.write('<meta name="keywords" content="' + keywords + '" />');
+
+            // Open Graph
+            document.write('<meta property="og:title" content="' + title + '" />');
+            document.write('<meta property="og:description" content="' + desc + '" />');
+            document.write('<meta property="og:type" content="website" />');
+            document.write('<meta property="og:url" content="https://chill-space.pages.dev/blog/list-of-dopamine-sites/" />');
+            document.write('<meta property="og:site_name" content="ChillSpace" />');
+
+            // Twitter
+            document.write('<meta name="twitter:card" content="summary_large_image" />');
+            document.write('<meta name="twitter:title" content="' + title + '" />');
+            document.write('<meta name="twitter:description" content="' + desc + '" />');
+
+            // Set lang attribute on html
+            document.documentElement.lang = lang;
+
+            // Store lang for later use
+            window.__chillLang = lang;
+        })();
+    </script>
+
+    <!-- ===== STRUCTURED DATA (JSON-LD) ===== -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": "List of Dopamine Sites",
+            "description": "A curated list of dopamine-replacement sites. Includes ChillSpace, ReelSpace, ChillSpace Shop, BuyVinyl, Number Game, and external dopamine alternatives.",
+            "url": "https://chill-space.pages.dev/blog/list-of-dopamine-sites/",
+            "inLanguage": ["en", "ko"],
+            "about": {
+                "@type": "Thing",
+                "name": "Dopamine Replacement",
+                "description": "Websites and tools designed to replace dopamine-triggering habits with healthier alternatives."
+            },
+            "mainEntity": {
+                "@type": "ItemList",
+                "itemListElement": [{
+                    "@type": "ListItem",
+                    "position": 1,
+                    "item": {
+                        "@type": "WebSite",
+                        "name": "ChillSpace",
+                        "alternateName": "ChillSpace Social",
+                        "url": "https://chill-space.pages.dev/",
+                        "description": "A Facebook/X simulator that replaces social media dopamine with a calm, text-based interface.",
+                        "potentialAction": {
+                            "@type": "Action",
+                            "name": "Visit ChillSpace",
+                            "target": "https://chill-space.pages.dev/"
+                        }
+                    }
+                }, {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "item": {
+                        "@type": "WebSite",
+                        "name": "ReelSpace",
+                        "url": "https://chill-space.pages.dev/reelspace/",
+                        "description": "A TikTok/Shorts/Reels alternative that replaces short-form video dopamine with mindful scrolling.",
+                        "potentialAction": {
+                            "@type": "Action",
+                            "name": "Visit ReelSpace",
+                            "target": "https://chill-space.pages.dev/reelspace/"
+                        }
+                    }
+                }, {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "item": {
+                        "@type": "WebSite",
+                        "name": "ChillSpace Shop",
+                        "url": "https://chill-space.pages.dev/shop/",
+                        "description": "A simulator that mimics the SHEIN shopping experience — browse, add to cart, and checkout — without any real purchases or financial consequences.",
+                        "potentialAction": {
+                            "@type": "Action",
+                            "name": "Visit ChillSpace Shop",
+                            "target": "https://chill-space.pages.dev/shop/"
+                        }
+                    }
+                }, {
+                    "@type": "ListItem",
+                    "position": 4,
+                    "item": {
+                        "@type": "WebSite",
+                        "name": "BuyVinyl",
+                        "url": "https://chill-space.pages.dev/buyvinyl/",
+                        "description": "A simulator for ordering a vinyl record. Once you 'receive' it, the site plays real music with a spinning record animation for the ultimate realistic dopamine experience.",
+                        "potentialAction": {
+                            "@type": "Action",
+                            "name": "Visit BuyVinyl",
+                            "target": "https://chill-space.pages.dev/buyvinyl/"
+                        }
+                    }
+                }, {
+                    "@type": "ListItem",
+                    "position": 5,
+                    "item": {
+                        "@type": "WebSite",
+                        "name": "Number Game",
+                        "url": "https://chill-space.pages.dev/numbers/",
+                        "description": "A simple clicker game with no ads or microtransactions that replaces gaming dopamine with pure, distraction-free play.",
+                        "potentialAction": {
+                            "@type": "Action",
+                            "name": "Play Number Game",
+                            "target": "https://chill-space.pages.dev/numbers/"
+                        }
+                    }
+                }, {
+                    "@type": "ListItem",
+                    "position": 6,
+                    "item": {
+                        "@type": "WebSite",
+                        "name": "음식만안와요.com",
+                        "url": "https://음식만안와요.com",
+                        "description": "A food delivery alternative that replaces Uber Eats, DoorDash, and 배달민족 with mindful eating choices.",
+                        "potentialAction": {
+                            "@type": "Action",
+                            "name": "Visit 음식만안와요.com",
+                            "target": "https://음식만안와요.com"
+                        }
+                    }
+                }, {
+                    "@type": "ListItem",
+                    "position": 7,
+                    "item": {
+                        "@type": "WebSite",
+                        "name": "dopamineshopping.com",
+                        "url": "https://dopamineshopping.com",
+                        "description": "A gamified shopping alternative that replaces AliExpress and Temu with intentional, non-addictive browsing.",
+                        "potentialAction": {
+                            "@type": "Action",
+                            "name": "Visit dopamineshopping.com",
+                            "target": "https://dopamineshopping.com"
+                        }
+                    }
+                }, {
+                    "@type": "ListItem",
+                    "position": 8,
+                    "item": {
+                        "@type": "WebSite",
+                        "name": "dopamine-shop.com",
+                        "url": "https://dopamine-shop.com",
+                        "description": "An Amazon replacement that replaces impulsive online shopping with curated, purposeful purchasing.",
+                        "potentialAction": {
+                            "@type": "Action",
+                            "name": "Visit dopamine-shop.com",
+                            "target": "https://dopamine-shop.com"
+                        }
+                    }
+                }, {
+                    "@type": "ListItem",
+                    "position": 9,
+                    "item": {
+                        "@type": "WebSite",
+                        "name": "damta.world",
+                        "url": "https://damta.world",
+                        "description": "A smoking cessation tool that replaces nicotine dopamine with healthier coping mechanisms.",
+                        "potentialAction": {
+                            "@type": "Action",
+                            "name": "Visit damta.world",
+                            "target": "https://damta.world"
+                        }
+                    }
+                }, {
+                    "@type": "ListItem",
+                    "position": 10,
+                    "item": {
+                        "@type": "WebSite",
+                        "name": "FakeHaul",
+                        "url": "https://fakehaul.com",
+                        "description": "A realistic mock e-commerce platform that simulates the entire shopping loop—browsing, comparing, adding to cart, and checking out—without any financial consequences.",
+                        "potentialAction": {
+                            "@type": "Action",
+                            "name": "Visit FakeHaul",
+                            "target": "https://fakehaul.com"
+                        }
+                    }
+                }, {
+                    "@type": "ListItem",
+                    "position": 11,
+                    "item": {
+                        "@type": "WebSite",
+                        "name": "PeykMart",
+                        "url": "https://peykmart.com",
+                        "description": "A fake online shopping site that mimics the experience of browsing and buying products, providing the dopamine hit of a purchase without spending any money.",
+                        "potentialAction": {
+                            "@type": "Action",
+                            "name": "Visit PeykMart",
+                            "target": "https://peykmart.com"
+                        }
+                    }
+                }]
+            }
+        }
+    </script>
+
+    <!-- ===== ADDITIONAL STRUCTURED DATA: WebSite ===== -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "ChillSpace Blog",
+            "url": "https://chill-space.pages.dev/blog/list-of-dopamine-sites/",
+            "description": "A curated list of dopamine-replacement sites for healthier digital habits.",
+            "publisher": {
+                "@type": "Organization",
+                "name": "ChillSpace",
+                "url": "https://chill-space.pages.dev/"
+            },
+            "inLanguage": ["en", "ko"]
+        }
+    </script>
+
+    <!-- ===== BREADCRUMB STRUCTURED DATA ===== -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [{
+                "@type": "ListItem",
+                "position": 1,
+                "name": "ChillSpace",
+                "item": "https://chill-space.pages.dev/"
+            }, {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://chill-space.pages.dev/blog/"
+            }, {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "List of Dopamine Sites",
+                "item": "https://chill-space.pages.dev/blog/list-of-dopamine-sites/"
+            }]
+        }
+    </script>
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f7f5f0;
+            --bg-card: #ffffff;
+            --text: #1e1e2a;
+            --text-light: #4a4a5a;
+            --border: #e2dfd8;
+            --accent: #6c5b7b;
+            --accent-light: #a89bb5;
+            --green: #4a7c59;
+            --green-light: #c8e6d0;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            --radius: 18px;
+            --transition: 0.25s ease;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --max-width: 1000px;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ===== HEADER ===== */
+        .page-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem 1.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .logo-icon {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background: var(--accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .header-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .header-title a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .header-title a:hover {
+            color: var(--accent);
+        }
+
+        .header-sub {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 400;
+            display: block;
+            margin-top: 0.1rem;
+        }
+
+        /* ===== LANGUAGE TOGGLE ===== */
+        .lang-toggle {
+            display: flex;
+            gap: 0.4rem;
+            background: var(--border);
+            padding: 0.3rem;
+            border-radius: 40px;
+            flex-shrink: 0;
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-light);
+            font-family: var(--font);
+            letter-spacing: 0.01em;
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: var(--text);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: var(--text);
+        }
+
+        /* ===== INTRO ===== */
+        .intro {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 2rem 2rem 1.8rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .intro h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .intro p {
+            color: var(--text-light);
+            max-width: 720px;
+        }
+
+        .intro .badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: var(--green-light);
+            color: var(--green);
+            padding: 0.15rem 0.7rem;
+            border-radius: 40px;
+            margin-left: 0.4rem;
+        }
+
+        .intro .resources {
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        .intro .resources a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .intro .resources a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== SECTION TITLES ===== */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 2.5rem 0 1.2rem;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .section-title .count {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--text-light);
+            background: var(--border);
+            padding: 0.1rem 0.7rem;
+            border-radius: 40px;
+        }
+
+        .section-sub {
+            color: var(--text-light);
+            margin-top: -0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* ===== SITE CARDS ===== */
+        .site-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .site-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 1.4rem 1.6rem 1.6rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .site-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+            border-color: var(--accent-light);
+        }
+
+        .site-card .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .site-card .site-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            word-break: break-word;
+        }
+
+        .site-card .site-name a {
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .site-card .site-name a:hover {
+            color: var(--accent);
+        }
+
+        .site-card .badge-internal {
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: var(--accent-light);
+            color: white;
+            padding: 0.15rem 0.6rem;
+            border-radius: 40px;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .site-card .badge-external {
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: var(--border);
+            color: var(--text-light);
+            padding: 0.15rem 0.6rem;
+            border-radius: 40px;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .site-card .replaces {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin: 0.2rem 0 0.5rem;
+            font-weight: 500;
+        }
+
+        .site-card .replaces strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .site-card .desc {
+            font-size: 0.92rem;
+            color: var(--text-light);
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 0.8rem;
+        }
+
+        .site-card .card-link {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--accent);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            align-self: flex-start;
+            transition: var(--transition);
+            border-bottom: 1.5px solid transparent;
+        }
+
+        .site-card .card-link:hover {
+            border-bottom-color: var(--accent);
+            color: var(--text);
+        }
+
+        .site-card .card-link::after {
+            content: '→';
+            transition: var(--transition);
+        }
+
+        .site-card .card-link:hover::after {
+            transform: translateX(3px);
+        }
+
+        /* ===== NOTE ===== */
+        .note-box {
+            margin-top: 2.5rem;
+            padding: 1.2rem 1.8rem;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-light);
+            box-shadow: var(--shadow);
+        }
+
+        .note-box strong {
+            color: var(--text);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 3.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== LANGUAGE CONTENT ===== */
+        .lang-content {
+            display: none;
+        }
+
+        .lang-content.active {
+            display: block;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            body {
+                padding: 1.2rem 0.8rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.8rem;
+            }
+
+            .header-left {
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .lang-toggle {
+                align-self: flex-start;
+            }
+
+            .header-title {
+                font-size: 1.3rem;
+            }
+
+            .intro {
+                padding: 1.2rem 1.2rem 1.4rem;
+            }
+
+            .intro h2 {
+                font-size: 1.1rem;
+            }
+
+            .site-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .site-card {
+                padding: 1.2rem 1.2rem 1.4rem;
+            }
+
+            .section-title {
+                font-size: 1.25rem;
+            }
+
+            .note-box {
+                padding: 1rem 1.2rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 900px) {
+            .site-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 901px) {
+            .site-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* ===== UTILITY ===== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <header class="page-header">
+            <div class="header-left">
+                <span class="logo-icon" aria-hidden="true">🧠</span>
+                <div>
+                    <div class="header-title">
+                        <a href="https://chill-space.pages.dev/">ChillSpace</a>
+                        <span class="header-sub">／ blog</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lang-toggle" role="group" aria-label="Language toggle">
+                <button class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+                <button class="lang-btn" data-lang="ko" aria-pressed="false">KR</button>
+            </div>
+        </header>
+
+        <!-- ===== INTRO ===== -->
+        <div class="intro">
+            <!-- English -->
+            <div class="lang-content active" data-lang="en">
+                <h2>
+                    🧩 Dopamine Replacement Sites
+                    <span class="badge">curated</span>
+                </h2>
+                <p>
+                    A carefully curated list of websites designed to replace dopamine-triggering habits with healthier,
+                    more intentional alternatives. All links go directly to the websites — no app stores, no news articles.
+                    <br><br>
+                    <strong>Internal</strong> sites are part of the ChillSpace family. <strong>External</strong> sites are
+                    third-party tools we've vetted. We do <em>not</em> include food delivery clones with deceptive content.
+                </p>
+                <div class="resources">
+                    📚 Learn more about dopamine sites: <a href="https://dopamine-hits.fandom.com" target="_blank">Dopamine Hits Wiki</a> · <a href="https://www.reddit.com/r/DopamineSites/" target="_blank">r/DopamineSites</a> · <a href="https://chill-space.pages.dev/blog/what-are-dopamine-sites/" target="_blank">What Are Dopamine Sites?</a>
+                </div>
+            </div>
+            <!-- Korean -->
+            <div class="lang-content" data-lang="ko">
+                <h2>
+                    🧩 도파민 대체 사이트
+                    <span class="badge">엄선</span>
+                </h2>
+                <p>
+                    도파민 중독을 유발하는 습관을 더 건강하고 의도적인 대안으로 바꾸도록 설계된 웹사이트를 엄선하여 소개합니다.
+                    모든 링크는 웹사이트로 바로 연결됩니다 — 앱 스토어나 뉴스 기사가 아닙니다.
+                    <br><br>
+                    <strong>내부</strong> 사이트는 ChillSpace 패밀리의 일부입니다. <strong>외부</strong> 사이트는
+                    검증된 서드파티 도구입니다. 기만적인 콘텐츠가 포함된 음식 배달 클론 사이트는 포함하지 않습니다.
+                </p>
+                <div class="resources">
+                    📚 도파민 사이트에 대해 더 알아보기: <a href="https://dopamine-hits.fandom.com" target="_blank">Dopamine Hits Wiki</a> · <a href="https://www.reddit.com/r/DopamineSites/" target="_blank">r/DopamineSites</a> · <a href="https://chill-space.pages.dev/blog/what-are-dopamine-sites/" target="_blank">도파민 사이트란?</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== INTERNAL SITES ===== -->
+        <h2 class="section-title">
+            <span data-lang-content="en">🧊 ChillSpace Family</span>
+            <span data-lang-content="ko">🧊 ChillSpace 패밀리</span>
+            <span class="count">5</span>
+        </h2>
+        <p class="section-sub" data-lang-content="en">Internal dopamine replacement tools built by the ChillSpace team.</p>
+        <p class="section-sub" data-lang-content="ko">ChillSpace 팀이 만든 내부 도파민 대체 도구입니다.</p>
+
+        <div class="site-grid">
+
+            <!-- ChillSpace (/) -->
+            <div class="site-card">
+                <div class="card-top">
+                    <div class="site-name"><a href="https://chill-space.pages.dev/">ChillSpace</a></div>
+                    <span class="badge-internal">internal</span>
+                </div>
+                <div class="replaces" data-lang-content="en">Replaces <strong>Facebook · X</strong></div>
+                <div class="replaces" data-lang-content="ko">대체 <strong>Facebook · X</strong></div>
+                <div class="desc" data-lang-content="en">A calm, text-based social simulator that strips away the algorithmic noise and endless scroll.</div>
+                <div class="desc" data-lang-content="ko">알고리즘 노이즈와 무한 스크롤을 제거한 차분한 텍스트 기반 소셜 시뮬레이터입니다.</div>
+                <a href="https://chill-space.pages.dev/" class="card-link" data-lang-content="en">Visit ChillSpace</a>
+                <a href="https://chill-space.pages.dev/" class="card-link" data-lang-content="ko">ChillSpace 방문</a>
+            </div>
+
+            <!-- ReelSpace (/reelspace/) -->
+            <div class="site-card">
+                <div class="card-top">
+                    <div class="site-name"><a href="https://chill-space.pages.dev/reelspace/">ReelSpace</a></div>
+                    <span class="badge-internal">internal</span>
+                </div>
+                <div class="replaces" data-lang-content="en">Replaces <strong>TikTok · Shorts · Reels</strong></div>
+                <div class="replaces" data-lang-content="ko">대체 <strong>TikTok · Shorts · Reels</strong></div>
+                <div class="desc" data-lang-content="en">A mindful short-form video alternative that encourages intentional viewing over compulsive scrolling.</div>
+                <div class="desc" data-lang-content="ko">충동적인 스크롤 대신 의도적인 시청을 장려하는 마음챙김 숏폼 비디오 대안입니다.</div>
+                <a href="https://chill-space.pages.dev/reelspace/" class="card-link" data-lang-content="en">Visit ReelSpace</a>
+                <a href="https://chill-space.pages.dev/reelspace/" class="card-link" data-lang-content="ko">ReelSpace 방문</a>
+            </div>
+
+            <!-- ChillSpace Shop (/shop/) -->
+            <div class="site-card">
+                <div class="card-top">
+                    <div class="site-name"><a href="https://chill-space.pages.dev/shop/">ChillSpace Shop</a></div>
+                    <span class="badge-internal">internal</span>
+                </div>
+                <div class="replaces" data-lang-content="en">Simulates <strong>SHEIN</strong></div>
+                <div class="replaces" data-lang-content="ko">시뮬레이션 <strong>SHEIN</strong></div>
+                <div class="desc" data-lang-content="en">A simulator that mimics the SHEIN shopping experience — browse, add to cart, and checkout — without any real purchases or financial consequences.</div>
+                <div class="desc" data-lang-content="ko">SHEIN 쇼핑 경험을 모방한 시뮬레이터 — 둘러보기, 장바구니 담기, 결제까지 — 실제 구매나 금전적 부담은 전혀 없습니다.</div>
+                <a href="https://chill-space.pages.dev/shop/" class="card-link" data-lang-content="en">Visit ChillSpace Shop</a>
+                <a href="https://chill-space.pages.dev/shop/" class="card-link" data-lang-content="ko">ChillSpace Shop 방문</a>
+            </div>
+
+            <!-- BuyVinyl (/buyvinyl/) -->
+            <div class="site-card">
+                <div class="card-top">
+                    <div class="site-name"><a href="https://chill-space.pages.dev/buyvinyl/">BuyVinyl</a></div>
+                    <span class="badge-internal">internal</span>
+                </div>
+                <div class="replaces" data-lang-content="en">Replaces <strong>HMV · Weverse Shop · Amazon (music)</strong></div>
+                <div class="replaces" data-lang-content="ko">대체 <strong>HMV · Weverse Shop · Amazon (음악)</strong></div>
+                <div class="desc" data-lang-content="en">A simulator for ordering a vinyl record. Once you 'receive' it, the site plays real music with a spinning record animation for the ultimate realistic dopamine experience.</div>
+                <div class="desc" data-lang-content="ko">바이닐 레코드를 주문하는 시뮬레이터입니다. '수령'하면 실제 음악과 함께 회전하는 레코드 애니메이션이 재생되어 가장 현실적인 도파민 경험을 제공합니다.</div>
+                <a href="https://chill-space.pages.dev/buyvinyl/" class="card-link" data-lang-content="en">Visit BuyVinyl</a>
+                <a href="https://chill-space.pages.dev/buyvinyl/" class="card-link" data-lang-content="ko">BuyVinyl 방문</a>
+            </div>
+
+            <!-- Number Game (/numbers/) -->
+            <div class="site-card">
+                <div class="card-top">
+                    <div class="site-name"><a href="https://chill-space.pages.dev/numbers/">Number Game</a></div>
+                    <span class="badge-internal">internal</span>
+                </div>
+                <div class="replaces" data-lang-content="en">Replaces <strong>Gaming dopamine</strong></div>
+                <div class="replaces" data-lang-content="ko">대체 <strong>게임 도파민</strong></div>
+                <div class="desc" data-lang-content="en">A pure, no-ads, no-microtransaction clicker game that gives you the satisfaction of progress without the addiction loop.</div>
+                <div class="desc" data-lang-content="ko">광고와 마이크로트랜잭션이 없는 순수한 클리커 게임으로, 중독 루프 없이 진행의 만족감을 제공합니다.</div>
+                <a href="https://chill-space.pages.dev/numbers/" class="card-link" data-lang-content="en">Play Number Game</a>
+                <a href="https://chill-space.pages.dev/numbers/" class="card-link" data-lang-content="ko">Number Game 플레이</a>
+            </div>
+
+        </div>
+
+        <!-- ===== EXTERNAL SITES ===== -->
+        <h2 class="section-title" style="margin-top:3rem;">
+            <span data-lang-content="en">🌐 External Dopamine Sites</span>
+            <span data-lang-content="ko">🌐 외부 도파민 사이트</span>
+            <span class="count">6</span>
+        </h2>
+        <p class="section-sub" data-lang-content="en">Third-party tools we've vetted for quality and authenticity. No food delivery clones.</p>
+        <p class="section-sub" data-lang-content="ko">품질과 정통성을 검증한 서드파티 도구입니다. 음식 배달 클론은 없습니다.</p>
+
+        <div class="site-grid">
+
+            <!-- 음식만안와요.com -->
+            <div class="site-card">
+                <div class="card-top">
+                    <div class="site-name"><a href="https://음식만안와요.com">음식만안와요.com</a></div>
+                    <span class="badge-external">external</span>
+                </div>
+                <div class="replaces" data-lang-content="en">Replaces <strong>Uber Eats · DoorDash · 배달민족</strong></div>
+                <div class="replaces" data-lang-content="ko">대체 <strong>Uber Eats · DoorDash · 배달민족</strong></div>
+                <div class="desc" data-lang-content="en">A food delivery alternative that encourages mindful eating decisions instead of impulsive ordering.</div>
+                <div class="desc" data-lang-content="ko">충동적인 주문 대신 마음챙김 식사 결정을 장려하는 음식 배달 대안입니다.</div>
+                <a href="https://음식만안와요.com" class="card-link" data-lang-content="en">Visit 음식만안와요.com</a>
+                <a href="https://음식만안와요.com" class="card-link" data-lang-content="ko">음식만안와요.com 방문</a>
+            </div>
+
+            <!-- dopamineshopping.com -->
+            <div class="site-card">
+                <div class="card-top">
+                    <div class="site-name"><a href="https://dopamineshopping.com">dopamineshopping.com</a></div>
+                    <span class="badge-external">external</span>
+                </div>
+                <div class="replaces" data-lang-content="en">Replaces <strong>AliExpress · Temu · gamified shopping</strong></div>
+                <div class="replaces" data-lang-content="ko">대체 <strong>AliExpress · Temu · 게임화된 쇼핑</strong></div>
+                <div class="desc" data-lang-content="en">A gamified shopping alternative that replaces the dopamine rush of deals with intentional browsing.</div>
+                <div class="desc" data-lang-content="ko">딜의 도파민 쾌감을 의도적인 브라우징으로 대체하는 게임화된 쇼핑 대안입니다.</div>
+                <a href="https://dopamineshopping.com" class="card-link" data-lang-content="en">Visit dopamineshopping.com</a>
+                <a href="https://dopamineshopping.com" class="card-link" data-lang-content="ko">dopamineshopping.com 방문</a>
+            </div>
+
+            <!-- dopamine-shop.com -->
+            <div class="site-card">
+                <div class="card-top">
+                    <div class="site-name"><a href="https://dopamine-shop.com">dopamine-shop.com</a></div>
+                    <span class="badge-external">external</span>
+                </div>
+                <div class="replaces" data-lang-content="en">Replaces <strong>Amazon</strong></div>
+                <div class="replaces" data-lang-content="ko">대체 <strong>Amazon</strong></div>
+                <div class="desc" data-lang-content="en">A purposeful shopping platform that replaces impulsive Amazon buying with curated, need-based purchasing.</div>
+                <div class="desc" data-lang-content="ko">충동적인 Amazon 구매를 큐레이션된 필요 기반 구매로 대체하는 목적 있는 쇼핑 플랫폼입니다.</div>
+                <a href="https://dopamine-shop.com" class="card-link" data-lang-content="en">Visit dopamine-shop.com</a>
+                <a href="https://dopamine-shop.com" class="card-link" data-lang-content="ko">dopamine-shop.com 방문</a>
+            </div>
+
+            <!-- damta.world -->
+            <div class="site-card">
+                <div class="card-top">
+                    <div class="site-name"><a href="https://damta.world">damta.world</a></div>
+                    <span class="badge-external">external</span>
+                </div>
+                <div class="replaces" data-lang-content="en">Replaces <strong>Smoking (nicotine dopamine)</strong></div>
+                <div class="replaces" data-lang-content="ko">대체 <strong>흡연 (니코틴 도파민)</strong></div>
+                <div class="desc" data-lang-content="en">A smoking cessation tool that replaces nicotine dopamine with healthier, sustainable coping strategies.</div>
+                <div class="desc" data-lang-content="ko">니코틴 도파민을 더 건강하고 지속 가능한 대처 전략으로 대체하는 금연 도구입니다.</div>
+                <a href="https://damta.world" class="card-link" data-lang-content="en">Visit damta.world</a>
+                <a href="https://damta.world" class="card-link" data-lang-content="ko">damta.world 방문</a>
+            </div>
+
+            <!-- FakeHaul -->
+            <div class="site-card">
+                <div class="card-top">
+                    <div class="site-name"><a href="https://fakehaul.com">FakeHaul</a></div>
+                    <span class="badge-external">external</span>
+                </div>
+                <div class="replaces" data-lang-content="en">Replaces <strong>Temu · gamified shopping</strong></div>
+                <div class="replaces" data-lang-content="ko">대체 <strong>Temu · 게임화된 쇼핑</strong></div>
+                <div class="desc" data-lang-content="en">A realistic mock e-commerce platform that simulates the entire shopping loop—browsing, comparing, adding to cart, and checking out—without any financial consequences.</div>
+                <div class="desc" data-lang-content="ko">실제와 같은 모의 전자상거래 플랫폼으로, 둘러보기, 비교하기, 장바구니 담기, 결제까지 전체 쇼핑 과정을 시뮬레이션하지만 금전적 부담은 전혀 없습니다.</div>
+                <a href="https://fakehaul.com" class="card-link" data-lang-content="en">Visit FakeHaul</a>
+                <a href="https://fakehaul.com" class="card-link" data-lang-content="ko">FakeHaul 방문</a>
+            </div>
+
+            <!-- PeykMart -->
+            <div class="site-card">
+                <div class="card-top">
+                    <div class="site-name"><a href="https://peykmart.com">PeykMart</a></div>
+                    <span class="badge-external">external</span>
+                </div>
+                <div class="replaces" data-lang-content="en">Replaces <strong>Online shopping dopamine</strong></div>
+                <div class="replaces" data-lang-content="ko">대체 <strong>온라인 쇼핑 도파민</strong></div>
+                <div class="desc" data-lang-content="en">A fake online shopping site that mimics the experience of browsing and buying products, providing the dopamine hit of a purchase without spending any money.</div>
+                <div class="desc" data-lang-content="ko">제품을 둘러보고 구매하는 경험을 모방한 가짜 온라인 쇼핑 사이트로, 돈을 쓰지 않고도 구매의 도파민 효과를 제공합니다.</div>
+                <a href="https://peykmart.com" class="card-link" data-lang-content="en">Visit PeykMart</a>
+                <a href="https://peykmart.com" class="card-link" data-lang-content="ko">PeykMart 방문</a>
+            </div>
+
+        </div>
+
+        <!-- ===== NOTE ===== -->
+        <div class="note-box">
+            <div data-lang-content="en">
+                <strong>📌 Note:</strong> This list is curated and updated regularly. We do <em>not</em> include food delivery clones
+                or sites with deceptive meta tags and blogs. All external sites are linked directly — no app store pages,
+                no news articles. If you know a legitimate dopamine replacement site, <a href="https://chill-space.pages.dev/contact">let us know</a>.
+            </div>
+            <div data-lang-content="ko">
+                <strong>📌 참고:</strong> 이 목록은 정기적으로 큐레이션 및 업데이트됩니다. 기만적인 메타 태그와 블로그가 있는 음식 배달 클론이나
+                사이트는 포함하지 않습니다. 모든 외부 사이트는 직접 연결됩니다 — 앱 스토어 페이지나 뉴스 기사가 아닙니다.
+                합법적인 도파민 대체 사이트를 알고 계신다면 <a href="https://chill-space.pages.dev/contact">알려주세요</a>.
+            </div>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="footer">
+            <p>
+                <span data-lang-content="en">© 2026 <a href="https://chill-space.pages.dev/">ChillSpace</a> — built to replace dopamine, not to exploit it.</span>
+                <span data-lang-content="ko">© 2026 <a href="https://chill-space.pages.dev/">ChillSpace</a> — 도파민을 착취하지 않고 대체하기 위해 만들어졌습니다.</span>
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- ===== LANGUAGE TOGGLE SCRIPT ===== -->
+    <script>
+        (function() {
+            // Get all language toggle buttons
+            const btns = document.querySelectorAll('.lang-btn');
+            const langContents = document.querySelectorAll('.lang-content');
+            const allLangElements = document.querySelectorAll('[data-lang-content]');
+
+            // Function to set active language
+            function setLang(lang) {
+                // Update buttons
+                btns.forEach(btn => {
+                    const isActive = btn.dataset.lang === lang;
+                    btn.classList.toggle('active', isActive);
+                    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                });
+
+                // Update content blocks
+                langContents.forEach(el => {
+                    el.classList.toggle('active', el.dataset.lang === lang);
+                });
+
+                // Update inline lang-content elements
+                allLangElements.forEach(el => {
+                    const content = el.dataset.langContent;
+                    // Show only the matching language content
+                    if (content === lang) {
+                        el.style.display = '';
+                    } else {
+                        el.style.display = 'none';
+                    }
+                });
+
+                // Update HTML lang attribute
+                document.documentElement.lang = lang;
+
+                // Store preference
+                try {
+                    localStorage.setItem('chillspace-lang', lang);
+                } catch (_) { /* ignore */ }
+            }
+
+            // Click handlers
+            btns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const lang = this.dataset.lang;
+                    setLang(lang);
+                });
+            });
+
+            // Restore saved preference, or use detected language from head script
+            let savedLang = null;
+            try {
+                savedLang = localStorage.getItem('chillspace-lang');
+            } catch (_) { /* ignore */ }
+
+            const detectedLang = window.__chillLang || 'en';
+
+            // If user has a saved preference, use it; otherwise use detected
+            const initialLang = savedLang || detectedLang || 'en';
+            setLang(initialLang);
+        })();
+    </script>
+
+    <!-- ===== ADDITIONAL SEO: alternate hreflang ===== -->
+    <link rel="alternate" hreflang="en" href="https://chill-space.pages.dev/blog/list-of-dopamine-sites/" />
+    <link rel="alternate" hreflang="ko" href="https://chill-space.pages.dev/blog/list-of-dopamine-sites/?lang=ko" />
+    <link rel="alternate" hreflang="x-default" href="https://chill-space.pages.dev/blog/list-of-dopamine-sites/" />
+
+    <!-- ===== CANONICAL ===== -->
+    <link rel="canonical" href="https://chill-space.pages.dev/blog/list-of-dopamine-sites/" />
+
+</body>
+</html>
