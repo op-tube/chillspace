@@ -1,46 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
   <url>
-    <loc>https://chill-space.pages.dev/</loc>
+    <loc>https://chill-space.pages.dev/index.html</loc>
     <changefreq>always</changefreq>
     <priority>1.0</priority>
   </url>
-<url>
-    <loc>https://chill-space.pages.dev/numbers/</loc>
+  <url>
+    <loc>https://chill-space.pages.dev/about/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://chill-space.pages.dev/about/kr/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://chill-space.pages.dev/blog/chillspace-vs-chillspace/index.html</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chill-space.pages.dev/gaming/</loc>
+    <loc>https://chill-space.pages.dev/blog/dopamine-site-history/index.html</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chill-space.pages.dev/kpop/</loc>
-    <changefreq>always</changefreq>
-    <priority>0.5</priority>
-  </url>
-   <url>
-    <loc>https://chill-space.pages.dev/about/</loc>
+    <loc>https://chill-space.pages.dev/blog/list-of-dopamine-sites/index.html</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.3</priority>
-  </url>
-   <url>
-    <loc>https://chill-space.pages.dev/privacy/</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chill-space.pages.dev/blog/chillspace-vs-chillspace/</loc>
-    <changefreq>never</changefreq>
-    <priority>0.3</priority>
+    <loc>https://chill-space.pages.dev/blog/what-are-dopamine-sites/index.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
-
   <url>
-    <loc>https://chill-space.pages.dev/?post_creator=A+ChillSpace+User&amp;post_content=I+love+coding&amp;profile_picture=grey</loc>
-    <changefreq>never</changefreq>
+    <loc>https://chill-space.pages.dev/buyvinyl/index.html</loc>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-
+  <url>
+    <loc>https://chill-space.pages.dev/gaming/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://chill-space.pages.dev/jump/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://chill-space.pages.dev/kpop/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://chill-space.pages.dev/messages/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://chill-space.pages.dev/numbers/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://chill-space.pages.dev/privacy/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://chill-space.pages.dev/reelspace/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://chill-space.pages.dev/shop/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://chill-space.pages.dev/surfers/index.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
 </urlset>
