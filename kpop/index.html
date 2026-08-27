@@ -917,7 +917,7 @@
 
             // Return to ChillSpace home
             homeBtn.addEventListener('click', function() {
-                window.location.href = 'https://chill-space.pages.dev/';
+                window.location.href = 'https://chillspace.ai/';
             });
 
             // Ensure overlay is visible if no consent
@@ -3158,10 +3158,10 @@
             const aId = state.leftSong.id;
             const bId = state.rightSong.id;
             const choice = voteLeft.classList.contains('voted-left') ? 'a' : 'b';
-            const baseUrl = 'https://chill-space.pages.dev/kpop';
+            const baseUrl = 'https://chillspace.ai/kpop';
             const shareUrl =
                 `${baseUrl}?video_a=${aId}&video_b=${bId}&friend_choice=${choice}`;
-            const messageUrl = `https://chill-space.pages.dev/messages?text=${encodeURIComponent(shareUrl)}`;
+            const messageUrl = `https://chillspace.ai/messages?text=${encodeURIComponent(shareUrl)}`;
             window.open(messageUrl, '_blank');
         }
 
