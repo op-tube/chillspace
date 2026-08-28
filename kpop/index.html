@@ -87,8 +87,8 @@
         }
 
         @keyframes slowDrift {
-            0% { transform: rotate(0deg) scale(1); }
-            100% { transform: rotate(360deg) scale(1); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .container {
@@ -3032,13 +3032,13 @@
         }
 
         // ============================================================
-        // 5b. PATTERN GENERATION (with no-repeat and moving class)
+        // 5b. PATTERN GENERATION - FULL COVERAGE, NO GAPS
         // ============================================================
         function generateRandomPattern() {
             const types = ['stripes', 'zigzags', 'dots', 'nothing'];
             // Avoid repeating the same type consecutively
             let available = types.filter(t => t !== lastPatternType);
-            if (available.length === 0) available = types; // fallback
+            if (available.length === 0) available = types;
             const type = randomElement(available);
             lastPatternType = type;
 
@@ -3047,6 +3047,8 @@
 
             if (type === 'nothing') {
                 patternOverlay.style.backgroundImage = 'none';
+                patternOverlay.style.backgroundSize = 'auto';
+                patternOverlay.style.backgroundRepeat = 'repeat';
                 return;
             }
 
@@ -3057,59 +3059,78 @@
             const alpha = 0.15 + Math.random() * 0.25;
             const color = `hsla(${hue}, ${sat}%, ${light}%, ${alpha})`;
 
-            let bgImage = '';
             switch (type) {
                 case 'stripes': {
+                    // Wider stripes with smaller gap to ensure full coverage
                     const angle = randomInt(0, 180);
-                    const width = randomInt(6, 20);
-                    bgImage = `repeating-linear-gradient(${angle}deg, ${color} 0px, ${color} ${width}px, transparent ${width}px, transparent ${width*2}px)`;
+                    const width = randomInt(30, 80);
+                    // Use a second color band to fill gaps
+                    const color2 = `hsla(${hue}, ${sat}%, ${(light + 20)}%, ${alpha * 0.5})`;
+                    patternOverlay.style.backgroundImage = `
+                        repeating-linear-gradient(${angle}deg, 
+                            ${color} 0px, 
+                            ${color} ${width}px, 
+                            ${color2} ${width}px, 
+                            ${color2} ${width * 1.5}px,
+                            transparent ${width * 1.5}px,
+                            transparent ${width * 2}px)
+                    `;
+                    patternOverlay.style.backgroundSize = 'auto';
+                    patternOverlay.style.backgroundRepeat = 'repeat';
                     break;
                 }
                 case 'dots': {
-                    const size = randomInt(4, 12);
-                    const gap = randomInt(14, 30);
-                    const color2 = `hsla(${hue}, ${sat}%, ${light}%, ${alpha})`;
+                    // Dense dots that overlap/touch to cover the screen
+                    const size = randomInt(20, 40);
+                    const gap = randomInt(20, 40); // gap <= size ensures no empty space
+                    const color2 = `hsla(${hue}, ${sat}%, ${(light + 20)}%, ${alpha * 0.6})`;
                     patternOverlay.style.backgroundImage = `
-                            radial-gradient(circle at 0% 0%, ${color2} ${size}px, transparent ${size}px),
-                            radial-gradient(circle at 50% 50%, ${color2} ${size}px, transparent ${size}px),
-                            radial-gradient(circle at 0% 100%, ${color2} ${size}px, transparent ${size}px),
-                            radial-gradient(circle at 100% 0%, ${color2} ${size}px, transparent ${size}px),
-                            radial-gradient(circle at 100% 100%, ${color2} ${size}px, transparent ${size}px)
-                        `;
+                        radial-gradient(circle at 0% 0%, ${color} ${size}px, ${color2} ${size}px, transparent ${size + 2}px),
+                        radial-gradient(circle at 50% 50%, ${color} ${size}px, ${color2} ${size}px, transparent ${size + 2}px),
+                        radial-gradient(circle at 0% 100%, ${color} ${size}px, ${color2} ${size}px, transparent ${size + 2}px),
+                        radial-gradient(circle at 100% 0%, ${color} ${size}px, ${color2} ${size}px, transparent ${size + 2}px),
+                        radial-gradient(circle at 100% 100%, ${color} ${size}px, ${color2} ${size}px, transparent ${size + 2}px)
+                    `;
                     patternOverlay.style.backgroundSize = `${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px`;
                     patternOverlay.style.backgroundPosition = '0 0, 0 0, 0 0, 0 0, 0 0';
                     patternOverlay.style.backgroundRepeat = 'repeat, repeat, repeat, repeat, repeat';
-                    return;
+                    break;
                 }
                 case 'zigzags': {
-                    const strokeWidth = randomInt(2, 4);
-                    const svgWidth = 24;
-                    const svgHeight = 20;
-                    const points = [];
-                    const steps = 4;
-                    for (let i = 0; i <= steps; i++) {
-                        const x = (i / steps) * svgWidth;
-                        const y = (i % 2 === 0) ? 0 : svgHeight;
-                        points.push(`${x},${y}`);
+                    // Multiple zigzag lines in a tile to eliminate gaps
+                    const strokeWidth = randomInt(15, 30);
+                    const svgWidth = randomInt(300, 400);
+                    const svgHeight = randomInt(120, 200);
+                    const steps = 6;
+
+                    // Build multiple offset zigzag paths
+                    let paths = '';
+                    const numLines = 3;
+                    for (let line = 0; line < numLines; line++) {
+                        const offsetY = (line / numLines) * svgHeight;
+                        const points = [];
+                        for (let i = 0; i <= steps; i++) {
+                            const x = (i / steps) * svgWidth;
+                            const y = (i % 2 === 0) ? offsetY : offsetY + svgHeight / numLines;
+                            points.push(`${x},${y}`);
+                        }
+                        paths += `<polyline points="${points.join(' ')}" fill="none" stroke="${color}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round"/>`;
                     }
-                    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
-                            <polyline points="${points.join(' ')}" fill="none" stroke="${color}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>`;
+
+                    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">${paths}</svg>`;
                     const encoded = encodeURIComponent(svg);
-                    bgImage = `url("data:image/svg+xml,${encoded}")`;
+                    patternOverlay.style.backgroundImage = `url("data:image/svg+xml,${encoded}")`;
+                    patternOverlay.style.backgroundRepeat = 'repeat';
+                    patternOverlay.style.backgroundSize = `${svgWidth}px ${svgHeight}px`;
                     break;
                 }
                 default:
-                    bgImage = 'none';
+                    patternOverlay.style.backgroundImage = 'none';
             }
-
-            patternOverlay.style.backgroundImage = bgImage;
-            patternOverlay.style.backgroundRepeat = 'repeat';
-            patternOverlay.style.backgroundSize = 'auto';
         }
 
         // ============================================================
-        // 5c. FRIEND PICKER
+        // 5c. FRIEND PICKER (fixed key: chillspace_friends)
         // ============================================================
         function getRandomFriends() {
             const raw = localStorage.getItem('chillspace_friends');
@@ -3153,7 +3174,7 @@
 
             attachNormalHandlers();
 
-            // Generate new pattern (moving class added inside)
+            // Generate new pattern
             generateRandomPattern();
 
             let songs;
@@ -3241,6 +3262,7 @@
                 winnerMsg = '🤝 TIE!';
             }
 
+            // Fetch friends from chillspace_friends
             const friends = getRandomFriends();
             let friendMsg = '';
             if (friends.length > 0) {
