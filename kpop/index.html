@@ -3,7 +3,41 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>K-POP BATTLE</title>
+
+    <!-- ===== SEO & Structured Data ===== -->
+    <title>K‑POP Battle – Fun K‑POP Games, K‑Quiz, Save One Drop One</title>
+    <meta name="description" content="Play fun K‑POP games like K‑Quiz and Save One Drop One. Battle songs, guess your friend's choice, and enjoy K‑POP battles on ChillSpace." />
+    <meta name="keywords" content="fun kpop games, k-quiz, save one drop one, kpop battle, kpop song battle, music game" />
+    <link rel="canonical" href="https://chillspace.ai/kpop/" />
+    <meta property="og:title" content="K‑POP Battle – Fun K‑POP Games, K‑Quiz, Save One Drop One" />
+    <meta property="og:description" content="Battle your favourite K‑POP songs, guess your friends' picks, and enjoy random patterns and social features." />
+    <meta property="og:url" content="https://chillspace.ai/kpop/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="K‑POP Battle – Fun K‑POP Games, K‑Quiz, Save One Drop One" />
+    <meta name="twitter:description" content="Battle K‑POP songs, guess your friend's choice, and enjoy interactive music games on ChillSpace." />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "K‑POP Battle",
+      "description": "A fun K‑POP song battle game where you vote for your favourite track, guess your friend's pick, and enjoy randomised visual patterns. Includes K‑Quiz and Save One Drop One mechanics.",
+      "applicationCategory": "Game",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript",
+      "url": "https://chillspace.ai/kpop/",
+      "author": {
+        "@type": "Organization",
+        "name": "ChillSpace"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
 
     <!-- SPACE GROTESK - cool Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -31,9 +65,25 @@
             padding: 20px;
             margin: 0;
             background-color: #f9e74b;
+            position: relative;
+        }
+
+        /* --- Pattern overlay --- */
+        #patternOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background: transparent;
+            transition: background-image 0.8s ease;
         }
 
         .container {
+            position: relative;
+            z-index: 1;
             max-width: 1300px;
             width: 100%;
             background: rgba(255, 255, 255, 0.15);
@@ -479,8 +529,8 @@
         }
 
         /* ============================================================
-               COOKIE CONSENT OVERLAY
-               ============================================================ */
+           COOKIE CONSENT OVERLAY
+           ============================================================ */
         .cookie-overlay {
             position: fixed;
             top: 0;
@@ -633,8 +683,8 @@
         }
 
         /* ============================================================
-               MOBILE RESPONSIVE
-               ============================================================ */
+           MOBILE RESPONSIVE
+           ============================================================ */
         @media (max-width: 820px) {
             .container {
                 padding: 18px 14px 28px;
@@ -769,6 +819,11 @@
 <body>
 
     <!-- ============================================================
+    PATTERN OVERLAY (dynamic background)
+    ============================================================ -->
+    <div id="patternOverlay"></div>
+
+    <!-- ============================================================
     COOKIE CONSENT OVERLAY
     ============================================================ -->
     <div class="cookie-overlay" id="cookieOverlay" role="dialog" aria-modal="true" aria-label="Cookie consent">
@@ -799,7 +854,7 @@
     <div class="container" id="app">
         <!-- HEADER -->
         <div class="header">
-            <h1>🎤 K-POP BATTLE</h1>
+            <h1>🎤 K‑POP BATTLE</h1>
             <div class="header-stats">
                 SET <span id="setCounter">1</span>
                 &nbsp;·&nbsp; ROUND <span id="roundCounter">1</span>
@@ -893,7 +948,7 @@
 
     <script>
         // ============================================================
-        // COOKIE CONSENT
+        // COOKIE CONSENT (updated home URL)
         // ============================================================
         (function initCookieConsent() {
             const overlay = document.getElementById('cookieOverlay');
@@ -901,26 +956,22 @@
             const homeBtn = document.getElementById('cookieHome');
             const COOKIE_KEY = 'chillspace_cookie_consent';
 
-            // Check if already consented
             const hasConsented = localStorage.getItem(COOKIE_KEY) === 'accepted';
-
             if (hasConsented) {
                 overlay.classList.add('hidden');
                 return;
             }
 
-            // Accept: store and hide
             acceptBtn.addEventListener('click', function() {
                 localStorage.setItem(COOKIE_KEY, 'accepted');
                 overlay.classList.add('hidden');
             });
 
-            // Return to ChillSpace home
+            // CHANGED: redirect to chillspace.ai
             homeBtn.addEventListener('click', function() {
                 window.location.href = 'https://chillspace.ai/';
             });
 
-            // Ensure overlay is visible if no consent
             overlay.classList.remove('hidden');
         })();
 
@@ -2926,6 +2977,9 @@
         const mobileLeftVotesNum = $('#mobileLeftVotesNum');
         const mobileRightVotesNum = $('#mobileRightVotesNum');
 
+        // Pattern overlay
+        const patternOverlay = document.getElementById('patternOverlay');
+
         // ============================================================
         // 5. HELPERS (shuffle, randomInt, etc.)
         // ============================================================
@@ -2941,6 +2995,10 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
+        function randomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
         function findSongById(id) {
             return SONG_LIST.find(s => s.id === id) || null;
         }
@@ -2948,18 +3006,128 @@
         function buildIframe(song) {
             const start = song.chorus || 45;
             return `
-                  <iframe
-                    src="https://www.youtube-nocookie.com/embed/${song.id}?start=${start}"
-                    allow="encrypted-media"
-                    allowfullscreen
-                    loading="lazy"
-                  ></iframe>
-                `;
+                          <iframe
+                            src="https://www.youtube-nocookie.com/embed/${song.id}?start=${start}"
+                            allow="encrypted-media"
+                            allowfullscreen
+                            loading="lazy"
+                          ></iframe>
+                        `;
         }
 
         function setBackgroundColor(index) {
             document.body.style.backgroundColor = COLORS[index % COLORS.length];
             colorIndicator.textContent = COLOR_NAMES[index % COLORS.length];
+        }
+
+        // ============================================================
+        // 5b. PATTERN GENERATION
+        // ============================================================
+        function generateRandomPattern() {
+            const types = ['stripes', 'zigzags', 'dots', 'nothing'];
+            const type = randomElement(types);
+            if (type === 'nothing') {
+                patternOverlay.style.backgroundImage = 'none';
+                return;
+            }
+
+            // Random colour with moderate opacity
+            const hue = randomInt(0, 360);
+            const sat = randomInt(50, 90);
+            const light = randomInt(30, 70);
+            const alpha = 0.15 + Math.random() * 0.25; // 0.15–0.40
+            const color = `hsla(${hue}, ${sat}%, ${light}%, ${alpha})`;
+
+            let bgImage = '';
+            switch (type) {
+                case 'stripes': {
+                    const angle = randomInt(0, 180);
+                    const width = randomInt(6, 20);
+                    bgImage = `repeating-linear-gradient(${angle}deg, ${color} 0px, ${color} ${width}px, transparent ${width}px, transparent ${width*2}px)`;
+                    break;
+                }
+                case 'dots': {
+                    const size = randomInt(4, 12);
+                    const gap = randomInt(14, 30);
+                    bgImage = `radial-gradient(circle, ${color} ${size}px, transparent ${size}px)`;
+                    bgImage += `, radial-gradient(circle, ${color} ${size}px, transparent ${size}px)`;
+                    // offset for second row
+                    const offsetX = gap / 2;
+                    const offsetY = gap / 2;
+                    bgImage += `, radial-gradient(circle, ${color} ${size}px, transparent ${size}px)`;
+                    bgImage += `, radial-gradient(circle, ${color} ${size}px, transparent ${size}px)`;
+                    bgImage += `; background-size: ${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px`;
+                    bgImage += `; background-position: 0 0, ${offsetX}px ${offsetY}px, 0 ${gap}px, ${gap}px 0`;
+                    break;
+                }
+                case 'zigzags': {
+                    // Create a simple zigzag using SVG data URI
+                    const strokeWidth = randomInt(2, 4);
+                    const svgWidth = 24;
+                    const svgHeight = 20;
+                    const points = [];
+                    const steps = 4;
+                    for (let i = 0; i <= steps; i++) {
+                        const x = (i / steps) * svgWidth;
+                        const y = (i % 2 === 0) ? 0 : svgHeight;
+                        points.push(`${x},${y}`);
+                    }
+                    // Add bottom zigzag continuation?
+                    // We'll just repeat a single zigzag line
+                    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
+                            <polyline points="${points.join(' ')}" fill="none" stroke="${color}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>`;
+                    const encoded = encodeURIComponent(svg);
+                    bgImage = `url("data:image/svg+xml,${encoded}")`;
+                    bgImage += `; background-repeat: repeat; background-size: ${svgWidth}px ${svgHeight}px`;
+                    break;
+                }
+                default:
+                    bgImage = 'none';
+            }
+            patternOverlay.style.backgroundImage = bgImage;
+            // For dots we might have multiple backgrounds, handle in the case
+            if (type === 'dots') {
+                // Override to set as multiple backgrounds
+                const size = randomInt(4, 12);
+                const gap = randomInt(14, 30);
+                const color2 = `hsla(${hue}, ${sat}%, ${light}%, ${alpha})`;
+                patternOverlay.style.backgroundImage = `
+                        radial-gradient(circle at 0% 0%, ${color2} ${size}px, transparent ${size}px),
+                        radial-gradient(circle at 50% 50%, ${color2} ${size}px, transparent ${size}px),
+                        radial-gradient(circle at 0% 100%, ${color2} ${size}px, transparent ${size}px),
+                        radial-gradient(circle at 100% 0%, ${color2} ${size}px, transparent ${size}px),
+                        radial-gradient(circle at 100% 100%, ${color2} ${size}px, transparent ${size}px)
+                    `;
+                patternOverlay.style.backgroundSize = `${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px`;
+                patternOverlay.style.backgroundPosition = '0 0, 0 0, 0 0, 0 0, 0 0';
+                patternOverlay.style.backgroundRepeat = 'repeat, repeat, repeat, repeat, repeat';
+            } else if (type === 'zigzags') {
+                // Already handled via SVG data URI
+                // but we need to set background-repeat etc.
+                patternOverlay.style.backgroundRepeat = 'repeat';
+                patternOverlay.style.backgroundSize = 'auto';
+            } else {
+                patternOverlay.style.backgroundRepeat = 'repeat';
+                patternOverlay.style.backgroundSize = 'auto';
+            }
+        }
+
+        // ============================================================
+        // 5c. FRIEND PICKER
+        // ============================================================
+        function getRandomFriends() {
+            const raw = localStorage.getItem('chillspace-friends');
+            if (!raw) return [];
+            try {
+                const friends = JSON.parse(raw);
+                if (!Array.isArray(friends) || friends.length === 0) return [];
+                // Shuffle and pick up to 2
+                const shuffled = shuffleArray([...friends]);
+                return shuffled.slice(0, 2);
+            } catch (e) {
+                return [];
+            }
         }
 
         // ============================================================
@@ -2990,6 +3158,9 @@
             guessPrompt.classList.add('hidden');
 
             attachNormalHandlers();
+
+            // Generate new pattern
+            generateRandomPattern();
 
             // Decide how to pick songs: 70% personalised, 30% random
             let songs;
@@ -3050,7 +3221,7 @@
         }
 
         // ============================================================
-        // 8. VOTING (updates user stats)
+        // 8. VOTING (updates user stats, friends, pattern)
         // ============================================================
         function handleVote(side) {
             if (!state.canVote || state.voted) return;
@@ -3073,13 +3244,26 @@
             mobileLeftVotesNum.textContent = leftVote;
             mobileRightVotesNum.textContent = rightVote;
 
+            // Determine winner and build message
+            let winnerMsg = '';
             if (leftVote > rightVote) {
-                vsMessage.textContent = '🏆 LEFT WINS!';
+                winnerMsg = '🏆 LEFT WINS!';
             } else if (rightVote > leftVote) {
-                vsMessage.textContent = '🏆 RIGHT WINS!';
+                winnerMsg = '🏆 RIGHT WINS!';
             } else {
-                vsMessage.textContent = '🤝 TIE!';
+                winnerMsg = '🤝 TIE!';
             }
+
+            // Add friends message
+            const friends = getRandomFriends();
+            let friendMsg = '';
+            if (friends.length > 0) {
+                const names = friends.join(' and ');
+                const sideLetter = side === 'left' ? 'A' : 'B';
+                friendMsg = ` 🌟 ${names} also picked ${sideLetter}!`;
+            }
+
+            vsMessage.textContent = winnerMsg + friendMsg;
 
             voteLeft.disabled = true;
             voteRight.disabled = true;
@@ -3123,6 +3307,7 @@
                     // Silently ignore any errors (e.g., malformed JSON)
                 }
             }
+            updateDailyChallenge();
 
             resetCountdown();
         }
@@ -3152,12 +3337,13 @@
         }
 
         // ============================================================
-        // 10. SHARE
+        // 10. SHARE (updated base URL)
         // ============================================================
         function shareToFriends() {
             const aId = state.leftSong.id;
             const bId = state.rightSong.id;
             const choice = voteLeft.classList.contains('voted-left') ? 'a' : 'b';
+            // CHANGED: base URL to chillspace.ai/kpop
             const baseUrl = 'https://chillspace.ai/kpop';
             const shareUrl =
                 `${baseUrl}?video_a=${aId}&video_b=${bId}&friend_choice=${choice}`;
@@ -3172,6 +3358,9 @@
             state.guessMode = true;
             state.friendChoice = friendChoice;
             state.guessMade = false;
+
+            // Generate pattern for guess mode too
+            generateRandomPattern();
 
             const songA = findSongById(videoA);
             const songB = findSongById(videoB);
@@ -3330,6 +3519,9 @@
             const videoA = urlParams.get('video_a');
             const videoB = urlParams.get('video_b');
             const friendChoice = urlParams.get('friend_choice');
+
+            // Initial pattern
+            generateRandomPattern();
 
             if (videoA && videoB && friendChoice && (friendChoice === 'a' || friendChoice === 'b')) {
                 initGuessMode(videoA, videoB, friendChoice);
