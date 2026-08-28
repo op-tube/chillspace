@@ -5,7 +5,6 @@ Allow: /api/template
 Allow: /numbers
 Allow: /kpop
 Allow: /about
-Allow: /blog/chillspace-vs-chillspace
-Allow: /public/sitemap.xml
+Allow: /sitemap.xml
 
 Sitemap: https://chillspace.ai/sitemap.xml
