@@ -68,7 +68,7 @@
             position: relative;
         }
 
-        /* --- Pattern overlay --- */
+        /* --- Pattern overlay with moving animation --- */
         #patternOverlay {
             position: fixed;
             top: 0;
@@ -79,6 +79,16 @@
             z-index: 0;
             background: transparent;
             transition: background-image 0.8s ease;
+        }
+
+        /* Slow rotation animation to make the background feel alive */
+        #patternOverlay.moving {
+            animation: slowDrift 90s linear infinite;
+        }
+
+        @keyframes slowDrift {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(360deg) scale(1); }
         }
 
         .container {
@@ -967,7 +977,6 @@
                 overlay.classList.add('hidden');
             });
 
-            // CHANGED: redirect to chillspace.ai
             homeBtn.addEventListener('click', function() {
                 window.location.href = 'https://chillspace.ai/';
             });
@@ -2983,6 +2992,8 @@
         // ============================================================
         // 5. HELPERS (shuffle, randomInt, etc.)
         // ============================================================
+        let lastPatternType = null; // to avoid repeating same pattern
+
         function shuffleArray(arr) {
             for (let i = arr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -3021,11 +3032,19 @@
         }
 
         // ============================================================
-        // 5b. PATTERN GENERATION
+        // 5b. PATTERN GENERATION (with no-repeat and moving class)
         // ============================================================
         function generateRandomPattern() {
             const types = ['stripes', 'zigzags', 'dots', 'nothing'];
-            const type = randomElement(types);
+            // Avoid repeating the same type consecutively
+            let available = types.filter(t => t !== lastPatternType);
+            if (available.length === 0) available = types; // fallback
+            const type = randomElement(available);
+            lastPatternType = type;
+
+            // Always add the moving class to enable rotation animation
+            patternOverlay.classList.add('moving');
+
             if (type === 'nothing') {
                 patternOverlay.style.backgroundImage = 'none';
                 return;
@@ -3035,7 +3054,7 @@
             const hue = randomInt(0, 360);
             const sat = randomInt(50, 90);
             const light = randomInt(30, 70);
-            const alpha = 0.15 + Math.random() * 0.25; // 0.15–0.40
+            const alpha = 0.15 + Math.random() * 0.25;
             const color = `hsla(${hue}, ${sat}%, ${light}%, ${alpha})`;
 
             let bgImage = '';
@@ -3049,19 +3068,20 @@
                 case 'dots': {
                     const size = randomInt(4, 12);
                     const gap = randomInt(14, 30);
-                    bgImage = `radial-gradient(circle, ${color} ${size}px, transparent ${size}px)`;
-                    bgImage += `, radial-gradient(circle, ${color} ${size}px, transparent ${size}px)`;
-                    // offset for second row
-                    const offsetX = gap / 2;
-                    const offsetY = gap / 2;
-                    bgImage += `, radial-gradient(circle, ${color} ${size}px, transparent ${size}px)`;
-                    bgImage += `, radial-gradient(circle, ${color} ${size}px, transparent ${size}px)`;
-                    bgImage += `; background-size: ${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px`;
-                    bgImage += `; background-position: 0 0, ${offsetX}px ${offsetY}px, 0 ${gap}px, ${gap}px 0`;
-                    break;
+                    const color2 = `hsla(${hue}, ${sat}%, ${light}%, ${alpha})`;
+                    patternOverlay.style.backgroundImage = `
+                            radial-gradient(circle at 0% 0%, ${color2} ${size}px, transparent ${size}px),
+                            radial-gradient(circle at 50% 50%, ${color2} ${size}px, transparent ${size}px),
+                            radial-gradient(circle at 0% 100%, ${color2} ${size}px, transparent ${size}px),
+                            radial-gradient(circle at 100% 0%, ${color2} ${size}px, transparent ${size}px),
+                            radial-gradient(circle at 100% 100%, ${color2} ${size}px, transparent ${size}px)
+                        `;
+                    patternOverlay.style.backgroundSize = `${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px`;
+                    patternOverlay.style.backgroundPosition = '0 0, 0 0, 0 0, 0 0, 0 0';
+                    patternOverlay.style.backgroundRepeat = 'repeat, repeat, repeat, repeat, repeat';
+                    return;
                 }
                 case 'zigzags': {
-                    // Create a simple zigzag using SVG data URI
                     const strokeWidth = randomInt(2, 4);
                     const svgWidth = 24;
                     const svgHeight = 20;
@@ -3072,57 +3092,31 @@
                         const y = (i % 2 === 0) ? 0 : svgHeight;
                         points.push(`${x},${y}`);
                     }
-                    // Add bottom zigzag continuation?
-                    // We'll just repeat a single zigzag line
                     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
                             <polyline points="${points.join(' ')}" fill="none" stroke="${color}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>`;
                     const encoded = encodeURIComponent(svg);
                     bgImage = `url("data:image/svg+xml,${encoded}")`;
-                    bgImage += `; background-repeat: repeat; background-size: ${svgWidth}px ${svgHeight}px`;
                     break;
                 }
                 default:
                     bgImage = 'none';
             }
+
             patternOverlay.style.backgroundImage = bgImage;
-            // For dots we might have multiple backgrounds, handle in the case
-            if (type === 'dots') {
-                // Override to set as multiple backgrounds
-                const size = randomInt(4, 12);
-                const gap = randomInt(14, 30);
-                const color2 = `hsla(${hue}, ${sat}%, ${light}%, ${alpha})`;
-                patternOverlay.style.backgroundImage = `
-                        radial-gradient(circle at 0% 0%, ${color2} ${size}px, transparent ${size}px),
-                        radial-gradient(circle at 50% 50%, ${color2} ${size}px, transparent ${size}px),
-                        radial-gradient(circle at 0% 100%, ${color2} ${size}px, transparent ${size}px),
-                        radial-gradient(circle at 100% 0%, ${color2} ${size}px, transparent ${size}px),
-                        radial-gradient(circle at 100% 100%, ${color2} ${size}px, transparent ${size}px)
-                    `;
-                patternOverlay.style.backgroundSize = `${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px, ${gap}px ${gap}px`;
-                patternOverlay.style.backgroundPosition = '0 0, 0 0, 0 0, 0 0, 0 0';
-                patternOverlay.style.backgroundRepeat = 'repeat, repeat, repeat, repeat, repeat';
-            } else if (type === 'zigzags') {
-                // Already handled via SVG data URI
-                // but we need to set background-repeat etc.
-                patternOverlay.style.backgroundRepeat = 'repeat';
-                patternOverlay.style.backgroundSize = 'auto';
-            } else {
-                patternOverlay.style.backgroundRepeat = 'repeat';
-                patternOverlay.style.backgroundSize = 'auto';
-            }
+            patternOverlay.style.backgroundRepeat = 'repeat';
+            patternOverlay.style.backgroundSize = 'auto';
         }
 
         // ============================================================
         // 5c. FRIEND PICKER
         // ============================================================
         function getRandomFriends() {
-            const raw = localStorage.getItem('chillspace-friends');
+            const raw = localStorage.getItem('chillspace_friends');
             if (!raw) return [];
             try {
                 const friends = JSON.parse(raw);
                 if (!Array.isArray(friends) || friends.length === 0) return [];
-                // Shuffle and pick up to 2
                 const shuffled = shuffleArray([...friends]);
                 return shuffled.slice(0, 2);
             } catch (e) {
@@ -3159,23 +3153,19 @@
 
             attachNormalHandlers();
 
-            // Generate new pattern
+            // Generate new pattern (moving class added inside)
             generateRandomPattern();
 
-            // Decide how to pick songs: 70% personalised, 30% random
             let songs;
             if (Math.random() < 0.7) {
-                // Personalized
                 songs = getPersonalizedSongs(2);
             } else {
                 songs = getRandomSongs(2);
             }
-            // Ensure two distinct songs (in case of duplicates)
             if (songs.length < 2) {
                 songs = getRandomSongs(2);
             }
             while (songs[0].id === songs[1].id) {
-                // re-pick the second one
                 const replacement = getRandomSongs(1);
                 if (replacement[0] && replacement[0].id !== songs[0].id) {
                     songs[1] = replacement[0];
@@ -3228,9 +3218,7 @@
             state.voted = true;
             state.canVote = false;
 
-            // Determine which song was chosen
             const chosenSong = (side === 'left') ? state.leftSong : state.rightSong;
-            // Update user stats with this song
             updateUserStats(chosenSong);
 
             const leftVote = randomInt(50, 999);
@@ -3244,7 +3232,6 @@
             mobileLeftVotesNum.textContent = leftVote;
             mobileRightVotesNum.textContent = rightVote;
 
-            // Determine winner and build message
             let winnerMsg = '';
             if (leftVote > rightVote) {
                 winnerMsg = '🏆 LEFT WINS!';
@@ -3254,7 +3241,6 @@
                 winnerMsg = '🤝 TIE!';
             }
 
-            // Add friends message
             const friends = getRandomFriends();
             let friendMsg = '';
             if (friends.length > 0) {
@@ -3281,31 +3267,22 @@
             shareContainer.classList.remove('hidden');
             shareBtnMobile.classList.remove('hidden');
 
-            // ============================================================
-            // DAILY CHALLENGE TRACKING
-            // ============================================================
             function updateDailyChallenge() {
                 try {
                     const raw = localStorage.getItem('chillspace_daily_challenge');
                     if (!raw) return;
                     const challenge = JSON.parse(raw);
-                    // Only increment if the challenge type is 'rank_songs'
                     if (challenge.type !== 'rank_songs') return;
-                    // Don't exceed the target
                     if (challenge.progress >= challenge.target) return;
-                    // Increment progress
                     challenge.progress = Math.min(challenge.progress + 1, challenge.target);
                     localStorage.setItem('chillspace_daily_challenge', JSON.stringify(challenge));
-                    // Dispatch a storage event to sync with the homepage (or other tabs)
                     window.dispatchEvent(new StorageEvent('storage', {
                         key: 'chillspace_daily_challenge',
                         newValue: JSON.stringify(challenge),
                         oldValue: raw,
                         storageArea: localStorage
                     }));
-                } catch (e) {
-                    // Silently ignore any errors (e.g., malformed JSON)
-                }
+                } catch (e) {}
             }
             updateDailyChallenge();
 
@@ -3343,7 +3320,6 @@
             const aId = state.leftSong.id;
             const bId = state.rightSong.id;
             const choice = voteLeft.classList.contains('voted-left') ? 'a' : 'b';
-            // CHANGED: base URL to chillspace.ai/kpop
             const baseUrl = 'https://chillspace.ai/kpop';
             const shareUrl =
                 `${baseUrl}?video_a=${aId}&video_b=${bId}&friend_choice=${choice}`;
@@ -3359,7 +3335,6 @@
             state.friendChoice = friendChoice;
             state.guessMade = false;
 
-            // Generate pattern for guess mode too
             generateRandomPattern();
 
             const songA = findSongById(videoA);
@@ -3520,7 +3495,6 @@
             const videoB = urlParams.get('video_b');
             const friendChoice = urlParams.get('friend_choice');
 
-            // Initial pattern
             generateRandomPattern();
 
             if (videoA && videoB && friendChoice && (friendChoice === 'a' || friendChoice === 'b')) {
