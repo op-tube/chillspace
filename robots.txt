@@ -8,4 +8,4 @@ Allow: /about
 Allow: /blog/chillspace-vs-chillspace
 Allow: /public/sitemap.xml
 
-Sitemap: https://chill-space.pages.dev/sitemap.xml
+Sitemap: https://chillspace.ai/sitemap.xml
