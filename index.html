@@ -164,7 +164,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ---- 20 random font classes (applied per post) ---- */
         .font-0 {
             font-family: 'Inter', sans-serif;
         }
@@ -226,7 +225,6 @@
             font-family: 'PT Sans', sans-serif;
         }
 
-        /* ---- 10 random colours for text posts ---- */
         .color-0 {
             color: #e11d48;
         }
@@ -592,7 +590,6 @@
             background: #f3f0ff;
         }
 
-        /* ---- like button colour-animation + vibration ---- */
         .like-btn.like-animating {
             animation: likePop 0.5s ease;
         }
@@ -1825,61 +1822,36 @@
             line-height: 1.4;
         }
 
-        /* ---- Sensory Toy ---- */
-        .sensory-toy-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.55);
+        .sensory-post-inner {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            z-index: 3000;
-            padding: 20px;
-            animation: fadeIn .25s ease both;
-            backdrop-filter: blur(4px);
+            padding: 8px 16px 4px;
         }
-        .sensory-toy-box {
-            background: #fff;
-            border-radius: 24px;
-            padding: 30px 28px 24px;
-            max-width: 420px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            animation: popIn .3s ease both;
-        }
-        .sensory-toy-box .toy-title {
+        .sensory-post-inner .sensory-title {
             font-weight: 700;
-            font-size: 20px;
-            margin-bottom: 4px;
+            font-size: 17px;
+            margin-bottom: 2px;
             color: #1c1e21;
         }
-        .sensory-toy-box .toy-sub {
-            font-size: 14px;
+        .sensory-post-inner .sensory-sub {
+            font-size: 13px;
             color: #65676b;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
-        .squishy-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 16px 0 20px;
+        .sensory-squishy-wrap {
+            position: relative;
+            width: 140px;
+            height: 140px;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
-            position: relative;
-        }
-        .squishy-wrap {
-            position: relative;
-            width: 180px;
-            height: 180px;
             transition: transform 0.08s ease;
-            touch-action: none;
         }
-        .squishy-wrap:active {
+        .sensory-squishy-wrap:active {
             transform: scale(0.92);
         }
-        .squishy-wrap.crack-anim .squishy-inner {
+        .sensory-squishy-wrap.crack-anim .sensory-squishy-inner {
             animation: squishPop 0.35s ease;
         }
         @keyframes squishPop {
@@ -1896,22 +1868,21 @@
                 transform: scale(1) rotate(0deg);
             }
         }
-        .squishy-outer {
+        .sensory-squishy-outer {
             position: absolute;
             inset: 0;
             border-radius: 50%;
             transition: background 0.3s;
             box-shadow: inset 0 -8px 20px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.12);
         }
-        .squishy-inner {
+        .sensory-squishy-inner {
             position: absolute;
-            inset: 18px;
+            inset: 14px;
             border-radius: 50%;
             transition: background 0.3s, transform 0.15s ease;
             box-shadow: inset 0 -4px 12px rgba(0, 0, 0, 0.10), 0 4px 16px rgba(0, 0, 0, 0.06);
         }
-        /* Crack canvas overlay */
-        .squishy-crack-canvas {
+        .sensory-crack-canvas {
             position: absolute;
             inset: 0;
             width: 100%;
@@ -1920,139 +1891,51 @@
             border-radius: 50%;
             z-index: 2;
         }
-        .squishy-tap-hint {
-            font-size: 12px;
+        .sensory-tap-hint {
+            font-size: 11px;
             color: #8a8d91;
-            margin-top: 4px;
+            margin-top: 6px;
             font-weight: 500;
         }
-        .squishy-counter {
-            font-size: 13px;
+        .sensory-counter-badge {
+            font-size: 12px;
             color: #65676b;
-            margin-top: 10px;
+            margin-top: 6px;
             background: #f0f2f5;
-            padding: 6px 14px;
+            padding: 4px 14px;
             border-radius: 999px;
             display: inline-block;
         }
-        .sensory-toy-box .modal-actions {
-            justify-content: center;
-            margin-top: 16px;
-        }
-        .sensory-toy-box .modal-actions button {
-            padding: 10px 28px;
-            border-radius: 999px;
-            font-weight: 700;
-            background: #1877f2;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            transition: background .15s;
-        }
-        .sensory-toy-box .modal-actions button:hover {
-            background: #166fe5;
-        }
 
-        /* Profile modal */
-        .profile-posts {
-            margin-top: 12px;
-            max-height: 400px;
-            overflow-y: auto;
-            border-top: 1px solid #e4e6eb;
-            padding-top: 12px;
-            position: relative;
-            min-height: 60px;
+        .screen-time-post .graph-container {
+            padding: 4px 16px 6px;
         }
-        .profile-posts .post {
-            margin-bottom: 12px;
-            padding: 10px 0 6px;
+        .screen-time-post .graph-container canvas {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 7;
+            background: #fafbfc;
             border-radius: 10px;
-            background: #f9fafb;
-            box-shadow: none;
             border: 1px solid #e4e6eb;
+            display: block;
         }
-        .profile-posts .post .post-head {
-            padding: 0 12px;
-            cursor: default;
-        }
-        .profile-posts .post .post-content {
-            padding: 0 12px 6px;
-            font-size: 14px;
-            margin-top: 6px;
-        }
-        .profile-posts .post .actions {
-            padding: 2px 10px 0;
-            margin-top: 4px;
-            border-top: none;
-        }
-        .profile-posts .post .actions button {
-            font-size: 12px;
-            padding: 4px 2px;
-        }
-        .profile-empty {
-            color: #8a8d91;
-            font-size: 14px;
-            padding: 20px 0;
-            text-align: center;
-        }
-        .profile-friend-status {
+        .screen-time-post .graph-stats {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 6px 0 12px;
-            padding: 8px 14px;
-            border-radius: 8px;
-            background: #f0f2f5;
-            font-size: 14px;
-        }
-        .profile-friend-status .friend-toggle {
-            background: #1877f2;
-            color: #fff;
-            border: none;
-            padding: 4px 14px;
-            border-radius: 999px;
-            font-weight: 600;
+            justify-content: space-between;
+            padding: 4px 16px 2px;
             font-size: 13px;
-            cursor: pointer;
-            transition: background .15s;
-            margin-left: auto;
-        }
-        .profile-friend-status .friend-toggle:hover {
-            background: #166fe5;
-        }
-        .profile-friend-status .friend-toggle.is-friend {
-            background: #22c55e;
-            color: #fff;
-        }
-        .profile-friend-status .friend-toggle.is-friend:hover {
-            background: #16a34a;
-        }
-        .profile-friend-status .friend-toggle.is-following {
-            background: #e4e6eb;
             color: #65676b;
-            cursor: default;
         }
-        .profile-avatar-large {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #e4e6eb;
+        .screen-time-post .graph-stats span {
+            font-weight: 600;
+        }
+        .screen-time-post .graph-stats .stat-down {
+            color: #22c55e;
         }
 
-        .profile-loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 30px 0;
-        }
-        .profile-loading .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #e4e6eb;
-            border-top-color: #1877f2;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        .sensory-post .post-content {
+            padding-bottom: 0;
+            margin-bottom: 0;
         }
 
         @media (max-width: 420px) {
@@ -2098,23 +1981,22 @@
                 right: 12px !important;
                 transform: none !important;
             }
-            .squishy-wrap {
-                width: 140px;
-                height: 140px;
+            .sensory-squishy-wrap {
+                width: 110px;
+                height: 110px;
             }
-            .squishy-inner {
-                inset: 14px;
-            }
-            .sensory-toy-box {
-                padding: 20px 16px 18px;
+            .sensory-squishy-inner {
+                inset: 10px;
             }
             .follow-btn {
                 font-size: 10px;
                 padding: 1px 8px;
             }
+            .screen-time-post .graph-container canvas {
+                aspect-ratio: 16 / 8;
+            }
         }
 
-        /* Friend response badge */
         .friend-response-badge {
             font-size: 10px;
             background: #dbeafe;
@@ -2223,7 +2105,6 @@
         ];
 
         function maybeApplyColor(content) {
-            // ~1 in 20 chance (5%)
             if (Math.random() < 0.05) {
                 const colorClass = COLOR_CLASSES[Math.floor(Math.random() * COLOR_CLASSES.length)];
                 return `<span class="${colorClass}">${content}</span>`;
@@ -2238,12 +2119,8 @@
         }
 
         // ============================================================
-        //  FOLLOW / FRIEND SYSTEM (replaces old friend system)
+        //  FOLLOW / FRIEND SYSTEM
         // ============================================================
-        // Storage keys:
-        // 'chillspace_following' : array of usernames you follow
-        // 'chillspace_friends'   : array of usernames who are mutual (they followed you back)
-
         function getFollowing() {
             try { return JSON.parse(localStorage.getItem('chillspace_following')) || []; } catch { return []; }
         }
@@ -2343,7 +2220,7 @@
         }
 
         // ============================================================
-        //  PROFILE VIEW with loading animation
+        //  PROFILE VIEW
         // ============================================================
         function openProfile(name, avatarSrc) {
             if (!name) return;
@@ -2505,10 +2382,8 @@
         }
 
         // ============================================================
-        //  FRIEND RESPONSE SYSTEM — 100+ comments + algorithmic triggers
+        //  FRIEND RESPONSE SYSTEM
         // ============================================================
-
-        // ---- 70+ generic positive responses ----
         const GENERIC_RESPONSES = [
             "Great post! 🙌",
             "I totally agree with you!",
@@ -2587,7 +2462,6 @@
             "This is a breath of fresh air."
         ];
 
-        // ---- Algorithmic responses by keyword category (80+ total) ----
         const ALGO_RESPONSES = {
             gaming: [
                 "I love video games too! 🎮",
@@ -2768,7 +2642,6 @@
             ]
         };
 
-        // ---- Keyword mapping for algorithmic responses ----
         const ALGO_KEYWORDS = [
             { words: ['game', 'gaming', 'games', 'play', 'playing', 'gamer', 'minecraft', 'league of legends', 'roblox',
                     'fortnite', 'valorant', 'csgo', 'overwatch', 'apex', 'call of duty', 'nintendo', 'playstation',
@@ -2810,11 +2683,8 @@
                 ], category: 'fashion' }
         ];
 
-        // ---- Get response for a post ----
         function getFriendResponse(postContent) {
             const lower = postContent.toLowerCase();
-
-            // First check algorithmic matches
             for (const rule of ALGO_KEYWORDS) {
                 for (const word of rule.words) {
                     if (lower.includes(word)) {
@@ -2825,18 +2695,12 @@
                     }
                 }
             }
-
-            // Fallback to generic
             return rand(GENERIC_RESPONSES);
         }
 
-        // ---- Schedule friend responses to a post ----
         function scheduleFriendResponses(postEl, postContent) {
             const friends = getFriends();
             if (friends.length === 0) return;
-
-            // Each friend responds with a random delay (5-30 seconds)
-            // Only up to 3 friends respond to avoid spam
             const responders = friends.slice(0, Math.min(friends.length, 3));
             let delay = 2000 + Math.random() * 3000;
 
@@ -2844,7 +2708,6 @@
                 const thisDelay = delay + idx * (2000 + Math.random() * 4000);
                 setTimeout(() => {
                     if (!document.body.contains(postEl)) return;
-                    // Skip if this friend already commented
                     const existingComments = postEl.querySelectorAll('.comment-item');
                     let alreadyCommented = false;
                     for (const c of existingComments) {
@@ -2856,16 +2719,12 @@
                     if (alreadyCommented) return;
 
                     const response = getFriendResponse(postContent);
-                    // Use a random avatar color for the friend
                     const colorLabels = ['grey', 'red', 'green', 'purple', 'blue'];
                     const color = rand(colorLabels);
 
-                    // Add the friend's response as a comment
                     const commentItem = appendComment(postEl, friendName, color, response);
-                    // Mark it as a friend response
                     if (commentItem) {
                         commentItem.classList.add('friend-response');
-                        // Add a small badge
                         const badge = document.createElement('span');
                         badge.className = 'friend-response-badge friend-responded';
                         badge.textContent = '💬 friend';
@@ -2874,8 +2733,6 @@
                             nameEl.appendChild(badge);
                         }
                     }
-
-                    // Show a subtle toast for the first response
                     if (idx === 0) {
                         showToast(`💬 ${friendName} responded to your post!`);
                     }
@@ -2883,16 +2740,13 @@
             });
         }
 
-        // ---- Hook into post creation ----
         function setupFriendResponses() {
-            // We'll use a mutation observer to detect new posts from the composer
             const feed = document.getElementById('feed');
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach((m) => {
                     m.addedNodes.forEach((node) => {
                         if (node.nodeType === 1 && node.classList && node.classList.contains('post') &&
                             node.classList.contains('own-post')) {
-                            // This is a user post
                             const contentEl = node.querySelector('.post-content');
                             if (contentEl) {
                                 const content = contentEl.textContent.trim();
@@ -2908,7 +2762,7 @@
         }
 
         // ============================================================
-        //  POST GENERATION with follow/friends UI and reduced friend frequency (3%)
+        //  POST GENERATION
         // ============================================================
 
         function getWeightedNamePair() {
@@ -2929,14 +2783,345 @@
             return getWeightedNamePair().full;
         }
 
-        // ---- Base post creation with follow button ----
-        // (No friend responses triggered here – only user's own posts via composer)
+        // ---- WORD SWAP for linesB ----
+        const WORD_SWAP_MAP = {
+            'TikTok': ['TikTok', 'Instagram', 'YouTube Shorts', 'scrolling', 'the algorithm', 'Reels', 'Shorts'],
+            'Facebook': ['Facebook', 'Twitter', 'Instagram', 'the big socials', 'social media', 'the apps'],
+            'ChillSpace': ['ChillSpace', 'this app', 'this place', 'here', 'this site'],
+            'Tinder': ['Tinder', 'dating apps', 'the apps', 'social media', 'the big socials'],
+            'Reelspace': ['Reelspace', 'ChillSpace', 'this app', 'the reels', 'here'],
+            'K-pop': ['K-pop', 'music', 'song', 'ChillSpace', 'K-music'],
+        };
+
+        function swapWordsInText(text) {
+            let result = text;
+            for (const [word, alternatives] of Object.entries(WORD_SWAP_MAP)) {
+                const regex = new RegExp('\\b' + word + '\\b', 'gi');
+                result = result.replace(regex, () => {
+                    if (Math.random() < 0.7) {
+                        return rand(alternatives);
+                    }
+                    return word;
+                });
+            }
+            return result;
+        }
+
+        const linesB_RAW = [
+            "Just discovered this app and wow, I actually put my phone down after 5 minutes",
+            "Spent my morning outside instead of doomscrolling. Weird but nice?",
+            "No notifications, no stress. Is this what peace feels like",
+            "Finally a social app that doesn't hijack my dopamine",
+            "Posted once today and didn't feel the need to check for likes. Revolutionary",
+            "My screen time is down 80% since joining. My plants are thriving too",
+            "Actually talked to a human IRL today instead of posting about it",
+            "The algorithm shows me 3 posts and says 'go touch grass'. 10/10",
+            "Between <a href='/kpop/'>the K-pop game</a> & <a href='/reelspace/'>Reelspace</a>, I found out my addiction wasn't TikTok - it was music",
+            "Why when you close Facebook and open ChillSpace are you suddenly up for doing everything you needed to do? It's almost like closing Facebook closed the procrastinator inside me",
+            "Me: I deleted Tinder just for you babe! My friends: Why are you calling ChillSpace 'babe'?",
+            "Why have I wondered what happiness is for so long when it's always been right here on the ChillSpace app?",
+            "Is posting randomness all I ever needed to give up the big socials? <br><br> ...Yes it is. 1703251 8725 0543",
+            "I used to spend hours on socials. Now I spend 10 minutes here and I'm actually... done?",
+            "ChillSpace is the only app that doesn't leave me feeling empty inside. Weird flex but okay",
+            "My therapist asked what I do for self-care. I showed them ChillSpace. They approved.",
+            "The secret to happiness? Deleting everything else and keeping ChillSpace.",
+            "I was addicted to the scroll. Now I'm addicted to... actually living?",
+            "The notifications are so chill they're basically just gentle reminders that you're awesome",
+            "My friends don't get why I use this. They're still on TikTok. I feel bad for them.",
+            "I posted a photo of my lunch and the only comment was 'looks tasty'. No drama. Perfection.",
+            "The comments are so wholesome it's almost suspicious. But I'll take it."
+        ];
+
+        function getSwappedLinesB() {
+            return swapWordsInText(rand(linesB_RAW));
+        }
+
+        // ---- Screen time graph post with random color ----
+        function createScreenTimePost(i) {
+            const name = getWeightedName();
+            const avatar = rand(avatars);
+            const minutes = Math.floor(Math.random() * 59) + 1;
+            const likeBase = Math.floor(Math.random() * 3000);
+            const isF = isFriend(name);
+            const isFol = isFollowing(name);
+            let followBtnText = 'Follow';
+            let btnClass = 'follow-btn';
+            let disabled = false;
+            if (isF) {
+                followBtnText = 'Friends';
+                btnClass = 'follow-btn is-friend';
+                disabled = true;
+            } else if (isFol) {
+                followBtnText = 'Following';
+                btnClass = 'follow-btn is-following';
+                disabled = true;
+            }
+            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
+
+            // Generate random color for this graph
+            const hue = Math.floor(Math.random() * 360);
+            const sat = 50 + Math.floor(Math.random() * 40);
+            const lig = 45 + Math.floor(Math.random() * 30);
+            const color = `hsl(${hue}, ${sat}%, ${lig}%)`;
+            const fillColor = `hsla(${hue}, ${sat}%, ${lig}%, 0.25)`;
+            const dotColor = `hsl(${hue}, ${sat}%, ${Math.max(lig - 10, 20)}%)`;
+
+            const days = 10;
+            const startHours = 6 + Math.random() * 3;
+            const endHours = 0.8 + Math.random() * 1.2;
+            const data = [];
+            let current = startHours;
+            for (let d = 0; d < days; d++) {
+                const progress = d / (days - 1);
+                const target = startHours - (startHours - endHours) * progress;
+                const noise = (Math.random() - 0.4) * 0.9;
+                let val = Math.max(0.3, target + noise * (1 - progress * 0.6));
+                if (d > 0 && Math.random() < 0.2) {
+                    val += Math.random() * 1.2;
+                }
+                val = Math.max(0.2, Math.min(startHours + 1, val));
+                data.push(val);
+                current = val;
+            }
+
+            const maxVal = Math.max(...data) * 1.15;
+            const minVal = 0;
+            const range = maxVal - minVal || 1;
+
+            const postId = 'st-' + Date.now() + '-' + i;
+            const canvasId = 'graph-' + postId;
+
+            const el = document.createElement('article');
+            el.className = 'post screen-time-post';
+            el.style.animationDelay = `${i * 40}ms`;
+            applyRandomFontToPost(el);
+
+            el.innerHTML = `
+            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
+              <img class="avatar" src="${avatar}" alt="">
+              <div class="meta">
+                <div class="name-wrap">
+                  <span class="name">${escapeHtml(name)}</span>
+                  ${friendBadge}
+                  <button class="${btnClass}" data-username="${escapeHtml(name)}" onclick="event.stopPropagation();handleFollowClick(this, '${escapeHtml(name)}')" ${disabled ? 'disabled' : ''}>${followBtnText}</button>
+                </div>
+                <div class="time">${minutes}m ago · 🌐</div>
+              </div>
+            </div>
+            <div class="post-content">My screen time since downloading ChillSpace 📉</div>
+            <div class="graph-container">
+              <canvas id="${canvasId}"></canvas>
+            </div>
+            <div class="graph-stats">
+              <span>Day 1: <strong>${data[0].toFixed(1)}h</strong></span>
+              <span class="stat-down">Day ${days}: <strong>${data[days-1].toFixed(1)}h</strong> ↓</span>
+            </div>
+            <div class="actions">
+              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
+              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+            </div>
+          `;
+
+            // Draw graph after render
+            requestAnimationFrame(() => {
+                const canvas = el.querySelector('#' + canvasId);
+                if (!canvas) return;
+                const rect = canvas.parentElement.getBoundingClientRect();
+                const w = canvas.parentElement.clientWidth - 2;
+                const h = Math.max(120, Math.min(200, w * 0.43));
+                canvas.width = w * window.devicePixelRatio;
+                canvas.height = h * window.devicePixelRatio;
+                canvas.style.width = w + 'px';
+                canvas.style.height = h + 'px';
+                const ctx = canvas.getContext('2d');
+                ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+                const pad = { top: 16, bottom: 22, left: 26, right: 16 };
+                const graphW = w - pad.left - pad.right;
+                const graphH = h - pad.top - pad.bottom;
+
+                ctx.clearRect(0, 0, w, h);
+
+                ctx.strokeStyle = '#eef0f2';
+                ctx.lineWidth = 0.5;
+                for (let g = 0; g <= 4; g++) {
+                    const y = pad.top + (graphH / 4) * g;
+                    ctx.beginPath();
+                    ctx.moveTo(pad.left, y);
+                    ctx.lineTo(w - pad.right, y);
+                    ctx.stroke();
+                }
+
+                const points = data.map((val, idx) => {
+                    const x = pad.left + (idx / (data.length - 1)) * graphW;
+                    const y = pad.top + graphH - ((val - minVal) / range) * graphH;
+                    return { x, y };
+                });
+
+                // Fill area
+                ctx.beginPath();
+                ctx.moveTo(points[0].x, pad.top + graphH);
+                points.forEach(p => ctx.lineTo(p.x, p.y));
+                ctx.lineTo(points[points.length - 1].x, pad.top + graphH);
+                ctx.closePath();
+                const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + graphH);
+                grad.addColorStop(0, fillColor);
+                grad.addColorStop(1, 'rgba(0,0,0,0.02)');
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                ctx.beginPath();
+                points.forEach((p, idx) => {
+                    if (idx === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                });
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2.5;
+                ctx.lineJoin = 'round';
+                ctx.lineCap = 'round';
+                ctx.stroke();
+
+                points.forEach((p, idx) => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                    ctx.fillStyle = idx === points.length - 1 ? dotColor : color;
+                    ctx.fill();
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                });
+
+                ctx.fillStyle = '#8a8d91';
+                ctx.font = '10px -apple-system, sans-serif';
+                ctx.textAlign = 'center';
+                const labelSteps = Math.min(5, data.length);
+                for (let i = 0; i < labelSteps; i++) {
+                    const idx = Math.round((i / (labelSteps - 1)) * (data.length - 1));
+                    const x = pad.left + (idx / (data.length - 1)) * graphW;
+                    ctx.fillText((idx + 1) + '', x, h - 4);
+                }
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                for (let g = 0; g <= 4; g++) {
+                    const val = maxVal - (g / 4) * maxVal;
+                    const y = pad.top + (graphH / 4) * g;
+                    ctx.fillText(val.toFixed(1) + 'h', pad.left - 6, y);
+                }
+            });
+
+            // resize on window change
+            const resizeHandler = () => {
+                const canvas = el.querySelector('#' + canvasId);
+                if (!canvas || !document.body.contains(el)) return;
+                const w = canvas.parentElement.clientWidth - 2;
+                const h = Math.max(120, Math.min(200, w * 0.43));
+                canvas.width = w * window.devicePixelRatio;
+                canvas.height = h * window.devicePixelRatio;
+                canvas.style.width = w + 'px';
+                canvas.style.height = h + 'px';
+                const ctx = canvas.getContext('2d');
+                ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+                // Redraw (simplified)
+                const parent = canvas.parentElement;
+                const clone = canvas.cloneNode(true);
+                canvas.replaceWith(clone);
+                const newCanvas = parent.querySelector('canvas');
+                if (newCanvas) {
+                    const w2 = parent.clientWidth - 2;
+                    const h2 = Math.max(120, Math.min(200, w2 * 0.43));
+                    newCanvas.width = w2 * window.devicePixelRatio;
+                    newCanvas.height = h2 * window.devicePixelRatio;
+                    newCanvas.style.width = w2 + 'px';
+                    newCanvas.style.height = h2 + 'px';
+                    const ctx2 = newCanvas.getContext('2d');
+                    ctx2.scale(window.devicePixelRatio, window.devicePixelRatio);
+                    const pad2 = { top: 16, bottom: 22, left: 26, right: 16 };
+                    const graphW2 = w2 - pad2.left - pad2.right;
+                    const graphH2 = h2 - pad2.top - pad2.bottom;
+                    const maxVal2 = Math.max(...data) * 1.15;
+                    const minVal2 = 0;
+                    const range2 = maxVal2 - minVal2 || 1;
+                    const pts = data.map((val, idx) => {
+                        const x = pad2.left + (idx / (data.length - 1)) * graphW2;
+                        const y = pad2.top + graphH2 - ((val - minVal2) / range2) * graphH2;
+                        return { x, y };
+                    });
+                    ctx2.clearRect(0, 0, w2, h2);
+                    ctx2.strokeStyle = '#eef0f2';
+                    ctx2.lineWidth = 0.5;
+                    for (let g = 0; g <= 4; g++) {
+                        const y = pad2.top + (graphH2 / 4) * g;
+                        ctx2.beginPath();
+                        ctx2.moveTo(pad2.left, y);
+                        ctx2.lineTo(w2 - pad2.right, y);
+                        ctx2.stroke();
+                    }
+                    const grad2 = ctx2.createLinearGradient(0, pad2.top, 0, pad2.top + graphH2);
+                    grad2.addColorStop(0, fillColor);
+                    grad2.addColorStop(1, 'rgba(0,0,0,0.02)');
+                    ctx2.fillStyle = grad2;
+                    ctx2.beginPath();
+                    ctx2.moveTo(pts[0].x, pad2.top + graphH2);
+                    pts.forEach(p => ctx2.lineTo(p.x, p.y));
+                    ctx2.lineTo(pts[pts.length - 1].x, pad2.top + graphH2);
+                    ctx2.closePath();
+                    ctx2.fill();
+                    ctx2.beginPath();
+                    pts.forEach((p, idx) => {
+                        if (idx === 0) ctx2.moveTo(p.x, p.y);
+                        else ctx2.lineTo(p.x, p.y);
+                    });
+                    ctx2.strokeStyle = color;
+                    ctx2.lineWidth = 2.5;
+                    ctx2.stroke();
+                    pts.forEach((p, idx) => {
+                        ctx2.beginPath();
+                        ctx2.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                        ctx2.fillStyle = idx === pts.length - 1 ? dotColor : color;
+                        ctx2.fill();
+                        ctx2.strokeStyle = '#fff';
+                        ctx2.lineWidth = 1.5;
+                        ctx2.stroke();
+                    });
+                    ctx2.fillStyle = '#8a8d91';
+                    ctx2.font = '10px -apple-system, sans-serif';
+                    ctx2.textAlign = 'center';
+                    const labelSteps2 = Math.min(5, data.length);
+                    for (let i = 0; i < labelSteps2; i++) {
+                        const idx = Math.round((i / (labelSteps2 - 1)) * (data.length - 1));
+                        const x = pad2.left + (idx / (data.length - 1)) * graphW2;
+                        ctx2.fillText((idx + 1) + '', x, h2 - 4);
+                    }
+                    ctx2.textAlign = 'right';
+                    ctx2.textBaseline = 'middle';
+                    for (let g = 0; g <= 4; g++) {
+                        const val = maxVal2 - (g / 4) * maxVal2;
+                        const y = pad2.top + (graphH2 / 4) * g;
+                        ctx2.fillText(val.toFixed(1) + 'h', pad2.left - 6, y);
+                    }
+                }
+            };
+            window.addEventListener('resize', resizeHandler);
+            const observer = new MutationObserver(() => {
+                if (!document.body.contains(el)) {
+                    window.removeEventListener('resize', resizeHandler);
+                    observer.disconnect();
+                }
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+
+            return el;
+        }
+
+        // ---- createPostWithFollow ----
         function createPostWithFollow(i, overrideName) {
             const name = overrideName || getWeightedName();
             const avatar = rand(avatars);
             const minutes = Math.floor(Math.random() * 59) + 1;
             const time = `${minutes}m ago`;
-            let content = makeContent();
+            let content = makeContent(true);
             content = maybeApplyColor(content);
 
             const likeBase = Math.floor(Math.random() * 9999);
@@ -2982,8 +3167,6 @@
             </div>
           `;
 
-            // NO friend responses for bot posts
-
             return el;
         }
 
@@ -2991,7 +3174,7 @@
             return createPostWithFollow(i);
         };
 
-        // ---- Story posts with follow button ----
+        // ---- makeStoryPost ----
         function makeStoryPost(i) {
             const opener = rand(storyOpeners);
             const adj = rand(storyAdjs);
@@ -3095,12 +3278,10 @@
                 });
             }
 
-            // NO friend responses for story posts
-
             return el;
         }
 
-        // ---- Poll posts with follow button ----
+        // ---- makePollPost ----
         function makePollPost(i) {
             const shuffled = [...politicians].sort(() => Math.random() - 0.5);
             const count = Math.floor(Math.random() * 3) + 2;
@@ -3206,7 +3387,7 @@
             return el;
         }
 
-        // ---- Debate posts with follow button (reduced frequency) ----
+        // ---- makeDebatePost ----
         function makeDebatePost(i, category) {
             const cat = category || rand(['music', 'football', 'politics']);
             const name = getWeightedName();
@@ -3266,7 +3447,7 @@
             return el;
         }
 
-        // ---- Ad post (no follow) ----
+        // ---- makeAdPost ----
         function makeAdPost() {
             const el = document.createElement('article');
             el.className = 'post post-ad';
@@ -3293,7 +3474,240 @@
             return el;
         }
 
-        // ---- loadFeed and loadMorePosts with reduced debates (4x reduction) ----
+        // ---- SENSORY BREAK AS POST ----
+        let sensoryAudio = null;
+        let sensoryStopTimeout = null;
+        const SENSORY_SOUND_URL = 'https://ia600604.us.archive.org/34/items/cheap-sense-cs/cheap-sense-cs.mp3';
+
+        function createSensoryPost(i) {
+            const outerColor = randomColor();
+            const innerColor = randomLightColor();
+            const postId = 'sensory-' + Date.now() + '-' + i;
+            const canvasId = 'sensory-canvas-' + postId;
+
+            const el = document.createElement('article');
+            el.className = 'post sensory-post';
+            el.style.animationDelay = `${i * 40}ms`;
+            applyRandomFontToPost(el);
+
+            const name = getWeightedName();
+            const avatar = rand(avatars);
+            const minutes = Math.floor(Math.random() * 5) + 1;
+            const time = `${minutes}m ago`;
+            const likeBase = Math.floor(Math.random() * 500);
+            const isF = isFriend(name);
+            const isFol = isFollowing(name);
+            let followBtnText = 'Follow';
+            let btnClass = 'follow-btn';
+            let disabled = false;
+            if (isF) {
+                followBtnText = 'Friends';
+                btnClass = 'follow-btn is-friend';
+                disabled = true;
+            } else if (isFol) {
+                followBtnText = 'Following';
+                btnClass = 'follow-btn is-following';
+                disabled = true;
+            }
+            const friendBadge = isF ? `<span class="friend-badge is-friend">⭐ Friend</span>` : '';
+
+            const counter = getSensoryBreakCount() + 1;
+            setSensoryBreakCount(counter);
+
+            el.innerHTML = `
+            <div class="post-head" onclick="openProfile('${escapeHtml(name)}', '${escapeHtml(avatar)}')">
+              <img class="avatar" src="${avatar}" alt="">
+              <div class="meta">
+                <div class="name-wrap">
+                  <span class="name">${escapeHtml(name)}</span>
+                  ${friendBadge}
+                  <button class="${btnClass}" data-username="${escapeHtml(name)}" onclick="event.stopPropagation();handleFollowClick(this, '${escapeHtml(name)}')" ${disabled ? 'disabled' : ''}>${followBtnText}</button>
+                </div>
+                <div class="time">${time} · 🌐</div>
+              </div>
+            </div>
+            <div class="post-content" style="padding-bottom:4px;">
+              <div class="sensory-post-inner">
+                <div class="sensory-title">🧴 Wax-Crack Squishy Break</div>
+                <div class="sensory-sub">Tap the squishy to crack the wax! ✨</div>
+                <div class="sensory-squishy-wrap" id="sensoryWrap-${postId}">
+                  <div class="sensory-squishy-outer" style="background:${outerColor};"></div>
+                  <div class="sensory-squishy-inner" style="background:${innerColor};"></div>
+                  <canvas class="sensory-crack-canvas" id="${canvasId}"></canvas>
+                </div>
+                <div class="sensory-tap-hint">👆 tap to crack</div>
+                <div class="sensory-counter-badge">✨ sensory break #${counter}</div>
+              </div>
+            </div>
+            <div class="actions">
+              <button type="button" class="like-btn" data-base="${likeBase}" onclick="toggleLike(this)">👍 ${likeBase.toLocaleString()}</button>
+              <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
+              <button type="button" onclick="openRepostMenu(this)">↗️ Repost</button>
+              <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
+            </div>
+          `;
+
+            const wrap = el.querySelector('#sensoryWrap-' + postId);
+            const canvas = el.querySelector('#' + canvasId);
+            if (!wrap || !canvas) return el;
+
+            const container = wrap.parentElement;
+            const ctx = canvas.getContext('2d');
+
+            function resizeSensoryCanvas() {
+                const rect = wrap.getBoundingClientRect();
+                canvas.width = rect.width * window.devicePixelRatio;
+                canvas.height = rect.height * window.devicePixelRatio;
+                canvas.style.width = rect.width + 'px';
+                canvas.style.height = rect.height + 'px';
+                ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            }
+            resizeSensoryCanvas();
+
+            function playSensorySound() {
+                try {
+                    if (!sensoryAudio) {
+                        sensoryAudio = new Audio(SENSORY_SOUND_URL);
+                        sensoryAudio.volume = 0.6;
+                    }
+                    if (sensoryAudio.paused || sensoryAudio.ended) {
+                        sensoryAudio.currentTime = 0;
+                        sensoryAudio.play().catch(() => {});
+                    }
+                    if (sensoryStopTimeout) clearTimeout(sensoryStopTimeout);
+                    sensoryStopTimeout = setTimeout(() => {
+                        if (sensoryAudio && !sensoryAudio.paused) {
+                            sensoryAudio.pause();
+                            sensoryAudio.currentTime = 0;
+                        }
+                        sensoryStopTimeout = null;
+                    }, 700);
+                } catch (e) {}
+            }
+
+            function drawSensoryCrack(x, y) {
+                const w = canvas.width / window.devicePixelRatio;
+                const h = canvas.height / window.devicePixelRatio;
+                const numLines = 4 + Math.floor(Math.random() * 4);
+                ctx.save();
+                ctx.lineWidth = 2.5;
+                ctx.strokeStyle = outerColor;
+                ctx.shadowColor = 'rgba(0,0,0,0.2)';
+                ctx.shadowBlur = 4;
+                ctx.lineCap = 'round';
+
+                for (let i = 0; i < numLines; i++) {
+                    const angle = Math.random() * 2 * Math.PI;
+                    const length = 8 + Math.random() * 30;
+                    const endX = x + Math.cos(angle) * length;
+                    const endY = y + Math.sin(angle) * length;
+                    const cpX = x + Math.cos(angle + 0.3) * (length * 0.6);
+                    const cpY = y + Math.sin(angle + 0.3) * (length * 0.6);
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.quadraticCurveTo(cpX, cpY, endX, endY);
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+
+            function handleSensoryPress(e) {
+                e.preventDefault();
+                const rect = wrap.getBoundingClientRect();
+                const scaleX = canvas.width / (rect.width * window.devicePixelRatio);
+                const scaleY = canvas.height / (rect.height * window.devicePixelRatio);
+                let clientX, clientY;
+                if (e.touches) {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+                const x = (clientX - rect.left) * scaleX;
+                const y = (clientY - rect.top) * scaleY;
+                const clampedX = Math.min(Math.max(x, 0), canvas.width / window.devicePixelRatio);
+                const clampedY = Math.min(Math.max(y, 0), canvas.height / window.devicePixelRatio);
+
+                drawSensoryCrack(clampedX, clampedY);
+                playSensorySound();
+
+                wrap.classList.add('crack-anim');
+                setTimeout(() => {
+                    wrap.classList.remove('crack-anim');
+                }, 400);
+
+                const outer = wrap.querySelector('.sensory-squishy-outer');
+                outer.style.transition = 'box-shadow 0.2s';
+                outer.style.boxShadow =
+                    'inset 0 -8px 20px rgba(0,0,0,0.25), 0 8px 30px rgba(0,0,0,0.2), 0 0 40px rgba(255,200,100,0.15)';
+                setTimeout(() => {
+                    outer.style.boxShadow = 'inset 0 -8px 20px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.12)';
+                }, 400);
+
+                const counterEl = el.querySelector('.sensory-counter-badge');
+                if (counterEl) {
+                    const current = getSensoryBreakCount();
+                    counterEl.textContent = `✨ sensory break #${current}`;
+                }
+            }
+
+            container.addEventListener('click', (e) => {
+                if (e.target.closest('.sensory-squishy-wrap')) {
+                    handleSensoryPress(e);
+                }
+            });
+            container.addEventListener('touchstart', (e) => {
+                if (e.target.closest('.sensory-squishy-wrap')) {
+                    handleSensoryPress(e);
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            const resizeSensory = () => {
+                if (!document.body.contains(el)) {
+                    window.removeEventListener('resize', resizeSensory);
+                    return;
+                }
+                resizeSensoryCanvas();
+            };
+            window.addEventListener('resize', resizeSensory);
+
+            return el;
+        }
+
+        // ---- Sensory break counter ----
+        function getSensoryBreakCount() {
+            try { return parseInt(localStorage.getItem('chillspace_sensory_break_count')) || 0; } catch { return 0; }
+        }
+
+        function setSensoryBreakCount(val) {
+            try { localStorage.setItem('chillspace_sensory_break_count', String(val)); } catch (e) {}
+        }
+
+        const SENSORY_INTERVAL = 70;
+
+        function getScrollCounter() {
+            try { return parseInt(localStorage.getItem('chillspace_scroll_counter')) || 0; } catch { return 0; }
+        }
+
+        function setScrollCounter(val) {
+            try { localStorage.setItem('chillspace_scroll_counter', String(val)); } catch (e) {}
+        }
+
+        function incrementSensoryCounter() {
+            let c = getScrollCounter() + 1;
+            setScrollCounter(c);
+            if (c >= SENSORY_INTERVAL) {
+                setScrollCounter(0);
+                const feed = document.getElementById('feed');
+                const sensoryPost = createSensoryPost(feed.children.length);
+                feed.appendChild(sensoryPost);
+                showToast('🧴 A sensory break post appeared! Tap the squishy to crack the wax.');
+            }
+        }
+
+        // ---- loadFeed and loadMorePosts (adjusted probabilities) ----
         let loading = false;
 
         function loadFeed() {
@@ -3304,6 +3718,8 @@
             const storyPositions = new Set([shuffled[0], shuffled[1]]);
             const pollPosition = shuffled[2];
             const debatePosition = (Math.random() < 0.25) ? shuffled[3] : -1;
+            // Graph post: reduced frequency (was 0.15, now 0.075)
+            const screenTimePos = (Math.random() < 0.075) ? (Math.random() < 0.5 ? 5 : 7) : -1;
 
             let adDone = false;
             for (let i = 0; i < 12; i++) {
@@ -3311,6 +3727,8 @@
                 if (i === adPosition && !adDone) {
                     el = makeAdPost();
                     adDone = true;
+                } else if (i === screenTimePos) {
+                    el = createScreenTimePost(i);
                 } else if (storyPositions.has(i)) {
                     el = makeStoryPost(i);
                 } else if (i === pollPosition) {
@@ -3321,7 +3739,15 @@
                     el = createPostWithFollow(i);
                 }
                 feed.appendChild(el);
-                incrementSensoryCounter();
+                // Increment scroll counter for sensory breaks
+                let sc = getScrollCounter() + 1;
+                setScrollCounter(sc);
+                if (sc >= SENSORY_INTERVAL) {
+                    setScrollCounter(0);
+                    const sensoryPost = createSensoryPost(feed.children.length);
+                    feed.appendChild(sensoryPost);
+                    showToast('🧴 A sensory break post appeared! Tap the squishy to crack the wax.');
+                }
             }
         }
 
@@ -3337,17 +3763,27 @@
                 for (let i = 0; i < count; i++) {
                     const r = Math.random();
                     let el;
-                    if (r < 0.2) {
+                    // Graph post: reduced from 0.12 to 0.06
+                    if (r < 0.06) {
+                        el = createScreenTimePost(start + i);
+                    } else if (r < 0.30) {
                         el = makeStoryPost(start + i);
-                    } else if (r < 0.32) {
+                    } else if (r < 0.42) {
                         el = makePollPost(start + i);
-                    } else if (r < 0.345) {
+                    } else if (r < 0.48) {
                         el = makeDebatePost(start + i);
                     } else {
                         el = createPostWithFollow(start + i);
                     }
                     feed.appendChild(el);
-                    incrementSensoryCounter();
+                    let sc = getScrollCounter() + 1;
+                    setScrollCounter(sc);
+                    if (sc >= SENSORY_INTERVAL) {
+                        setScrollCounter(0);
+                        const sensoryPost = createSensoryPost(feed.children.length);
+                        feed.appendChild(sensoryPost);
+                        showToast('🧴 A sensory break post appeared! Tap the squishy to crack the wax.');
+                    }
                 }
                 loading = false;
                 loader.classList.remove('show');
@@ -3367,28 +3803,8 @@
         window.refreshFeed = refreshFeed;
 
         // ============================================================
-        //  SENSORY TOY
+        //  RANDOM COLOR HELPERS FOR SENSORY
         // ============================================================
-        const SENSORY_INTERVAL = 75;
-        const SENSORY_SOUND_URL = 'https://ia600604.us.archive.org/34/items/cheap-sense-cs/cheap-sense-cs.mp3';
-
-        function getSensoryCounter() {
-            try { return parseInt(localStorage.getItem('chillspace_sensory_counter')) || 0; } catch { return 0; }
-        }
-
-        function setSensoryCounter(val) {
-            try { localStorage.setItem('chillspace_sensory_counter', String(val)); } catch (e) {}
-        }
-
-        function incrementSensoryCounter() {
-            let c = getSensoryCounter() + 1;
-            setSensoryCounter(c);
-            if (c >= SENSORY_INTERVAL) {
-                setSensoryCounter(0);
-                showSensoryToy();
-            }
-        }
-
         function randomColor() {
             const hue = Math.floor(Math.random() * 360);
             const sat = 50 + Math.floor(Math.random() * 40);
@@ -3403,163 +3819,8 @@
             return `hsl(${hue}, ${sat}%, ${lig}%)`;
         }
 
-        function showSensoryToy() {
-            const outerColor = randomColor();
-            const innerColor = randomLightColor();
-
-            const overlay = document.createElement('div');
-            overlay.className = 'sensory-toy-overlay';
-            overlay.innerHTML = `
-            <div class="sensory-toy-box">
-              <div class="toy-title">🧴 Wax-Crack Squishy</div>
-              <div class="toy-sub">Tap the squishy to crack the wax!</div>
-              <div class="squishy-container" id="squishyContainer">
-                <div class="squishy-wrap" id="squishyWrap">
-                  <div class="squishy-outer" style="background:${outerColor};"></div>
-                  <div class="squishy-inner" style="background:${innerColor};"></div>
-                  <canvas class="squishy-crack-canvas" id="crackCanvas"></canvas>
-                </div>
-              </div>
-              <div class="squishy-tap-hint">👆 tap to crack</div>
-              <div class="squishy-counter">✨ sensory break #${Math.floor(getSensoryCounter() / SENSORY_INTERVAL) + 1}</div>
-              <div class="modal-actions">
-                <button id="sensoryDismissBtn">Close</button>
-              </div>
-            </div>
-          `;
-            document.body.appendChild(overlay);
-
-            const wrap = overlay.querySelector('#squishyWrap');
-            const container = overlay.querySelector('#squishyContainer');
-            const canvas = overlay.querySelector('#crackCanvas');
-            const ctx = canvas.getContext('2d');
-
-            function resizeCanvas() {
-                const rect = wrap.getBoundingClientRect();
-                canvas.width = rect.width;
-                canvas.height = rect.height;
-            }
-            resizeCanvas();
-
-            let audio = null;
-            let stopTimeout = null;
-
-            function playCrackSound() {
-                try {
-                    if (!audio) {
-                        audio = new Audio(SENSORY_SOUND_URL);
-                        audio.volume = 0.7;
-                    }
-                    if (audio.paused || audio.ended) {
-                        audio.currentTime = 0;
-                        audio.play().catch(() => {});
-                    }
-                    if (stopTimeout) clearTimeout(stopTimeout);
-                    stopTimeout = setTimeout(() => {
-                        if (audio && !audio.paused) {
-                            audio.pause();
-                            audio.currentTime = 0;
-                        }
-                        stopTimeout = null;
-                    }, 700);
-                } catch (e) {}
-            }
-
-            function drawCrack(x, y) {
-                const w = canvas.width;
-                const h = canvas.height;
-                const numLines = 4 + Math.floor(Math.random() * 4);
-                ctx.save();
-                ctx.lineWidth = 2.5;
-                ctx.strokeStyle = outerColor;
-                ctx.shadowColor = 'rgba(0,0,0,0.2)';
-                ctx.shadowBlur = 4;
-                ctx.lineCap = 'round';
-
-                for (let i = 0; i < numLines; i++) {
-                    const angle = Math.random() * 2 * Math.PI;
-                    const length = 10 + Math.random() * 35;
-                    const endX = x + Math.cos(angle) * length;
-                    const endY = y + Math.sin(angle) * length;
-                    const cpX = x + Math.cos(angle + 0.3) * (length * 0.6);
-                    const cpY = y + Math.sin(angle + 0.3) * (length * 0.6);
-                    ctx.beginPath();
-                    ctx.moveTo(x, y);
-                    ctx.quadraticCurveTo(cpX, cpY, endX, endY);
-                    ctx.stroke();
-                }
-                ctx.restore();
-            }
-
-            function handlePress(e) {
-                e.preventDefault();
-                const rect = wrap.getBoundingClientRect();
-                const scaleX = canvas.width / rect.width;
-                const scaleY = canvas.height / rect.height;
-                let clientX, clientY;
-                if (e.touches) {
-                    clientX = e.touches[0].clientX;
-                    clientY = e.touches[0].clientY;
-                } else {
-                    clientX = e.clientX;
-                    clientY = e.clientY;
-                }
-                const x = (clientX - rect.left) * scaleX;
-                const y = (clientY - rect.top) * scaleY;
-                const clampedX = Math.min(Math.max(x, 0), canvas.width);
-                const clampedY = Math.min(Math.max(y, 0), canvas.height);
-
-                drawCrack(clampedX, clampedY);
-                playCrackSound();
-
-                wrap.classList.add('crack-anim');
-                setTimeout(() => {
-                    wrap.classList.remove('crack-anim');
-                }, 400);
-
-                const outer = wrap.querySelector('.squishy-outer');
-                outer.style.transition = 'box-shadow 0.2s';
-                outer.style.boxShadow = 'inset 0 -8px 20px rgba(0,0,0,0.25), 0 8px 30px rgba(0,0,0,0.2), 0 0 40px rgba(255,200,100,0.15)';
-                setTimeout(() => {
-                    outer.style.boxShadow = 'inset 0 -8px 20px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.12)';
-                }, 400);
-            }
-
-            container.addEventListener('click', (e) => {
-                e.stopPropagation();
-                handlePress(e);
-            });
-            container.addEventListener('touchstart', (e) => {
-                handlePress(e);
-                e.preventDefault();
-            }, { passive: false });
-
-            overlay.querySelector('#sensoryDismissBtn').addEventListener('click', () => {
-                if (audio) { audio.pause();
-                    audio.currentTime = 0; }
-                if (stopTimeout) clearTimeout(stopTimeout);
-                overlay.remove();
-            });
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    if (audio) { audio.pause();
-                        audio.currentTime = 0; }
-                    if (stopTimeout) clearTimeout(stopTimeout);
-                    overlay.remove();
-                }
-            });
-            setTimeout(() => {
-                if (overlay.parentNode) {
-                    if (audio) { audio.pause();
-                        audio.currentTime = 0; }
-                    if (stopTimeout) clearTimeout(stopTimeout);
-                    overlay.remove();
-                }
-            }, 15000);
-        }
-
         // ============================================================
-        //  EXISTING CODE (preserved with minimal changes)
+        //  EXISTING CODE (preserved)
         // ============================================================
 
         const firstNames = ["Alex", "Jordan", "Casey", "Taylor", "Morgan", "Riley", "Jamie", "Avery", "Drew", "Quinn", "Sam",
@@ -3607,22 +3868,60 @@
             "poetry", "true crime podcasts", "tea ceremonies", "retro tech"
         ];
 
-        // REMOVED all "Go to Number Game" posts from linesB
-        const linesB = [
-            "Just discovered this app and wow, I actually put my phone down after 5 minutes",
-            "Spent my morning outside instead of doomscrolling. Weird but nice?",
-            "No notifications, no stress. Is this what peace feels like",
-            "Finally a social app that doesn't hijack my dopamine",
-            "Posted once today and didn't feel the need to check for likes. Revolutionary",
-            "My screen time is down 80% since joining. My plants are thriving too",
-            "Actually talked to a human IRL today instead of posting about it",
-            "The algorithm shows me 3 posts and says 'go touch grass'. 10/10",
-            "Between <a href='/kpop/'>the K-pop game</a> & <a href='/reelspace/'>Reelspace</a>, I found out my addiction wasn't TikTok - it was music",
-            "Why when you close Facebook and open ChillSpace are you suddenly up for doing everything you needed to do? It's almost like closing Facebook closed the procrastinator inside me",
-            "Me: I deleted Tinder just for you babe! My friends: Why are you calling ChillSpace 'babe'?",
-            "Why have I wondered what happiness is for so long when it's always been right here on the ChillSpace app?",
-            "Is posting randomness all I ever needed to give up the big socials? <br><br> ...Yes it is. 1703251 8725 0543"
-        ];
+        function makeContent(allowLinesB = true) {
+            const r = Math.random();
+            if (r < 0.025) {
+                const pol = rand(politicians);
+                const topic = rand(politicalTopics);
+                const judgement = rand(politicalJudgements);
+                const beneficiary = rand(politicalBeneficiaries);
+                return `Unpopular opinion: ${pol}'s ${topic} policy is ${judgement} for ${beneficiary}.`;
+            }
+            if (allowLinesB && r < 0.54) {
+                return getSwappedLinesB();
+            }
+            if (r < 0.77) {
+                return `${rand(starters)} ${rand(topics)} which makes sense because I've always loved ${rand(endings)}.`;
+            }
+            if (r < 0.85) {
+                return makeQuestion();
+            }
+            if (r < 0.90) {
+                const s = rand(ko_starters);
+                const t = rand(ko_topics);
+                const e = rand(ko_endings);
+                return `${t} ${s}. ${e} 좋아해서 그래요.`;
+            }
+            if (r < 0.94) {
+                const s = rand(ja_starters);
+                const t = rand(ja_topics);
+                const e = rand(ja_endings);
+                return `${t}${s}。${e}が好きだから。`;
+            }
+            if (r < 0.97) {
+                const s = rand(ar_starters);
+                const t = rand(ar_topics);
+                const e = rand(ar_endings);
+                return `${s} ${t}. هذا منطقي لأنني دائماً أحببت ${e}.`;
+            }
+            if (r < 0.99) {
+                const s = rand(hi_starters);
+                const t = rand(hi_topics);
+                const e = rand(hi_endings);
+                return `${s} ${t}। समझ आता है क्योंकि मुझे हमेशा ${e} पसंद है।`;
+            }
+            if (Math.random() < 0.5) {
+                const s = rand(ru_starters);
+                const t = rand(ru_topics);
+                const e = rand(ru_endings);
+                return `${s} ${t}. Это логично, ведь я всегда любил ${e}.`;
+            } else {
+                const s = rand(th_starters);
+                const t = rand(th_topics);
+                const e = rand(th_endings);
+                return `${s} ${t} มันสมเหตุสมผลเพราะฉันชอบ${e}มาตลอด`;
+            }
+        }
 
         const ko_starters = ["정말 좋아해요", "완전히 빠졌어요", "이해가 안 돼요", "방금 발견했어요", "추천해요", "집착 중이에요", "몰래 즐겨요", "모두 해봤으면"];
         const ko_topics = ["고양이", "코딩", "K-pop", "피젯스피너", "쇼핑", "정원 가꾸기", "보드게임", "미니멀리즘", "빵 굽기", "VR게임", "중고거래", "새 관찰"];
@@ -3738,7 +4037,7 @@
             return avatarColorGradients[(label || '').toLowerCase()] || avatarColorGradients.grey;
         }
 
-        const pinnableLines = linesB.filter(l => !l.includes('number-game-btn'));
+        const pinnableLines = linesB_RAW;
 
         const storyOpeners = ["Guys", "People", "ChillSpacers", "Friends"];
         const storyAdjs = ["craziest", "most insane", "funniest", "most shocking"];
@@ -4166,7 +4465,7 @@
         }
         window.showFullStory = showFullStory;
 
-        // ---- Live Debates (preserved) ----
+        // ---- Live Debates ----
         const debateSubjects = {
             music: ["Taylor Swift", "BTS", "Drake", "Miley Cyrus", "Beyoncé", "Ed Sheeran", "Ariana Grande", "The Weeknd",
                 "Billie Eilish", "Bad Bunny", "Dua Lipa", "Kendrick Lamar", "Olivia Rodrigo", "Travis Scott", "Doja Cat",
@@ -4535,55 +4834,7 @@
             return null;
         }
 
-        function makeContent(allowLinesB = true) {
-            const r = Math.random();
-            if (r < 0.025) {
-                const pol = rand(politicians);
-                const topic = rand(politicalTopics);
-                const judgement = rand(politicalJudgements);
-                const beneficiary = rand(politicalBeneficiaries);
-                return `Unpopular opinion: ${pol}'s ${topic} policy is ${judgement} for ${beneficiary}.`;
-            } else if (r < 0.50) {
-                if (allowLinesB && Math.random() < 0.5) {
-                    return rand(linesB);
-                }
-                return `${rand(starters)} ${rand(topics)} which makes sense because I've always loved ${rand(endings)}.`;
-            } else if (r < 0.59) {
-                return makeQuestion();
-            } else if (r < 0.67) {
-                const s = rand(ko_starters);
-                const t = rand(ko_topics);
-                const e = rand(ko_endings);
-                return `${t} ${s}. ${e} 좋아해서 그래요.`;
-            } else if (r < 0.75) {
-                const s = rand(ja_starters);
-                const t = rand(ja_topics);
-                const e = rand(ja_endings);
-                return `${t}${s}。${e}が好きだから。`;
-            } else if (r < 0.83) {
-                const s = rand(ar_starters);
-                const t = rand(ar_topics);
-                const e = rand(ar_endings);
-                return `${s} ${t}. هذا منطقي لأنني دائماً أحببت ${e}.`;
-            } else if (r < 0.89) {
-                const s = rand(hi_starters);
-                const t = rand(hi_topics);
-                const e = rand(hi_endings);
-                return `${s} ${t}। समझ आता है क्योंकि मुझे हमेशा ${e} पसंद है।`;
-            } else if (r < 0.95) {
-                const s = rand(ru_starters);
-                const t = rand(ru_topics);
-                const e = rand(ru_endings);
-                return `${s} ${t}. Это логично, ведь я всегда любил ${e}.`;
-            } else {
-                const s = rand(th_starters);
-                const t = rand(th_topics);
-                const e = rand(th_endings);
-                return `${s} ${t} มันสมเหตุสมผลเพราะฉันชอบ${e}มาตลอด`;
-            }
-        }
-
-        // ---- Like button with colour animation + vibration ----
+        // ---- toggleLike ----
         function toggleLike(btn) {
             const liked = btn.dataset.liked === '1';
             let base = parseInt(btn.dataset.base, 10);
@@ -5132,7 +5383,6 @@
               <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
             </div>
           `;
-            // Pinned posts: allow friend responses (they are user-shared)
             setTimeout(() => {
                 if (document.body.contains(el)) {
                     const contentText = decoded.content.replace(/<[^>]*>/g, '').trim();
@@ -5172,7 +5422,6 @@
               <button type="button" class="ai-btn" onclick="chillAI(this)">✨ ChillSpace AI</button>
             </div>
           `;
-            // Pinned posts: allow friend responses
             setTimeout(() => {
                 if (document.body.contains(el)) {
                     const contentText = content.replace(/<[^>]*>/g, '').trim();
@@ -5402,12 +5651,10 @@
                 const likeBtn = el.querySelector('.like-btn');
                 startTickingLikes(likeBtn, true);
 
-                // --- Schedule friend responses to this post ---
                 const contentText = text.replace(/<[^>]*>/g, '').trim();
                 if (contentText) {
                     const friends = getFriends();
                     if (friends.length > 0) {
-                        // Small delay so the post renders fully
                         setTimeout(() => {
                             if (document.body.contains(el)) {
                                 scheduleFriendResponses(el, contentText);
@@ -5422,7 +5669,14 @@
                 postBtn.disabled = true;
                 postRow.classList.remove('visible');
                 input.blur();
-                incrementSensoryCounter();
+                let sc = getScrollCounter() + 1;
+                setScrollCounter(sc);
+                if (sc >= SENSORY_INTERVAL) {
+                    setScrollCounter(0);
+                    const sensoryPost = createSensoryPost(feed.children.length);
+                    feed.appendChild(sensoryPost);
+                    showToast('🧴 A sensory break post appeared! Tap the squishy to crack the wax.');
+                }
             });
 
             document.addEventListener('click', (e) => {
@@ -5499,7 +5753,7 @@
             });
         }
 
-        // ---- Personalities (preserved) ----
+        // ---- Personalities ----
         const personalityTraits = ['Sarcastic', 'Loving', 'Annoying', 'Supportive', 'Chaotic'];
         const traitColors = {
             Sarcastic: 'red',
@@ -5966,7 +6220,6 @@
             setupPersonalityRows();
             setupFriendResponses();
 
-            // Expose functions
             window.openFriendsModal = openFriendsModal;
             window.openProfile = openProfile;
             window.toggleFriend = toggleFriend;
