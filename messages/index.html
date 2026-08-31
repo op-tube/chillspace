@@ -7,6 +7,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Inter:wght@400..600&display=swap" rel="stylesheet">
+
+    <!-- Structured data for the web app -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "ChillSpace Messages",
+      "url": "https://chillspace.ai/messages",
+      "description": "ChillSpace Messages — send and receive messages through shareable links.",
+      "applicationCategory": "CommunicationApplication",
+      "operatingSystem": "Any"
+    }
+    </script>
+
     <style>
         :root {
             --bg: #1B1730;
@@ -664,12 +678,15 @@
       const raw = localStorage.getItem(STORAGE_KEYS.friends);
       if (!raw) return [];
       const friends = JSON.parse(raw);
+      // Expect an array of strings now
       if (!Array.isArray(friends)) return [];
-      return friends.filter(f => f && f.id && f.name).map(f => ({
-        id: String(f.id),
-        name: String(f.name),
-        avatar: f.avatar || "✨"
-      }));
+      return friends
+        .filter(f => typeof f === 'string' && f.trim() !== '')
+        .map((name, index) => ({
+          id: 'bot-' + index + '-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          name: name,
+          avatar: '✨'
+        }));
     } catch (e) {
       return [];
     }
