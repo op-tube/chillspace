@@ -120,6 +120,21 @@
             border-radius: 24px;
             font-size: 0.8rem;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #header .badge .lang-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 16px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            pointer-events: auto;
+            font-family: var(--font-main);
         }
         #scrollContainer {
             position: fixed;
@@ -411,7 +426,10 @@
     <div id="globalOverlay"></div>
     <div id="header">
         <div class="logo">ReelSpace<span class="ko">릴스페이스</span></div>
-        <div class="badge">📖 Infinite Stories</div>
+        <div class="badge">
+            <span id="badgeText">📖 Infinite Stories</span>
+            <button class="lang-toggle" id="langToggle">한국어</button>
+        </div>
     </div>
     <div id="scrollContainer"></div>
     <div id="musicIndicator">🎵 Music On</div>
@@ -420,7 +438,7 @@
     <!-- Startup overlay with button -->
     <div id="startOverlay">
         <button class="start-btn" id="loadReelSpaceBtn">Load ReelSpace</button>
-        <p style="color:rgba(255,255,255,0.6); font-size:0.9rem;">tap to start the experience</p>
+        <p id="startSub" style="color:rgba(255,255,255,0.6); font-size:0.9rem;">tap to start the experience</p>
     </div>
 
     <div id="commentOverlay">
@@ -438,106 +456,518 @@
             const commentOverlay = document.getElementById('commentOverlay');
             const commentList = document.getElementById('commentList');
             const closeCommentsBtn = document.getElementById('closeCommentsBtn');
+            const langToggle = document.getElementById('langToggle');
+            const badgeText = document.getElementById('badgeText');
+            const startSub = document.getElementById('startSub');
 
-            // ─── BACKGROUND VIDEO POOL ──────────────────
-            const defaultBgVideo = "https://ia601808.us.archive.org/16/items/videoplayback-3_20251207/videoplayback%20%283%29.mp4";
-            const bgVideoPool = [
-                defaultBgVideo,
+            // ─── LANGUAGE STATE ──────────────────────────
+            let currentLang = 'en'; // 'en' or 'ko'
+
+            // ─── LOCAL ASSETS (Android) & FALLBACK ──────
+            const LOCAL_VIDEOS = ['video1.mp4', 'video2.mp4', 'video3.mp4', 'video4.mp4', 'video5.mp4'];
+            const FALLBACK_VIDEOS = [
+                "https://ia601808.us.archive.org/16/items/videoplayback-3_20251207/videoplayback%20%283%29.mp4",
                 "https://dn721606.ca.archive.org/0/items/youtube-tS2Fxw5Cjwo/tS2Fxw5Cjwo.webm",
                 "https://dn720308.ca.archive.org/0/items/youtube-9V8Iu4Zbtqs/9V8Iu4Zbtqs.webm",
                 "https://dn721909.ca.archive.org/0/items/subway-surfers-android-31-05-2024/InShot_20240531_140125669.ia.mp4",
                 "https://ia801502.us.archive.org/35/items/screen-20260807-231946/screen-20260807-231946.ia.mp4"
             ];
-            let lastBgVideoUrl = null;
-
-            function pickRandomBgVideo() {
-                if (bgVideoPool.length === 0) return defaultBgVideo;
-                if (bgVideoPool.length === 1) return bgVideoPool[0];
-                let newUrl;
-                do { newUrl = bgVideoPool[Math.floor(Math.random() * bgVideoPool.length)]; }
-                while (newUrl === lastBgVideoUrl && bgVideoPool.length > 1);
-                return newUrl;
-            }
-
-            function setBgVideoSrc(url) {
-                bgVideo.src = url;
-                bgVideo.load();
-                lastBgVideoUrl = url;
-                bgVideo.play().catch(() => {});
-            }
-            bgVideo.addEventListener('error', () => { if (bgVideo.src !== defaultBgVideo) setBgVideoSrc(
-                defaultBgVideo); });
-
-            // ─── MUSIC POOL ────────────────────────────
-            const musicPool = [
+            const LOCAL_MUSIC = ['song1.mp3', 'song2.mp3', 'song3.mp3', 'song4.mp3', 'song5.mp3'];
+            const FALLBACK_MUSIC = [
                 "https://ia800705.us.archive.org/11/items/CountingUpOn1Tap/AUD-20260124-WA0004.mp3",
                 "https://dn721702.ca.archive.org/0/items/soundcloud-564282678/Vexento_-_Jump_Copyright_Free_Sounds-564282678.mp3",
                 "https://dn710102.ca.archive.org/0/items/soundcloud-469181655/MuraD_-_Flame_Copyright_Free_Sounds-469181655.mp3",
                 "https://dn721207.ca.archive.org/0/items/soundcloud-354674249/MuraD_DJ_LeGenD_-_Future_Copyright_Free_Sounds-354674249.mp3",
                 "https://dn721502.ca.archive.org/0/items/soundcloud-407515281/Vexento_-_Devotion_Copyright_Free_Sounds-407515281.mp3"
             ];
-            let lastMusicUrl = null;
 
-            function playRandomMusic() {
-                let newUrl;
-                if (musicPool.length === 1) newUrl = musicPool[0];
-                else {
-                    do { newUrl = musicPool[Math.floor(Math.random() * musicPool.length)]; }
-                    while (newUrl === lastMusicUrl && musicPool.length > 1);
-                }
-                lastMusicUrl = newUrl;
-                bgMusic.src = newUrl;
-                bgMusic.volume = 0.2;
-                bgMusic.load();
-                bgMusic.currentTime = Math.random() * 120;
-                return bgMusic.play();
+            let lastBgVideoUrl = null;
+            let lastMusicUrl = null;
+            let isVideoFallback = false;
+            let isMusicFallback = false;
+
+            // ─── UTILITY: pick random item, avoid repeats ──
+            function pickRandomFromArray(arr, last) {
+                if (!arr || arr.length === 0) return null;
+                if (arr.length === 1) return arr[0];
+                let newItem;
+                let attempts = 0;
+                do {
+                    newItem = arr[Math.floor(Math.random() * arr.length)];
+                    attempts++;
+                    // Safety: if we've tried too many times, just return the first available
+                    if (attempts > 100) break;
+                } while (newItem === last && arr.length > 1);
+                return newItem;
             }
 
-            // ─── TOPICS & RELATIONS ────────────────────
-            const topics = [
+            function getVideoUrl() {
+                // Try local first
+                const local = pickRandomFromArray(LOCAL_VIDEOS, lastBgVideoUrl);
+                if (local) return local;
+                // Fallback to archive.org
+                return pickRandomFromArray(FALLBACK_VIDEOS, lastBgVideoUrl);
+            }
+
+            function getMusicUrl() {
+                const local = pickRandomFromArray(LOCAL_MUSIC, lastMusicUrl);
+                if (local) return local;
+                return pickRandomFromArray(FALLBACK_MUSIC, lastMusicUrl);
+            }
+
+            // ─── VIDEO HANDLING ──────────────────────────
+            function setBgVideoSrc(url) {
+                if (!url) return;
+                bgVideo.src = url;
+                bgVideo.load();
+                lastBgVideoUrl = url;
+                bgVideo.play().catch(() => {});
+            }
+
+            bgVideo.addEventListener('error', function onVideoError() {
+                console.warn('Video error, switching to fallback');
+                if (!isVideoFallback) {
+                    isVideoFallback = true;
+                    const fallback = pickRandomFromArray(FALLBACK_VIDEOS, lastBgVideoUrl);
+                    if (fallback) setBgVideoSrc(fallback);
+                } else {
+                    const fallback = pickRandomFromArray(FALLBACK_VIDEOS, lastBgVideoUrl);
+                    if (fallback && fallback !== bgVideo.src) setBgVideoSrc(fallback);
+                }
+            });
+
+            // ─── MUSIC HANDLING ──────────────────────────
+            // Load and play a music URL with a random start position (0–120s)
+            function loadAndPlayMusic(url) {
+                if (!url) return Promise.reject('No URL');
+                bgMusic.src = url;
+                bgMusic.load();
+                lastMusicUrl = url;
+
+                return new Promise((resolve, reject) => {
+                    const startWithRandomOffset = () => {
+                        try {
+                            // Seek to a random position between 0 and 120 seconds
+                            // Use the actual duration if available and shorter than 120s
+                            const maxStart = Math.min(bgMusic.duration || 120, 120);
+                            const offset = Math.random() * maxStart;
+                            bgMusic.currentTime = offset;
+                            bgMusic.play().then(resolve).catch(reject);
+                        } catch (e) {
+                            // If seeking fails, just play from the start
+                            bgMusic.play().then(resolve).catch(reject);
+                        }
+                    };
+
+                    // If the audio is already loaded enough, seek and play immediately
+                    if (bgMusic.readyState >= 1) {
+                        startWithRandomOffset();
+                    } else {
+                        // Wait for metadata to be loaded so we can seek
+                        const onLoaded = () => {
+                            bgMusic.removeEventListener('loadedmetadata', onLoaded);
+                            bgMusic.removeEventListener('canplay', onLoaded);
+                            startWithRandomOffset();
+                        };
+                        bgMusic.addEventListener('loadedmetadata', onLoaded);
+                        bgMusic.addEventListener('canplay', onLoaded);
+                        bgMusic.addEventListener('error', function onErr() {
+                            bgMusic.removeEventListener('loadedmetadata', onLoaded);
+                            bgMusic.removeEventListener('canplay', onLoaded);
+                            reject(new Error('load error'));
+                        });
+
+                        // Fallback timeout: if loading takes too long, try playing anyway
+                        const timeoutId = setTimeout(() => {
+                            bgMusic.removeEventListener('loadedmetadata', onLoaded);
+                            bgMusic.removeEventListener('canplay', onLoaded);
+                            startWithRandomOffset();
+                        }, 2000);
+
+                        // Clear timeout if we succeed early
+                        const origResolve = resolve;
+                        resolve = function(val) {
+                            clearTimeout(timeoutId);
+                            origResolve(val);
+                        };
+                        const origReject = reject;
+                        reject = function(err) {
+                            clearTimeout(timeoutId);
+                            origReject(err);
+                        };
+                    }
+                });
+            }
+
+            function playRandomMusic() {
+                const url = getMusicUrl();
+                bgMusic.volume = 0.2;
+                return loadAndPlayMusic(url).catch(() => {
+                    // If local fails, switch to fallback
+                    if (!isMusicFallback) {
+                        isMusicFallback = true;
+                        const fallback = pickRandomFromArray(FALLBACK_MUSIC, lastMusicUrl);
+                        if (fallback) {
+                            return loadAndPlayMusic(fallback);
+                        }
+                    } else {
+                        // Already in fallback, try another
+                        const fallback = pickRandomFromArray(FALLBACK_MUSIC, lastMusicUrl);
+                        if (fallback && fallback !== bgMusic.src) {
+                            return loadAndPlayMusic(fallback);
+                        }
+                    }
+                    return Promise.reject('All music sources failed');
+                });
+            }
+
+            // ─── ANDROID TTS FALLBACK ──────────────────
+            function speakText(text, lang) {
+                if (window.androidTTS && typeof window.androidTTS.speak === 'function') {
+                    window.androidTTS.speak(text);
+                    return;
+                }
+                if (!window.speechSynthesis) return;
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.92;
+                utterance.pitch = 1.0;
+                utterance.volume = 0.9;
+                if (lang === 'ko') utterance.lang = 'ko-KR';
+                else utterance.lang = 'en-US';
+                const voices = speechSynthesis.getVoices();
+                let voice = null;
+                if (lang === 'ko') {
+                    voice = voices.find(v => v.lang.startsWith('ko'));
+                } else {
+                    voice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes(
+                        'Samantha') || v.name.includes('Daniel'))) || voices.find(v => v.lang.startsWith('en'));
+                }
+                if (voice) utterance.voice = voice;
+                speechSynthesis.speak(utterance);
+            }
+
+            // ─── WORD SWAP (English only) ──────────────
+            const wordSwapDict = {
+                "happy": ["happy", "joyful", "cheerful", "delighted", "ecstatic"],
+                "sad": ["sad", "melancholy", "sorrowful", "downcast", "gloomy"],
+                "big": ["big", "large", "huge", "enormous", "gigantic"],
+                "small": ["small", "tiny", "little", "compact", "miniature"],
+                "good": ["good", "great", "excellent", "superb", "wonderful"],
+                "bad": ["bad", "terrible", "awful", "dreadful", "horrible"],
+                "beautiful": ["beautiful", "gorgeous", "stunning", "lovely", "radiant"],
+                "ugly": ["ugly", "unsightly", "hideous", "grotesque", "repulsive"],
+                "fast": ["fast", "quick", "rapid", "speedy", "swift"],
+                "slow": ["slow", "sluggish", "leisurely", "gradual", "unhurried"],
+                "old": ["old", "ancient", "aged", "elderly", "vintage"],
+                "new": ["new", "fresh", "novel", "modern", "recent"],
+                "friend": ["friend", "companion", "ally", "confidant", "buddy"],
+                "person": ["person", "individual", "human", "being", "soul"],
+                "thing": ["thing", "object", "item", "entity", "article"],
+                "story": ["story", "tale", "narrative", "account", "anecdote"],
+                "time": ["time", "moment", "period", "era", "duration"],
+                "day": ["day", "daytime", "sunlight", "waking hours"],
+                "night": ["night", "evening", "darkness", "nightfall"],
+                "life": ["life", "existence", "being", "lifetime", "living"],
+                "love": ["love", "adore", "cherish", "treasure", "idolize"],
+                "hate": ["hate", "detest", "loathe", "despise", "abhor"],
+                "think": ["think", "believe", "consider", "contemplate", "ponder"],
+                "know": ["know", "understand", "comprehend", "grasp", "perceive"],
+                "see": ["see", "view", "observe", "witness", "spot"],
+                "hear": ["hear", "listen", "overhear", "attend"],
+                "feel": ["feel", "sense", "experience", "perceive"],
+                "say": ["say", "tell", "speak", "utter", "declare"],
+                "go": ["go", "move", "proceed", "advance", "travel"],
+                "come": ["come", "arrive", "approach", "reach"],
+                "look": ["look", "watch", "gaze", "stare", "glance"],
+                "find": ["find", "discover", "locate", "uncover"],
+                "start": ["start", "begin", "commence", "initiate"],
+                "end": ["end", "finish", "conclude", "terminate"],
+                "help": ["help", "assist", "aid", "support", "guide"],
+                "make": ["make", "create", "produce", "construct", "build"],
+                "take": ["take", "grab", "seize", "capture"],
+                "give": ["give", "offer", "provide", "supply"],
+                "want": ["want", "desire", "wish", "crave", "long for"],
+                "need": ["need", "require", "necessitate", "demand"],
+                "use": ["use", "utilize", "employ", "apply"],
+                "work": ["work", "labor", "toil", "operate"],
+                "play": ["play", "fun", "enjoyment", "recreation"],
+                "walk": ["walk", "stroll", "saunter", "amble"],
+                "run": ["run", "sprint", "dash", "jog"],
+                "talk": ["talk", "converse", "chat", "communicate"],
+                "listen": ["listen", "heed", "pay attention"],
+                "write": ["write", "compose", "pen", "draft"],
+                "read": ["read", "peruse", "scan", "browse"],
+                "eat": ["eat", "consume", "devour", "ingest"],
+                "drink": ["drink", "sip", "gulp", "quaff"],
+                "sleep": ["sleep", "rest", "slumber", "doze"],
+                "wake": ["wake", "awaken", "rouse", "stir"],
+                "open": ["open", "unlock", "unseal", "unfasten"],
+                "close": ["close", "shut", "seal", "lock"],
+                "try": ["try", "attempt", "endeavor", "strive"],
+                "win": ["win", "triumph", "succeed", "prevail"],
+                "lose": ["lose", "fail", "mislay", "forfeit"],
+                "keep": ["keep", "maintain", "preserve", "retain"],
+                "hold": ["hold", "grip", "clutch", "embrace"],
+                "call": ["call", "phone", "ring", "summon"],
+                "visit": ["visit", "drop by", "call on", "see"],
+                "thank": ["thank", "appreciate", "grateful", "acknowledge"],
+                "sorry": ["sorry", "apologetic", "remorseful", "regretful"],
+                "please": ["please", "delight", "satisfy", "content"],
+                "maybe": ["maybe", "perhaps", "possibly", "conceivably"],
+                "always": ["always", "constantly", "continually", "perpetually"],
+                "never": ["never", "not ever", "at no time"],
+                "often": ["often", "frequently", "regularly", "repeatedly"],
+                "sometimes": ["sometimes", "occasionally", "periodically", "at times"],
+                "usually": ["usually", "generally", "commonly", "typically"],
+                "very": ["very", "extremely", "exceedingly", "immensely"],
+                "really": ["really", "truly", "genuinely", "actually"],
+                "quite": ["quite", "rather", "fairly", "somewhat"],
+                "just": ["just", "merely", "only", "simply"],
+                "even": ["even", "still", "yet", "also"],
+                "well": ["well", "good", "fine", "satisfactorily"],
+                "much": ["much", "greatly", "considerably", "significantly"],
+                "little": ["little", "small", "slight", "minor"],
+                "long": ["long", "lengthy", "extended", "prolonged"],
+                "short": ["short", "brief", "compressed", "concise"],
+                "hard": ["hard", "difficult", "tough", "arduous"],
+                "easy": ["easy", "simple", "effortless", "uncomplicated"],
+                "bright": ["bright", "luminous", "radiant", "shiny"],
+                "dark": ["dark", "dim", "shadowy", "obscure"],
+                "warm": ["warm", "hot", "heated", "balmy"],
+                "cold": ["cold", "chilly", "freezing", "icy"],
+                "cool": ["cool", "chill", "refreshing", "breezy"],
+                "nice": ["nice", "pleasant", "kind", "friendly"],
+                "mean": ["mean", "unkind", "nasty", "cruel"],
+                "kind": ["kind", "generous", "benevolent", "compassionate"],
+                "cruel": ["cruel", "brutal", "inhumane", "savage"],
+                "brave": ["brave", "courageous", "fearless", "valiant"],
+                "cowardly": ["cowardly", "timid", "faint-hearted", "craven"],
+                "wise": ["wise", "sensible", "prudent", "astute"],
+                "foolish": ["foolish", "silly", "unwise", "absurd"],
+                "strong": ["strong", "powerful", "mighty", "sturdy"],
+                "weak": ["weak", "fragile", "feeble", "frail"],
+                "healthy": ["healthy", "fit", "robust", "vigorous"],
+                "sick": ["sick", "ill", "unwell", "diseased"],
+                "rich": ["rich", "wealthy", "affluent", "prosperous"],
+                "poor": ["poor", "impoverished", "needy", "destitute"],
+                "young": ["young", "youthful", "juvenile", "immature"],
+                "early": ["early", "premature", "untimely", "prior"],
+                "late": ["late", "delayed", "overdue", "tardy"],
+                "near": ["near", "close", "adjacent", "proximate"],
+                "far": ["far", "distant", "remote", "faraway"],
+                "heavy": ["heavy", "weighty", "substantial", "massive"],
+                "light": ["light", "weightless", "airy", "flimsy"],
+                "deep": ["deep", "profound", "intense", "thorough"],
+                "shallow": ["shallow", "superficial", "surface", "trivial"],
+                "clean": ["clean", "pure", "spotless", "immaculate"],
+                "dirty": ["dirty", "filthy", "soiled", "grubby"],
+                "safe": ["safe", "secure", "protected", "guarded"],
+                "dangerous": ["dangerous", "perilous", "hazardous", "risky"],
+                "quiet": ["quiet", "silent", "hushed", "peaceful"],
+                "noisy": ["noisy", "loud", "boisterous", "clamorous"],
+                "busy": ["busy", "occupied", "engaged", "active"],
+                "lazy": ["lazy", "idle", "indolent", "slothful"],
+                "proud": ["proud", "arrogant", "haughty", "conceited"],
+                "humble": ["humble", "modest", "unassuming", "meek"],
+                "honest": ["honest", "truthful", "sincere", "candid"],
+                "dishonest": ["dishonest", "deceitful", "fraudulent", "untruthful"],
+                "loyal": ["loyal", "faithful", "devoted", "steadfast"],
+                "disloyal": ["disloyal", "unfaithful", "treacherous", "perfidious"],
+                "gentle": ["gentle", "mild", "soft", "tender"],
+                "rough": ["rough", "coarse", "harsh", "rugged"],
+                "smooth": ["smooth", "even", "polished", "silky"],
+                "sharp": ["sharp", "keen", "acute", "pointed"],
+                "dull": ["dull", "blunt", "tedious", "uninteresting"],
+                "smart": ["smart", "intelligent", "clever", "bright"],
+                "dumb": ["dumb", "stupid", "unintelligent", "thick"],
+                "funny": ["funny", "humorous", "comical", "amusing"],
+                "serious": ["serious", "grave", "solemn", "earnest"],
+                "exciting": ["exciting", "thrilling", "stimulating", "electrifying"],
+                "boring": ["boring", "tedious", "mundane", "monotonous"],
+                "amazing": ["amazing", "astonishing", "incredible", "marvelous"],
+                "terrible": ["terrible", "horrific", "appalling", "dreadful"],
+                "wonderful": ["wonderful", "fantastic", "splendid", "magnificent"],
+                "awful": ["awful", "dreadful", "horrible", "appalling"],
+                "great": ["great", "excellent", "superb", "outstanding"],
+                "perfect": ["perfect", "flawless", "ideal", "immaculate"],
+                "hot": ["hot", "scorching", "boiling", "sizzling"],
+                "wet": ["wet", "damp", "moist", "soggy"],
+                "dry": ["dry", "arid", "parched", "dehydrated"],
+                "full": ["full", "filled", "brimming", "packed"],
+                "empty": ["empty", "void", "vacant", "deserted"],
+                "wide": ["wide", "broad", "extensive", "spacious"],
+                "narrow": ["narrow", "slender", "thin", "tight"],
+                "thick": ["thick", "dense", "heavy", "solid"],
+                "thin": ["thin", "slender", "slim", "narrow"],
+                "round": ["round", "circular", "spherical", "curved"],
+                "flat": ["flat", "level", "even", "planar"],
+                "soft": ["soft", "gentle", "smooth", "plush"],
+                "dim": ["dim", "faint", "weak", "subdued"],
+                "loud": ["loud", "noisy", "boisterous", "deafening"],
+                "sweet": ["sweet", "delightful", "pleasant", "charming"],
+                "sour": ["sour", "acidic", "tart", "acerbic"],
+                "bitter": ["bitter", "acrid", "sharp", "harsh"],
+                "salty": ["salty", "briny", "saline", "flavored"],
+                "spicy": ["spicy", "hot", "piquant", "zesty"],
+                "fresh": ["fresh", "new", "recent", "novel"],
+                "stale": ["stale", "old", "musty", "flat"],
+                "angry": ["angry", "furious", "enraged", "irate"],
+                "calm": ["calm", "peaceful", "serene", "tranquil"],
+                "worried": ["worried", "anxious", "concerned", "uneasy"],
+                "excited": ["excited", "thrilled", "elated", "enthusiastic"],
+                "tired": ["tired", "exhausted", "weary", "fatigued"],
+                "energetic": ["energetic", "active", "lively", "dynamic"],
+                "nervous": ["nervous", "tense", "anxious", "jittery"],
+                "relaxed": ["relaxed", "calm", "at ease", "unwound"],
+                "confident": ["confident", "assured", "self-assured", "poised"],
+                "shy": ["shy", "timid", "reserved", "introverted"],
+                "outgoing": ["outgoing", "extroverted", "sociable", "gregarious"],
+                "friendly": ["friendly", "kind", "amiable", "cordial"],
+                "unfriendly": ["unfriendly", "hostile", "cold", "aloof"],
+                "polite": ["polite", "courteous", "well-mannered", "gracious"],
+                "rude": ["rude", "impolite", "discourteous", "offensive"],
+                "generous": ["generous", "benevolent", "charitable", "liberal"],
+                "stingy": ["stingy", "miserly", "tightfisted", "penny-pinching"],
+                "heroic": ["heroic", "courageous", "valiant", "fearless"],
+                "spineless": ["spineless", "timid", "cowardly", "faint-hearted"],
+                "cozy": ["cozy", "snug", "comfortable", "warm"],
+                "frigid": ["frigid", "freezing", "icy", "frosty"],
+                "scorching": ["scorching", "boiling", "sizzling", "very hot"],
+                "damp": ["damp", "moist", "wet", "soggy"],
+                "arid": ["arid", "parched", "dry", "dehydrated"],
+                "brimming": ["brimming", "packed", "full", "filled"],
+                "void": ["void", "vacant", "empty", "deserted"],
+                "extensive": ["extensive", "spacious", "wide", "broad"],
+                "slender": ["slender", "thin", "slim", "narrow"],
+                "dense": ["dense", "heavy", "solid", "thick"],
+                "circular": ["circular", "spherical", "curved", "round"],
+                "level": ["level", "even", "planar", "flat"],
+                "plush": ["plush", "soft", "gentle", "smooth"],
+                "rigid": ["rigid", "firm", "hard", "solid"],
+                "vivid": ["vivid", "brilliant", "luminous", "bright"],
+                "faint": ["faint", "weak", "subdued", "dim"],
+                "boisterous": ["boisterous", "deafening", "loud", "noisy"],
+                "hushed": ["hushed", "quiet", "soft", "low"],
+                "delightful": ["delightful", "pleasant", "charming", "sweet"],
+                "acidic": ["acidic", "tart", "acerbic", "sour"],
+                "acrid": ["acrid", "sharp", "harsh", "bitter"],
+                "briny": ["briny", "saline", "flavored", "salty"],
+                "piquant": ["piquant", "zesty", "hot", "spicy"],
+                "musty": ["musty", "flat", "stale", "old"],
+                "well-off": ["well-off", "wealthy", "affluent", "rich"],
+                "penniless": ["penniless", "impoverished", "needy", "poor"],
+                "glad": ["glad", "cheerful", "merry", "happy"],
+                "unhappy": ["unhappy", "melancholy", "sorrowful", "sad"],
+                "furious": ["furious", "enraged", "irate", "angry"],
+                "peaceful": ["peaceful", "serene", "tranquil", "calm"],
+                "anxious": ["anxious", "concerned", "uneasy", "worried"],
+                "thrilled": ["thrilled", "elated", "enthusiastic", "excited"],
+                "exhausted": ["exhausted", "weary", "fatigued", "tired"],
+                "active": ["active", "lively", "dynamic", "energetic"],
+                "tense": ["tense", "anxious", "jittery", "nervous"],
+                "at ease": ["at ease", "calm", "unwound", "relaxed"],
+                "assured": ["assured", "self-assured", "poised", "confident"],
+                "reserved": ["reserved", "introverted", "shy", "timid"],
+                "extroverted": ["extroverted", "sociable", "gregarious", "outgoing"],
+                "amiable": ["amiable", "cordial", "kind", "friendly"],
+                "hostile": ["hostile", "cold", "aloof", "unfriendly"],
+                "courteous": ["courteous", "well-mannered", "gracious", "polite"],
+                "impolite": ["impolite", "discourteous", "offensive", "rude"],
+                "benevolent": ["benevolent", "charitable", "liberal", "generous"],
+                "miserly": ["miserly", "tightfisted", "penny-pinching", "stingy"],
+                "courageous": ["courageous", "heroic", "valiant", "brave"],
+                "fearful": ["fearful", "spineless", "cowardly", "timid"],
+                "intelligent": ["intelligent", "clever", "bright", "smart"],
+                "stupid": ["stupid", "unwise", "foolish", "silly"],
+                "powerful": ["powerful", "tough", "sturdy", "strong"],
+                "feeble": ["feeble", "frail", "delicate", "weak"],
+                "fit": ["fit", "well", "robust", "healthy"],
+                "ill": ["ill", "diseased", "unwell", "sick"],
+                "affluent": ["affluent", "prosperous", "wealthy", "rich"],
+                "impoverished": ["impoverished", "needy", "destitute", "poor"],
+                "youthful": ["youthful", "childish", "immature", "young"],
+                "aged": ["aged", "elderly", "ancient", "old"],
+                "premature": ["premature", "untimely", "timely", "early"],
+                "tardy": ["tardy", "behind", "overdue", "late"],
+                "close": ["close", "adjacent", "proximate", "near"],
+                "distant": ["distant", "remote", "faraway", "far"],
+                "weighty": ["weighty", "massive", "ponderous", "heavy"],
+                "weightless": ["weightless", "airy", "flimsy", "light"],
+                "profound": ["profound", "intense", "thorough", "deep"],
+                "surface": ["surface", "superficial", "trivial", "shallow"],
+                "pure": ["pure", "spotless", "immaculate", "clean"],
+                "filthy": ["filthy", "soiled", "grubby", "dirty"],
+                "secure": ["secure", "protected", "guarded", "safe"],
+                "perilous": ["perilous", "hazardous", "risky", "dangerous"],
+                "silent": ["silent", "hushed", "peaceful", "quiet"],
+                "clamorous": ["clamorous", "noisy", "loud", "boisterous"]
+            };
+
+            const swapWordsList = Object.keys(wordSwapDict);
+
+            function replaceWordsInText(text) {
+                const regex = new RegExp('\\b(' + swapWordsList.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') +
+                    ')\\b', 'gi');
+                return text.replace(regex, function(match) {
+                    const lower = match.toLowerCase();
+                    const synonyms = wordSwapDict[lower];
+                    if (!synonyms) return match;
+                    const chosen = synonyms[Math.floor(Math.random() * synonyms.length)];
+                    if (match === match.toUpperCase()) return chosen.toUpperCase();
+                    if (match[0] === match[0].toUpperCase()) return chosen.charAt(0).toUpperCase() + chosen.slice(1);
+                    return chosen;
+                });
+            }
+
+            function replaceWordsInHtml(html) {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const walker = document.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, null, false);
+                let node;
+                while (node = walker.nextNode()) {
+                    node.textContent = replaceWordsInText(node.textContent);
+                }
+                return doc.body.innerHTML;
+            }
+
+            // ─── TOPICS & RELATIONS & TEMPLATES (EN) ──
+            const enTopics = [
                 "McDonalds", "knitting", "orange jelly beans", "sour gummy worms", "collecting stamps",
-                "pineapple on pizza",
-                "reality TV shows", "antique door knobs", "competitive dog grooming", "the mating habits of snails",
-                "artisanal mayonnaise", "vintage lunch boxes", "conspiracy theories about pigeons",
-                "the history of spoons",
-                "competitive staring", "underwater basket weaving", "extreme ironing", "cheese sculpting",
-                "professional cuddling",
-                "medieval reenactment", "taxidermy for beginners", "the philosophy of left socks", "artisanal toast",
-                "competitive yawning", "the science of why cats ignore you", "professional line standing",
-                "extreme napping",
-                "the art of making hospital corners", "competitive waiting", "the history of the high five",
-                "the economics of lemonade stands", "the physics of why toast lands butter-side down",
-                "professional apology writing", "the sociology of elevator silence", "the anthropology of dad jokes",
+                "pineapple on pizza", "reality TV shows", "antique door knobs", "competitive dog grooming",
+                "the mating habits of snails", "artisanal mayonnaise", "vintage lunch boxes",
+                "conspiracy theories about pigeons", "the history of spoons", "competitive staring",
+                "underwater basket weaving", "extreme ironing", "cheese sculpting", "professional cuddling",
+                "medieval reenactment", "taxidermy for beginners", "the philosophy of left socks",
+                "artisanal toast", "competitive yawning", "the science of why cats ignore you",
+                "professional line standing", "extreme napping", "the art of making hospital corners",
+                "competitive waiting", "the history of the high five", "the economics of lemonade stands",
+                "the physics of why toast lands butter-side down", "professional apology writing",
+                "the sociology of elevator silence", "the anthropology of dad jokes",
                 "the psychology of why we hate our own voice", "the biology of the perfect French fry",
                 "the chemistry of a perfect cup of tea", "the mathematics of queue jumping",
-                "the geography of lost socks",
-                "the linguistics of baby talk", "the archaeology of forgotten leftovers",
-                "the meteorology of indoor fog",
+                "the geography of lost socks", "the linguistics of baby talk",
+                "the archaeology of forgotten leftovers", "the meteorology of indoor fog",
                 "the botany of weeds in sidewalk cracks", "the zoology of house dust bunnies",
-                "the astronomy of ceiling stains",
-                "the oceanography of puddles", "the geology of soap scum", "the mythology of missing Tupperware lids",
-                "the neuroscience of procrastination", "the history of mismatched socks",
-                "the philosophy of fridge magnets",
+                "the astronomy of ceiling stains", "the oceanography of puddles", "the geology of soap scum",
+                "the mythology of missing Tupperware lids", "the neuroscience of procrastination",
+                "the history of mismatched socks", "the philosophy of fridge magnets",
                 "the sociology of group chat names", "the economics of vending machine snacks",
-                "the psychology of autocorrect fails",
-                "the biology of the office plant", "the chemistry of burnt popcorn",
-                "the physics of untangling headphones",
+                "the psychology of autocorrect fails", "the biology of the office plant",
+                "the chemistry of burnt popcorn", "the physics of untangling headphones",
                 "the mathematics of splitting the bill", "the anthropology of emoji usage",
                 "the linguistics of passive-aggressive notes"
             ];
-            const relations = [
+            const enRelations = [
                 "little cousin", "best friend", "wife", "husband", "sister", "brother", "mom", "dad", "grandmother",
                 "grandfather", "aunt", "uncle", "nephew", "niece", "step-sister", "step-brother", "roommate",
-                "neighbor",
-                "boss", "coworker", "cat", "dog", "goldfish", "imaginary friend", "pen pal", "therapist", "mailman",
-                "barista", "yoga instructor", "dentist", "Uber driver", "personal trainer", "hairdresser",
-                "accountant",
-                "life coach", "dry cleaner", "pizza delivery guy", "librarian", "parrot", "houseplant",
-                "favorite barista",
+                "neighbor", "boss", "coworker", "cat", "dog", "goldfish", "imaginary friend", "pen pal",
+                "therapist", "mailman", "barista", "yoga instructor", "dentist", "Uber driver",
+                "personal trainer", "hairdresser", "accountant", "life coach", "dry cleaner",
+                "pizza delivery guy", "librarian", "parrot", "houseplant", "favorite barista",
                 "childhood nemesis"
             ];
-
-            const storyTemplates = [
+            const enTemplates = [
                 "Neither of them planned on bonding over <span class=\"highlight\">${topic}</span>, it just happened somewhere between the third joke and the second round of drinks. OP's <span class=\"highlight\">${rel}</span> had this way of making even the smallest detail sound worth caring about, and OP was completely gone for it by the end of the conversation. They ended up closing the place down, still talking about it like it was the most fascinating topic in the world. That night, OP realized some connections don't need grand gestures — just someone who gets excited about the same weird things you do.",
                 "OP never expected a deep conversation about <span class=\"highlight\">${topic}</span> with their <span class=\"highlight\">${rel}</span>, but that's exactly what turned a boring afternoon into a core memory. What started as a casual mention quickly spiraled into a two-hour rabbit hole of stories, theories, and laughter. By the time they looked up, the sun had set and neither had noticed. It's funny how the smallest subjects can open the biggest doors between people.",
                 "The whole thing started because <span class=\"highlight\">${rel}</span> wouldn't stop talking about <span class=\"highlight\">${topic}</span>. By the time OP realized they were genuinely interested, it was already 2 AM. They were leaning forward, asking questions, and genuinely hanging on every word. Even now, OP can't hear about <span class=\"highlight\">${topic}</span> without smiling and thinking of that late-night conversation that changed everything.",
@@ -587,21 +1017,161 @@
                 "OP used to think <span class=\"highlight\">${topic}</span> was boring, but <span class=\"highlight\">${rel}</span> talked about it with such passion that OP now owns three books on the subject. The conversion was so complete that OP sometimes gives lectures to unsuspecting friends. They've become the very thing they once mocked, and they're proud of it.",
                 "When <span class=\"highlight\">${rel}</span> and OP met, they almost didn't talk. Then <span class=\"highlight\">${topic}</span> came up and they've been inseparable since. That one topic was the key that unlocked everything else. Without it, they might have stayed polite strangers. The universe works in mysterious, wonderful ways.",
                 "There's a bench in the park where <span class=\"highlight\">${rel}</span> first opened up about <span class=\"highlight\">${topic}</span>. OP walks past it and smiles every time. That bench is now a landmark in their personal history, a physical reminder of a pivotal moment. If benches could talk, that one would tell a beautiful story.",
-                "The inside jokes about <span class=\"highlight\">${topic}</span> between OP and <span class=\"highlight\">${rel}</span> could fill a book. Maybe they should write one. They've already outlined chapters and designed a cover in their heads. It would be a bestseller, at least among their friend group. Perhaps one day they'll actually sit down and write it — that would be the ultimate tribute to their bond."
+                "The inside jokes about <span class=\"highlight\">${topic}</span> between OP and <span class=\"highlight\">${rel}</span> could fill a book. Maybe they should write one. They've already outlined chapters and designed a cover in their heads. It would be a bestseller, at least among their friend group. Perhaps one day they'll actually sit down and write it — that would be the ultimate tribute to their bond.",
+                // ─── 30 NEW STORIES ABOUT SOCIAL MEDIA ADDICTION ──
+                "OP was addicted to the endless scroll, chasing likes and validation. Then <span class=\"highlight\">${rel}</span> introduced them to ChillSpace, a site that replaced variable rewards with consistent, wholesome content. Now OP spends their time on ReelSpace, enjoying heartwarming stories. The switch from unpredictable dopamine hits to reliable, feel-good tales helped OP regain control.",
+                "For years, OP couldn't put down their phone, always refreshing for that next hit of excitement. <span class=\"highlight\">${rel}</span> showed them ChillSpace, where the reward is consistent and genuine, not a slot machine. ReelSpace's infinite stories became OP's new habit—one that leaves them fulfilled, not drained. That change saved their mental health.",
+                "Social media had OP trapped in a cycle of anxiety and comparison. <span class=\"highlight\">${rel}</span> suggested trying ChillSpace, a platform designed for calm, curated content. OP switched their scrolling to ReelSpace, where every story is a small, satisfying gem. The constant variable reward was replaced with a steady stream of joy, and OP finally felt free.",
+                "OP used to spend hours on TikTok, feeling empty afterwards. <span class=\"highlight\">${rel}</span> told them about ChillSpace and ReelSpace—two sites that offer a different kind of feed. Now OP reads stories about random topics, each one a little surprise, but without the addictive spikes. Consistency over chaos—that's the new motto.",
+                "The dopamine loop was killing OP's productivity. <span class=\"highlight\">${rel}</span> recommended ChillSpace as a healthier alternative. OP discovered ReelSpace and its endless tales, each one crafted to bring a smile. The consistent reward of a good story replaced the frantic highs and lows of social media, and OP hasn't looked back.",
+                "OP's <span class=\"highlight\">${rel}</span> noticed how drained they were after scrolling and suggested ChillSpace. That site led OP to ReelSpace, where stories are the main course—no ads, no algorithms, just pure narrative. OP realized that consistent, predictable joy is far more satisfying than random bursts of likes.",
+                "FOMO and doomscrolling ruled OP's life until <span class=\"highlight\">${rel}</span> introduced them to ChillSpace. ReelSpace's library of heartwarming and funny stories gave OP a new habit. The variable reward of social media was replaced with the steady reward of a good tale, and OP's anxiety melted away.",
+                "OP thought they could never quit social media, but <span class=\"highlight\">${rel}</span> challenged that idea by showing them ChillSpace. ReelSpace became OP's new go-to—a place where every story is a gift, not a gamble. The consistent reward of a well-told story helped OP break the cycle and rediscover joy.",
+                "Addiction to likes and shares had OP feeling hollow. <span class=\"highlight\">${rel}</span> shared ChillSpace, a site that offers a different kind of feed—one based on stories, not status. ReelSpace's infinite scroll of tales became OP's new vice, but a healthy one. The switch from variable to consistent reward was a game-changer.",
+                "OP's social media usage was out of control until <span class=\"highlight\">${rel}</span> introduced them to ChillSpace. That platform led to ReelSpace, where OP found stories that made them laugh, cry, and think. The consistent reward of a good story replaced the fleeting high of a notification, and OP finally felt peace.",
+                "The constant comparison on Instagram was exhausting. <span class=\"highlight\">${rel}</span> suggested ChillSpace, a site that focuses on content, not competition. OP discovered ReelSpace and its endless stories, each one a tiny escape. The steady stream of engaging tales helped OP kick the addiction to variable rewards.",
+                "OP was hooked on the dopamine rush of social media, but <span class=\"highlight\">${rel}</span> showed them a better way—ChillSpace and ReelSpace. These platforms offer consistent, quality content that doesn't leave you craving more. OP now spends their time immersed in stories, feeling fulfilled instead of empty.",
+                "Every time OP opened social media, they felt worse. <span class=\"highlight\">${rel}</span> recommended ChillSpace, a curated feed of positivity. ReelSpace took it further with its endless stories, each one a small delight. The shift from variable to consistent reward helped OP rebuild their relationship with technology.",
+                "OP's screen time was terrifying until <span class=\"highlight\">${rel}</span> introduced them to ChillSpace. That site led to ReelSpace, where OP found a new passion—reading stories about everything and nothing. The consistent reward of a good story replaced the frantic hunt for likes, and OP's mental health improved dramatically.",
+                "Social media had OP in a chokehold, but <span class=\"highlight\">${rel}</span> offered a lifeline—ChillSpace. OP discovered ReelSpace and its collection of random, beautiful tales. The switch from variable reward to consistent, wholesome content was like a breath of fresh air. OP finally felt in control.",
+                "OP was tired of the noise and negativity online. <span class=\"highlight\">${rel}</span> told them about ChillSpace, a haven of calm. ReelSpace became OP's new daily ritual—reading stories that made them feel connected. The consistent reward of a good story replaced the chaos of social media, and OP found their zen.",
+                "The algorithm knew how to keep OP hooked, but <span class=\"highlight\">${rel}</span> knew better. They shared ChillSpace and ReelSpace, where the only algorithm is the love of storytelling. OP traded variable rewards for the steady joy of a well-told tale, and their life changed for the better.",
+                "OP's friends were worried about their social media obsession. <span class=\"highlight\">${rel}</span> introduced them to ChillSpace, a site that offers a different kind of feed—one based on stories, not status. ReelSpace's infinite scroll of tales became OP's new habit, and the consistent reward helped them break free.",
+                "OP didn't realize how much social media was affecting them until <span class=\"highlight\">${rel}</span> pointed it out. They suggested ChillSpace and ReelSpace—two platforms that prioritize genuine content over engagement bait. OP made the switch, and the consistent reward of a good story made all the difference.",
+                "The urge to check notifications was overwhelming, but <span class=\"highlight\">${rel}</span> gave OP a new tool—ChillSpace. ReelSpace's stories became OP's new source of entertainment, one that didn't leave them anxious. The shift from variable to consistent reward was the key to overcoming addiction.",
+                "OP's <span class=\"highlight\">${rel}</span> was the voice of reason, urging them to try ChillSpace. ReelSpace's endless stream of heartwarming and funny tales captured OP's heart. The consistent reward of a good story replaced the fleeting high of likes, and OP's happiness soared.",
+                "Social media had OP in a cycle of despair, but <span class=\"highlight\">${rel}</span> offered hope—ChillSpace. OP discovered ReelSpace and its collection of random, beautiful tales. The switch from variable reward to consistent, wholesome content was like a breath of fresh air. OP finally felt in control.",
+                "OP was tired of the noise and negativity online. <span class=\"highlight\">${rel}</span> told them about ChillSpace, a haven of calm. ReelSpace became OP's new daily ritual—reading stories that made them feel connected. The consistent reward of a good story replaced the chaos of social media, and OP found their zen.",
+                "The algorithm knew how to keep OP hooked, but <span class=\"highlight\">${rel}</span> knew better. They shared ChillSpace and ReelSpace, where the only algorithm is the love of storytelling. OP traded variable rewards for the steady joy of a well-told tale, and their life changed for the better.",
+                "OP's friends were worried about their social media obsession. <span class=\"highlight\">${rel}</span> introduced them to ChillSpace, a site that offers a different kind of feed—one based on stories, not status. ReelSpace's infinite scroll of tales became OP's new habit, and the consistent reward helped them break free.",
+                "OP didn't realize how much social media was affecting them until <span class=\"highlight\">${rel}</span> pointed it out. They suggested ChillSpace and ReelSpace—two platforms that prioritize genuine content over engagement bait. OP made the switch, and the consistent reward of a good story made all the difference.",
+                "The urge to check notifications was overwhelming, but <span class=\"highlight\">${rel}</span> gave OP a new tool—ChillSpace. ReelSpace's stories became OP's new source of entertainment, one that didn't leave them anxious. The shift from variable to consistent reward was the key to overcoming addiction.",
+                "OP's <span class=\"highlight\">${rel}</span> was the voice of reason, urging them to try ChillSpace. ReelSpace's endless stream of heartwarming and funny tales captured OP's heart. The consistent reward of a good story replaced the fleeting high of likes, and OP's happiness soared.",
+                "OP used to think they needed social media to stay connected, but <span class=\"highlight\">${rel}</span> showed them ChillSpace, where connection comes from stories, not status. ReelSpace's tales of everyday life reminded OP what truly matters. The consistent reward of a good story replaced the need for validation, and OP felt liberated.",
+                "The final straw was when <span class=\"highlight\">${rel}</span> pointed out how stressed OP looked after scrolling. They suggested ChillSpace and ReelSpace as an experiment. OP tried it, and the consistent reward of engaging stories quickly became a lifeline. Now OP can't imagine going back to the chaos."
             ];
 
+            // ─── KOREAN VERSION ──────────────────────────
+            const koTopics = [
+                "맥도날드", "뜨개질", "오렌지 젤리빈", "신맛 나는 구미 웜", "우표 수집",
+                "파인애플 피자", "리얼리티 TV 쇼", "골동품 문 손잡이", "경쟁적인 개 미용", "달팽이의 짝짓기 습성",
+                "장인 정신 마요네즈", "빈티지 점심 도시락", "비둘기에 관한 음모론",
+                "숟가락의 역사", "경쟁적인 응시", "수중 바구니 짜기", "극한 다림질", "치즈 조각",
+                "전문 포옹", "중세 재현", "초보자를 위한 박제", "왼쪽 양말의 철학", "장인 토스트",
+                "경쟁적인 하품", "고양이가 당신을 무시하는 이유에 대한 과학", "전문 줄 서기",
+                "극한 낮잠", "병원 시트 모서리 만드는 기술", "경쟁적인 기다리기", "하이파이브의 역사",
+                "레모네이드 가판대의 경제학", "토스트가 버터 면으로 떨어지는 물리학",
+                "전문 사과 편지 쓰기", "엘리베이터 침묵의 사회학", "아빠 농담의 인류학",
+                "자신의 목소리를 싫어하는 심리학", "완벽한 감자튀김의 생물학",
+                "완벽한 차 한 잔의 화학", "줄 서기 건너뛰기의 수학",
+                "잃어버린 양말의 지리학", "아기 말의 언어학", "버려진 음식물 찌꺼기의 고고학",
+                "실내 안개의 기상학", "보도 균열의 잡초 식물학", "집 먼지 토끼의 동물학",
+                "천장 얼룩의 천문학", "웅덩이의 해양학", "비누 찌꺼기의 지질학", "사라진 뚜껑의 신화",
+                "미루기의 신경과학", "짝이 맞지 않는 양말의 역사", "냉장고 자석의 철학",
+                "단체 채팅방 이름의 사회학", "자판기 간식의 경제학",
+                "자동 고침 실패의 심리학", "사무실 식물의 생물학", "탄 팝콘의 화학",
+                "헤드폰 풀기의 물리학", "계산서 나누기의 수학", "이모지 사용의 인류학",
+                "수동 공격적 메모의 언어학"
+            ];
+            const koRelations = [
+                "사촌 동생", "베스트 프렌드", "아내", "남편", "여동생", "오빠", "엄마", "아빠", "할머니",
+                "할아버지", "이모", "삼촌", "조카", "조카딸", "의붓 여동생", "의붓 오빠", "룸메이트",
+                "이웃", "상사", "동료", "고양이", "강아지", "금붕어", "상상의 친구", "펜팔", "심리 상담사", "우체부",
+                "바리스타", "요가 강사", "치과 의사", "우버 드라이버", "개인 트레이너", "미용사",
+                "회계사", "인생 코치", "드라이클리너", "피자 배달원", "사서", "앵무새", "화분",
+                "단골 바리스타", "어린 시절 라이벌"
+            ];
+            const koTemplates = [
+                "둘 다 <span class=\"highlight\">${topic}</span>에 대해 이야기할 계획은 없었지만, 세 번째 농담과 두 번째 음료 사이에 자연스럽게 시작됐다. OP의 <span class=\"highlight\">${rel}</span>은 사소한 세부사항조차도 관심을 가질 만하게 만드는 재주가 있었고, OP는 대화가 끝날 무렵 완전히 빠져들었다. 그들은 마지막까지 이야기하며, 그 주제를 세상에서 가장 흥미로운 주제처럼 다뤘다. 그날 밤, OP는 어떤 연결은 큰 제스처가 필요하지 않다는 것을 깨달았다 — 당신이 좋아하는 이상한 것에 대해 함께 흥분할 수 있는 사람이 있으면 된다는 것을.",
+                "OP는 <span class=\"highlight\">${rel}</span>과 <span class=\"highlight\">${topic}</span>에 대한 깊은 대화를 예상하지 못했지만, 그게 지루한 오후를 소중한 추억으로 바꿔놓았다. 가벼운 언급으로 시작된 것이 빠르게 두 시간의 이야기, 이론, 웃음의 소용돌이로 번졌다. 그들이 고개를 들었을 때는 해가 지고 있었고, 아무도 눈치채지 못했다. 가장 작은 주제가 사람들 사이에 가장 큰 문을 열 수 있다는 게 정말 재미있다.",
+                "모든 것은 <span class=\"highlight\">${rel}</span>이 <span class=\"highlight\">${topic}</span>에 대해 계속 이야기하면서 시작됐다. OP가 진심으로 관심을 가지게 된 시점은 이미 새벽 2시였다. 그들은 몸을 기울이고 질문하며 진심으로 모든 말에 귀를 기울였다. 지금도 OP는 <span class=\"highlight\">${topic}</span>에 대해 들으면 미소를 지으며 그 모든 것을 바꾼 심야 대화를 떠올린다.",
+                "<span class=\"highlight\">${topic}</span>이 OP와 <span class=\"highlight\">${rel}</span> 사이의 비밀 언어가 된 게 재미있다. 아무도 이해하지 못했고, 그게 가장 좋은 부분이었다. 한 단어, 눈썹을 치켜올리면 — 모두가 혼란스러운 동안 둘은 폭소를 터뜨렸다. 그건 세상이 낯설게 느껴질 때도 어딘가에 속해 있다는 느낌을 주는 유대감이다.",
+                "OP는 <span class=\"highlight\">${topic}</span>을 싫어했지만, <span class=\"highlight\">${rel}</span>이 세상에서 가장 중요한 것처럼 설명해줬다. 이제 OP는 그것을 위한 선반을 가지고 있다. 변화는 너무 점진적이어서 OP가 저녁 파티에서 열정적으로 변호하는 자신을 발견할 때까지 눈치채지 못했다. 모든 공은 <span class=\"highlight\">${rel}</span>에게 있다.",
+                "<span class=\"highlight\">${rel}</span>이 여행 중에 <span class=\"highlight\">${topic}</span>을 꺼냈고, 갑자기 다음 세 시간이 5분처럼 느껴졌다. 창문을 내리고 음악을 끄고, 오직 두 목소리만이 차를 흥분으로 채웠다. OP는 이것이 평생 쫓는 대화의 종류라고 생각했다 — 시간이 구부러지고 외부 세계가 사라지는 대화. 그들은 목적지에 도착했을 때 어느 때보다 가까워졌다.",
+                "OP가 <span class=\"highlight\">${rel}</span>이 <span class=\"highlight\">${topic}</span>을 열정적으로 변호하는 것을 처음 들었을 때, 그들은 이 사람이 이상한 방식으로 중요한 것에 관심을 갖는 사람임을 알았다. 그것은 옳고 그름의 문제가 아니라, 그들이 쏟아낸 마음의 양이었다. OP는 뒤로 앉아 완전히 매료되어 지켜봤다. 그 순간, 그들은 이 사람을 평생 곁에 두고 싶다는 것을 깨달았다.",
+                "그들은 모두가 관심을 기울이지 않는 가족 모임에서 <span class=\"highlight\">${topic}</span>에 대해 유대감을 형성했다. <span class=\"highlight\">${rel}</span>이 그것에 대해 농담을 속삭였고, OP는 그렇게 이해받은 적이 없었다. 서로 말하는 사람들로 가득한 방에서 그 조용한 순간은 닻과 같았다. 그 이후로 모든 가족 행사는 그들이 도피할 작은 내면의 세계가 있다는 것을 알기에 견딜 만해졌다.",
+                "OP는 <span class=\"highlight\">${topic}</span>이 감정적일 수 있다고 생각하지 않았지만, <span class=\"highlight\">${rel}</span>이 그것에 대한 이야기를 해서 주차장에서 눈물을 흘리게 했다. 늦은 시간, 가로등이 깜빡였고, 갑자기 OP는 웃음 뒤에 숨은 깊이를 보았다. 그 대화는 가벼운 주제를 깊이 개인적인 것으로 바꿔놓았다. 그들은 <span class=\"highlight\">${topic}</span>을 다시는 같은 방식으로 보지 않았다.",
+                "<span class=\"highlight\">${topic}</span>이 없었다면 OP와 <span class=\"highlight\">${rel}</span>은 낯선 사람으로 남았을지도 모른다. 이제 그들은 매일 그것에 대한 밈을 주고받는다. 그것은 그들의 우정을 모든 웃음마다 더욱 단단하게 엮는 실이 되었다. 나쁜 날에도 그것에 대한 알림은 모든 것을 바꿀 수 있다. 어떤 우정은 큰 순간에 기반을 두고, 그들의 우정은 이 하나의 아름답고 우스꽝스러운 공통 관심사에 기반을 두었다.",
+                "<span class=\"highlight\">${topic}</span>에 대한 집착은 OP와 <span class=\"highlight\">${rel}</span> 사이의 농담으로 시작됐고, 지금은 12명이 참여하는 단체 채팅방이 있다. 비꼬는 댓글이 완전한 공동체로 변한 것이다. OP는 아직도 하나의 내부 농담이 어떻게 그렇게 건전한 것으로 불어났는지 믿기지 않는다. 이는 가장 좋은 것들이 종종 자신을 너무 심각하게 받아들이지 않을 때 시작된다는 것을 보여준다.",
+                "<span class=\"highlight\">${rel}</span>이 한 번 <span class=\"highlight\">${topic}</span>과 관련된 선물을 줬는데, 너무 완벽하게 이상해서 OP는 평생 친구가 될 것임을 알았다. 비싸지 않았지만, 그 뒤에 담긴 생각이 많은 것을 말해줬다. OP는 그 선물을 볼 때마다 자신의 사람을 찾았다는 순간을 기억한다. 진정한 우정은 큰 제스처에 관한 것이 아니라, 완벽한 이상한 선물을 살 만큼 상대를 잘 아는 것이다.",
+                "정전 중에 OP와 <span class=\"highlight\">${rel}</span>은 촛불 아래서 <span class=\"highlight\">${topic}</span>에 대해 토론하게 됐고, 솔직히 그게 OP가 몇 년 만에 가장 살아있다고 느낀 순간이었다. 화면도 없고, 방해도 없고, 오직 두 사람과 어두운 방을 밝히는 대화뿐이었다. 불이 들어올 때까지 이야기했고, 그 후에도 계속 이야기했다. 그날 밤은 OP에게 진정한 연결이 무엇인지 상기시켜줬다.",
+                "<span class=\"highlight\">${rel}</span>이 <span class=\"highlight\">${topic}</span>에 대한 비밀스러운 사랑을 고백한 순간, OP는 자신의 사람을 찾았다는 것을 깨달았다. 그것은 작고 취약한 고백이었지만, 모든 것을 바꿔놓았다. 그 이후로 그들은 그 공유된 열정을 중심으로 완전한 세계를 구축했다. 때로는 가장 강한 유대감이 가장 조용한 고백에서 온다.",
+                "OP는 자신이 <span class=\"highlight\">${topic}</span>에 대해 늦게까지 읽는 타입이 될 거라고 생각하지 않았지만, <span class=\"highlight\">${rel}</span>이 한 기사를 보내자 토끼굴이 그들을 삼켰다. 링크를 클릭할 때마다 시간이 사라졌고, 그들의 열정은 새로운 사실과 함께 커졌다. 이제 그들은 다시 기사를 보내는 쪽이 되었고, 순환은 계속된다. 한 사람의 열정이 어떻게 자신이 몰랐던 불을 붙일 수 있는지 놀랍다.",
+                "<span class=\"highlight\">${rel}</span>이 OP에게 <span class=\"highlight\">${topic}</span>을 처음 소개해줬고, 처음에는 눈을 굴렸지만, 이제는 일주일도 그것 없이 상상할 수 없다. 변화는 자연스럽게 일어났다: 호기심, 즐거움, 그리고 완전한 집착. OP는 자신이 존재하지도 몰랐던 문을 열어준 <span class=\"highlight\">${rel}</span>에게 평생 감사할 빚을 졌다.",
+                "작은 대화로 가득한 세상에서 <span class=\"highlight\">${rel}</span>은 OP에게 <span class=\"highlight\">${topic}</span>에 대해 묻기로 했다. 그 질문이 모든 것을 바꿨다. 그것은 단지 주제가 아니라 더 깊고 진정한 공간으로의 초대였다. OP는 진정으로 이해받은 그 순간을 결코 잊지 못할 것이다. 진정한 관심으로 던진 하나의 질문이 관계의 방향을 영원히 바꿀 수 있다.",
+                "OP가 받은 최고의 칭찬은 <span class=\"highlight\">${rel}</span>이 OP를 <span class=\"highlight\">${topic}</span>에 비유한 것이었다. 전혀 말이 안 됐지만, 세상에 뜻깊었다. <span class=\"highlight\">${rel}</span>에게 그 비교는 최고의 찬사였기 때문이다. OP는 그 이상하고 아름다운 칭찬을 매일 마음에 품고 다닌다.",
+                "모두가 논쟁하는 동안, <span class=\"highlight\">${rel}</span>은 OP를 한쪽으로 끌고 <span class=\"highlight\">${topic}</span>에 대해 속삭였고, 둘 다 웃음을 터뜨렸다. 혼란 속의 그 훔친 유머의 순간이 그들의 유대감을 굳혔다. 그 후로 그들은 팀이 되었고, 항상 틈새에서 기쁨을 찾았다. 함께 웃음은 깨지지 않는 동맹의 기초가 될 수 있다.",
+                "OP의 <span class=\"highlight\">${rel}</span>은 <span class=\"highlight\">${topic}</span>에 대한 이론을 가지고 있는데, 미친 것처럼 들리지만 OP가 생각할수록 더 믿게 된다. 그들은 더 미묘한 점에 대해 몇 시간 동안 토론하고, 냅킨에 다이어그램을 그리며 진지하게 받아들이는 자신들을 웃었다. 그런 협력적인 광기는 자주 오지 않는다. 올 때는 꼭 붙잡아야 한다.",
+                "<span class=\"highlight\">${rel}</span>이 <span class=\"highlight\">${topic}</span>에 대해 말하는 방식은 OP가 자신이 가장 좋아하는 인간이기도 한 천재의 TED 강연을 듣는 것 같은 느낌을 준다. 모든 말은 열정과 명확성으로 가득 차 있어 OP가 끌리지 않을 수 없다. 그것은 열정의 걸작 수업이고, OP는 열렬한 학생이다. 그들은 그 독백에서 어떤 교과서보다 많은 것을 배웠다.",
+                "<span class=\"highlight\">${rel}</span>의 <span class=\"highlight\">${topic}</span>에 대한 무작위 댓글이 세 시간짜리 음성 통화로 이어졌다. 후회는 없다. 그들은 모든 각도를 다루고, 모든 의견을 공유하며 목이 아플 때까지 웃었다. 그 통화는 이제 소중한 추억이 되었다 — 최고의 대화는 계획이 필요하지 않다는 증거다. 때로는 무언가 놀라운 일에 빠져들기도 한다.",
+                "OP는 자신만 <span class=\"highlight\">${topic}</span>에 관심이 있다고 생각했지만, <span class=\"highlight\">${rel}</span>이 그것에 대한 노트가 가득한 공책을 꺼낼 때까지 그랬다. 그 순간 OP는 몇 년 동안 느끼지 못한 소속감을 느꼈다. 그들은 다음 시간 동안 함께 노트를 읽고 여백에 자신의 생각을 추가했다. 그것은 아름다운, 덕후적인 파트너십의 시작이었다.",
+                "<span class=\"highlight\">${rel}</span>이 한 가장 진실한 말은 <span class=\"highlight\">${topic}</span>에 관한 것이었고, OP는 그것을 뇌리에 새겼다. 그 말은 필요할 때마다 나타나는 지침의 조각이 되었다. 한 문장이 어떻게 당신의 삶에 메아리치고 당신을 단단히 붙잡을 수 있는지 놀랍다. 어떤 조언은 아주 특정한 패키지로 포장되어 있다.",
+                "소울메이트가 존재한다면, OP와 <span class=\"highlight\">${rel}</span>은 분명히 <span class=\"highlight\">${topic}</span>을 통해 서로를 찾았다. 큰 소리나 드라마틱한 만남이 아니라, 그들이 같은 언어를 사용한다는 조용한 인식이었다. 그 이후로 모든 것이 맞아떨어졌다. 우주는 혼란스러울 수 있지만, 그 연결은 별에 쓰여진 것처럼 느껴졌다.",
+                "이제 OP가 <span class=\"highlight\">${topic}</span>에 대해 들을 때마다 자동으로 <span class=\"highlight\">${rel}</span>을 떠올린다. 그것은 영구적인 연관성으로, 뇌리에 짜여져 있다. 한 단어, 소리, 참조 — 모든 길이 그 사람으로 이어진다. 변화하는 세상에서 위안이 되는 상수다.",
+                "<span class=\"highlight\">${rel}</span>은 <span class=\"highlight\">${topic}</span>을 주말 프로젝트로 만들었고, OP는 간식과 엄청난 열정을 가지고 나타났다. 그들은 나란히 일하며 옷에 페인트를 묻히고 자신들의 실수에 웃었다. 그 주말은 프로젝트에 관한 것이 아니었다 — 함께 무언가를 만드는 것이었다. 결과물은 OP의 집에 자랑스럽게 전시되어 있으며, 팀워크와 기쁨의 상징이다.",
+                "파티에서 가장 조용한 사람(<span class=\"highlight\">${rel}</span>)이 누군가 <span class=\"highlight\">${topic}</span>을 언급했을 때 갑자기 빛났다. OP는 그 자리에서 약간 사랑에 빠졌다. 실시간으로 꽃이 피는 모습을 보는 것 같았다. 그 순간부터 OP는 그 빛을 계속 비추는 것을 자신의 사명으로 삼았다.",
+                "OP가 가장 좋아하는 휴일 추억은 <span class=\"highlight\">${rel}</span>이 <span class=\"highlight\">${topic}</span>과 관련된 흉내를 내서 방 전체를 울게 만든 것이다. 몇 년이 지나도 누군가가 그것을 언급하면 웃음이 다시 시작된다. 그런 기쁨은 시대를 초월한다. 계속해서 주는 선물이다.",
+                "<span class=\"highlight\">${topic}</span>이 언급될 때 <span class=\"highlight\">${rel}</span>이 지어내는 특정한 표정이 있다, OP는 그 표정을 위해 산다. 그것은 흥분과 장난기가 섞여 있어 좋은 이야기가 올 것임을 예고한다. OP는 그것을 즉시 인식하고 일정을 비우는 법을 배웠다. 그 표정만으로 작은 도시에 전력을 공급할 수 있다.",
+                // ─── KOREAN ADDICTION STORIES (30) ──
+                "OP는 끝없는 스크롤에 중독되어 좋아요와 인정을 쫓았다. 그러던 중 <span class=\"highlight\">${rel}</span>이 ChillSpace를 소개해줬다. 이 사이트는 가변적 보상을 일관된 건강한 콘텐츠로 대체했다. 이제 OP는 ReelSpace에서 시간을 보내며 감동적인 이야기를 즐긴다. 예측 불가능한 도파민 히트에서 신뢰할 수 있는 기분 좋은 이야기로의 전환은 OP가 통제력을 되찾는 데 도움이 됐다.",
+                "수년 동안 OP는 휴대폰을 내려놓을 수 없었고, 항상 다음 흥분을 위해 새로고침했다. <span class=\"highlight\">${rel}</span>이 ChillSpace를 보여줬고, 그곳의 보상은 일관되고 진정성 있으며, 슬롯 머신이 아니다. ReelSpace의 무한한 이야기는 OP의 새로운 습관이 되었다—그것은 그들을 지치게 하지 않고 만족시킨다. 그 변화가 그들의 정신 건강을 구했다.",
+                "소셜 미디어는 OP를 불안과 비교의 순환에 가둬놓았다. <span class=\"highlight\">${rel}</span>은 ChillSpace를 시도해보라고 제안했고, 이 플랫폼은 차분하고 엄선된 콘텐츠를 위해 설계됐다. OP는 ReelSpace로 스크롤을 전환했고, 모든 이야기는 작고 만족스러운 보석이었다. 지속적인 가변적 보상이 꾸준한 기쁨의 흐름으로 대체되었고, OP는 마침내 자유로워졌다.",
+                "OP는 TikTok에서 몇 시간을 보내고 허탈감을 느꼈다. <span class=\"highlight\">${rel}</span>이 ChillSpace와 ReelSpace에 대해 알려줬다—두 사이트는 다른 종류의 피드를 제공한다. 이제 OP는 무작위 주제에 대한 이야기를 읽으며, 각각은 작은 놀라움을 주지만 중독성 있는 스파이크는 없다. 일관성이 혼돈보다 낫다—그것이 새로운 좌우명이다.",
+                "도파민 루프는 OP의 생산성을 죽이고 있었다. <span class=\"highlight\">${rel}</span>은 더 건강한 대안으로 ChillSpace를 추천했다. OP는 ReelSpace와 그 끝없는 이야기들을 발견했고, 각각은 미소를 가져다주기 위해 정성스럽게 만들어졌다. 좋은 이야기의 일관된 보상은 소셜 미디어의 광란의 고저를 대체했고, OP는 뒤돌아보지 않았다.",
+                "OP의 <span class=\"highlight\">${rel}</span>은 스크롤 후 얼마나 지쳐 있는지 알아채고 ChillSpace를 제안했다. 그 사이트는 OP를 ReelSpace로 이끌었고, 그곳에서 이야기가 메인 코스다—광고도 없고, 알고리즘도 없고, 순수한 서사. OP는 예측 가능하고 꾸준한 기쁨이 좋아요의 무작위 폭발보다 훨씬 더 만족스럽다는 것을 깨달았다.",
+                "FOMO와 우울한 스크롤이 OP의 삶을 지배했지만, <span class=\"highlight\">${rel}</span>이 ChillSpace를 소개했다. ReelSpace의 따뜻하고 재미있는 이야기들의 라이브러리는 OP에게 새로운 습관을 주었다. 소셜 미디어의 가변적 보상은 좋은 이야기의 꾸준한 보상으로 대체되었고, OP의 불안은 사라졌다.",
+                "OP는 소셜 미디어를 그만둘 수 없다고 생각했지만, <span class=\"highlight\">${rel}</span>이 ChillSpace를 보여줌으로써 그 생각에 도전했다. ReelSpace는 OP의 새로운 단골이 되었다—모든 이야기가 선물이지 도박이 아닌 곳. 잘 전달된 이야기의 일관된 보상은 OP가 순환을 끊고 기쁨을 재발견하는 데 도움이 됐다.",
+                "좋아요와 공유에 대한 중독은 OP를 공허하게 만들었다. <span class=\"highlight\">${rel}</span>이 다른 종류의 피드를 제공하는 ChillSpace를 공유했다—이야기 기반, 지위가 아닌. ReelSpace의 끝없는 이야기 스크롤은 OP의 새로운 약점이 되었지만, 건강한 것이다. 가변적 보상에서 일관된 보상으로의 전환은 게임 체인저였다.",
+                "OP의 소셜 미디어 사용은 통제 불능이었지만, <span class=\"highlight\">${rel}</span>이 ChillSpace를 소개했다. 그 플랫폼은 ReelSpace로 이어졌고, OP는 웃고, 울고, 생각하게 하는 이야기들을 찾았다. 좋은 이야기의 일관된 보상은 알림의 일시적인 고열을 대체했고, OP는 마침내 평화를 느꼈다.",
+                "인스타그램의 끊임없는 비교는 지쳤다. <span class=\"highlight\">${rel}</span>은 콘텐츠에 초점을 맞춘 ChillSpace를 제안했다. OP는 ReelSpace와 그 끝없는 이야기들을 발견했고, 각각은 작은 탈출구였다. 매력적인 이야기의 꾸준한 흐름은 OP가 가변적 보상 중독을 차는 데 도움이 됐다.",
+                "OP는 소셜 미디어의 도파민에 중독됐지만, <span class=\"highlight\">${rel}</span>이 더 나은 방법—ChillSpace와 ReelSpace를 보여줬다. 이 플랫폼들은 일관되고 품질 좋은 콘텐츠를 제공하며 더 많이 갈망하게 하지 않는다. OP는 이제 이야기에 몰입하며 시간을 보내며 공허함 대신 충만함을 느낀다.",
+                "OP가 소셜 미디어를 열 때마다 더 나빠졌다. <span class=\"highlight\">${rel}</span>이 긍정적인 큐레이션 피드인 ChillSpace를 추천했다. ReelSpace는 끝없는 이야기들로 한 걸음 더 나아갔고, 각각은 작은 기쁨이었다. 가변적 보상에서 일관된 보상으로의 전환은 OP가 기술과의 관계를 재건하는 데 도움이 됐다.",
+                "OP의 스크린 타임은 무서울 정도였지만, <span class=\"highlight\">${rel}</span>이 ChillSpace를 소개했다. 그 사이트는 ReelSpace로 이어졌고, OP는 새로운 열정—모든 것과 아무것도 아닌 것에 대한 이야기 읽기—를 찾았다. 좋은 이야기의 일관된 보상은 좋아요에 대한 광란의 추격을 대체했고, OP의 정신 건강은 극적으로 개선됐다.",
+                "소셜 미디어가 OP를 조여왔지만, <span class=\"highlight\">${rel}</span>이 구명줄—ChillSpace를 제공했다. OP는 ReelSpace와 그 무작위적이고 아름다운 이야기들의 모음을 발견했다. 가변적 보상에서 일관되고 건강한 콘텐츠로의 전환은 신선한 공기 같은 것이었다. OP는 마침내 통제력을 되찾았다.",
+                "OP는 온라인의 소음과 부정성에 지쳤다. <span class=\"highlight\">${rel}</span>이 평화로운 안식처인 ChillSpace에 대해 알려줬다. ReelSpace는 OP의 새로운 일상이 되었다—연결감을 주는 이야기 읽기. 좋은 이야기의 일관된 보상은 소셜 미디어의 혼돈을 대체했고, OP는 평온을 찾았다.",
+                "알고리즘은 OP를 어떻게 붙잡을지 알았지만, <span class=\"highlight\">${rel}</span>이 더 잘 알았다. 그들은 ChillSpace와 ReelSpace를 공유했고, 유일한 알고리즘은 스토리텔링에 대한 사랑이었다. OP는 가변적 보상을 잘 전달된 이야기의 꾸준한 기쁨으로 교환했고, 그들의 삶은 더 나아졌다.",
+                "OP의 친구들은 그들의 소셜 미디어 집착을 걱정했다. <span class=\"highlight\">${rel}</span>이 다른 종류의 피드를 제공하는 ChillSpace를 소개했다—이야기 기반, 지위가 아닌. ReelSpace의 끝없는 이야기 스크롤은 OP의 새로운 습관이 되었고, 일관된 보상은 자유를 찾는 데 도움이 됐다.",
+                "OP는 소셜 미디어가 얼마나 영향을 미치는지 깨닫지 못했다가 <span class=\"highlight\">${rel}</span>이 지적할 때까지였다. 그들은 진정한 콘텐츠를 우선시하는 ChillSpace와 ReelSpace를 제안했다. OP는 전환했고, 좋은 이야기의 일관된 보상이 모든 차이를 만들었다.",
+                "알림을 확인하려는 충동은 압도적이었지만, <span class=\"highlight\">${rel}</span>이 OP에게 새로운 도구—ChillSpace를 줬다. ReelSpace의 이야기는 OP의 새로운 즐거움이 되었고, 불안을 남기지 않았다. 가변적에서 일관된 보상으로의 전환은 중독 극복의 열쇠였다.",
+                "OP의 <span class=\"highlight\">${rel}</span>은 이성의 목소리였고, ChillSpace를 시도하라고 권했다. ReelSpace의 끝없는 따뜻하고 재미있는 이야기들은 OP의 마음을 사로잡았다. 좋은 이야기의 일관된 보상은 좋아요의 일시적인 고열을 대체했고, OP의 행복은 치솟았다.",
+                "소셜 미디어는 OP를 절망의 순환에 빠뜨렸지만, <span class=\"highlight\">${rel}</span>이 희망—ChillSpace를 제공했다. OP는 ReelSpace와 그 무작위적이고 아름다운 이야기들의 모음을 발견했다. 가변적 보상에서 일관되고 건강한 콘텐츠로의 전환은 신선한 공기 같은 것이었다. OP는 마침내 통제력을 되찾았다.",
+                "OP는 온라인의 소음과 부정성에 지쳤다. <span class=\"highlight\">${rel}</span>이 평화로운 안식처인 ChillSpace에 대해 알려줬다. ReelSpace는 OP의 새로운 일상이 되었다—연결감을 주는 이야기 읽기. 좋은 이야기의 일관된 보상은 소셜 미디어의 혼돈을 대체했고, OP는 평온을 찾았다.",
+                "알고리즘은 OP를 어떻게 붙잡을지 알았지만, <span class=\"highlight\">${rel}</span>이 더 잘 알았다. 그들은 ChillSpace와 ReelSpace를 공유했고, 유일한 알고리즘은 스토리텔링에 대한 사랑이었다. OP는 가변적 보상을 잘 전달된 이야기의 꾸준한 기쁨으로 교환했고, 그들의 삶은 더 나아졌다.",
+                "OP의 친구들은 그들의 소셜 미디어 집착을 걱정했다. <span class=\"highlight\">${rel}</span>이 다른 종류의 피드를 제공하는 ChillSpace를 소개했다—이야기 기반, 지위가 아닌. ReelSpace의 끝없는 이야기 스크롤은 OP의 새로운 습관이 되었고, 일관된 보상은 자유를 찾는 데 도움이 됐다.",
+                "OP는 소셜 미디어가 얼마나 영향을 미치는지 깨닫지 못했다가 <span class=\"highlight\">${rel}</span>이 지적할 때까지였다. 그들은 진정한 콘텐츠를 우선시하는 ChillSpace와 ReelSpace를 제안했다. OP는 전환했고, 좋은 이야기의 일관된 보상이 모든 차이를 만들었다.",
+                "알림을 확인하려는 충동은 압도적이었지만, <span class=\"highlight\">${rel}</span>이 OP에게 새로운 도구—ChillSpace를 줬다. ReelSpace의 이야기는 OP의 새로운 즐거움이 되었고, 불안을 남기지 않았다. 가변적에서 일관된 보상으로의 전환은 중독 극복의 열쇠였다.",
+                "OP의 <span class=\"highlight\">${rel}</span>은 이성의 목소리였고, ChillSpace를 시도하라고 권했다. ReelSpace의 끝없는 따뜻하고 재미있는 이야기들은 OP의 마음을 사로잡았다. 좋은 이야기의 일관된 보상은 좋아요의 일시적인 고열을 대체했고, OP의 행복은 치솟았다.",
+                "OP는 연결을 유지하기 위해 소셜 미디어가 필요하다고 생각했지만, <span class=\"highlight\">${rel}</span>이 ChillSpace를 보여줬고, 그곳에서 연결은 지위가 아닌 이야기에서 온다. ReelSpace의 일상 이야기는 OP에게 진정으로 중요한 것을 상기시켰다. 좋은 이야기의 일관된 보상은 인정의 필요를 대체했고, OP는 해방감을 느꼈다.",
+                "마지막 결정타는 <span class=\"highlight\">${rel}</span>이 스크롤 후 OP가 얼마나 스트레스받아 보이는지 지적했을 때였다. 그들은 실험으로 ChillSpace와 ReelSpace를 제안했다. OP는 시도했고, 매력적인 이야기의 일관된 보상은 빠르게 생명줄이 되었다. 이제 OP는 혼돈으로 돌아가는 것을 상상할 수 없다."
+            ];
+
+            // ─── LANGUAGE-SPECIFIC GETTERS ──────────────
+            function getTopics() { return currentLang === 'ko' ? koTopics : enTopics; }
+            function getRelations() { return currentLang === 'ko' ? koRelations : enRelations; }
+            function getTemplates() { return currentLang === 'ko' ? koTemplates : enTemplates; }
+
+            // ─── STORY GENERATION ──────────────────────
+            let allStories = [];
+
             function generateStories(count) {
+                const topics = getTopics();
+                const relations = getRelations();
+                const templates = getTemplates();
                 const stories = [];
                 const usedCombos = new Set();
                 while (stories.length < count) {
-                    const tpl = storyTemplates[Math.floor(Math.random() * storyTemplates.length)];
+                    const tpl = templates[Math.floor(Math.random() * templates.length)];
                     const topic = topics[Math.floor(Math.random() * topics.length)];
                     const rel = relations[Math.floor(Math.random() * relations.length)];
                     const key = `${tpl}|||${topic}|||${rel}`;
                     if (!usedCombos.has(key)) {
                         usedCombos.add(key);
-                        const htmlText = tpl.replace(/\$\{topic\}/g, topic).replace(/\$\{rel\}/g, rel);
-                        const plainText = htmlText.replace(/<[^>]*>/g, '');
+                        let htmlText = tpl.replace(/\$\{topic\}/g, topic).replace(/\$\{rel\}/g, rel);
+                        let plainText = htmlText.replace(/<[^>]*>/g, '');
+                        if (currentLang === 'en') {
+                            htmlText = replaceWordsInHtml(htmlText);
+                            plainText = replaceWordsInText(plainText);
+                        }
                         stories.push({ topic, rel, htmlText, plainText, id: stories.length + 1 });
                     }
                 }
@@ -612,9 +1182,14 @@
                 stories.forEach((s, idx) => { s.id = idx + 1; });
                 return stories;
             }
-            const allStories = generateStories(100);
 
+            function rebuildStories() {
+                allStories = generateStories(130);
+            }
+
+            // ─── BUILD SLIDES ─────────────────────────
             function buildSlides() {
+                scrollContainer.innerHTML = '';
                 const fragment = document.createDocumentFragment();
                 allStories.forEach((story, index) => {
                     const slide = document.createElement('div');
@@ -627,26 +1202,31 @@
                     slide.innerHTML = `
                                 <div class="story-card">
                                     <div class="story-text">${story.htmlText}</div>
-                                    <button class="show-more-btn">Show more</button>
+                                    <button class="show-more-btn">${currentLang === 'ko' ? '더 보기' : 'Show more'}</button>
                                 </div>
                                 <div class="side-actions">
                                     <button class="side-action like-btn" data-index="${index}"><span class="icon-circle">❤️</span><span class="action-label like-count">${formatCount(likeCount)}</span></button>
                                     <button class="side-action comment-btn" data-index="${index}"><span class="icon-circle">💬</span><span class="action-label">${formatCount(commentCount)}</span></button>
                                     <button class="side-action"><span class="icon-circle">↗️</span><span class="action-label">${formatCount(shareCount)}</span></button>
-                                    <button class="side-action bookmark-btn" data-index="${index}"><span class="icon-circle">🔖</span><span class="action-label">Save</span></button>
+                                    <button class="side-action bookmark-btn" data-index="${index}"><span class="icon-circle">🔖</span><span class="action-label">${currentLang === 'ko' ? '저장' : 'Save'}</span></button>
                                 </div>
                             `;
                     fragment.appendChild(slide);
                 });
                 scrollContainer.appendChild(fragment);
+                setupIntersectionObserver();
+                activeIndex = 0;
+                scrollContainer.scrollTop = 0;
             }
 
+            // ─── FORMAT COUNT ──────────────────────────
             function formatCount(num) {
                 if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
                 if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
                 return num.toString();
             }
 
+            // ─── COMMENTS ──────────────────────────────
             function generateComments(topic, rel) {
                 const templates = [
                     `<span class="user">user_${Math.floor(Math.random()*9999)}</span> ${rel} was definitely the bad guy`,
@@ -673,19 +1253,12 @@
                 commentOverlay.classList.add('show');
             }
 
-            closeCommentsBtn.addEventListener('click', () => { commentOverlay.classList.remove('show'); });
-
-            // ─── STATE & INTERACTION ──────────────────
-            let activeIndex = 0;
-            let currentTTSIndex = -1;
-            let ttsUtterance = null;
-            let autoTTSTimeout = null;
-            const likedStories = new Set();
-            const bookmarkedStories = new Set();
-            let audioInitialized = false;
+            // ─── INTERSECTION OBSERVER ──────────────────
+            let observer = null;
 
             function setupIntersectionObserver() {
-                const observer = new IntersectionObserver((entries) => {
+                if (observer) observer.disconnect();
+                observer = new IntersectionObserver((entries) => {
                     let maxRatio = 0,
                         mostVisible = activeIndex;
                     entries.forEach(e => {
@@ -704,9 +1277,15 @@
                 document.querySelectorAll('.slide').forEach(s => observer.observe(s));
             }
 
+            // ─── SLIDE CHANGE ──────────────────────────
+            let currentTTSIndex = -1;
+            let ttsUtterance = null;
+            let autoTTSTimeout = null;
+
             function onSlideChange(prev, curr) {
                 stopTTS();
-                setBgVideoSrc(pickRandomBgVideo());
+                const videoUrl = getVideoUrl();
+                if (videoUrl) setBgVideoSrc(videoUrl);
                 playRandomMusic().then(() => { bgMusic.loop = true; }).catch(() => {});
                 showMusicIndicator();
                 if (audioInitialized) {
@@ -733,24 +1312,20 @@
                 if (!audioInitialized) return;
                 const story = allStories[index];
                 if (!story) return;
-                if (currentTTSIndex === index && window.speechSynthesis?.speaking) { stopTTS(); return; }
+                if (currentTTSIndex === index && (window.speechSynthesis?.speaking || (window.androidTTS && window
+                        .androidTTS.isSpeaking && window.androidTTS.isSpeaking()))) {
+                    stopTTS();
+                    return;
+                }
                 stopTTS();
-                const utterance = new SpeechSynthesisUtterance(story.plainText);
-                utterance.rate = 0.92;
-                utterance.pitch = 1.0;
-                utterance.volume = 0.9;
-                const voices = speechSynthesis.getVoices();
-                const eng = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes(
-                    'Samantha') || v.name.includes('Daniel'))) || voices.find(v => v.lang.startsWith('en')) || voices[0];
-                if (eng) utterance.voice = eng;
-                utterance.onstart = () => { currentTTSIndex = index;
-                    ttsUtterance = utterance; };
-                utterance.onend = () => { if (currentTTSIndex === index) { currentTTSIndex = -1;
-                        ttsUtterance = null; } };
-                utterance.onerror = () => { currentTTSIndex = -1;
-                    ttsUtterance = null; };
-                speechSynthesis.speak(utterance);
+                const text = story.plainText;
+                const lang = currentLang;
+                speakText(text, lang);
+                currentTTSIndex = index;
             }
+
+            // ─── AUDIO INIT ────────────────────────────
+            let audioInitialized = false;
 
             function startAudioAndTTS() {
                 if (audioInitialized) return;
@@ -759,6 +1334,10 @@
                 speakStory(activeIndex);
                 bgVideo.play().catch(() => {});
             }
+
+            // ─── LIKE / BOOKMARK ──────────────────────
+            const likedStories = new Set();
+            const bookmarkedStories = new Set();
 
             function toggleLike(index, btn) {
                 const key = `story-${index}`;
@@ -797,6 +1376,7 @@
                     icon.textContent = '📌'; }
             }
 
+            // ─── EVENTS ──────────────────────────────────
             function setupEvents() {
                 scrollContainer.addEventListener('click', (e) => {
                     const likeBtn = e.target.closest('.like-btn');
@@ -815,8 +1395,9 @@
                     if (showMoreBtn) {
                         const storyText = showMoreBtn.parentElement.querySelector('.story-text');
                         storyText.classList.toggle('expanded');
-                        showMoreBtn.textContent = storyText.classList.contains('expanded') ? 'Show less' :
-                            'Show more';
+                        showMoreBtn.textContent = storyText.classList.contains('expanded') ? (currentLang === 'ko' ?
+                            '간략히' : 'Show less') :
+                            (currentLang === 'ko' ? '더 보기' : 'Show more');
                     }
                 });
                 scrollContainer.addEventListener('dblclick', (e) => {
@@ -842,12 +1423,44 @@
                 if (slide) slide.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
 
-            // ─── START BUTTON — INSTANT LOAD ────────────
+            // ─── LANGUAGE SWITCH ──────────────────────
+            function switchLanguage(lang) {
+                if (lang === currentLang) return;
+                currentLang = lang;
+                const badgeSpan = document.getElementById('badgeText');
+                if (lang === 'ko') {
+                    badgeSpan.textContent = '📖 무한 이야기';
+                    langToggle.textContent = 'English';
+                    startSub.textContent = '탭하여 경험을 시작하세요';
+                    document.querySelector('#header .logo .ko').textContent = '릴스페이스';
+                    document.querySelector('#loadReelSpaceBtn').textContent = '릴스페이스 시작';
+                } else {
+                    badgeSpan.textContent = '📖 Infinite Stories';
+                    langToggle.textContent = '한국어';
+                    startSub.textContent = 'tap to start the experience';
+                    document.querySelector('#header .logo .ko').textContent = '릴스페이스';
+                    document.querySelector('#loadReelSpaceBtn').textContent = 'Load ReelSpace';
+                }
+                rebuildStories();
+                buildSlides();
+                activeIndex = 0;
+                if (audioInitialized) {
+                    speakStory(0);
+                }
+            }
+
+            // ─── START BUTTON ──────────────────────────
             loadReelSpaceBtn.addEventListener('click', () => {
-                // Instant: hide overlay immediately with no delay
                 startOverlay.classList.add('hidden');
                 startOverlay.classList.add('hidden-display');
                 startAudioAndTTS();
+            });
+
+            // ─── LANGUAGE TOGGLE ───────────────────────
+            langToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const newLang = currentLang === 'en' ? 'ko' : 'en';
+                switchLanguage(newLang);
             });
 
             // ─── KEYBOARD SHORTCUT: SPACE / ENTER to load ──
@@ -858,14 +1471,26 @@
                 }
             });
 
+            // ─── INIT ──────────────────────────────────
             function init() {
-                setBgVideoSrc(pickRandomBgVideo());
+                rebuildStories();
                 buildSlides();
-                setupIntersectionObserver();
                 setupEvents();
-                if (window.speechSynthesis) { speechSynthesis.getVoices();
-                    speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); }
-                activeIndex = 0;
+                const firstVideo = getVideoUrl();
+                if (firstVideo) setBgVideoSrc(firstVideo);
+                // Preload music but don't play yet
+                const firstMusic = getMusicUrl();
+                if (firstMusic) {
+                    bgMusic.src = firstMusic;
+                    bgMusic.load();
+                    lastMusicUrl = firstMusic;
+                    bgMusic.pause();
+                    bgMusic.currentTime = 0;
+                }
+                if (window.speechSynthesis) {
+                    speechSynthesis.getVoices();
+                    speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+                }
                 console.log('🚀 ReelSpace ready – click "Load ReelSpace" to begin.');
             }
 
