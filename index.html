@@ -13,35 +13,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Poppins:wght@400;700&family=Raleway:wght@400;700&family=Nunito:wght@400;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&family=Fira+Sans:wght@400;700&family=Source+Sans+Pro:wght@400;700&family=Oswald:wght@400;700&family=Roboto+Mono:wght@400;700&family=Quicksand:wght@400;700&family=Work+Sans:wght@400;700&family=Barlow:wght@400;700&family=Josefin+Sans:wght@400;700&family=Cabin:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
- <script>
-        (function() {
-            const img = document.getElementById('FBSlot');
-
-            // Detect if running in an Android WebView
-            const userAgent = navigator.userAgent || '';
-            const isWebView = /wv/i.test(userAgent) || 
-                              (/\bAndroid\b/.test(userAgent) && /\bChrome\/(?!.*\bEdg\b)/.test(userAgent) && /Version\/\d+\.\d+/.test(userAgent));
-
-            // Choose the appropriate source
-            let src;
-            if (isWebView) {
-                // Use the local asset (Android assets folder)
-                src = 'file:///android_asset/video6.gif';
-            } else {
-                // Fallback to remote URL for browsers
-                src = 'https://archive.org/download/facebook-slot/facebook-slot.gif';
-            }
-
-            // Set the image source
-            img.src = src;
-
-            // Optional: handle loading errors (e.g., if the asset fails, fallback)
-            img.onerror = function() {
-                console.warn('Failed to load image, switching to fallback remote URL.');
-                img.src = 'https://archive.org/download/facebook-slot/facebook-slot.gif';
-            };
-        })();
-    </script>
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -2051,6 +2022,34 @@
     </main>
 
     <script>
+         <script>
+        (function() {
+            const img = document.getElementById('FBSlot');
+
+            // Detect if running in an Android WebView
+            const userAgent = navigator.userAgent || '';
+            const isWebView = /wv/i.test(userAgent) || 
+                              (/\bAndroid\b/.test(userAgent) && /\bChrome\/(?!.*\bEdg\b)/.test(userAgent) && /Version\/\d+\.\d+/.test(userAgent));
+
+            // Choose the appropriate source
+            let src;
+            if (isWebView) {
+                // Use the local asset (Android assets folder)
+                src = 'file:///android_asset/video6.gif';
+            } else {
+                // Fallback to remote URL for browsers
+                src = 'https://archive.org/download/facebook-slot/facebook-slot.gif';
+            }
+
+            // Set the image source
+            img.src = src;
+
+            // Optional: handle loading errors (e.g., if the asset fails, fallback)
+            img.onerror = function() {
+                console.warn('Failed to load image, switching to fallback remote URL.');
+                img.src = 'https://archive.org/download/facebook-slot/facebook-slot.gif';
+            };
+        })();
         // ============================================================
         //  RANDOM FONT + COLOUR HELPERS
         // ============================================================
