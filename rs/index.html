@@ -460,11 +460,24 @@
             const badgeText = document.getElementById('badgeText');
             const startSub = document.getElementById('startSub');
 
+            // ─── GLOBAL PAUSE/RESUME FOR ANDROID ────────
+            window.pauseReelSpaceMedia = function() {
+                bgMusic.pause();
+                bgVideo.pause();
+            };
+
+            window.resumeReelSpaceMedia = function() {
+                if (audioInitialized && startOverlay.classList.contains('hidden')) {
+                    bgMusic.play().catch(() => {});
+                    bgVideo.play().catch(() => {});
+                }
+            };
+
             // ─── LANGUAGE STATE ──────────────────────────
             let currentLang = 'en'; // 'en' or 'ko'
 
             // ─── LOCAL ASSETS (Android) & FALLBACK ──────
-            const LOCAL_VIDEOS = ['video1.mp4', 'video2.mp4', 'video3.mp4', 'video4.mp4', 'video5.mp4'];
+            const LOCAL_VIDEOS = ['file:///android_asset/video1.mp4', 'file:///android_asset/video2.mp4', 'file:///android_asset/video3.mp4', 'file:///android_asset/video4.mp4', 'file:///android_asset/video5.mp4'];
             const FALLBACK_VIDEOS = [
                 "https://ia601808.us.archive.org/16/items/videoplayback-3_20251207/videoplayback%20%283%29.mp4",
                 "https://dn721606.ca.archive.org/0/items/youtube-tS2Fxw5Cjwo/tS2Fxw5Cjwo.webm",
@@ -472,7 +485,7 @@
                 "https://dn721909.ca.archive.org/0/items/subway-surfers-android-31-05-2024/InShot_20240531_140125669.ia.mp4",
                 "https://ia801502.us.archive.org/35/items/screen-20260807-231946/screen-20260807-231946.ia.mp4"
             ];
-            const LOCAL_MUSIC = ['song1.mp3', 'song2.mp3', 'song3.mp3', 'song4.mp3', 'song5.mp3'];
+            const LOCAL_MUSIC = ['file:///android_asset/song1.mp3', 'file:///android_asset/song2.mp3', 'file:///android_asset/song3.mp3', 'file:///android_asset/song4.mp3', 'file:///android_asset/song5.mp3'];
             const FALLBACK_MUSIC = [
                 "https://ia800705.us.archive.org/11/items/CountingUpOn1Tap/AUD-20260124-WA0004.mp3",
                 "https://dn721702.ca.archive.org/0/items/soundcloud-564282678/Vexento_-_Jump_Copyright_Free_Sounds-564282678.mp3",
@@ -490,34 +503,40 @@
             function pickRandomFromArray(arr, last) {
                 if (!arr || arr.length === 0) return null;
                 if (arr.length === 1) return arr[0];
+
+                const normalize = (val) => val ? val.split('/').pop().split('.').shift() : null;
+                const lastNorm = normalize(last);
+
                 let newItem;
                 let attempts = 0;
                 do {
                     newItem = arr[Math.floor(Math.random() * arr.length)];
                     attempts++;
-                    // Safety: if we've tried too many times, just return the first available
-                    if (attempts > 100) break;
-                } while (newItem === last && arr.length > 1);
+                    if (attempts > 50) break;
+                } while (normalize(newItem) === lastNorm && arr.length > 1);
+
                 return newItem;
             }
 
             function getVideoUrl() {
-                // Try local first
                 const local = pickRandomFromArray(LOCAL_VIDEOS, lastBgVideoUrl);
                 if (local) return local;
-                // Fallback to archive.org
                 return pickRandomFromArray(FALLBACK_VIDEOS, lastBgVideoUrl);
             }
 
             function getMusicUrl() {
-                const local = pickRandomFromArray(LOCAL_MUSIC, lastMusicUrl);
-                if (local) return local;
-                return pickRandomFromArray(FALLBACK_MUSIC, lastMusicUrl);
+                let chosen = pickRandomFromArray(LOCAL_MUSIC, lastMusicUrl);
+                if (!chosen) {
+                    chosen = pickRandomFromArray(FALLBACK_MUSIC, lastMusicUrl);
+                }
+                if (chosen) lastMusicUrl = chosen;
+                return chosen;
             }
 
             // ─── VIDEO HANDLING ──────────────────────────
             function setBgVideoSrc(url) {
                 if (!url) return;
+                if (bgVideo.src === url) return;
                 bgVideo.src = url;
                 bgVideo.load();
                 lastBgVideoUrl = url;
@@ -526,44 +545,34 @@
 
             bgVideo.addEventListener('error', function onVideoError() {
                 console.warn('Video error, switching to fallback');
-                if (!isVideoFallback) {
-                    isVideoFallback = true;
-                    const fallback = pickRandomFromArray(FALLBACK_VIDEOS, lastBgVideoUrl);
-                    if (fallback) setBgVideoSrc(fallback);
-                } else {
-                    const fallback = pickRandomFromArray(FALLBACK_VIDEOS, lastBgVideoUrl);
-                    if (fallback && fallback !== bgVideo.src) setBgVideoSrc(fallback);
+                const fallback = pickRandomFromArray(FALLBACK_VIDEOS, lastBgVideoUrl);
+                if (fallback) {
+                    lastBgVideoUrl = fallback;
+                    setBgVideoSrc(fallback);
                 }
             });
 
             // ─── MUSIC HANDLING ──────────────────────────
-            // Load and play a music URL with a random start position (0–120s)
             function loadAndPlayMusic(url) {
                 if (!url) return Promise.reject('No URL');
                 bgMusic.src = url;
                 bgMusic.load();
-                lastMusicUrl = url;
 
                 return new Promise((resolve, reject) => {
                     const startWithRandomOffset = () => {
                         try {
-                            // Seek to a random position between 0 and 120 seconds
-                            // Use the actual duration if available and shorter than 120s
                             const maxStart = Math.min(bgMusic.duration || 120, 120);
                             const offset = Math.random() * maxStart;
                             bgMusic.currentTime = offset;
                             bgMusic.play().then(resolve).catch(reject);
                         } catch (e) {
-                            // If seeking fails, just play from the start
                             bgMusic.play().then(resolve).catch(reject);
                         }
                     };
 
-                    // If the audio is already loaded enough, seek and play immediately
                     if (bgMusic.readyState >= 1) {
                         startWithRandomOffset();
                     } else {
-                        // Wait for metadata to be loaded so we can seek
                         const onLoaded = () => {
                             bgMusic.removeEventListener('loadedmetadata', onLoaded);
                             bgMusic.removeEventListener('canplay', onLoaded);
@@ -577,14 +586,12 @@
                             reject(new Error('load error'));
                         });
 
-                        // Fallback timeout: if loading takes too long, try playing anyway
                         const timeoutId = setTimeout(() => {
                             bgMusic.removeEventListener('loadedmetadata', onLoaded);
                             bgMusic.removeEventListener('canplay', onLoaded);
                             startWithRandomOffset();
                         }, 2000);
 
-                        // Clear timeout if we succeed early
                         const origResolve = resolve;
                         resolve = function(val) {
                             clearTimeout(timeoutId);
@@ -603,17 +610,17 @@
                 const url = getMusicUrl();
                 bgMusic.volume = 0.2;
                 return loadAndPlayMusic(url).catch(() => {
-                    // If local fails, switch to fallback
                     if (!isMusicFallback) {
                         isMusicFallback = true;
                         const fallback = pickRandomFromArray(FALLBACK_MUSIC, lastMusicUrl);
                         if (fallback) {
+                            lastMusicUrl = fallback;
                             return loadAndPlayMusic(fallback);
                         }
                     } else {
-                        // Already in fallback, try another
                         const fallback = pickRandomFromArray(FALLBACK_MUSIC, lastMusicUrl);
-                        if (fallback && fallback !== bgMusic.src) {
+                        if (fallback && fallback !== lastMusicUrl) {
+                            lastMusicUrl = fallback;
                             return loadAndPlayMusic(fallback);
                         }
                     }
@@ -623,8 +630,8 @@
 
             // ─── ANDROID TTS FALLBACK ──────────────────
             function speakText(text, lang) {
-                if (window.androidTTS && typeof window.androidTTS.speak === 'function') {
-                    window.androidTTS.speak(text);
+                if (window.AndroidTTS && typeof window.AndroidTTS.speak === 'function') {
+                    window.AndroidTTS.speak(text, lang || 'en');
                     return;
                 }
                 if (!window.speechSynthesis) return;
@@ -648,13 +655,16 @@
             }
 
             // ─── WORD SWAP (English only) ──────────────
+            // ─── ONLY UNAMBIGUOUS WORDS REMAIN ──────────
+            // Words with clear, single meanings. Removed: good, well, bad, hard, light, kind, mean,
+            // right, left, call, just, even, long, cool, rough, sharp, funny, flat, level, surface,
+            // please, take, run, work, see, feel, go, time, play, close, come, make, hold, find,
+            // keep, try, win, lose, open, turn, fall, spring, still, fair, fine, set, stand, etc.
             const wordSwapDict = {
                 "happy": ["happy", "joyful", "cheerful", "delighted", "ecstatic"],
                 "sad": ["sad", "melancholy", "sorrowful", "downcast", "gloomy"],
                 "big": ["big", "large", "huge", "enormous", "gigantic"],
                 "small": ["small", "tiny", "little", "compact", "miniature"],
-                "good": ["good", "great", "excellent", "superb", "wonderful"],
-                "bad": ["bad", "terrible", "awful", "dreadful", "horrible"],
                 "beautiful": ["beautiful", "gorgeous", "stunning", "lovely", "radiant"],
                 "ugly": ["ugly", "unsightly", "hideous", "grotesque", "repulsive"],
                 "fast": ["fast", "quick", "rapid", "speedy", "swift"],
@@ -665,7 +675,6 @@
                 "person": ["person", "individual", "human", "being", "soul"],
                 "thing": ["thing", "object", "item", "entity", "article"],
                 "story": ["story", "tale", "narrative", "account", "anecdote"],
-                "time": ["time", "moment", "period", "era", "duration"],
                 "day": ["day", "daytime", "sunlight", "waking hours"],
                 "night": ["night", "evening", "darkness", "nightfall"],
                 "life": ["life", "existence", "being", "lifetime", "living"],
@@ -673,27 +682,15 @@
                 "hate": ["hate", "detest", "loathe", "despise", "abhor"],
                 "think": ["think", "believe", "consider", "contemplate", "ponder"],
                 "know": ["know", "understand", "comprehend", "grasp", "perceive"],
-                "see": ["see", "view", "observe", "witness", "spot"],
                 "hear": ["hear", "listen", "overhear", "attend"],
-                "feel": ["feel", "sense", "experience", "perceive"],
-                "say": ["say", "tell", "speak", "utter", "declare"],
-                "go": ["go", "move", "proceed", "advance", "travel"],
-                "come": ["come", "arrive", "approach", "reach"],
-                "look": ["look", "watch", "gaze", "stare", "glance"],
-                "find": ["find", "discover", "locate", "uncover"],
                 "start": ["start", "begin", "commence", "initiate"],
                 "end": ["end", "finish", "conclude", "terminate"],
                 "help": ["help", "assist", "aid", "support", "guide"],
-                "make": ["make", "create", "produce", "construct", "build"],
-                "take": ["take", "grab", "seize", "capture"],
                 "give": ["give", "offer", "provide", "supply"],
                 "want": ["want", "desire", "wish", "crave", "long for"],
                 "need": ["need", "require", "necessitate", "demand"],
                 "use": ["use", "utilize", "employ", "apply"],
-                "work": ["work", "labor", "toil", "operate"],
-                "play": ["play", "fun", "enjoyment", "recreation"],
                 "walk": ["walk", "stroll", "saunter", "amble"],
-                "run": ["run", "sprint", "dash", "jog"],
                 "talk": ["talk", "converse", "chat", "communicate"],
                 "listen": ["listen", "heed", "pay attention"],
                 "write": ["write", "compose", "pen", "draft"],
@@ -709,11 +706,9 @@
                 "lose": ["lose", "fail", "mislay", "forfeit"],
                 "keep": ["keep", "maintain", "preserve", "retain"],
                 "hold": ["hold", "grip", "clutch", "embrace"],
-                "call": ["call", "phone", "ring", "summon"],
                 "visit": ["visit", "drop by", "call on", "see"],
                 "thank": ["thank", "appreciate", "grateful", "acknowledge"],
                 "sorry": ["sorry", "apologetic", "remorseful", "regretful"],
-                "please": ["please", "delight", "satisfy", "content"],
                 "maybe": ["maybe", "perhaps", "possibly", "conceivably"],
                 "always": ["always", "constantly", "continually", "perpetually"],
                 "never": ["never", "not ever", "at no time"],
@@ -723,23 +718,15 @@
                 "very": ["very", "extremely", "exceedingly", "immensely"],
                 "really": ["really", "truly", "genuinely", "actually"],
                 "quite": ["quite", "rather", "fairly", "somewhat"],
-                "just": ["just", "merely", "only", "simply"],
-                "even": ["even", "still", "yet", "also"],
-                "well": ["well", "good", "fine", "satisfactorily"],
                 "much": ["much", "greatly", "considerably", "significantly"],
                 "little": ["little", "small", "slight", "minor"],
-                "long": ["long", "lengthy", "extended", "prolonged"],
                 "short": ["short", "brief", "compressed", "concise"],
-                "hard": ["hard", "difficult", "tough", "arduous"],
                 "easy": ["easy", "simple", "effortless", "uncomplicated"],
                 "bright": ["bright", "luminous", "radiant", "shiny"],
                 "dark": ["dark", "dim", "shadowy", "obscure"],
                 "warm": ["warm", "hot", "heated", "balmy"],
                 "cold": ["cold", "chilly", "freezing", "icy"],
-                "cool": ["cool", "chill", "refreshing", "breezy"],
                 "nice": ["nice", "pleasant", "kind", "friendly"],
-                "mean": ["mean", "unkind", "nasty", "cruel"],
-                "kind": ["kind", "generous", "benevolent", "compassionate"],
                 "cruel": ["cruel", "brutal", "inhumane", "savage"],
                 "brave": ["brave", "courageous", "fearless", "valiant"],
                 "cowardly": ["cowardly", "timid", "faint-hearted", "craven"],
@@ -757,7 +744,6 @@
                 "near": ["near", "close", "adjacent", "proximate"],
                 "far": ["far", "distant", "remote", "faraway"],
                 "heavy": ["heavy", "weighty", "substantial", "massive"],
-                "light": ["light", "weightless", "airy", "flimsy"],
                 "deep": ["deep", "profound", "intense", "thorough"],
                 "shallow": ["shallow", "superficial", "surface", "trivial"],
                 "clean": ["clean", "pure", "spotless", "immaculate"],
@@ -775,13 +761,10 @@
                 "loyal": ["loyal", "faithful", "devoted", "steadfast"],
                 "disloyal": ["disloyal", "unfaithful", "treacherous", "perfidious"],
                 "gentle": ["gentle", "mild", "soft", "tender"],
-                "rough": ["rough", "coarse", "harsh", "rugged"],
                 "smooth": ["smooth", "even", "polished", "silky"],
-                "sharp": ["sharp", "keen", "acute", "pointed"],
                 "dull": ["dull", "blunt", "tedious", "uninteresting"],
                 "smart": ["smart", "intelligent", "clever", "bright"],
                 "dumb": ["dumb", "stupid", "unintelligent", "thick"],
-                "funny": ["funny", "humorous", "comical", "amusing"],
                 "serious": ["serious", "grave", "solemn", "earnest"],
                 "exciting": ["exciting", "thrilling", "stimulating", "electrifying"],
                 "boring": ["boring", "tedious", "mundane", "monotonous"],
@@ -801,7 +784,6 @@
                 "thick": ["thick", "dense", "heavy", "solid"],
                 "thin": ["thin", "slender", "slim", "narrow"],
                 "round": ["round", "circular", "spherical", "curved"],
-                "flat": ["flat", "level", "even", "planar"],
                 "soft": ["soft", "gentle", "smooth", "plush"],
                 "dim": ["dim", "faint", "weak", "subdued"],
                 "loud": ["loud", "noisy", "boisterous", "deafening"],
@@ -842,7 +824,6 @@
                 "slender": ["slender", "thin", "slim", "narrow"],
                 "dense": ["dense", "heavy", "solid", "thick"],
                 "circular": ["circular", "spherical", "curved", "round"],
-                "level": ["level", "even", "planar", "flat"],
                 "plush": ["plush", "soft", "gentle", "smooth"],
                 "rigid": ["rigid", "firm", "hard", "solid"],
                 "vivid": ["vivid", "brilliant", "luminous", "bright"],
@@ -890,12 +871,10 @@
                 "aged": ["aged", "elderly", "ancient", "old"],
                 "premature": ["premature", "untimely", "timely", "early"],
                 "tardy": ["tardy", "behind", "overdue", "late"],
-                "close": ["close", "adjacent", "proximate", "near"],
                 "distant": ["distant", "remote", "faraway", "far"],
                 "weighty": ["weighty", "massive", "ponderous", "heavy"],
                 "weightless": ["weightless", "airy", "flimsy", "light"],
                 "profound": ["profound", "intense", "thorough", "deep"],
-                "surface": ["surface", "superficial", "trivial", "shallow"],
                 "pure": ["pure", "spotless", "immaculate", "clean"],
                 "filthy": ["filthy", "soiled", "grubby", "dirty"],
                 "secure": ["secure", "protected", "guarded", "safe"],
@@ -904,14 +883,47 @@
                 "clamorous": ["clamorous", "noisy", "loud", "boisterous"]
             };
 
-            const swapWordsList = Object.keys(wordSwapDict);
+            // ─── AMBIGUOUS WORDS WE NEVER SWAP ──────────
+            // These words have multiple distinct meanings and are excluded from the swap.
+            // "good" is the key example: "for good" (forever) vs "good" (pleasant).
+            const ambiguousWords = new Set([
+                'good', 'well', 'bad', 'hard', 'light', 'kind', 'mean', 'right', 'left',
+                'call', 'just', 'even', 'long', 'cool', 'rough', 'sharp', 'funny', 'flat',
+                'level', 'surface', 'please', 'take', 'run', 'work', 'see', 'feel', 'go',
+                'time', 'play', 'close', 'come', 'make', 'hold', 'find', 'keep', 'try',
+                'win', 'lose', 'open', 'turn', 'fall', 'spring', 'still', 'fair', 'fine',
+                'set', 'stand', 'point', 'ground', 'back', 'hand', 'head', 'face', 'eye',
+                'foot', 'man', 'woman', 'child', 'house', 'home', 'room', 'door', 'water',
+                'fire', 'air', 'earth', 'world', 'death', 'touch', 'break', 'bring',
+                'carry', 'cut', 'draw', 'drive', 'fight', 'fly', 'grow', 'hit', 'hurt',
+                'lay', 'lead', 'leave', 'lie', 'meet', 'pay', 'put', 'ride', 'ring',
+                'rise', 'say', 'sell', 'send', 'shake', 'shoot', 'shut', 'sing', 'sink',
+                'sit', 'speak', 'spend', 'strike', 'swim', 'teach', 'tear', 'tell',
+                'throw', 'understand', 'wear', 'bear', 'beat', 'become', 'bend',
+                'bite', 'blow', 'build', 'burn', 'buy', 'catch', 'choose', 'cost',
+                'deal', 'dig', 'do', 'dream', 'feed', 'forget', 'forgive', 'freeze',
+                'get', 'hang', 'have', 'hide', 'lend', 'let', 'show', 'steal',
+                'stick', 'swim'
+            ]);
+
+            // ─── FILTER THE DICTIONARY ──────────────────
+            // Remove all ambiguous words so we only swap unambiguous ones.
+            const filteredDict = {};
+            for (const [key, value] of Object.entries(wordSwapDict)) {
+                if (!ambiguousWords.has(key)) {
+                    filteredDict[key] = value;
+                }
+            }
+            const safeSwapWords = Object.keys(filteredDict);
 
             function replaceWordsInText(text) {
-                const regex = new RegExp('\\b(' + swapWordsList.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') +
+                if (!text) return text;
+                // Build a regex that matches whole words (case-insensitive) from the safe list.
+                const regex = new RegExp('\\b(' + safeSwapWords.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') +
                     ')\\b', 'gi');
                 return text.replace(regex, function(match) {
                     const lower = match.toLowerCase();
-                    const synonyms = wordSwapDict[lower];
+                    const synonyms = filteredDict[lower];
                     if (!synonyms) return match;
                     const chosen = synonyms[Math.floor(Math.random() * synonyms.length)];
                     if (match === match.toUpperCase()) return chosen.toUpperCase();
@@ -1147,7 +1159,9 @@
 
             // ─── LANGUAGE-SPECIFIC GETTERS ──────────────
             function getTopics() { return currentLang === 'ko' ? koTopics : enTopics; }
+
             function getRelations() { return currentLang === 'ko' ? koRelations : enRelations; }
+
             function getTemplates() { return currentLang === 'ko' ? koTemplates : enTemplates; }
 
             // ─── STORY GENERATION ──────────────────────
@@ -1281,12 +1295,23 @@
             let currentTTSIndex = -1;
             let ttsUtterance = null;
             let autoTTSTimeout = null;
+            let isProcessingSlide = false;
 
             function onSlideChange(prev, curr) {
+                if (isProcessingSlide) return;
+                isProcessingSlide = true;
+
                 stopTTS();
                 const videoUrl = getVideoUrl();
                 if (videoUrl) setBgVideoSrc(videoUrl);
-                playRandomMusic().then(() => { bgMusic.loop = true; }).catch(() => {});
+
+                playRandomMusic().then(() => {
+                    bgMusic.loop = true;
+                    isProcessingSlide = false;
+                }).catch(() => {
+                    isProcessingSlide = false;
+                });
+
                 showMusicIndicator();
                 if (audioInitialized) {
                     if (autoTTSTimeout) clearTimeout(autoTTSTimeout);
@@ -1469,6 +1494,11 @@
                     e.preventDefault();
                     loadReelSpaceBtn.click();
                 }
+            });
+
+            // ─── CLOSE COMMENTS ─────────────────────────
+            closeCommentsBtn.addEventListener('click', () => {
+                commentOverlay.classList.remove('show');
             });
 
             // ─── INIT ──────────────────────────────────
