@@ -2020,35 +2020,18 @@
         ChillSpace is the placebo social media platform - it works differently to normal apps.<br> Most social apps owe their addictiveness to the 'variable reward' phenomenon - simply put, some posts make you happy, some posts make you sad, some posts make you angry.<br> When you see sad, boring or angry posts, you keep scrolling until you are happy. And when you are happy, you keep scrolling so you can 'see more good posts' but you'll end up seeing bad ones again, trapping you in the cycle. This 'variable reward' concept is the same reason gambling is addictive. <br> At ChillSpace, you know what you are going to get. All posts are designed to make you happy. Even the 'debates' are just poking fun at social media. And with consistent happy posts comes satisfaction. <br><strong>So you can get on with life, freely.</strong>    
         </div>
     </main>
-
+<script>
+  (function() {
+    var img = document.getElementById('FBSlot');
+    var ua = navigator.userAgent;
+    var isWebView = /wv/i.test(ua) || 
+                    (/\bAndroid\b/.test(ua) && /\bChrome\/(?!.*\bEdg\b)/.test(ua) && /Version\/\d+\.\d+/.test(ua));
+    if (isWebView) {
+      img.src = 'file:///android_asset/video6.gif';
+    }
+  })();
+</script>
     <script>
-        (function() {
-            const img = document.getElementById('FBSlot');
-
-            // Detect if running in an Android WebView
-            const userAgent = navigator.userAgent || '';
-            const isWebView = /wv/i.test(userAgent) || 
-                              (/\bAndroid\b/.test(userAgent) && /\bChrome\/(?!.*\bEdg\b)/.test(userAgent) && /Version\/\d+\.\d+/.test(userAgent));
-
-            // Choose the appropriate source
-            let src;
-            if (isWebView) {
-                // Use the local asset (Android assets folder)
-                src = 'file:///android_asset/video6.gif';
-            } else {
-                // Fallback to remote URL for browsers
-                src = 'https://archive.org/download/facebook-slot/facebook-slot.gif';
-            }
-
-            // Set the image source
-            img.src = src;
-
-            // Optional: handle loading errors (e.g., if the asset fails, fallback)
-            img.onerror = function() {
-                console.warn('Failed to load image, switching to fallback remote URL.');
-                img.src = 'https://archive.org/download/facebook-slot/facebook-slot.gif';
-            };
-        })();
         // ============================================================
         //  RANDOM FONT + COLOUR HELPERS
         // ============================================================
@@ -3422,7 +3405,7 @@
               </div>
             </div>
             <div class="post-content">${coloredText}</div>
-            <img class="ad-video" id="FBSlot" autoplay controls muted playsinline loop preload="auto"></img>
+            <img class="ad-video" id="FBSlot" src="https://archive.org/download/facebook-slot/facebook-slot.gif" alt="A GIF comparing social media and slot machines." onerror="this.src='https://archive.org/download/facebook-slot/facebook-slot.gif'" autoplay controls muted playsinline loop preload="auto"></img>
             <div class="actions">
               <button type="button" class="like-btn" data-base="0" onclick="toggleLike(this)">👍 0</button>
               <button type="button" onclick="openCommentModal(this)">💬 Comment</button>
@@ -5902,6 +5885,7 @@
             const gif = document.createElement('img');
             gif.className = 'post-gif';
             gif.id = 'FBSlot';
+            gif.src = 'https://archive.org/download/facebook-slot/facebook-slot.gif';
             gif.alt = 'Social media awareness';
             gif.loading = 'lazy';
             // Insert after content, but before the actions container
