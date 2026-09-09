@@ -669,6 +669,110 @@
     { id: "chatgpt", name: "ChatGPT", supportsPrefill: true, url: "https://chatgpt.com/?q=" }
   ];
 
+  // --- Android contact permission bridge ---
+  // This callback will be invoked by the native Android code after permission request.
+  window.contactPermissionResult = function(granted) {
+    if (granted) {
+      // Permission granted – try fetching contacts again
+      fetchAndroidContacts();
+    } else {
+      showToast("Permission to access contacts was denied.");
+    }
+  };
+
+  // Helper to fetch contacts from the Android bridge and process them
+  function fetchAndroidContacts() {
+    try {
+      if (!window.AndroidContacts) return false;
+      const json = window.AndroidContacts.getContacts();
+      if (!json) return false;
+      const androidContacts = JSON.parse(json);
+      if (!androidContacts || androidContacts.length === 0) return false;
+
+      let added = 0;
+      androidContacts.forEach(c => {
+        const name = c.name || "Unnamed contact";
+        const phone = c.phone || "";
+        const email = c.email || null;
+        if (phone) {
+          upsertContact(name, "whatsapp", phone);
+          added++;
+        } else if (email) {
+          upsertContact(name, "email", email);
+          added++;
+        }
+      });
+
+      showToast(added > 0
+        ? `Imported ${added} contact${added === 1 ? "" : "s"}.`
+        : "Those contacts didn't have a phone number or email to import.");
+      render();
+      return true;
+    } catch (e) {
+      console.warn("Android contact fetch failed:", e);
+      return false;
+    }
+  }
+
+  // Modified importContacts function
+  async function importContacts() {
+    // If Android bridge exists, try to get contacts with permission flow
+    if (window.AndroidContacts) {
+      // First, attempt to fetch directly (in case permission already granted)
+      const success = fetchAndroidContacts();
+      if (success) return; // done
+
+      // Otherwise, request permission – the callback will handle the rest
+      try {
+        window.AndroidContacts.requestContactsPermission();
+        // The callback window.contactPermissionResult will be invoked by Android
+        // We'll show a toast to inform the user we're waiting
+        showToast("Requesting permission to access contacts...");
+        return;
+      } catch (e) {
+        console.warn("Android permission request failed:", e);
+        // Fall through to web API fallback
+      }
+    }
+
+    // Fallback: Web Contacts API (or desktop)
+    if (!navigator.contacts || !navigator.contacts.select) {
+      showToast("Contact import isn't supported on this browser/device.");
+      return;
+    }
+
+    let people;
+    try {
+      people = await navigator.contacts.select(["name", "tel", "email"], { multiple: true });
+    } catch (err) {
+      // User cancelled or error
+      return;
+    }
+    if (!people || people.length === 0) return;
+
+    let added = 0;
+    people.forEach(person => {
+      const name = (person.name && person.name[0]) || "Unnamed contact";
+      const phone = person.tel && person.tel[0];
+      const email = person.email && person.email[0];
+      if (phone) {
+        upsertContact(name, "whatsapp", phone);
+        added++;
+      } else if (email) {
+        upsertContact(name, "email", email);
+        added++;
+      }
+    });
+
+    showToast(added > 0
+      ? `Imported ${added} contact${added === 1 ? "" : "s"}.`
+      : "Those contacts didn't have a phone number or email to import.");
+    render();
+  }
+
+  // The rest of the original code continues below...
+  // (Only the importContacts function has been changed; all other functions remain the same.)
+
   function getAIProvider(id) {
     return AI_PROVIDERS.find(p => p.id === id);
   }
@@ -678,7 +782,6 @@
       const raw = localStorage.getItem(STORAGE_KEYS.friends);
       if (!raw) return [];
       const friends = JSON.parse(raw);
-      // Expect an array of strings now
       if (!Array.isArray(friends)) return [];
       return friends
         .filter(f => typeof f === 'string' && f.trim() !== '')
@@ -861,67 +964,6 @@
 
   function contactPickerSupported() {
     return !!(navigator.contacts && window.ContactsManager);
-  }
-
-  async function importContacts() {
-    let added = 0;
-    let contactsToProcess = [];
-
-    if (window.AndroidContacts) {
-      try {
-        const json = window.AndroidContacts.getContacts();
-        const androidContacts = JSON.parse(json);
-        if (androidContacts && androidContacts.length > 0) {
-          contactsToProcess = androidContacts.map(c => ({
-            name: c.name || "Unnamed contact",
-            phone: c.phone || "",
-            email: null
-          }));
-        }
-      } catch (e) {
-        console.warn("Android contact fetch failed:", e);
-      }
-    }
-
-    if (contactsToProcess.length === 0) {
-      if (!navigator.contacts || !navigator.contacts.select) {
-        showToast("Contact import isn't supported on this browser/device.");
-        return;
-      }
-      let people;
-      try {
-        people = await navigator.contacts.select(["name", "tel", "email"], { multiple: true });
-      } catch (err) {
-        return;
-      }
-      if (!people || people.length === 0) return;
-      people.forEach(person => {
-        const name = (person.name && person.name[0]) || "Unnamed contact";
-        const phone = person.tel && person.tel[0];
-        const email = person.email && person.email[0];
-        contactsToProcess.push({ name, phone, email });
-      });
-    }
-
-    if (contactsToProcess.length === 0) {
-      showToast("No contacts found to import.");
-      return;
-    }
-
-    contactsToProcess.forEach(({ name, phone, email }) => {
-      if (phone) {
-        upsertContact(name, "whatsapp", phone);
-        added++;
-      } else if (email) {
-        upsertContact(name, "email", email);
-        added++;
-      }
-    });
-
-    showToast(added > 0
-      ? `Imported ${added} contact${added === 1 ? "" : "s"}.`
-      : "Those contacts didn't have a phone number or email to import.");
-    render();
   }
 
   function addMessage(contactId, entry) {
@@ -1759,7 +1801,6 @@
   }
 
   function sendMessageToContact(contact, text) {
-    // Haptic feedback on send
     if (navigator.vibrate) navigator.vibrate(50);
 
     const id = contactKey(contact);
