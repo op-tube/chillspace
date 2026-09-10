@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
     <title>ChillSpace Messages</title>
+    <!-- NOTE: for a fully offline Android build, remove/self-host these font links. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Inter:wght@400..600&display=swap" rel="stylesheet">
@@ -40,6 +41,7 @@
             --white-bg: #ffffff;
             --purple-text: #6a0dad;
             --black-text: #000000;
+            --wa-green: #128C7E;
         }
 
         * { box-sizing: border-box; }
@@ -498,21 +500,25 @@
 
         .channel-tabs {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             margin-top: 14px;
         }
 
         .channel-tab {
-            flex: 1;
+            flex: 1 1 0;
+            min-width: 0;
             background: rgba(255,255,255,0.6);
             border: 1px solid #6a0dad;
             border-radius: 10px;
-            padding: 9px 6px;
+            padding: 9px 3px;
             color: #6a0dad;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             font-family: var(--font-body);
             cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .channel-tab.active {
@@ -591,6 +597,55 @@
             padding: 20px;
         }
 
+        /* --- WhatsApp / SMS send-via switch --- */
+        .send-via {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px 16px 0;
+        }
+
+        .send-via-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #4b0082;
+        }
+
+        .switch-group {
+            display: inline-flex;
+            padding: 3px;
+            gap: 3px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.65);
+            border: 1px solid rgba(106,13,173,0.3);
+        }
+
+        .switch-opt {
+            border: none;
+            background: transparent;
+            border-radius: 999px;
+            padding: 6px 16px;
+            font-family: var(--font-body);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #6a0dad;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .switch-opt.active {
+            background: #6a0dad;
+            color: #ffffff;
+        }
+
+        .switch-opt[data-via="whatsapp"].active {
+            background: var(--wa-green);
+            color: #ffffff;
+        }
+
         .composer {
             display: flex;
             gap: 10px;
@@ -621,7 +676,7 @@
             font-size: 11px;
             color: #4b0082;
             text-align: center;
-            padding: 0 16px 10px;
+            padding: 6px 16px 10px;
             background: transparent;
         }
 
@@ -673,14 +728,12 @@
   // This callback will be invoked by the native Android code after permission request.
   window.contactPermissionResult = function(granted) {
     if (granted) {
-      // Permission granted – try fetching contacts again
       fetchAndroidContacts();
     } else {
       showToast("Permission to access contacts was denied.");
     }
   };
 
-  // Helper to fetch contacts from the Android bridge and process them
   function fetchAndroidContacts() {
     try {
       if (!window.AndroidContacts) return false;
@@ -714,28 +767,20 @@
     }
   }
 
-  // Modified importContacts function
   async function importContacts() {
-    // If Android bridge exists, try to get contacts with permission flow
     if (window.AndroidContacts) {
-      // First, attempt to fetch directly (in case permission already granted)
       const success = fetchAndroidContacts();
-      if (success) return; // done
+      if (success) return;
 
-      // Otherwise, request permission – the callback will handle the rest
       try {
         window.AndroidContacts.requestContactsPermission();
-        // The callback window.contactPermissionResult will be invoked by Android
-        // We'll show a toast to inform the user we're waiting
         showToast("Requesting permission to access contacts...");
         return;
       } catch (e) {
         console.warn("Android permission request failed:", e);
-        // Fall through to web API fallback
       }
     }
 
-    // Fallback: Web Contacts API (or desktop)
     if (!navigator.contacts || !navigator.contacts.select) {
       showToast("Contact import isn't supported on this browser/device.");
       return;
@@ -745,7 +790,6 @@
     try {
       people = await navigator.contacts.select(["name", "tel", "email"], { multiple: true });
     } catch (err) {
-      // User cancelled or error
       return;
     }
     if (!people || people.length === 0) return;
@@ -769,9 +813,6 @@
       : "Those contacts didn't have a phone number or email to import.");
     render();
   }
-
-  // The rest of the original code continues below...
-  // (Only the importContacts function has been changed; all other functions remain the same.)
 
   function getAIProvider(id) {
     return AI_PROVIDERS.find(p => p.id === id);
@@ -854,7 +895,19 @@
     return plus + digits;
   }
   function digitsOnly(raw) {
-    return raw.replace(/[^\d]/g, "");
+    return (raw || "").replace(/[^\d]/g, "");
+  }
+
+  function isIOSDevice() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  }
+
+  // SMS URI. iOS historically wants "&body=", Android wants "?body=".
+  function buildSmsLink(phoneNumber, text) {
+    const digits = digitsOnly(phoneNumber);
+    const sep = isIOSDevice() ? "&" : "?";
+    return "sms:" + digits + sep + "body=" + encodeURIComponent(text);
   }
 
   const CHANNELS = {
@@ -870,6 +923,19 @@
       key: (handle) => "wa:" + digitsOnly(handle),
       buildLink: (handle, chillSpaceLink) => buildWaLink(handle, chillSpaceLink),
       sendNote: "Sending opens WhatsApp to deliver your message link."
+    },
+    sms: {
+      label: "SMS",
+      inputType: "tel",
+      placeholder: "e.g. +15559876543",
+      hint: "Enter their name and phone number with country code.",
+      selfHint: "Enter your name and phone number with country code.",
+      normalize: (raw) => normalizePhone(raw),
+      isValid: (handle) => digitsOnly(handle).length >= 7,
+      invalidMessage: "Please enter a valid phone number with country code.",
+      key: (handle) => "sms:" + digitsOnly(handle),
+      buildLink: (handle, chillSpaceLink) => buildSmsLink(handle, chillSpaceLink),
+      sendNote: "Sending opens your SMS app to deliver your message link."
     },
     email: {
       label: "Email",
@@ -920,6 +986,18 @@
 
   function isAIContact(contact) {
     return !!contact && contact.channel === "ai";
+  }
+
+  // Phone-number based contacts can be reached over either WhatsApp or SMS.
+  function isPhoneContact(contact) {
+    return !!contact && (contact.channel === "whatsapp" || contact.channel === "sms");
+  }
+
+  // Returns "whatsapp" | "sms" | null for the currently selected delivery route.
+  function getSendVia(contact) {
+    if (!isPhoneContact(contact)) return null;
+    if (contact.sendVia === "whatsapp" || contact.sendVia === "sms") return contact.sendVia;
+    return contact.channel; // default = the channel the contact was created with
   }
 
   function findContactById(id) {
@@ -980,7 +1058,7 @@
 
   function escapeHtml(str) {
     const div = document.createElement("div");
-    div.textContent = str;
+    div.textContent = str == null ? "" : str;
     return div.innerHTML;
   }
 
@@ -1800,6 +1878,16 @@
     });
   }
 
+  // Persist the chosen delivery route (WhatsApp vs SMS) for a phone contact.
+  function setContactSendVia(contact, via) {
+    const contacts = getContacts();
+    const stored = contacts.find(c => contactKey(c) === contactKey(contact));
+    if (!stored) return false;
+    stored.sendVia = via;
+    saveContacts(contacts);
+    return true;
+  }
+
   function sendMessageToContact(contact, text) {
     if (navigator.vibrate) navigator.vibrate(50);
 
@@ -1852,8 +1940,20 @@
     addMessage(id, { dir: "sent", text: text, ts: Date.now() });
     updateDailyChallenge();
 
-    const link = buildChillSpaceLink(getEffectiveUsername(), getEffectiveChannel(), getEffectiveHandle(), text, contact.channel, contact.handle);
-    const outLink = getChannel(contact.channel).buildLink(contact.handle, link);
+    // For phone contacts the user can choose WhatsApp or SMS from the chat switch.
+    const sendVia = getSendVia(contact);
+    const recipientChannel = sendVia || contact.channel;
+    const outChannel = getChannel(recipientChannel);
+
+    const link = buildChillSpaceLink(
+      getEffectiveUsername(),
+      getEffectiveChannel(),
+      getEffectiveHandle(),
+      text,
+      recipientChannel,
+      contact.handle
+    );
+    const outLink = outChannel.buildLink(contact.handle, link);
     window.location.href = outLink;
   }
 
@@ -1868,7 +1968,9 @@
     const ai = isAIContact(contact);
     const bot = isBotContact(contact);
     const provider = ai ? getAIProvider(contact.provider) : null;
-    const channel = ai || bot ? null : getChannel(contact.channel);
+    const phone = isPhoneContact(contact);
+    const sendVia = getSendVia(contact);
+    const channel = ai || bot ? null : getChannel(sendVia || contact.channel);
 
     const topbar = document.createElement("div");
     topbar.className = "topbar";
@@ -1908,8 +2010,19 @@
       ? "This is a ChillSpace Friend — they'll reply automatically. 💬"
       : channel.sendNote;
 
+    const viaSwitchHtml = phone ? `
+      <div class="send-via">
+        <span class="send-via-label">Send via</span>
+        <div class="switch-group">
+          <button type="button" class="switch-opt${sendVia === "whatsapp" ? " active" : ""}" data-via="whatsapp">WhatsApp</button>
+          <button type="button" class="switch-opt${sendVia === "sms" ? " active" : ""}" data-via="sms">SMS</button>
+        </div>
+      </div>
+    ` : "";
+
     chatScreen.innerHTML = `
       <div class="messages" id="messages-pane">${msgsHtml}</div>
+      ${viaSwitchHtml}
       <div class="whatsapp-note">${note}</div>
       <div class="composer">
         <input id="chat-input" type="text" placeholder="Type a message..." maxlength="500" />
@@ -1936,6 +2049,21 @@
 
     const input = document.getElementById("chat-input");
     const sendBtn = document.getElementById("chat-send");
+
+    // WhatsApp <-> SMS toggle
+    chatScreen.querySelectorAll(".switch-opt").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const via = btn.getAttribute("data-via");
+        if (via === getSendVia(contact)) return;
+
+        const draft = input ? input.value : "";
+        setContactSendVia(contact, via);
+        render();
+
+        const restored = document.getElementById("chat-input");
+        if (restored) restored.value = draft;
+      });
+    });
 
     function trySend() {
       const text = input.value.trim();
