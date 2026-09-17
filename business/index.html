@@ -301,7 +301,8 @@
             gap: 4px;
             flex-wrap: wrap;
         }
-        .biz-post-actions button {
+        .biz-post-actions button,
+        .biz-post-actions a {
             flex: 1;
             background: transparent;
             border: none;
@@ -315,14 +316,100 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            transition: background .15s;
+            transition: background .15s, color .15s;
             user-select: none;
             min-width: 44px;
             position: relative;
+            text-decoration: none;
+            font-family: inherit;
         }
-        .biz-post-actions button:hover { background: #f2f3f5; }
-        .biz-post-actions button:active { background: #e7e9ed; }
+        .biz-post-actions button:hover,
+        .biz-post-actions a:hover { background: #f2f3f5; text-decoration: none; }
+        .biz-post-actions button:active,
+        .biz-post-actions a:active { background: #e7e9ed; }
         .biz-post-actions button.liked { color: #21a366; }
+        .biz-post-actions button.active { color: #1877f2; }
+
+        /* Custom business button */
+        .biz-post-actions a.biz-custom-btn {
+            color: #1877f2;
+            font-weight: 700;
+        }
+        .biz-post-actions a.biz-custom-btn:hover {
+            background: #e7f0fd;
+            color: #166fe5;
+        }
+
+        /* Comments */
+        .biz-post-comments {
+            border-top: 1px solid #e4e6eb;
+            margin-top: 6px;
+            padding: 10px 16px 6px;
+        }
+        .biz-post-comments[hidden] { display: none; }
+        .biz-comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .biz-comment-list:not(:empty) { margin-bottom: 10px; }
+        .biz-comment {
+            background: #f0f2f5;
+            border-radius: 16px;
+            padding: 9px 14px;
+            font-size: 14.5px;
+            line-height: 1.45;
+            color: #1c1e21;
+            word-wrap: break-word;
+            animation: in .25s ease both;
+        }
+        .biz-comment a {
+            color: #1877f2;
+            text-decoration: underline;
+            word-break: break-all;
+        }
+        .biz-comment-note {
+            font-size: 11.5px;
+            color: #8a8d91;
+            margin-top: 4px;
+        }
+        .biz-comment-form {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .biz-comment-input {
+            flex: 1;
+            min-width: 0;
+            border: 1px solid #ccd0d5;
+            background: #f0f2f5;
+            border-radius: 999px;
+            padding: 9px 14px;
+            font-size: 14.5px;
+            font-family: inherit;
+            color: #1c1e21;
+            outline: none;
+            transition: background .15s, border-color .15s;
+        }
+        .biz-comment-input:focus {
+            background: #fff;
+            border-color: #1877f2;
+        }
+        .biz-comment-submit {
+            background: #1877f2;
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 9px 16px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            flex-shrink: 0;
+            font-family: inherit;
+            transition: background .15s, transform .08s;
+        }
+        .biz-comment-submit:hover { background: #166fe5; }
+        .biz-comment-submit:active { transform: scale(0.97); }
 
         .like-btn.like-animating {
             animation: likePop 0.5s ease;
@@ -528,8 +615,10 @@
             .biz-post { padding: 12px 0 8px; border-radius: 10px; }
             .biz-post-head { padding: 0 12px; }
             .biz-post-content { font-size: 15px; padding: 0 12px 10px; }
-            .biz-post-actions button { font-size: 13px; gap: 4px; }
+            .biz-post-actions button,
+            .biz-post-actions a { font-size: 13px; gap: 4px; }
             .biz-post-actions { padding: 6px 8px 0; }
+            .biz-post-comments { padding: 10px 12px 6px; }
             .business-avatar { width: 72px; height: 72px; }
             .business-avatar-fallback { width: 72px; height: 72px; font-size: 28px; }
             .setup-card { padding: 20px 16px; }
@@ -605,11 +694,17 @@
                     <div class="setup-step">
                         <div class="setup-step-num">3</div>
                         <div class="setup-step-text">
-                            <strong>Optional:</strong> Add a <code>chillspace.svg</code> at your root for your profile picture. If missing, we'll generate a random one.
+                            <strong>Optional (per post):</strong> Add <code>custom-button-text</code> and <code>custom-button-link</code> to a post to give it its own call-to-action button. Defaults to <strong>Shop Now</strong> pointing at your own domain.
                         </div>
                     </div>
                     <div class="setup-step">
                         <div class="setup-step-num">4</div>
+                        <div class="setup-step-text">
+                            <strong>Optional:</strong> Add a <code>chillspace.svg</code> at your root for your profile picture. If missing, we'll generate a random one.
+                        </div>
+                    </div>
+                    <div class="setup-step">
+                        <div class="setup-step-num">5</div>
                         <div class="setup-step-text">
                             Visit <code>chillspace.ai/business/?web=yourdomain.com</code> to see your profile!
                         </div>
@@ -630,7 +725,9 @@
       <span class="code-keyword">"content"</span><span class="code-punct">:</span> <span class="code-string">"New product launch! Check it out at https://example.com/new"</span><span class="code-punct">,</span>
       <span class="code-keyword">"likes"</span><span class="code-punct">:</span> <span class="code-number">1082</span><span class="code-punct">,</span>
       <span class="code-keyword">"time"</span><span class="code-punct">:</span> <span class="code-string">"2025-01-15T08:00:00Z"</span><span class="code-punct">,</span>
-      <span class="code-keyword">"image"</span><span class="code-punct">:</span> <span class="code-string">"https://example.com/product.jpg"</span>
+      <span class="code-keyword">"image"</span><span class="code-punct">:</span> <span class="code-string">"https://example.com/product.jpg"</span><span class="code-punct">,</span>
+      <span class="code-keyword">"custom-button-text"</span><span class="code-punct">:</span> <span class="code-string">"Shop Now"</span><span class="code-punct">,</span>
+      <span class="code-keyword">"custom-button-link"</span><span class="code-punct">:</span> <span class="code-string">"https://example.com/shop"</span>
     }
   ]
 }</pre>
@@ -662,6 +759,8 @@
             'linear-gradient(135deg, #f59e0b, #ef4444)',
             'linear-gradient(135deg, #8b5cf6, #3b82f6)'
         ];
+
+        const DEFAULT_CUSTOM_BUTTON_TEXT = 'Shop Now';
 
         // ============================================================
         //  HELPERS
@@ -736,6 +835,101 @@
             setTimeout(() => {
                 btn.classList.remove('like-animating');
             }, 550);
+        }
+
+        // ------------------------------------------------------------
+        //  COMMENTS (local only — they never leave the browser)
+        // ------------------------------------------------------------
+        function toggleComments(btn) {
+            const post = btn.closest('.biz-post');
+            if (!post) return;
+            const section = post.querySelector('.biz-post-comments');
+            if (!section) return;
+
+            const willShow = section.hidden;
+            section.hidden = !willShow;
+            btn.classList.toggle('active', willShow);
+
+            if (willShow) {
+                const input = section.querySelector('.biz-comment-input');
+                if (input) {
+                    setTimeout(() => input.focus(), 30);
+                }
+            }
+        }
+
+        function submitComment(event, form) {
+            if (event) event.preventDefault();
+            const input = form.querySelector('.biz-comment-input');
+            if (!input) return false;
+
+            const text = input.value.trim();
+            if (!text) return false;
+
+            const section = form.closest('.biz-post-comments');
+            const list = section ? section.querySelector('.biz-comment-list') : null;
+
+            if (list) {
+                const comment = document.createElement('div');
+                comment.className = 'biz-comment';
+                comment.innerHTML =
+                    `<div class="biz-comment-body" dir="auto">${linkifyText(text)}</div>` +
+                    `<div class="biz-comment-note">Only visible to you · not saved anywhere 🌿</div>`;
+                list.appendChild(comment);
+            }
+
+            input.value = '';
+            showToast('Comment posted locally — it never leaves your browser 🌿');
+            return false;
+        }
+
+        // ------------------------------------------------------------
+        //  REPOST -> ChillSpace post intent
+        // ------------------------------------------------------------
+        function repostPost(btn) {
+            const target = btn && btn.dataset ? btn.dataset.repostUrl : '';
+            window.location.href = target || 'https://chillspace.ai/';
+        }
+
+        // ------------------------------------------------------------
+        //  LINK RESOLUTION FOR THE PER-POST CUSTOM BUTTON
+        // ------------------------------------------------------------
+        function resolveCustomLink(rawLink, domain) {
+            const fallback = `https://${domain}`;
+            if (typeof rawLink !== 'string') return fallback;
+            const trimmed = rawLink.trim();
+            if (!trimmed) return fallback;
+
+            // Already has a scheme (https:, http:, mailto:, tel:, ...)
+            if (/^[a-z][a-z0-9+.-]*:/i.test(trimmed)) return trimmed;
+            // Protocol-relative
+            if (trimmed.startsWith('//')) return 'https:' + trimmed;
+            // Root-relative path
+            if (trimmed.startsWith('/')) return `https://${domain}${trimmed}`;
+
+            // No scheme: if the first segment looks like a hostname, use it as-is…
+            const firstSegment = trimmed.split('/')[0];
+            if (firstSegment.includes('.')) return `https://${trimmed}`;
+
+            // …otherwise treat it as a path on the business domain.
+            return `https://${domain}/${trimmed}`;
+        }
+
+        function getPostCustomButton(post, domain) {
+            const rawText = post['custom-button-text'] !== undefined
+                ? post['custom-button-text']
+                : post.customButtonText;
+            const rawLink = post['custom-button-link'] !== undefined
+                ? post['custom-button-link']
+                : post.customButtonLink;
+
+            const text = (typeof rawText === 'string' && rawText.trim())
+                ? rawText.trim()
+                : DEFAULT_CUSTOM_BUTTON_TEXT;
+
+            const link = resolveCustomLink(rawLink, domain);
+
+            return { text, link };
         }
 
         // ============================================================
@@ -854,6 +1048,10 @@
                 document.getElementById('bizPostCount').textContent = postCount.toLocaleString();
                 document.getElementById('bizTotalLikes').textContent = totalLikes.toLocaleString();
 
+                // ---- Repost intent URL (shared across all posts) ----
+                const profileUrl = `https://chillspace.ai/business/?web=${encodeURIComponent(domain)}`;
+                const repostUrl = `https://chillspace.ai/?post_intent=${encodeURIComponent(profileUrl)}`;
+
                 bizFeedEl.innerHTML = '';
                 if (!data.posts || data.posts.length === 0) {
                     bizFeedEl.innerHTML = '<div class="biz-empty">No posts yet. Check back soon! 🌿</div>';
@@ -870,6 +1068,9 @@
                     const likes = parseInt(post.likes) || 0;
                     const relativeTime = formatRelativeTime(post.time);
                     const contentHtml = linkifyText(post.content || '');
+
+                    // ---- Per-post custom call-to-action button ----
+                    const customButton = getPostCustomButton(post, domain);
 
                     let avatarHtml;
                     if (avatarSrc) {
@@ -895,9 +1096,16 @@
                         ${imageHtml}
                         <div class="biz-post-actions">
                             <button type="button" class="like-btn" data-base="${likes}" onclick="toggleLike(this)">👍 ${likes.toLocaleString()}</button>
-                            <button type="button" onclick="showToast('Comments are just for you on this profile 🌿')">💬 Comment</button>
-                            <button type="button" onclick="showToast('Reposting is disabled on business profiles 🌿')">↗️ Repost</button>
-                            <button type="button" onclick="showToast('ChillSpace AI is not available on business profiles 🌿')">✨ ChillSpace AI</button>
+                            <button type="button" class="comment-btn" onclick="toggleComments(this)">💬 Comment</button>
+                            <button type="button" class="repost-btn" data-repost-url="${escapeHtml(repostUrl)}" onclick="repostPost(this)">↗️ Repost</button>
+                            <a class="biz-custom-btn" href="${escapeHtml(customButton.link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(customButton.text)}</a>
+                        </div>
+                        <div class="biz-post-comments" hidden>
+                            <div class="biz-comment-list"></div>
+                            <form class="biz-comment-form" onsubmit="return submitComment(event, this)">
+                                <input class="biz-comment-input" type="text" placeholder="Write a comment..." maxlength="500" autocomplete="off" aria-label="Write a comment">
+                                <button class="biz-comment-submit" type="submit">Post</button>
+                            </form>
                         </div>
                     `;
                     bizFeedEl.appendChild(el);
@@ -972,6 +1180,7 @@
                         post.likes = 0;
                     }
                     // time is optional, will default to "Just now"
+                    // custom-button-text / custom-button-link are optional per post
                 }
 
                 let avatarSrc = null;
@@ -1005,6 +1214,9 @@
             window.toggleLike = toggleLike;
             window.showToast = showToast;
             window.copyJsonExample = copyJsonExample;
+            window.toggleComments = toggleComments;
+            window.submitComment = submitComment;
+            window.repostPost = repostPost;
         })();
     </script>
 </body>
