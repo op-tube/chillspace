@@ -599,7 +599,7 @@
                     <div class="setup-step">
                         <div class="setup-step-num">2</div>
                         <div class="setup-step-text">
-                            Add your username and posts. Each post needs <code>content</code> and <code>likes</code>. Optionally add <code>time</code> and <code>image</code>.
+                            Add your username and posts. Each post needs <code>content</code>, <code>likes</code>, and <code>time</code> (in ISO 8601 format, e.g. <code>"2024-01-15T10:30:00Z"</code>). Optionally add <code>image</code>.
                         </div>
                     </div>
                     <div class="setup-step">
@@ -624,12 +624,12 @@
     {
       <span class="code-keyword">"content"</span><span class="code-punct">:</span> <span class="code-string">"Welcome to our ChillSpace profile! 🌿 We're excited to share updates with you."</span><span class="code-punct">,</span>
       <span class="code-keyword">"likes"</span><span class="code-punct">:</span> <span class="code-number">247</span><span class="code-punct">,</span>
-      <span class="code-keyword">"time"</span><span class="code-punct">:</span> <span class="code-string">"2h ago"</span>
+      <span class="code-keyword">"time"</span><span class="code-punct">:</span> <span class="code-string">"2025-01-15T10:30:00Z"</span>
     },
     {
       <span class="code-keyword">"content"</span><span class="code-punct">:</span> <span class="code-string">"New product launch! Check it out at https://example.com/new"</span><span class="code-punct">,</span>
       <span class="code-keyword">"likes"</span><span class="code-punct">:</span> <span class="code-number">1082</span><span class="code-punct">,</span>
-      <span class="code-keyword">"time"</span><span class="code-punct">:</span> <span class="code-string">"5h ago"</span><span class="code-punct">,</span>
+      <span class="code-keyword">"time"</span><span class="code-punct">:</span> <span class="code-string">"2025-01-15T08:00:00Z"</span><span class="code-punct">,</span>
       <span class="code-keyword">"image"</span><span class="code-punct">:</span> <span class="code-string">"https://example.com/product.jpg"</span>
     }
   ]
@@ -706,10 +706,6 @@
             return FALLBACK_GRADIENTS[Math.floor(Math.random() * FALLBACK_GRADIENTS.length)];
         }
 
-        function getRandomAvatar() {
-            return FALLBACK_AVATARS[Math.floor(Math.random() * FALLBACK_AVATARS.length)];
-        }
-
         function toggleLike(btn) {
             const liked = btn.dataset.liked === '1';
             let base = parseInt(btn.dataset.base, 10);
@@ -743,6 +739,35 @@
         }
 
         // ============================================================
+        //  RELATIVE TIME FORMATTING (ISO -> "2h ago")
+        // ============================================================
+        function formatRelativeTime(isoString) {
+            if (!isoString) return 'Just now';
+
+            const date = new Date(isoString);
+            if (isNaN(date.getTime())) return 'Just now';
+
+            const now = new Date();
+            const diffMs = now - date;
+            const diffSec = Math.floor(diffMs / 1000);
+            const diffMin = Math.floor(diffSec / 60);
+            const diffHour = Math.floor(diffMin / 60);
+            const diffDay = Math.floor(diffHour / 24);
+            const diffWeek = Math.floor(diffDay / 7);
+            const diffMonth = Math.floor(diffDay / 30);
+            const diffYear = Math.floor(diffDay / 365);
+
+            if (diffSec < 10) return 'Just now';
+            if (diffSec < 60) return `${diffSec}s ago`;
+            if (diffMin < 60) return `${diffMin}m ago`;
+            if (diffHour < 24) return `${diffHour}h ago`;
+            if (diffDay < 7) return `${diffDay}d ago`;
+            if (diffWeek < 5) return `${diffWeek}w ago`;
+            if (diffMonth < 12) return `${diffMonth}mo ago`;
+            return `${diffYear}y ago`;
+        }
+
+        // ============================================================
         //  COPY JSON EXAMPLE
         // ============================================================
         function copyJsonExample(btn) {
@@ -752,7 +777,6 @@
                 btn.textContent = '✅ Copied!';
                 setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000);
             }).catch(() => {
-                // Fallback
                 const textarea = document.createElement('textarea');
                 textarea.value = text;
                 document.body.appendChild(textarea);
@@ -798,16 +822,13 @@
             }
 
             function renderBusiness(data, domain, avatarSrc) {
-                // Hide loading, show profile
                 bizLoadingEl.style.display = 'none';
                 bizProfileEl.style.display = 'block';
                 setupEl.style.display = 'none';
 
-                // Populate profile card
                 document.getElementById('bizName').textContent = data.username;
                 document.getElementById('bizDomain').textContent = domain;
 
-                // Avatar
                 const avatarEl = document.getElementById('bizAvatar');
                 const fallbackEl = document.getElementById('bizAvatarFallback');
 
@@ -816,7 +837,6 @@
                     avatarEl.style.display = 'block';
                     fallbackEl.style.display = 'none';
                     avatarEl.onerror = function() {
-                        // SVG failed to load, use fallback
                         this.style.display = 'none';
                         fallbackEl.style.display = 'flex';
                         fallbackEl.textContent = data.username.charAt(0).toUpperCase();
@@ -829,13 +849,11 @@
                     fallbackEl.style.background = getRandomGradient();
                 }
 
-                // Stats
                 const postCount = data.posts ? data.posts.length : 0;
                 const totalLikes = data.posts ? data.posts.reduce((sum, p) => sum + (parseInt(p.likes) || 0), 0) : 0;
                 document.getElementById('bizPostCount').textContent = postCount.toLocaleString();
                 document.getElementById('bizTotalLikes').textContent = totalLikes.toLocaleString();
 
-                // Render posts
                 bizFeedEl.innerHTML = '';
                 if (!data.posts || data.posts.length === 0) {
                     bizFeedEl.innerHTML = '<div class="biz-empty">No posts yet. Check back soon! 🌿</div>';
@@ -850,10 +868,9 @@
                     const initial = data.username.charAt(0).toUpperCase();
                     const gradient = getRandomGradient();
                     const likes = parseInt(post.likes) || 0;
-                    const time = post.time || 'Just now';
+                    const relativeTime = formatRelativeTime(post.time);
                     const contentHtml = linkifyText(post.content || '');
 
-                    // Avatar for post
                     let avatarHtml;
                     if (avatarSrc) {
                         avatarHtml = `<img class="avatar" src="${escapeHtml(avatarSrc)}" alt="${escapeHtml(data.username)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="avatar-fallback" style="display:none;background:${gradient};">${escapeHtml(initial)}</div>`;
@@ -861,7 +878,6 @@
                         avatarHtml = `<div class="avatar-fallback" style="background:${gradient};">${escapeHtml(initial)}</div>`;
                     }
 
-                    // Image
                     let imageHtml = '';
                     if (post.image) {
                         imageHtml = `<img class="biz-post-image" src="${escapeHtml(post.image)}" alt="" loading="lazy" onerror="this.remove()">`;
@@ -872,7 +888,7 @@
                             ${avatarHtml}
                             <div class="meta">
                                 <div class="name">${escapeHtml(data.username)}</div>
-                                <div class="time">${escapeHtml(time)} · 🌐</div>
+                                <div class="time">${escapeHtml(relativeTime)} · 🌐</div>
                             </div>
                         </div>
                         <div class="biz-post-content" dir="auto">${contentHtml}</div>
@@ -891,7 +907,6 @@
             async function fetchBusiness(domain) {
                 showLoading();
 
-                // Clean domain (remove protocol and trailing slashes)
                 let cleanDomain = domain.replace(/^https?:\/\//i, '').replace(/\/+$/, '');
 
                 if (!cleanDomain || cleanDomain.length < 3 || !cleanDomain.includes('.')) {
@@ -899,7 +914,6 @@
                     return;
                 }
 
-                // Try to fetch chillspace.json
                 const jsonUrl = `https://${cleanDomain}/chillspace.json`;
                 const svgUrl = `https://${cleanDomain}/chillspace.svg`;
 
@@ -929,7 +943,6 @@
                     return;
                 }
 
-                // Validate structure
                 if (!data || typeof data !== 'object') {
                     showSetup('chillspace.json must be a JSON object with a "username" and "posts" array.');
                     return;
@@ -945,11 +958,10 @@
                     return;
                 }
 
-                // Validate each post
                 for (let i = 0; i < data.posts.length; i++) {
                     const post = data.posts[i];
                     if (!post || typeof post !== 'object') {
-                        showSetup(`Post at index ${i} is not a valid object. Each post needs "content" and "likes".`);
+                        showSetup(`Post at index ${i} is not a valid object. Each post needs "content", "likes", and "time".`);
                         return;
                     }
                     if (!post.content || typeof post.content !== 'string') {
@@ -957,24 +969,19 @@
                         return;
                     }
                     if (post.likes === undefined || post.likes === null) {
-                        // Default likes to 0 instead of erroring
                         post.likes = 0;
                     }
+                    // time is optional, will default to "Just now"
                 }
 
-                // Check for SVG (non-blocking)
                 let avatarSrc = null;
                 try {
                     const svgResponse = await fetch(svgUrl, { method: 'HEAD', mode: 'no-cors' });
-                    // With no-cors, we can't read status, but if it doesn't throw, assume it exists
-                    // Actually, no-cors always succeeds, so we just try to use the URL
                     avatarSrc = svgUrl;
                 } catch (e) {
                     // SVG doesn't exist, use fallback
                 }
 
-                // If the SVG might not exist, we still set it and let onerror handle it
-                // But to be safe, let's try a quick image load test
                 if (avatarSrc) {
                     const imgTest = new Image();
                     imgTest.onload = () => {
@@ -989,14 +996,12 @@
                 }
             }
 
-            // Entry point
             if (webParam) {
                 fetchBusiness(webParam);
             } else {
                 showSetup();
             }
 
-            // Expose for onclick handlers
             window.toggleLike = toggleLike;
             window.showToast = showToast;
             window.copyJsonExample = copyJsonExample;
