@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="ChillSpace for Business - Create a calm, fake social media profile for your brand. Load posts from your own chillspace.json.">
+    <title>ChillSpace for Business - the placebo social media network for your brand</title>
+    <link rel="icon" type="image/x-icon" href="https://ia800602.us.archive.org/17/items/favicon_20260831/favicon.ico" />
+    <meta property="og:image" content="https://archive.org/download/facebook-slot/facebook-slot.gif">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Poppins:wght@400;700&family=Raleway:wght@400;700&family=Nunito:wght@400;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&family=Fira+Sans:wght@400;700&family=Source+Sans+Pro:wght@400;700&family=Oswald:wght@400;700&family=Roboto+Mono:wght@400;700&family=Quicksand:wght@400;700&family=Work+Sans:wght@400;700&family=Barlow:wght@400;700&family=Josefin+Sans:wght@400;700&family=Cabin:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
+        body {
+            background: #f0f2f5;
+            color: #1c1e21;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-0 { font-family: 'Inter', sans-serif; }
+        .font-1 { font-family: 'Roboto', sans-serif; }
+        .font-2 { font-family: 'Open Sans', sans-serif; }
+        .font-3 { font-family: 'Lato', sans-serif; }
+        .font-4 { font-family: 'Montserrat', sans-serif; }
+        .font-5 { font-family: 'Poppins', sans-serif; }
+        .font-6 { font-family: 'Raleway', sans-serif; }
+        .font-7 { font-family: 'Nunito', sans-serif; }
+        .font-8 { font-family: 'Merriweather', serif; }
+        .font-9 { font-family: 'Playfair Display', serif; }
+        .font-10 { font-family: 'Fira Sans', sans-serif; }
+        .font-11 { font-family: 'Source Sans Pro', sans-serif; }
+        .font-12 { font-family: 'Oswald', sans-serif; }
+        .font-13 { font-family: 'Roboto Mono', monospace; }
+        .font-14 { font-family: 'Quicksand', sans-serif; }
+        .font-15 { font-family: 'Work Sans', sans-serif; }
+        .font-16 { font-family: 'Barlow', sans-serif; }
+        .font-17 { font-family: 'Josefin Sans', sans-serif; }
+        .font-18 { font-family: 'Cabin', sans-serif; }
+        .font-19 { font-family: 'PT Sans', sans-serif; }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: saturate(180%) blur(10px);
+            border-bottom: 1px solid #dddfe2;
+        }
+        .header-inner {
+            max-width: 680px;
+            margin: 0 auto;
+            height: 60px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 26px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #1877f2, #7c3aed 60%, #06b6d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo h1 { font-size: 26px; margin: 0; font-weight: 800; }
+
+        .header-btn {
+            background: #1877f2;
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(24, 119, 242, 0.3);
+            transition: transform .08s ease, background .2s ease, box-shadow .2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.2;
+            min-width: 52px;
+        }
+        .header-btn:hover {
+            background: #166fe5;
+            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35);
+            text-decoration: none;
+            color: #fff;
+        }
+        .header-btn:active { transform: scale(0.97); }
+        .header-btn.back-btn {
+            background: #e4e6eb;
+            color: #1c1e21;
+            box-shadow: none;
+        }
+        .header-btn.back-btn:hover {
+            background: #d8dadf;
+            box-shadow: none;
+        }
+
+        main { padding: 20px 0 60px; }
+
+        /* Business Profile Card */
+        #business-profile {
+            max-width: 680px;
+            margin: 0 auto 16px;
+            padding: 0 12px;
+            display: none;
+        }
+        .business-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.03);
+            padding: 24px 20px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .business-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 90px;
+            background: linear-gradient(135deg, #1877f2, #7c3aed, #06b6d4);
+            opacity: 0.12;
+        }
+        .business-avatar-wrap {
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .business-avatar {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            background: #e4e6eb;
+            display: block;
+        }
+        .business-avatar-fallback {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 800;
+            font-size: 34px;
+            background: linear-gradient(135deg, #1877f2, #7c3aed);
+        }
+        .business-name {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0 0 2px;
+            position: relative;
+            z-index: 1;
+        }
+        .business-domain {
+            font-size: 13px;
+            color: #65676b;
+            position: relative;
+            z-index: 1;
+        }
+        .business-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            background: #e7f0fd;
+            color: #1877f2;
+            padding: 2px 10px;
+            border-radius: 999px;
+            margin-top: 6px;
+            position: relative;
+            z-index: 1;
+        }
+        .business-stats {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid #e4e6eb;
+            position: relative;
+            z-index: 1;
+        }
+        .business-stat {
+            text-align: center;
+        }
+        .business-stat-num {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1c1e21;
+        }
+        .business-stat-label {
+            font-size: 12px;
+            color: #65676b;
+            margin-top: 1px;
+        }
+
+        /* Business Feed */
+        #business-feed {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 12px;
+        }
+        .biz-post {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.03);
+            padding: 14px 0 10px;
+            margin-bottom: 16px;
+            animation: in .4s ease both;
+        }
+        @keyframes in {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: none; }
+        }
+        .biz-post-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 16px;
+        }
+        .biz-post-head .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            object-fit: cover;
+            border: 1px solid rgba(0,0,0,0.05);
+            background: #e4e6eb;
+        }
+        .biz-post-head .avatar-fallback {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            background: linear-gradient(135deg, #1877f2, #7c3aed);
+        }
+        .biz-post-head .meta { min-width: 0; flex: 1; }
+        .biz-post-head .name {
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .biz-post-head .time {
+            font-size: 13px;
+            color: #65676b;
+            margin-top: 2px;
+        }
+        .biz-post-content {
+            padding: 0 16px 12px;
+            display: block;
+            margin: 12px 0 0;
+            font-size: 15.5px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+        .biz-post-content a {
+            color: #1877f2;
+            text-decoration: underline;
+            word-break: break-all;
+        }
+        .biz-post-image {
+            display: block;
+            width: 100%;
+            max-height: 460px;
+            object-fit: cover;
+            margin-top: 8px;
+        }
+        .biz-post-actions {
+            display: flex;
+            border-top: 1px solid #e4e6eb;
+            margin-top: 8px;
+            padding: 6px 12px 0;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .biz-post-actions button {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 8px 4px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #65676b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background .15s;
+            user-select: none;
+            min-width: 44px;
+            position: relative;
+        }
+        .biz-post-actions button:hover { background: #f2f3f5; }
+        .biz-post-actions button:active { background: #e7e9ed; }
+        .biz-post-actions button.liked { color: #21a366; }
+
+        .like-btn.like-animating {
+            animation: likePop 0.5s ease;
+        }
+        @keyframes likePop {
+            0% { transform: scale(1); color: #65676b; }
+            15% { transform: scale(1.4); color: #e11d48; }
+            30% { transform: scale(0.85); color: #7c3aed; }
+            45% { transform: scale(1.2); color: #059669; }
+            60% { transform: scale(0.95); color: #d97706; }
+            75% { transform: scale(1.1); color: #2563eb; }
+            100% { transform: scale(1); color: #21a366; }
+        }
+
+        /* Setup Instructions */
+        #setup-instructions {
+            max-width: 680px;
+            margin: 0 auto 16px;
+            padding: 0 12px;
+            display: none;
+        }
+        .setup-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.03);
+            padding: 28px 24px;
+            text-align: center;
+        }
+        .setup-icon {
+            font-size: 52px;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+        .setup-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 0 6px;
+            background: linear-gradient(90deg, #1877f2, #7c3aed 60%, #06b6d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .setup-subtitle {
+            font-size: 15px;
+            color: #65676b;
+            line-height: 1.5;
+            margin: 0 0 20px;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .setup-steps {
+            text-align: left;
+            background: #f7f8fa;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 18px;
+        }
+        .setup-step {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 14px;
+            align-items: flex-start;
+        }
+        .setup-step:last-child { margin-bottom: 0; }
+        .setup-step-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #1877f2;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .setup-step-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #1c1e21;
+        }
+        .setup-step-text strong { font-weight: 700; }
+        .setup-step-text code {
+            background: #e4e6eb;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'Roboto Mono', monospace;
+        }
+        .setup-code-block {
+            background: #1e1e2e;
+            border-radius: 10px;
+            padding: 16px 18px;
+            text-align: left;
+            overflow-x: auto;
+            margin-bottom: 18px;
+            position: relative;
+        }
+        .setup-code-block pre {
+            margin: 0;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #cdd6f4;
+            white-space: pre;
+        }
+        .setup-code-block .code-keyword { color: #89b4fa; }
+        .setup-code-block .code-string { color: #a6e3a1; }
+        .setup-code-block .code-number { color: #fab387; }
+        .setup-code-block .code-punct { color: #6c7086; }
+        .setup-copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #cdd6f4;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .15s;
+        }
+        .setup-copy-btn:hover { background: rgba(255,255,255,0.2); }
+        .setup-note {
+            font-size: 13px;
+            color: #8a8d91;
+            line-height: 1.5;
+            margin-top: 4px;
+        }
+        .setup-note a { color: #1877f2; text-decoration: underline; }
+
+        /* Error state */
+        .setup-error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #dc2626;
+            text-align: left;
+            margin-bottom: 16px;
+            display: none;
+            line-height: 1.5;
+        }
+        .setup-error.show { display: block; }
+
+        /* Loading spinner */
+        .biz-loader {
+            text-align: center;
+            padding: 60px 20px;
+            color: #65676b;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .biz-loader .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #e4e6eb;
+            border-top-color: #1877f2;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .biz-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #65676b;
+            font-size: 14px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: #1c1e21;
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+            opacity: 0;
+            transition: opacity .25s ease, transform .25s ease;
+            z-index: 1100;
+            max-width: 90%;
+            text-align: center;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 420px) {
+            .header-inner { height: 54px; padding: 0 12px; }
+            .logo { font-size: 23px; }
+            .logo h1 { font-size: 23px; }
+            .header-btn { padding: 6px 10px; font-size: 11.5px; min-width: 40px; }
+            .biz-post { padding: 12px 0 8px; border-radius: 10px; }
+            .biz-post-head { padding: 0 12px; }
+            .biz-post-content { font-size: 15px; padding: 0 12px 10px; }
+            .biz-post-actions button { font-size: 13px; gap: 4px; }
+            .biz-post-actions { padding: 6px 8px 0; }
+            .business-avatar { width: 72px; height: 72px; }
+            .business-avatar-fallback { width: 72px; height: 72px; font-size: 28px; }
+            .setup-card { padding: 20px 16px; }
+            .setup-title { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <div class="logo"><h1>ChillSpace Business</h1></div>
+            <a href="/" class="header-btn back-btn">← Back to ChillSpace</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Business Profile Card -->
+        <div id="business-profile">
+            <div class="business-card">
+                <div class="business-avatar-wrap">
+                    <img class="business-avatar" id="bizAvatar" src="" alt="Business logo">
+                    <div class="business-avatar-fallback" id="bizAvatarFallback"></div>
+                </div>
+                <h2 class="business-name" id="bizName">Business Name</h2>
+                <div class="business-domain" id="bizDomain">example.com</div>
+                <span class="business-badge">🌿 ChillSpace Business</span>
+                <div class="business-stats" id="bizStats">
+                    <div class="business-stat">
+                        <div class="business-stat-num" id="bizPostCount">0</div>
+                        <div class="business-stat-label">Posts</div>
+                    </div>
+                    <div class="business-stat">
+                        <div class="business-stat-num" id="bizTotalLikes">0</div>
+                        <div class="business-stat-label">Total Likes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Feed -->
+        <div id="business-feed"></div>
+
+        <!-- Loading State -->
+        <div id="biz-loading" class="biz-loader" style="display:none;">
+            <div class="spinner"></div>
+            Loading business profile...
+        </div>
+
+        <!-- Setup Instructions -->
+        <div id="setup-instructions">
+            <div class="setup-card">
+                <div class="setup-icon">🚀</div>
+                <h2 class="setup-title">ChillSpace for Business</h2>
+                <p class="setup-subtitle">
+                    Bring your brand to the placebo social network. Create a calm, fake social media profile that your customers can actually enjoy — no algorithmic manipulation, no stress, just satisfaction.
+                </p>
+
+                <div class="setup-error" id="setupError"></div>
+
+                <div class="setup-steps">
+                    <div class="setup-step">
+                        <div class="setup-step-num">1</div>
+                        <div class="setup-step-text">
+                            Create a file called <code>chillspace.json</code> at the root of your website.
+                        </div>
+                    </div>
+                    <div class="setup-step">
+                        <div class="setup-step-num">2</div>
+                        <div class="setup-step-text">
+                            Add your username and posts. Each post needs <code>content</code> and <code>likes</code>. Optionally add <code>time</code> and <code>image</code>.
+                        </div>
+                    </div>
+                    <div class="setup-step">
+                        <div class="setup-step-num">3</div>
+                        <div class="setup-step-text">
+                            <strong>Optional:</strong> Add a <code>chillspace.svg</code> at your root for your profile picture. If missing, we'll generate a random one.
+                        </div>
+                    </div>
+                    <div class="setup-step">
+                        <div class="setup-step-num">4</div>
+                        <div class="setup-step-text">
+                            Visit <code>chillspace.ai/business/?web=yourdomain.com</code> to see your profile!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-code-block">
+                    <button class="setup-copy-btn" onclick="copyJsonExample(this)">📋 Copy</button>
+                    <pre id="json-example">{
+  <span class="code-keyword">"username"</span><span class="code-punct">:</span> <span class="code-string">"Your Business Name"</span><span class="code-punct">,</span>
+  <span class="code-keyword">"posts"</span><span class="code-punct">:</span> [
+    {
+      <span class="code-keyword">"content"</span><span class="code-punct">:</span> <span class="code-string">"Welcome to our ChillSpace profile! 🌿 We're excited to share updates with you."</span><span class="code-punct">,</span>
+      <span class="code-keyword">"likes"</span><span class="code-punct">:</span> <span class="code-number">247</span><span class="code-punct">,</span>
+      <span class="code-keyword">"time"</span><span class="code-punct">:</span> <span class="code-string">"2h ago"</span>
+    },
+    {
+      <span class="code-keyword">"content"</span><span class="code-punct">:</span> <span class="code-string">"New product launch! Check it out at https://example.com/new"</span><span class="code-punct">,</span>
+      <span class="code-keyword">"likes"</span><span class="code-punct">:</span> <span class="code-number">1082</span><span class="code-punct">,</span>
+      <span class="code-keyword">"time"</span><span class="code-punct">:</span> <span class="code-string">"5h ago"</span><span class="code-punct">,</span>
+      <span class="code-keyword">"image"</span><span class="code-punct">:</span> <span class="code-string">"https://example.com/product.jpg"</span>
+    }
+  ]
+}</pre>
+                </div>
+
+                <p class="setup-note">
+                    <strong>Note:</strong> All data is fetched directly from your <code>chillspace.json</code> and displayed in the browser. We don't store or track anything. This is a placebo social network — you control the likes, the posts, and the experience.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ============================================================
+        //  CONFIG
+        // ============================================================
+        const FALLBACK_AVATARS = [
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg==',
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP4z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg==',
+            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPj/HwADBwESl7YBbwAAAABJRU5ErkJggg=='
+        ];
+
+        const FALLBACK_GRADIENTS = [
+            'linear-gradient(135deg, #1877f2, #06b6d4)',
+            'linear-gradient(135deg, #7c3aed, #ec4899)',
+            'linear-gradient(135deg, #10b981, #22c55e)',
+            'linear-gradient(135deg, #f59e0b, #ef4444)',
+            'linear-gradient(135deg, #8b5cf6, #3b82f6)'
+        ];
+
+        // ============================================================
+        //  HELPERS
+        // ============================================================
+        function escapeHtml(str) {
+            if (typeof str !== 'string') return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function linkifyText(text) {
+            if (!text) return '';
+            const urlRegex = /https?:\/\/[^\s<>"]+/g;
+            let result = '';
+            let lastIndex = 0;
+            let match;
+            while ((match = urlRegex.exec(text)) !== null) {
+                result += escapeHtml(text.slice(lastIndex, match.index));
+                let url = match[0];
+                url = url.replace(/[.,!?;:]+$/, '');
+                url = url.replace(/['")\]]+$/, '');
+                result += `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`;
+                lastIndex = urlRegex.lastIndex;
+            }
+            result += escapeHtml(text.slice(lastIndex));
+            return result;
+        }
+
+        function showToast(msg) {
+            document.querySelectorAll('.toast').forEach(t => t.remove());
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 250);
+            }, 2600);
+        }
+
+        function getRandomGradient() {
+            return FALLBACK_GRADIENTS[Math.floor(Math.random() * FALLBACK_GRADIENTS.length)];
+        }
+
+        function getRandomAvatar() {
+            return FALLBACK_AVATARS[Math.floor(Math.random() * FALLBACK_AVATARS.length)];
+        }
+
+        function toggleLike(btn) {
+            const liked = btn.dataset.liked === '1';
+            let base = parseInt(btn.dataset.base, 10);
+            if (Number.isNaN(base)) {
+                base = 0;
+                btn.dataset.base = base;
+            }
+
+            if (liked) {
+                btn.dataset.liked = '0';
+                btn.innerHTML = `👍 ${base.toLocaleString()}`;
+                btn.classList.remove('liked');
+                return;
+            }
+
+            if (navigator.vibrate) {
+                navigator.vibrate([8, 12, 8, 12, 15]);
+            }
+
+            btn.classList.remove('like-animating');
+            void btn.offsetWidth;
+            btn.classList.add('like-animating');
+
+            btn.dataset.liked = '1';
+            btn.innerHTML = `✅ ${(base + 1).toLocaleString()}`;
+            btn.classList.add('liked');
+
+            setTimeout(() => {
+                btn.classList.remove('like-animating');
+            }, 550);
+        }
+
+        // ============================================================
+        //  COPY JSON EXAMPLE
+        // ============================================================
+        function copyJsonExample(btn) {
+            const pre = document.getElementById('json-example');
+            const text = pre.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000);
+            }).catch(() => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                textarea.remove();
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000);
+            });
+        }
+
+        // ============================================================
+        //  MAIN LOGIC
+        // ============================================================
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const webParam = params.get('web');
+
+            const bizProfileEl = document.getElementById('business-profile');
+            const bizFeedEl = document.getElementById('business-feed');
+            const bizLoadingEl = document.getElementById('biz-loading');
+            const setupEl = document.getElementById('setup-instructions');
+            const setupErrorEl = document.getElementById('setupError');
+
+            function showSetup(errorMsg) {
+                bizProfileEl.style.display = 'none';
+                bizFeedEl.innerHTML = '';
+                bizLoadingEl.style.display = 'none';
+                setupEl.style.display = 'block';
+                if (errorMsg) {
+                    setupErrorEl.textContent = errorMsg;
+                    setupErrorEl.classList.add('show');
+                } else {
+                    setupErrorEl.classList.remove('show');
+                }
+            }
+
+            function showLoading() {
+                bizProfileEl.style.display = 'none';
+                bizFeedEl.innerHTML = '';
+                bizLoadingEl.style.display = 'block';
+                setupEl.style.display = 'none';
+            }
+
+            function renderBusiness(data, domain, avatarSrc) {
+                // Hide loading, show profile
+                bizLoadingEl.style.display = 'none';
+                bizProfileEl.style.display = 'block';
+                setupEl.style.display = 'none';
+
+                // Populate profile card
+                document.getElementById('bizName').textContent = data.username;
+                document.getElementById('bizDomain').textContent = domain;
+
+                // Avatar
+                const avatarEl = document.getElementById('bizAvatar');
+                const fallbackEl = document.getElementById('bizAvatarFallback');
+
+                if (avatarSrc) {
+                    avatarEl.src = avatarSrc;
+                    avatarEl.style.display = 'block';
+                    fallbackEl.style.display = 'none';
+                    avatarEl.onerror = function() {
+                        // SVG failed to load, use fallback
+                        this.style.display = 'none';
+                        fallbackEl.style.display = 'flex';
+                        fallbackEl.textContent = data.username.charAt(0).toUpperCase();
+                        fallbackEl.style.background = getRandomGradient();
+                    };
+                } else {
+                    avatarEl.style.display = 'none';
+                    fallbackEl.style.display = 'flex';
+                    fallbackEl.textContent = data.username.charAt(0).toUpperCase();
+                    fallbackEl.style.background = getRandomGradient();
+                }
+
+                // Stats
+                const postCount = data.posts ? data.posts.length : 0;
+                const totalLikes = data.posts ? data.posts.reduce((sum, p) => sum + (parseInt(p.likes) || 0), 0) : 0;
+                document.getElementById('bizPostCount').textContent = postCount.toLocaleString();
+                document.getElementById('bizTotalLikes').textContent = totalLikes.toLocaleString();
+
+                // Render posts
+                bizFeedEl.innerHTML = '';
+                if (!data.posts || data.posts.length === 0) {
+                    bizFeedEl.innerHTML = '<div class="biz-empty">No posts yet. Check back soon! 🌿</div>';
+                    return;
+                }
+
+                data.posts.forEach((post, index) => {
+                    const el = document.createElement('article');
+                    el.className = 'biz-post';
+                    el.style.animationDelay = `${index * 50}ms`;
+
+                    const initial = data.username.charAt(0).toUpperCase();
+                    const gradient = getRandomGradient();
+                    const likes = parseInt(post.likes) || 0;
+                    const time = post.time || 'Just now';
+                    const contentHtml = linkifyText(post.content || '');
+
+                    // Avatar for post
+                    let avatarHtml;
+                    if (avatarSrc) {
+                        avatarHtml = `<img class="avatar" src="${escapeHtml(avatarSrc)}" alt="${escapeHtml(data.username)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="avatar-fallback" style="display:none;background:${gradient};">${escapeHtml(initial)}</div>`;
+                    } else {
+                        avatarHtml = `<div class="avatar-fallback" style="background:${gradient};">${escapeHtml(initial)}</div>`;
+                    }
+
+                    // Image
+                    let imageHtml = '';
+                    if (post.image) {
+                        imageHtml = `<img class="biz-post-image" src="${escapeHtml(post.image)}" alt="" loading="lazy" onerror="this.remove()">`;
+                    }
+
+                    el.innerHTML = `
+                        <div class="biz-post-head">
+                            ${avatarHtml}
+                            <div class="meta">
+                                <div class="name">${escapeHtml(data.username)}</div>
+                                <div class="time">${escapeHtml(time)} · 🌐</div>
+                            </div>
+                        </div>
+                        <div class="biz-post-content" dir="auto">${contentHtml}</div>
+                        ${imageHtml}
+                        <div class="biz-post-actions">
+                            <button type="button" class="like-btn" data-base="${likes}" onclick="toggleLike(this)">👍 ${likes.toLocaleString()}</button>
+                            <button type="button" onclick="showToast('Comments are just for you on this profile 🌿')">💬 Comment</button>
+                            <button type="button" onclick="showToast('Reposting is disabled on business profiles 🌿')">↗️ Repost</button>
+                            <button type="button" onclick="showToast('ChillSpace AI is not available on business profiles 🌿')">✨ ChillSpace AI</button>
+                        </div>
+                    `;
+                    bizFeedEl.appendChild(el);
+                });
+            }
+
+            async function fetchBusiness(domain) {
+                showLoading();
+
+                // Clean domain (remove protocol and trailing slashes)
+                let cleanDomain = domain.replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+
+                if (!cleanDomain || cleanDomain.length < 3 || !cleanDomain.includes('.')) {
+                    showSetup(`"${domain}" doesn't look like a valid domain. Please provide a domain like "example.com".`);
+                    return;
+                }
+
+                // Try to fetch chillspace.json
+                const jsonUrl = `https://${cleanDomain}/chillspace.json`;
+                const svgUrl = `https://${cleanDomain}/chillspace.svg`;
+
+                let response;
+                try {
+                    response = await fetch(jsonUrl, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' },
+                        mode: 'cors',
+                        cache: 'no-cache'
+                    });
+                } catch (fetchError) {
+                    showSetup(`Could not reach ${cleanDomain}. Make sure the domain is correct and that your server allows cross-origin requests (CORS).`);
+                    return;
+                }
+
+                if (!response.ok) {
+                    showSetup(`Found ${cleanDomain}, but chillspace.json returned status ${response.status}. Make sure the file exists at the root of your domain.`);
+                    return;
+                }
+
+                let data;
+                try {
+                    data = await response.json();
+                } catch (parseError) {
+                    showSetup(`chillspace.json at ${cleanDomain} is not valid JSON. Please check for syntax errors (missing commas, quotes, etc.).`);
+                    return;
+                }
+
+                // Validate structure
+                if (!data || typeof data !== 'object') {
+                    showSetup('chillspace.json must be a JSON object with a "username" and "posts" array.');
+                    return;
+                }
+
+                if (!data.username || typeof data.username !== 'string') {
+                    showSetup('chillspace.json is missing a valid "username" field. Add something like: "username": "Your Business"');
+                    return;
+                }
+
+                if (!Array.isArray(data.posts)) {
+                    showSetup('chillspace.json is missing a "posts" array. Add something like: "posts": []');
+                    return;
+                }
+
+                // Validate each post
+                for (let i = 0; i < data.posts.length; i++) {
+                    const post = data.posts[i];
+                    if (!post || typeof post !== 'object') {
+                        showSetup(`Post at index ${i} is not a valid object. Each post needs "content" and "likes".`);
+                        return;
+                    }
+                    if (!post.content || typeof post.content !== 'string') {
+                        showSetup(`Post at index ${i} is missing a "content" string. Each post needs "content".`);
+                        return;
+                    }
+                    if (post.likes === undefined || post.likes === null) {
+                        // Default likes to 0 instead of erroring
+                        post.likes = 0;
+                    }
+                }
+
+                // Check for SVG (non-blocking)
+                let avatarSrc = null;
+                try {
+                    const svgResponse = await fetch(svgUrl, { method: 'HEAD', mode: 'no-cors' });
+                    // With no-cors, we can't read status, but if it doesn't throw, assume it exists
+                    // Actually, no-cors always succeeds, so we just try to use the URL
+                    avatarSrc = svgUrl;
+                } catch (e) {
+                    // SVG doesn't exist, use fallback
+                }
+
+                // If the SVG might not exist, we still set it and let onerror handle it
+                // But to be safe, let's try a quick image load test
+                if (avatarSrc) {
+                    const imgTest = new Image();
+                    imgTest.onload = () => {
+                        renderBusiness(data, cleanDomain, avatarSrc);
+                    };
+                    imgTest.onerror = () => {
+                        renderBusiness(data, cleanDomain, null);
+                    };
+                    imgTest.src = avatarSrc;
+                } else {
+                    renderBusiness(data, cleanDomain, null);
+                }
+            }
+
+            // Entry point
+            if (webParam) {
+                fetchBusiness(webParam);
+            } else {
+                showSetup();
+            }
+
+            // Expose for onclick handlers
+            window.toggleLike = toggleLike;
+            window.showToast = showToast;
+            window.copyJsonExample = copyJsonExample;
+        })();
+    </script>
+</body>
+</html>
