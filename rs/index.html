@@ -18,16 +18,9 @@
             "operatingSystem": "All",
             "browserRequirements": "Requires JavaScript and modern browser",
             "url": "https://chillspace.ai/reelspace",
-            "creator": {
-                "@type": "Organization",
-                "name": "Chillspace"
-            },
-            "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
-            },
-            "featureList": "Infinite story scroll, procedural gameplay background, background music, text-to-speech, like & bookmark stories, comment simulation"
+            "creator": { "@type": "Organization", "name": "Chillspace" },
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "featureList": "Infinite story scroll, procedural gameplay background, procedural music, text-to-speech, like & bookmark stories, comment simulation"
         }
     </script>
 
@@ -81,12 +74,13 @@
             font-size: 0.8rem; font-weight: 600;
             display: flex; align-items: center; gap: 8px;
         }
-        #header .badge .lang-toggle {
+        #header .badge .lang-toggle, #header .badge .autoscroll-toggle {
             background: rgba(255,255,255,0.15); border: none; color: #fff;
             font-weight: 600; padding: 2px 10px; border-radius: 16px;
             font-size: 0.7rem; cursor: pointer; pointer-events: auto;
             font-family: var(--font-main);
         }
+        #header .badge .autoscroll-toggle.active { background: var(--accent-tts); color: #000; }
         #scrollContainer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             overflow-y: scroll; scroll-snap-type: y mandatory;
@@ -108,9 +102,7 @@
             border-radius: 18px; border: 1px solid rgba(255,255,255,0.12);
             box-shadow: 0 8px 32px rgba(0,0,0,0.45);
         }
-        /* Hidden state: text + translucent background fully removed */
         .story-card.hidden { display: none !important; }
-
         .story-text {
             font-size: 1.05rem; line-height: 1.55; color: #fff; font-weight: 400;
             letter-spacing: 0.005em; text-shadow: 0 1px 4px rgba(0,0,0,0.5);
@@ -118,39 +110,27 @@
             transition: max-height 0.3s ease;
         }
         .story-text.expanded { max-height: 1000px; }
-        .story-text .highlight {
-            color: #ffda6b; font-weight: 700;
-            text-shadow: 0 0 12px rgba(255,218,107,0.4);
-        }
-        .story-buttons {
-            display: flex; align-items: center; gap: 16px; margin-top: 8px;
-        }
+        .story-text .highlight { color: #ffda6b; font-weight: 700; text-shadow: 0 0 12px rgba(255,218,107,0.4); }
+        .story-buttons { display: flex; align-items: center; gap: 16px; margin-top: 8px; }
         .show-more-btn, .hide-btn {
             background: none; border: none; color: rgba(255,255,255,0.7);
             font-size: 0.8rem; cursor: pointer;
             text-decoration: underline; padding: 0; font-family: var(--font-main);
         }
         .show-more-btn:hover, .hide-btn:hover { color: #fff; }
-
-        /* Small control that brings the story card back */
         .restore-story-btn {
-            display: none;
-            position: relative; z-index: 3;
-            align-self: flex-start;
-            padding: 9px 16px;
-            border-radius: 20px;
+            display: none; position: relative; z-index: 3;
+            align-self: flex-start; padding: 9px 16px; border-radius: 20px;
             background: rgba(0,0,0,0.5);
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.14);
             color: #fff; font-size: 0.8rem; font-weight: 600;
-            font-family: var(--font-main);
-            cursor: pointer;
+            font-family: var(--font-main); cursor: pointer;
             -webkit-tap-highlight-color: transparent;
             transition: transform 0.2s ease;
         }
         .restore-story-btn:active { transform: scale(0.94); }
         .slide.story-hidden .restore-story-btn { display: inline-flex; align-items: center; gap: 6px; }
-
         .side-actions {
             position: absolute; right: 14px; bottom: 110px;
             display: flex; flex-direction: column; align-items: center;
@@ -176,10 +156,8 @@
             animation: heartPop 0.5s ease;
         }
         @keyframes heartPop {
-            0% { transform: scale(1) }
-            30% { transform: scale(1.35) }
-            60% { transform: scale(0.9) }
-            100% { transform: scale(1) }
+            0% { transform: scale(1) } 30% { transform: scale(1.35) }
+            60% { transform: scale(0.9) } 100% { transform: scale(1) }
         }
         .side-action .action-label {
             font-size: 0.7rem; font-weight: 500; letter-spacing: 0.03em;
@@ -236,9 +214,7 @@
             padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
             font-size: 0.9rem; line-height: 1.4;
         }
-        .comment .user {
-            font-weight: 700; color: #ffda6b; margin-right: 8px;
-        }
+        .comment .user { font-weight: 700; color: #ffda6b; margin-right: 8px; }
         .close-comments {
             position: absolute; top: 10px; right: 16px;
             background: none; border: none; color: #fff;
@@ -260,11 +236,11 @@
     <div class="badge">
         <span id="badgeText">📖 Infinite Stories</span>
         <button class="lang-toggle" id="langToggle">한국어</button>
+        <button class="autoscroll-toggle" id="autoscrollToggle">Autoscroll: Off</button>
     </div>
 </div>
 <div id="scrollContainer"></div>
 <div id="musicIndicator">🎵 Music On</div>
-<audio id="bgMusic" preload="auto" loop></audio>
 
 <div id="startOverlay">
     <button class="start-btn" id="loadReelSpaceBtn">Load ReelSpace</button>
@@ -326,11 +302,6 @@
       return 'rgb(' + r + ',' + g + ',' + b + ')';
     }
 
-    /* ---- Sprite baking helper -----------------------------------------
-       Characters are rendered ONCE into offscreen canvases and then drawn
-       with drawImage(). Vector fills inside a rotating transform were being
-       dropped on some GPUs while the character was moving; a bitmap blit
-       cannot vanish. --------------------------------------------------- */
     const SPR_OVERSAMPLE = 2;
     function makeSprite(logicalSize, painter){
       const px = Math.max(1, Math.round(logicalSize * SPR_OVERSAMPLE));
@@ -1261,8 +1232,542 @@
       return { update: update, draw: draw, restart: reset, get dead(){ return d; } };
     }
 
+    /* ======================================================= SLIDE COIN === */
+    const SLIDE_TIER_CACHE = [];
+    function slideTier(index){
+      if (SLIDE_TIER_CACHE[index]) return SLIDE_TIER_CACHE[index];
+      const rng     = mulberry32(index * 2654435761 + 12345);
+      const hue     = Math.floor(rng() * 360);
+      const coinHue = (hue + 140 + Math.floor(rng() * 80)) % 360;
+      const t = {
+        tier:       index + 1,
+        value:      Math.pow(2, index),
+        slideTop:   'hsl(' + hue + ', 70%, 56%)',
+        slideBot:   'hsl(' + hue + ', 72%, 30%)',
+        border:     'hsl(' + hue + ', 88%, 74%)',
+        coinFill:   'hsl(' + coinHue + ', 85%, 56%)',
+        coinStroke: 'hsl(' + coinHue + ', 95%, 84%)'
+      };
+      SLIDE_TIER_CACHE[index] = t;
+      return t;
+    }
+
+    function makeSlideCoin(VW, VH){
+      const CX     = VW * 0.5;
+      const TOP_Y  = VH * 0.14;
+      const BOT_Y  = VH * 0.96;
+      const SPAN   = BOT_Y - TOP_Y;
+      const BOT_W  = Math.min(VW * 0.66, SPAN * 0.58);
+      const TOP_W  = BOT_W * 0.28;
+      const P_R    = Math.max(11, BOT_W * 0.052);
+      const C_R    = P_R * 0.62;
+      const MAG_R  = BOT_W * 0.34;
+      const GRAB_R = BOT_W * 0.155;
+
+      let tier, coins, player, bank, state, idleT, T;
+
+      const xAt = (p, o) => CX + o * (TOP_W + p * (BOT_W - TOP_W)) * 0.5;
+      const yAt = p => TOP_Y + p * SPAN;
+
+      function newRun(){
+        tier = slideTier(Math.floor(RND() * 12));
+
+        coins = [];
+        const n = 9 + Math.floor(RND() * 6);
+        for (let i = 0; i < n; i++){
+          coins.push({
+            progress: 0.06 + RND() * 0.86,
+            offset: (RND() - 0.5) * 1.55,
+            collected: false
+          });
+        }
+
+        player = {
+          progress: 0,
+          offset: 0,
+          target: 0,
+          decideIn: 0,
+          speed: 0.34,
+          magnet: false,
+          magnetIn: 0.8 + RND() * 1.6
+        };
+
+        bank = 0;
+        state = 'run';
+        idleT = 0;
+      }
+
+      T = 0;
+      newRun();
+
+      function update(dt){
+        T += dt;
+
+        if (state === 'idle'){
+          idleT -= dt;
+          if (idleT <= 0) newRun();
+          return;
+        }
+
+        player.decideIn -= dt;
+        if (player.decideIn <= 0){
+          player.target   = (RND() * 2 - 1) * 0.88;
+          player.decideIn = 0.30 + RND() * 0.75;
+        }
+        player.offset += (player.target - player.offset) * Math.min(1, dt * 5);
+        player.offset = clamp(player.offset, -0.92, 0.92);
+
+        player.magnetIn -= dt;
+        if (player.magnetIn <= 0){
+          player.magnet = !player.magnet;
+          player.magnetIn = player.magnet ? (0.45 + RND() * 0.8) : (0.9 + RND() * 1.8);
+        }
+
+        player.speed += dt * 0.035;
+        player.progress += player.speed * dt;
+
+        const pX   = xAt(player.progress, player.offset);
+        const pY   = yAt(player.progress);
+        const grab = player.magnet ? MAG_R : GRAB_R;
+
+        for (let i = 0; i < coins.length; i++){
+          const c = coins[i];
+          if (c.collected) continue;
+          const cX = xAt(c.progress, c.offset);
+          const cY = yAt(c.progress);
+          if (Math.hypot(pX - cX, pY - cY) <= grab){
+            c.collected = true;
+            bank += tier.value;
+          }
+        }
+
+        if (player.progress >= 1){
+          state = 'idle';
+          idleT = 0.55;
+        }
+      }
+
+      function draw(ctx){
+        const sky = ctx.createLinearGradient(0, 0, 0, VH);
+        sky.addColorStop(0,   '#090d18');
+        sky.addColorStop(0.5, '#111a2c');
+        sky.addColorStop(1,   '#070910');
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, VW, VH);
+
+        ctx.beginPath();
+        ctx.moveTo(CX - TOP_W / 2, TOP_Y);
+        ctx.lineTo(CX + TOP_W / 2, TOP_Y);
+        ctx.lineTo(CX + BOT_W / 2, BOT_Y);
+        ctx.lineTo(CX - BOT_W / 2, BOT_Y);
+        ctx.closePath();
+
+        const sg = ctx.createLinearGradient(0, TOP_Y, 0, BOT_Y);
+        sg.addColorStop(0, tier.slideTop);
+        sg.addColorStop(1, tier.slideBot);
+        ctx.fillStyle = sg;
+        ctx.fill();
+
+        ctx.lineWidth   = Math.max(2, BOT_W * 0.016);
+        ctx.strokeStyle = tier.border;
+        ctx.stroke();
+
+        ctx.save();
+        ctx.globalAlpha = 0.10;
+        ctx.beginPath();
+        ctx.moveTo(CX - TOP_W / 2, TOP_Y);
+        ctx.lineTo(CX + TOP_W / 2, TOP_Y);
+        ctx.lineTo(CX + BOT_W * 0.18, BOT_Y);
+        ctx.lineTo(CX - BOT_W * 0.18, BOT_Y);
+        ctx.closePath();
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        ctx.restore();
+
+        for (let i = 0; i < coins.length; i++){
+          const c = coins[i];
+          if (c.collected) continue;
+          const cX = xAt(c.progress, c.offset);
+          const cY = yAt(c.progress);
+
+          fillCircle(ctx, cX, cY, C_R, tier.coinFill);
+          ctx.beginPath();
+          ctx.arc(cX, cY, C_R, 0, Math.PI * 2);
+          ctx.lineWidth   = Math.max(1.5, C_R * 0.28);
+          ctx.strokeStyle = tier.coinStroke;
+          ctx.stroke();
+        }
+
+        if (state === 'run'){
+          const pX = xAt(player.progress, player.offset);
+          const pY = yAt(player.progress);
+
+          if (player.magnet){
+            ctx.beginPath();
+            ctx.arc(pX, pY, MAG_R, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(34,197,94,0.10)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(34,197,94,0.55)';
+            ctx.lineWidth = Math.max(2, VW * 0.0025);
+            ctx.stroke();
+          }
+
+          fillCircle(ctx, pX, pY, P_R, '#ef4444');
+          ctx.beginPath();
+          ctx.arc(pX, pY, P_R, 0, Math.PI * 2);
+          ctx.lineWidth   = Math.max(2, P_R * 0.24);
+          ctx.strokeStyle = '#ffffff';
+          ctx.stroke();
+        }
+
+        ctx.textAlign    = 'center';
+        ctx.textBaseline = 'alphabetic';
+        ctx.font = '700 ' + (VW * 0.024) + 'px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.72)';
+        ctx.fillText('SLIDE ' + tier.tier + '  ·  x' + tier.value + '  ·  ' + bank,
+                     CX, TOP_Y - VH * 0.022);
+
+        const vg = ctx.createRadialGradient(VW * 0.5, VH * 0.5, VH * 0.22,
+                                            VW * 0.5, VH * 0.5, VH * 0.95);
+        vg.addColorStop(0, 'rgba(0,0,0,0)');
+        vg.addColorStop(1, 'rgba(0,0,0,.55)');
+        ctx.fillStyle = vg;
+        ctx.fillRect(0, 0, VW, VH);
+      }
+
+      return { update: update, draw: draw, restart: resetNone, get dead(){ return false; } };
+
+      function resetNone(){ }
+    }
+
+    /* ======================================================== NUMBER GAME === */
+    function makeNumberGame(VW, VH){
+      const BOT_POOL  = ['Astra','Nova','Zed','Kira','Milo','Juno','Pixel','Rune','Echo','Vex','Orbit','Lumi'];
+      const USER_POOL = ['Alex','Sam','Jamie','Riley','Jordan','Casey','Taylor','Morgan','Ari','Noor'];
+
+      const N_BOTS = 6;
+      const USER_I = 5;
+
+      const DW = 100, DH = 128;
+      const S  = Math.min((VW * 0.86) / DW, (VH * 0.58) / DH);
+      const X0 = VW * 0.5 - DW * 0.5 * S;
+      const Y0 = VH * 0.43 - DH * 0.5 * S;
+      const DX = d => X0 + d * S;
+      const DY = d => Y0 + d * S;
+      const F  = d => d * S;
+
+      const SUF = ['','K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc'];
+
+      function fmt(n){
+        n = Math.floor(n);
+        if (n < 1000) return '' + n;
+        const ti = Math.floor(Math.log10(n) / 3);
+        if (ti >= SUF.length) return n.toExponential(1);
+        const sc = n / Math.pow(1000, ti);
+        return (sc < 10 ? sc.toFixed(2) : sc < 100 ? sc.toFixed(1) : Math.floor(sc)) + SUF[ti];
+      }
+
+      let bots, msgs, mode, userSession, tickAcc, t;
+
+      function totalAll(){
+        let s = 0;
+        for (let i = 0; i < bots.length; i++) s += bots[i].score;
+        return s;
+      }
+
+      function reset(){
+        const pool = BOT_POOL.slice();
+        for (let i = pool.length - 1; i > 0; i--){
+          const j = Math.floor(RND() * (i + 1));
+          const tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+        }
+
+        bots = [];
+        for (let i = 0; i < N_BOTS; i++){
+          const isUser = (i === USER_I);
+          bots.push({
+            name: isUser ? USER_POOL[Math.floor(RND() * USER_POOL.length)]
+                         : pool[i % pool.length],
+            score: 0,
+            isUser: isUser,
+            flash: 0
+          });
+        }
+        for (let i = 0; i < N_BOTS; i++){
+          bots[i].score = Math.floor(RND() * 850) + 180;
+        }
+
+        userSession = 0;
+        mode = RND() < 0.5 ? 'chat' : 'original';
+        msgs = [];
+        tickAcc = 0;
+        t = 0;
+      }
+
+      function pushMsg(type, botName, value){
+        msgs.push({ type: type, botName: botName, value: value, life: 0 });
+        if (msgs.length > 8) msgs.shift();
+      }
+
+      function step(){
+        const gain = 1 + Math.floor(RND() * 2);
+        bots[USER_I].score += gain;
+        userSession += gain;
+        bots[USER_I].flash = 1;
+
+        if (mode === 'chat'){
+          pushMsg('user', bots[USER_I].name, totalAll());
+        }
+
+        const reactors = [];
+        for (let i = 0; i < USER_I; i++){
+          if (RND() < 0.32){
+            bots[i].score += 1 + Math.floor(RND() * 3);
+            bots[i].flash = 1;
+            reactors.push(bots[i]);
+          }
+        }
+        if (mode === 'chat' && reactors.length){
+          for (let i = reactors.length - 1; i > 0; i--){
+            const j = Math.floor(RND() * (i + 1));
+            const tmp = reactors[i]; reactors[i] = reactors[j]; reactors[j] = tmp;
+          }
+          const tot = totalAll();
+          for (let i = 0; i < reactors.length; i++){
+            pushMsg('bot', reactors[i].name, tot);
+          }
+        }
+      }
+
+      function update(dt){
+        t += dt;
+        tickAcc += dt;
+        const TICK = 0.42;
+        let guard = 0;
+        while (tickAcc >= TICK && guard++ < 4){
+          tickAcc -= TICK;
+          step();
+        }
+        for (let i = 0; i < bots.length; i++){
+          bots[i].flash = Math.max(0, bots[i].flash - dt * 3.2);
+        }
+        for (let i = 0; i < msgs.length; i++) msgs[i].life += dt;
+      }
+
+      function drawBubble(ctx, m, left, right, top, h){
+        const isUser = m.type === 'user';
+
+        const valStr = fmt(m.value);
+        const nameStr = isUser ? '' : m.botName;
+
+        ctx.font = '800 ' + F(4.4) + 'px "Segoe UI", system-ui, sans-serif';
+        const valW = ctx.measureText(valStr).width;
+        let nameW = 0;
+        if (nameStr){
+          ctx.font = '600 ' + F(3.1) + 'px "Segoe UI", system-ui, sans-serif';
+          nameW = ctx.measureText(nameStr).width;
+        }
+
+        const innerW = Math.max(valW, nameW);
+        const maxW   = (right - left) * 0.78;
+        const w      = Math.min(maxW, innerW + F(6));
+        const x      = isUser ? (right - w) : left;
+
+        fillRR(ctx, x, top, w, h, F(3.2), isUser ? '#c8e6c9' : '#7b1fa2');
+
+        if (isUser){
+          ctx.textAlign = 'center';
+          ctx.fillStyle = '#4a148c';
+          ctx.font = '800 ' + F(4.4) + 'px "Segoe UI", system-ui, sans-serif';
+          ctx.fillText(valStr, x + w / 2, top + h * 0.68);
+        } else {
+          ctx.textAlign = 'left';
+          ctx.fillStyle = '#e1bee7';
+          ctx.font = '600 ' + F(3.0) + 'px "Segoe UI", system-ui, sans-serif';
+          ctx.fillText(nameStr, x + F(2.6), top + h * 0.40);
+
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '800 ' + F(4.4) + 'px "Segoe UI", system-ui, sans-serif';
+          ctx.fillText(valStr, x + F(2.6), top + h * 0.86);
+        }
+      }
+
+      function draw(ctx){
+        const chat = (mode === 'chat');
+
+        const bg = ctx.createLinearGradient(0, 0, 0, VH);
+        if (chat){
+          bg.addColorStop(0, '#f3f4f8');
+          bg.addColorStop(1, '#d5d9e2');
+        } else {
+          bg.addColorStop(0,   '#0e1220');
+          bg.addColorStop(0.55,'#1a2338');
+          bg.addColorStop(1,   '#080a12');
+        }
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, VW, VH);
+
+        ctx.textAlign    = 'center';
+        ctx.textBaseline = 'alphabetic';
+
+        const cx    = DX(50);
+        const total = totalAll();
+
+        ctx.font      = '800 ' + F(13) + 'px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = chat ? '#2e7d32' : '#3dff8a';
+        ctx.fillText('Total: ' + fmt(total), cx, DY(9));
+
+        ctx.font      = '700 ' + F(6.6) + 'px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = chat ? '#7b1fa2' : '#ea86ff';
+        ctx.fillText('Your total: ' + fmt(bots[USER_I].score), cx, DY(20));
+
+        ctx.fillStyle = chat ? '#a8790a' : '#ffd93d';
+        ctx.fillText('This game: ' + fmt(userSession), cx, DY(29.5));
+
+        const bw = 46, bh = 13;
+        const pop = bots[USER_I].flash;
+        ctx.save();
+        ctx.translate(cx, DY(38) + (bh * S) / 2);
+        ctx.scale(1 + pop * 0.06, 1 + pop * 0.06);
+        ctx.translate(-cx, -(DY(38) + (bh * S) / 2));
+
+        const bx = cx - (bw * S) / 2, by = DY(38);
+        const bgr = ctx.createLinearGradient(bx, by, bx, by + bh * S);
+        if (chat){ bgr.addColorStop(0, '#9c27b0'); bgr.addColorStop(1, '#6a1b9a'); }
+        else     { bgr.addColorStop(0, '#ff5cff'); bgr.addColorStop(1, '#ab00ab'); }
+
+        ctx.save();
+        ctx.shadowColor = chat ? 'rgba(123,31,162,0.35)' : 'rgba(255,0,255,0.55)';
+        ctx.shadowBlur  = F(4);
+        fillRR(ctx, bx, by, bw * S, bh * S, F(3.2), bgr);
+        ctx.restore();
+
+        ctx.fillStyle    = '#ffffff';
+        ctx.font         = '800 ' + F(7.5) + 'px "Segoe UI", system-ui, sans-serif';
+        ctx.textAlign    = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('+1', cx, by + bh * S * 0.52);
+        ctx.textBaseline = 'alphabetic';
+        ctx.restore();
+
+        if (!chat){
+          ctx.textAlign = 'center';
+          ctx.font      = '700 ' + F(5.6) + 'px "Segoe UI", system-ui, sans-serif';
+          ctx.fillStyle = 'rgba(255,255,255,0.78)';
+          ctx.fillText('Live Rankings', cx, DY(rankTitleY()));
+
+          const sorted   = bots.slice().sort((a, b) => b.score - a.score);
+          const maxScore = Math.max(1, sorted[0].score);
+          const rowH     = 9.5;
+          const barX     = DX(11);
+          const barW     = 78 * S;
+
+          for (let i = 0; i < sorted.length; i++){
+            const b  = sorted[i];
+            const ry = 68 + i * rowH;
+
+            ctx.textAlign = 'left';
+            ctx.font      = '700 ' + F(4.9) + 'px "Segoe UI", system-ui, sans-serif';
+            ctx.fillStyle = b.isUser ? '#3dff8a' : '#dfe6f2';
+            ctx.fillText((b.isUser ? '★ ' : '') + b.name, barX, DY(ry));
+
+            ctx.textAlign = 'right';
+            ctx.fillStyle = b.isUser ? '#3dff8a' : 'rgba(223,230,242,0.75)';
+            ctx.fillText(fmt(b.score), barX + barW, DY(ry));
+
+            const w = Math.max(2 * S, (b.score / maxScore) * barW);
+            fillRR(ctx, barX, DY(ry + 2.2), barW, F(3), F(1.5), 'rgba(255,255,255,0.08)');
+            fillRR(ctx, barX, DY(ry + 2.2), w,    F(3), F(1.5), b.isUser ? '#3dff8a' : '#a855f7');
+          }
+        } else {
+          const px = DX(10), py = DY(56);
+          const pw = 80 * S, ph = 66 * S;
+
+          ctx.save();
+          ctx.shadowColor = 'rgba(0,0,0,0.18)';
+          ctx.shadowBlur  = F(5);
+          fillRR(ctx, px, py, pw, ph, F(4), '#ffffff');
+          ctx.restore();
+
+          ctx.save();
+          rr(ctx, px, py, pw, ph, F(4));
+          ctx.clip();
+          ctx.fillStyle = '#7b1fa2';
+          ctx.fillRect(px, py, pw, 8.5 * S);
+          ctx.restore();
+
+          ctx.textAlign = 'left';
+          ctx.fillStyle = '#ffffff';
+          ctx.font      = '700 ' + F(3.9) + 'px "Segoe UI", system-ui, sans-serif';
+          ctx.fillText('Group Chat Chaos', px + F(3.4), py + 5.6 * S);
+
+          ctx.textAlign = 'right';
+          ctx.font      = '600 ' + F(3.0) + 'px "Segoe UI", system-ui, sans-serif';
+          ctx.fillStyle = 'rgba(255,255,255,0.8)';
+          ctx.fillText('● ' + N_BOTS + ' online', px + pw - F(3.4), py + 5.6 * S);
+
+          const msgTop = py + 10.5 * S;
+          const msgBot = py + ph - 10.5 * S;
+          const pitch  = 9;
+          const vis    = msgs.slice(-5);
+          const baseY  = msgBot - vis.length * pitch * S;
+
+          const leftX  = px + F(3);
+          const rightX = px + pw - F(3);
+
+          for (let i = 0; i < vis.length; i++){
+            const m = vis[i];
+            ctx.globalAlpha = Math.min(1, m.life * 5);
+            drawBubble(ctx, m, leftX, rightX, baseY + i * pitch * S, 8 * S);
+          }
+          ctx.globalAlpha = 1;
+
+          ctx.save();
+          rr(ctx, px, py, pw, ph, F(4));
+          ctx.clip();
+          ctx.fillStyle = 'rgba(245,245,248,0.95)';
+          ctx.fillRect(px, py + ph - 9 * S, pw, 9 * S);
+          ctx.restore();
+
+          fillRR(ctx, px + F(3), py + ph - 7 * S, F(15), F(5.4), F(2.7), '#7b1fa2');
+          ctx.textAlign    = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle    = '#ffffff';
+          ctx.font         = '700 ' + F(3.6) + 'px "Segoe UI", system-ui, sans-serif';
+          ctx.fillText('+1', px + F(3) + F(7.5), py + ph - 4.3 * S);
+
+          fillRR(ctx, px + F(21), py + ph - 7 * S, pw - F(24), F(5.4), F(2.7), '#eceef3');
+          ctx.textAlign = 'left';
+          ctx.fillStyle = '#b0b4bd';
+          ctx.font      = '500 ' + F(3.2) + 'px "Segoe UI", system-ui, sans-serif';
+          ctx.fillText('Type a message…', px + F(24), py + ph - 4.3 * S);
+          ctx.textBaseline = 'alphabetic';
+        }
+
+        const vg = ctx.createRadialGradient(VW * 0.5, VH * 0.5, VH * 0.25,
+                                            VW * 0.5, VH * 0.5, VH * 0.95);
+        vg.addColorStop(0, 'rgba(0,0,0,0)');
+        vg.addColorStop(1, chat ? 'rgba(0,0,0,0.30)' : 'rgba(0,0,0,0.55)');
+        ctx.fillStyle = vg;
+        ctx.fillRect(0, 0, VW, VH);
+    }
+
+      function rankTitleY(){ return 58; }
+
+      reset();
+
+      return { update: update, draw: draw, restart: reset, get dead(){ return false; } };
+    }
+
     /* ============================================================== ENGINE === */
-    const SCENES = { jump: makeJump, flappy: makeFlappy, stack: makeStack, runner: makeRunner };
+    const SCENES = {
+      jump:       makeJump,
+      flappy:     makeFlappy,
+      stack:      makeStack,
+      runner:     makeRunner,
+      slidecoin:  makeSlideCoin,
+      numbergame: makeNumberGame
+    };
 
     function create(canvas, opts){
       opts = opts || {};
@@ -1270,7 +1775,6 @@
       const fps  = clamp(opts.fps || 60, 20, 60);
       const STEP = 1 / fps;
 
-      // How long a finished game stays on screen before auto-restarting
       const RESTART_DELAY = 0.9;
 
       let VW = 1000, VH = 1000, scale = 1, aspect = 1;
@@ -1328,7 +1832,6 @@
 
         scene.update(dt);
 
-        // ── Auto-restart the SAME game once it has ended ──────────────
         if (scene.dead){
           deadTimer += dt;
           if (deadTimer >= RESTART_DELAY){
@@ -1406,14 +1909,745 @@
     global.ChillSpaceGameplay = { create: create };
 
     })(window);
+</script>
 
+<script>
+    /* ═══════════════════════════════════════════════════════════════════════
+       ChillSpace Procedural Music Engine — "Varied Band Edition"
+
+       Every parameter is now per-song randomized:
+         tempo, song length, chord rhythm, octave shifts, filter brightness,
+         arp density, drum pattern, bass rhythm, which instruments play.
+       ═══════════════════════════════════════════════════════════════════════ */
+    const ChillSpaceMusic = (function () {
+        'use strict';
+
+        function mulberry32(a) {
+            return function () {
+                a |= 0; a = a + 0x6D2B79F5 | 0;
+                let t = Math.imul(a ^ a >>> 15, 1 | a);
+                t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            };
+        }
+
+        const KEY_PCS = [0, 2, 4, 5, 7, 9, 10, 11];
+
+        const MODES = [
+            [0, 2, 4, 5, 7, 9, 11],
+            [0, 2, 4, 5, 7, 9, 11],
+            [0, 2, 4, 5, 7, 9, 11],
+            [0, 2, 4, 6, 7, 9, 11],
+            [0, 2, 4, 6, 7, 9, 11],
+            [0, 2, 4, 5, 7, 9, 10],
+            [0, 2, 4, 5, 7, 9, 10],
+            [0, 2, 4, 7, 9],
+            [0, 2, 3, 5, 7, 8, 10],
+            [0, 2, 3, 5, 7, 8, 10],
+            [0, 2, 3, 5, 7, 9, 10],   // Dorian
+            [0, 2, 3, 5, 7, 9, 10]
+        ];
+
+        const PROGS = [
+            [0, 4, 5, 3], [0, 4, 5, 3], [0, 5, 3, 4], [0, 3, 4, 5],
+            [5, 3, 0, 4], [0, 4, 3, 5], [0, 3, 0, 4], [5, 4, 0, 3],
+            [0, 5, 2, 6], [0, 6, 5, 4], [0, 2, 5, 4], [3, 4, 0, 5],
+            [0, 4, 5, 3], [0, 3, 5, 4]
+        ];
+
+        function degToMidi(rootPc, scale, deg, octShift) {
+            const n = scale.length;
+            const o = Math.floor(deg / n) + (octShift || 0);
+            const i = ((deg % n) + n) % n;
+            return (o + 1) * 12 + rootPc + scale[i];
+        }
+
+        /* ────────────────────────────────────────────────────────────────
+           Song generator — every parameter below is randomized per seed.
+           ──────────────────────────────────────────────────────────────── */
+        function generateSong(seed) {
+            const rnd = mulberry32(seed >>> 0);
+            const pick = arr => arr[Math.floor(rnd() * arr.length)];
+
+            const keyPc = pick(KEY_PCS);
+            const scale = pick(MODES);
+            const prog  = pick(PROGS);
+
+            // Tempo: wide band, from laid-back to energetic.
+            const tempo = 76 + Math.floor(rnd() * 76);   // 76..151 BPM
+
+            // Song length: 6, 8, or 10 bars.
+            const bars = pick([6, 8, 8, 8, 8, 10]);
+            const totalBeats = bars * 4;
+
+            // Chord rhythm: every 1, 2, or 4 beats.
+            const beatsPerChord = pick([1, 2, 2, 2, 2, 4]);
+            const chordCount = Math.floor(totalBeats / beatsPerChord);
+
+            // ── Per-song profile ──
+            const profile = {
+                bassOct:    pick([1, 2, 2, 3]),
+                padOct:     pick([1, 2, 2, 3]),
+                guitarOct:  pick([2, 3, 3, 4]),
+                arpOct:     pick([2, 3, 3, 4, 5]),
+                synthOct:   pick([3, 4, 4, 5, 5]),
+
+                guitarBright: 3500 + rnd() * 9500,     // 3500..13000 Hz
+                guitarDark:   350 + rnd() * 1000,      // 350..1350 Hz
+                synthBright:  2200 + rnd() * 5800,     // 2200..8000 Hz
+                synthDark:    700 + rnd() * 1700,      // 700..2400 Hz
+                padBright:    1500 + rnd() * 4000,     // 1500..5500 Hz
+                bassBright:   280 + rnd() * 500,       // 280..780 Hz
+
+                arpSkip:    0.12 + rnd() * 0.45,       // 0.12..0.57
+                hatSkip:    rnd() < 0.5 ? 0 : 0.35,
+                kickStyle:  pick(['1-3', '1-3', '1-3', 'four', 'sparse', 'break']),
+                bassRhythm: pick(['8ths', '8ths', '8ths', 'quarters', '16ths']),
+                arpStyle:   pick(['up', 'updown', 'up', 'down', 'random', 'downup']),
+
+                padVol:    0.30 + rnd() * 0.25,
+                guitarVol: 0.35 + rnd() * 0.28,
+                bassVol:   0.40 + rnd() * 0.25,
+                arpVol:    0.16 + rnd() * 0.20,
+                synthVol:  0.26 + rnd() * 0.20,
+                kickVol:   0.75 + rnd() * 0.20,
+                snareVol:  0.60 + rnd() * 0.20,
+                hatVol:    0.28 + rnd() * 0.18,
+
+                hasArp:     rnd() < 0.78,
+                hasLead:    rnd() < 0.82,
+                hasPad:     rnd() < 0.92,
+                hasGuitar:  rnd() < 0.88,
+                hasDrums:   rnd() < 0.94,
+                hasGhostKick:    rnd() < 0.4,
+                hasGuitarSkank:  rnd() < 0.55,
+                hasSnare:        rnd() < 0.85,
+
+                // Lead motif density
+                leadCount:  4 + Math.floor(rnd() * 6),
+            };
+
+            const events = [];
+
+            /* ── DRUMS ── */
+            if (profile.hasDrums) {
+                for (let b = 0; b < totalBeats; b++) {
+                    const beatInBar = b % 4;
+
+                    // Kick patterns
+                    let doKick = false;
+                    switch (profile.kickStyle) {
+                        case '1-3':    doKick = (beatInBar === 0 || beatInBar === 2); break;
+                        case 'four':   doKick = true; break;
+                        case 'sparse': doKick = (beatInBar === 0); break;
+                        case 'break':  doKick = (beatInBar === 0 || beatInBar === 2 || (beatInBar === 3 && rnd() < 0.5)); break;
+                    }
+                    if (doKick) {
+                        events.push({ time: b, kind: 'kick', velocity: profile.kickVol });
+                    }
+                    if (profile.hasGhostKick && beatInBar === 3 && rnd() < 0.35) {
+                        events.push({ time: b + 0.75, kind: 'kick', velocity: profile.kickVol * 0.55 });
+                    }
+
+                    // Snare on 2 & 4
+                    if (profile.hasSnare && (beatInBar === 1 || beatInBar === 3)) {
+                        events.push({ time: b, kind: 'snare', velocity: profile.snareVol });
+                    }
+
+                    // Hats on 8ths, occasionally skipped
+                    if (!profile.hatSkip || rnd() > profile.hatSkip) {
+                        events.push({ time: b, kind: 'hat', velocity: profile.hatVol });
+                    }
+                    if (!profile.hatSkip || rnd() > profile.hatSkip) {
+                        events.push({ time: b + 0.5, kind: 'hat', velocity: profile.hatVol * 0.7 });
+                    }
+                }
+            }
+
+            /* ── CHORDS: pad + guitar + bass ── */
+            const bassStep = profile.bassRhythm === '16ths' ? 0.25
+                           : profile.bassRhythm === '8ths'  ? 0.5
+                           : 1.0;
+
+            for (let c = 0; c < chordCount; c++) {
+                const deg = prog[c % prog.length];
+                const t = c * beatsPerChord;
+
+                // Pad
+                if (profile.hasPad) {
+                    const padNotes = [
+                        degToMidi(keyPc, scale, deg,     profile.padOct),
+                        degToMidi(keyPc, scale, deg + 2, profile.padOct),
+                        degToMidi(keyPc, scale, deg + 4, profile.padOct)
+                    ];
+                    events.push({
+                        time: t, duration: beatsPerChord,
+                        kind: 'pad', notes: padNotes,
+                        velocity: profile.padVol
+                    });
+                }
+
+                // Guitar chord stab + optional skank
+                if (profile.hasGuitar) {
+                    const guitarNotes = [
+                        degToMidi(keyPc, scale, deg,     profile.guitarOct),
+                        degToMidi(keyPc, scale, deg + 2, profile.guitarOct),
+                        degToMidi(keyPc, scale, deg + 4, profile.guitarOct),
+                        degToMidi(keyPc, scale, deg + 7, profile.guitarOct + 1)
+                    ];
+                    events.push({
+                        time: t, duration: 0.9,
+                        kind: 'guitar', notes: guitarNotes,
+                        velocity: profile.guitarVol
+                    });
+                    if (profile.hasGuitarSkank && beatsPerChord > 1) {
+                        events.push({
+                            time: t + 1, duration: 0.4,
+                            kind: 'guitar',
+                            notes: [guitarNotes[0], guitarNotes[2]],
+                            velocity: profile.guitarVol * 0.65
+                        });
+                    }
+                }
+
+                // Bass pulse
+                const bassNote = degToMidi(keyPc, scale, deg, profile.bassOct);
+                for (let b = 0; b < beatsPerChord; b += bassStep) {
+                    events.push({
+                        time: t + b,
+                        duration: bassStep * 0.85,
+                        kind: 'bass',
+                        notes: [bassNote],
+                        velocity: profile.bassVol * (b === 0 ? 1 : 0.72)
+                    });
+                }
+            }
+
+            /* ── ARP ── */
+            if (profile.hasArp) {
+                const step = 0.25;
+                const stepsPerChord = Math.round(beatsPerChord / step);
+
+                for (let c = 0; c < chordCount; c++) {
+                    const deg = prog[c % prog.length];
+                    const pool = [
+                        degToMidi(keyPc, scale, deg,     profile.arpOct),
+                        degToMidi(keyPc, scale, deg + 2, profile.arpOct),
+                        degToMidi(keyPc, scale, deg + 4, profile.arpOct),
+                        degToMidi(keyPc, scale, deg + 7, profile.arpOct),
+                        degToMidi(keyPc, scale, deg + 9, profile.arpOct)
+                    ];
+                    for (let s = 0; s < stepsPerChord; s++) {
+                        if (s !== 0 && rnd() < profile.arpSkip) continue;
+                        let idx;
+                        if (profile.arpStyle === 'up') idx = s % pool.length;
+                        else if (profile.arpStyle === 'down') idx = (pool.length - 1) - (s % pool.length);
+                        else if (profile.arpStyle === 'updown') {
+                            const cyc = s % (pool.length * 2 - 2);
+                            idx = cyc < pool.length ? cyc : (pool.length * 2 - 2 - cyc);
+                        } else if (profile.arpStyle === 'downup') {
+                            const cyc = s % (pool.length * 2 - 2);
+                            const dcyc = cyc < pool.length ? cyc : (pool.length * 2 - 2 - cyc);
+                            idx = (pool.length - 1) - dcyc;
+                        } else idx = Math.floor(rnd() * pool.length);
+                        events.push({
+                            time: c * beatsPerChord + s * step,
+                            duration: step * 0.85,
+                            kind: 'arp',
+                            notes: [pool[idx]],
+                            velocity: profile.arpVol
+                        });
+                    }
+                }
+            }
+
+            /* ── SYNTH LEAD ── */
+            if (profile.hasLead && profile.leadCount > 0) {
+                for (let i = 0; i < profile.leadCount; i++) {
+                    const t = i * (totalBeats / profile.leadCount) + rnd() * 0.4;
+                    const d = Math.floor(rnd() * scale.length) + 7;
+                    events.push({
+                        time: t,
+                        duration: 0.6 + rnd() * 0.9,
+                        kind: 'synth',
+                        notes: [degToMidi(keyPc, scale, d, profile.synthOct)],
+                        velocity: profile.synthVol
+                    });
+                }
+            }
+
+            events.sort((a, b) => a.time - b.time);
+            return { tempo, bars, beatsPerBar: 4, totalBeats, events, seed, profile };
+        }
+
+        const midiToFreq = m => 440 * Math.pow(2, (m - 69) / 12);
+
+        /* ────────────────────────────────────────────────────────────────
+           LoopPlayer
+           ──────────────────────────────────────────────────────────────── */
+        class LoopPlayer {
+            constructor(ctx, dest, song) {
+                this.ctx = ctx;
+                this.dest = dest;
+                this.song = song;
+                this.profile = song.profile || {};
+                this.secPerBeat = 60 / song.tempo;
+                this.loopSeconds = song.totalBeats * this.secPerBeat;
+                this.out = ctx.createGain();
+                this.out.gain.value = 0;
+                this.out.connect(dest);
+                this.running = false;
+                this.timer = null;
+                this.loopStartTime = 0;
+                this.loopIteration = 0;
+                this.eventIndex = 0;
+                this.sources = new Set();
+
+                const nSamples = Math.floor(ctx.sampleRate * 0.5);
+                this.noiseBuffer = ctx.createBuffer(1, nSamples, ctx.sampleRate);
+                const nd = this.noiseBuffer.getChannelData(0);
+                for (let i = 0; i < nSamples; i++) nd[i] = Math.random() * 2 - 1;
+            }
+
+            start(when, fadeIn) {
+                this.running = true;
+                this.loopStartTime = when;
+                this.loopIteration = 0;
+                this.eventIndex = 0;
+                const g = this.out.gain;
+                g.cancelScheduledValues(when);
+                g.setValueAtTime(0.0001, when);
+                g.exponentialRampToValueAtTime(1, when + (fadeIn || 0.5));
+                this.timer = setInterval(() => this.tick(), 25);
+                this.tick();
+            }
+
+            tick() {
+                if (!this.running) return;
+                const ctx = this.ctx;
+                const horizon = ctx.currentTime + 0.35;
+                let guard = 0;
+                while (guard++ < 1000) {
+                    if (this.eventIndex >= this.song.events.length) {
+                        this.eventIndex = 0;
+                        this.loopIteration++;
+                        continue;
+                    }
+                    const ev = this.song.events[this.eventIndex];
+                    const absTime = this.loopStartTime
+                                  + this.loopIteration * this.loopSeconds
+                                  + ev.time * this.secPerBeat;
+                    if (absTime > horizon) break;
+                    if (absTime >= ctx.currentTime - 0.02) {
+                        this.schedule(ev, absTime);
+                    }
+                    this.eventIndex++;
+                }
+            }
+
+            schedule(ev, when) {
+                switch (ev.kind) {
+                    case 'kick':   this.kick(ev, when);   break;
+                    case 'snare':  this.snare(ev, when);  break;
+                    case 'hat':    this.hat(ev, when);    break;
+                    case 'bass':   this.bass(ev, when);   break;
+                    case 'pad':    this.pad(ev, when);    break;
+                    case 'guitar': this.guitar(ev, when); break;
+                    case 'arp':    this.arp(ev, when);    break;
+                    case 'synth':  this.synth(ev, when);  break;
+                }
+            }
+
+            _track(node, stopAt) {
+                this.sources.add(node);
+                const ms = Math.max(0, (stopAt - this.ctx.currentTime + 0.5) * 1000);
+                setTimeout(() => this.sources.delete(node), ms);
+            }
+
+            kick(ev, t) {
+                const ctx = this.ctx;
+                const osc = ctx.createOscillator();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(160, t);
+                osc.frequency.exponentialRampToValueAtTime(42, t + 0.09);
+
+                const g = ctx.createGain();
+                g.gain.setValueAtTime(0.0001, t);
+                g.gain.linearRampToValueAtTime(ev.velocity, t + 0.003);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + 0.32);
+
+                osc.connect(g).connect(this.out);
+                osc.start(t);
+                osc.stop(t + 0.4);
+                this._track(osc, t + 0.4);
+            }
+
+            snare(ev, t) {
+                const ctx = this.ctx;
+
+                const noise = ctx.createBufferSource();
+                noise.buffer = this.noiseBuffer;
+
+                const nf = ctx.createBiquadFilter();
+                nf.type = 'highpass';
+                nf.frequency.value = 1800;
+
+                const ng = ctx.createGain();
+                ng.gain.setValueAtTime(ev.velocity * 0.75, t);
+                ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+
+                noise.connect(nf).connect(ng).connect(this.out);
+                noise.start(t);
+                noise.stop(t + 0.25);
+
+                const body = ctx.createOscillator();
+                body.type = 'triangle';
+                body.frequency.setValueAtTime(220, t);
+                body.frequency.exponentialRampToValueAtTime(140, t + 0.1);
+
+                const bg = ctx.createGain();
+                bg.gain.setValueAtTime(ev.velocity * 0.45, t);
+                bg.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
+
+                body.connect(bg).connect(this.out);
+                body.start(t);
+                body.stop(t + 0.16);
+
+                this._track(noise, t + 0.3);
+                this._track(body, t + 0.2);
+            }
+
+            hat(ev, t) {
+                const ctx = this.ctx;
+                const noise = ctx.createBufferSource();
+                noise.buffer = this.noiseBuffer;
+
+                const f = ctx.createBiquadFilter();
+                f.type = 'highpass';
+                f.frequency.value = 8000;
+
+                const g = ctx.createGain();
+                g.gain.setValueAtTime(ev.velocity * 0.18, t);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
+
+                noise.connect(f).connect(g).connect(this.out);
+                noise.start(t);
+                noise.stop(t + 0.1);
+                this._track(noise, t + 0.15);
+            }
+
+            bass(ev, t) {
+                const ctx = this.ctx;
+                const p = this.profile;
+                const dur = ev.duration * this.secPerBeat;
+                const endTime = t + dur + 0.2;
+
+                const g = ctx.createGain();
+                const peak = ev.velocity * 0.55;
+                g.gain.setValueAtTime(0.0001, t);
+                g.gain.linearRampToValueAtTime(peak, t + 0.008);
+                g.gain.setTargetAtTime(0.0001, t + dur * 0.4, 0.16);
+
+                const lp = ctx.createBiquadFilter();
+                lp.type = 'lowpass';
+                lp.Q.value = 4.5;
+                const bright = p.bassBright || 500;
+                lp.frequency.setValueAtTime(bright * 0.4, t);
+                lp.frequency.exponentialRampToValueAtTime(bright * 2.2, t + 0.05);
+                lp.frequency.exponentialRampToValueAtTime(bright, t + dur);
+                lp.connect(g).connect(this.out);
+
+                ev.notes.forEach(midi => {
+                    const f = midiToFreq(midi);
+                    const saw = ctx.createOscillator();
+                    saw.type = 'sawtooth';
+                    saw.frequency.value = f;
+                    saw.connect(lp);
+                    saw.start(t);
+                    saw.stop(endTime);
+                    this._track(saw, endTime);
+
+                    const sub = ctx.createOscillator();
+                    sub.type = 'sine';
+                    sub.frequency.value = f / 2;
+                    const sg = ctx.createGain();
+                    sg.gain.value = 0.6;
+                    sub.connect(sg).connect(lp);
+                    sub.start(t);
+                    sub.stop(endTime);
+                    this._track(sub, endTime);
+                });
+            }
+
+            pad(ev, t) {
+                const ctx = this.ctx;
+                const p = this.profile;
+                const dur = ev.duration * this.secPerBeat;
+                const attack = 0.18, release = 0.7;
+                const endTime = t + dur + release + 0.2;
+
+                const g = ctx.createGain();
+                const peak = ev.velocity * 0.16;
+                g.gain.setValueAtTime(0.0001, t);
+                g.gain.linearRampToValueAtTime(peak, t + attack);
+                g.gain.setValueAtTime(peak * 0.75, t + dur * 0.5);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + dur + release);
+
+                const lp = ctx.createBiquadFilter();
+                lp.type = 'lowpass';
+                lp.frequency.value = p.padBright || 3500;
+                lp.Q.value = 0.7;
+                lp.connect(g).connect(this.out);
+
+                ev.notes.forEach((midi, i) => {
+                    const f = midiToFreq(midi);
+                    [-9, 0, 9].forEach(detune => {
+                        const osc = ctx.createOscillator();
+                        osc.type = 'sawtooth';
+                        osc.frequency.value = f;
+                        osc.detune.value = detune + i * 2;
+                        osc.connect(lp);
+                        osc.start(t);
+                        osc.stop(endTime);
+                        this._track(osc, endTime);
+                    });
+                });
+            }
+
+            guitar(ev, t) {
+                const ctx = this.ctx;
+                const p = this.profile;
+                const dur = ev.duration * this.secPerBeat;
+                const decay = 0.7 + dur * 1.1;
+                const endTime = t + decay + 0.15;
+
+                const g = ctx.createGain();
+                const peak = ev.velocity * 0.32;
+                g.gain.setValueAtTime(0.0001, t);
+                g.gain.linearRampToValueAtTime(peak, t + 0.005);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + decay);
+
+                const body = ctx.createBiquadFilter();
+                body.type = 'peaking';
+                body.frequency.value = 380;
+                body.Q.value = 2;
+                body.gain.value = 6;
+
+                const lp = ctx.createBiquadFilter();
+                lp.type = 'lowpass';
+                lp.Q.value = 1.8;
+                lp.frequency.setValueAtTime(p.guitarBright || 8000, t);
+                lp.frequency.exponentialRampToValueAtTime(p.guitarDark || 600, t + decay);
+                lp.connect(body).connect(g).connect(this.out);
+
+                ev.notes.forEach(midi => {
+                    const f = midiToFreq(midi);
+                    [0, 5].forEach(detune => {
+                        const osc = ctx.createOscillator();
+                        osc.type = 'sawtooth';
+                        osc.frequency.value = f;
+                        osc.detune.value = detune;
+                        osc.connect(lp);
+                        osc.start(t);
+                        osc.stop(endTime);
+                        this._track(osc, endTime);
+                    });
+                });
+            }
+
+            arp(ev, t) {
+                const ctx = this.ctx;
+                const dur = ev.duration * this.secPerBeat;
+                const decay = 0.22 + dur * 0.7;
+                const endTime = t + decay + 0.06;
+
+                const g = ctx.createGain();
+                const peak = ev.velocity * 0.28;
+                g.gain.setValueAtTime(0.0001, t);
+                g.gain.linearRampToValueAtTime(peak, t + 0.004);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + decay);
+
+                const lp = ctx.createBiquadFilter();
+                lp.type = 'lowpass';
+                lp.Q.value = 1.4;
+                lp.frequency.setValueAtTime(7000, t);
+                lp.frequency.exponentialRampToValueAtTime(1800, t + decay);
+                lp.connect(g).connect(this.out);
+
+                ev.notes.forEach(midi => {
+                    const osc = ctx.createOscillator();
+                    osc.type = 'triangle';
+                    osc.frequency.value = midiToFreq(midi);
+                    osc.connect(lp);
+                    osc.start(t);
+                    osc.stop(endTime);
+                    this._track(osc, endTime);
+                });
+            }
+
+            synth(ev, t) {
+                const ctx = this.ctx;
+                const p = this.profile;
+                const dur = ev.duration * this.secPerBeat;
+                const attack = 0.025, release = 0.35;
+                const endTime = t + dur + release + 0.1;
+
+                const g = ctx.createGain();
+                const peak = ev.velocity * 0.3;
+                g.gain.setValueAtTime(0.0001, t);
+                g.gain.linearRampToValueAtTime(peak, t + attack);
+                g.gain.setValueAtTime(peak * 0.82, t + dur * 0.55);
+                g.gain.exponentialRampToValueAtTime(0.0001, t + dur + release);
+
+                const lp = ctx.createBiquadFilter();
+                lp.type = 'lowpass';
+                lp.Q.value = 3;
+                lp.frequency.setValueAtTime(500, t);
+                lp.frequency.exponentialRampToValueAtTime(p.synthBright || 4000, t + 0.09);
+                lp.frequency.exponentialRampToValueAtTime(p.synthDark || 1400, t + dur + release);
+                lp.connect(g).connect(this.out);
+
+                ev.notes.forEach(midi => {
+                    const f = midiToFreq(midi);
+                    [-7, 7].forEach(detune => {
+                        const osc = ctx.createOscillator();
+                        osc.type = 'sawtooth';
+                        osc.frequency.value = f;
+                        osc.detune.value = detune;
+                        osc.connect(lp);
+                        osc.start(t);
+                        osc.stop(endTime);
+                        this._track(osc, endTime);
+                    });
+                });
+            }
+
+            fadeOutAndStop(dur) {
+                if (!this.running) return;
+                const now = this.ctx.currentTime;
+                const g = this.out.gain;
+                g.cancelScheduledValues(now);
+                g.setValueAtTime(Math.max(0.0001, g.value), now);
+                g.exponentialRampToValueAtTime(0.0001, now + dur);
+                this.running = false;
+                const myTimer = this.timer;
+                this.timer = null;
+                setTimeout(() => {
+                    if (myTimer) clearInterval(myTimer);
+                    for (const src of this.sources) {
+                        try { src.stop(); } catch (e) {}
+                    }
+                    this.sources.clear();
+                    try { this.out.disconnect(); } catch (e) {}
+                }, dur * 1000 + 150);
+            }
+        }
+
+        /* ────────────────────────────────────────────────────────────────
+           MusicManager
+           ──────────────────────────────────────────────────────────────── */
+        class MusicManager {
+            constructor() {
+                this.ctx = null;
+                this.master = null;
+                this.voiceGain = null;
+                this.current = null;
+                this.currentSeed = null;
+                this.volume = 0.45;   // quieter than before
+                this.ducked = false;
+            }
+
+            ensureContext() {
+                if (this.ctx) {
+                    if (this.ctx.state === 'suspended') {
+                        try { this.ctx.resume(); } catch (e) {}
+                    }
+                    return this.ctx;
+                }
+                const Ctor = window.AudioContext || window.webkitAudioContext;
+                if (!Ctor) return null;
+                this.ctx = new Ctor();
+
+                this.voiceGain = this.ctx.createGain();
+                this.voiceGain.gain.value = 1;
+
+                this.master = this.ctx.createGain();
+                this.master.gain.value = this.volume;
+
+                const comp = this.ctx.createDynamicsCompressor();
+                comp.threshold.value = -12;
+                comp.knee.value = 22;
+                comp.ratio.value = 6;
+                comp.attack.value = 0.004;
+                comp.release.value = 0.18;
+
+                this.voiceGain.connect(this.master);
+                this.master.connect(comp);
+                comp.connect(this.ctx.destination);
+                return this.ctx;
+            }
+
+            play(seed) {
+                if (seed === this.currentSeed && this.current) return;
+                const ctx = this.ensureContext();
+                if (!ctx) return;
+
+                const old = this.current;
+                const song = generateSong(seed);
+                const player = new LoopPlayer(ctx, this.voiceGain, song);
+                this.current = player;
+                this.currentSeed = seed;
+
+                if (old) old.fadeOutAndStop(0.5);
+                player.start(ctx.currentTime + 0.02, 0.9);
+            }
+
+            duck(on) {
+                if (!this.voiceGain || !this.ctx) return;
+                if (this.ducked === !!on) return;
+                this.ducked = !!on;
+                const now = this.ctx.currentTime;
+                const target = on ? 0.32 : 1;
+                const tc = on ? 0.06 : 0.22;
+                const g = this.voiceGain.gain;
+                g.cancelScheduledValues(now);
+                g.setValueAtTime(g.value, now);
+                g.setTargetAtTime(target, now, tc);
+            }
+
+            pause() {
+                if (this.ctx && this.ctx.state === 'running') {
+                    try { this.ctx.suspend(); } catch (e) {}
+                }
+            }
+
+            resume() {
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    try { this.ctx.resume(); } catch (e) {}
+                }
+            }
+
+            setVolume(v) {
+                this.volume = Math.max(0, Math.min(1, v));
+                if (this.master && this.ctx) {
+                    const now = this.ctx.currentTime;
+                    this.master.gain.cancelScheduledValues(now);
+                    this.master.gain.setTargetAtTime(this.volume, now, 0.05);
+                }
+            }
+        }
+
+        return new MusicManager();
+    })();
+</script>
+
+<script>
     /* =====================================================================
        ReelSpace — main app
        ===================================================================== */
     (function() {
         const scrollContainer = document.getElementById('scrollContainer');
         const bgCanvas = document.getElementById('bgCanvas');
-        const bgMusic = document.getElementById('bgMusic');
         const musicIndicator = document.getElementById('musicIndicator');
         const startOverlay = document.getElementById('startOverlay');
         const loadReelSpaceBtn = document.getElementById('loadReelSpaceBtn');
@@ -1421,15 +2655,15 @@
         const commentList = document.getElementById('commentList');
         const closeCommentsBtn = document.getElementById('closeCommentsBtn');
         const langToggle = document.getElementById('langToggle');
+        const autoscrollToggle = document.getElementById('autoscrollToggle');
         const badgeText = document.getElementById('badgeText');
         const startSub = document.getElementById('startSub');
 
-        // ─── PROCEDURAL GAMEPLAY ENGINE ────────────────
         const bg = ChillSpaceGameplay.create(bgCanvas, { fps: 60 });
         bg.start();
         bg.setScene('jump');
 
-        const GAME_SCENES = ['jump', 'flappy', 'stack', 'runner'];
+        const GAME_SCENES = ['jump', 'flappy', 'stack', 'runner', 'slidecoin', 'numbergame'];
         let lastGameScene = null;
 
         function pickRandomGame() {
@@ -1443,119 +2677,56 @@
             return name;
         }
 
-        // ─── GLOBAL PAUSE/RESUME FOR ANDROID ────────
         window.pauseReelSpaceMedia = function() {
-            bgMusic.pause();
+            ChillSpaceMusic.pause();
             bg.stop();
         };
 
         window.resumeReelSpaceMedia = function() {
-            if (audioInitialized && startOverlay.classList.contains('hidden')) {
-                bgMusic.play().catch(() => {});
-            }
             bg.start();
+            if (audioInitialized) {
+                ChillSpaceMusic.resume();
+            }
         };
 
-        // ─── LANGUAGE STATE ──────────────────────────
         let currentLang = 'en';
+        let isAutoscrollEnabled = false;
 
-        // ─── LOCAL ASSETS (Android) & FALLBACK ──────
-        const LOCAL_MUSIC = ['file:///android_asset/song1.mp3', 'file:///android_asset/song2.mp3', 'file:///android_asset/song3.mp3', 'file:///android_asset/song4.mp3', 'file:///android_asset/song5.mp3'];
-        const FALLBACK_MUSIC = [
-            "https://ia800705.us.archive.org/11/items/CountingUpOn1Tap/AUD-20260124-WA0004.mp3",
-            "https://dn721702.ca.archive.org/0/items/soundcloud-564282678/Vexento_-_Jump_Copyright_Free_Sounds-564282678.mp3",
-            "https://dn710102.ca.archive.org/0/items/soundcloud-469181655/MuraD_-_Flame_Copyright_Free_Sounds-469181655.mp3",
-            "https://dn721207.ca.archive.org/0/items/soundcloud-354674249/MuraD_DJ_LeGenD_-_Future_Copyright_Free_Sounds-354674249.mp3",
-            "https://dn721502.ca.archive.org/0/items/soundcloud-407515281/Vexento_-_Devotion_Copyright_Free_Sounds-407515281.mp3"
-        ];
-
-        let lastMusicUrl = null;
-        let isMusicFallback = false;
-
-        function pickRandomFromArray(arr, last) {
-            if (!arr || arr.length === 0) return null;
-            if (arr.length === 1) return arr[0];
-            const normalize = (val) => val ? val.split('/').pop().split('.').shift() : null;
-            const lastNorm = normalize(last);
-            let newItem;
-            let attempts = 0;
-            do {
-                newItem = arr[Math.floor(Math.random() * arr.length)];
-                attempts++;
-                if (attempts > 50) break;
-            } while (normalize(newItem) === lastNorm && arr.length > 1);
-            return newItem;
-        }
-
-        function getMusicUrl() {
-            // If offline, only pick from local assets
-            if (!navigator.onLine) {
-                const chosen = pickRandomFromArray(LOCAL_MUSIC, lastMusicUrl);
-                if (chosen) lastMusicUrl = chosen;
-                return chosen;
+        window.onTTSDone = function() {
+            ChillSpaceMusic.duck(false);
+            if (isAutoscrollEnabled) {
+                setTimeout(() => {
+                    scrollToSlide(activeIndex + 1);
+                }, 1000);
             }
+        };
 
-            let chosen = pickRandomFromArray(LOCAL_MUSIC, lastMusicUrl);
-            if (!chosen) {
-                chosen = pickRandomFromArray(FALLBACK_MUSIC, lastMusicUrl);
+        function hashString(s) {
+            let h = 2166136261 >>> 0;
+            for (let i = 0; i < s.length; i++) {
+                h ^= s.charCodeAt(i);
+                h = Math.imul(h, 16777619);
             }
-            if (chosen) lastMusicUrl = chosen;
-            return chosen;
+            return h >>> 0;
         }
 
-        // ─── MUSIC HANDLING ──────────────────────────
-        function loadAndPlayMusic(url) {
-            if (!url) return Promise.reject('No URL');
-
-            // Re-use same source if possible, or update it
-            if (bgMusic.src !== url) {
-                bgMusic.src = url;
-            }
-
-            return new Promise((resolve, reject) => {
-                // Simplified: just play from start
-                bgMusic.play().then(resolve).catch(err => {
-                    // Try re-setting src and playing if first attempt fails
-                    bgMusic.src = url;
-                    bgMusic.play().then(resolve).catch(reject);
-                });
-            });
+        function storySeed(index) {
+            const story = allStories[index];
+            if (!story) return 1;
+            return hashString(story.plainText + '|' + story.topic + '|' + story.rel);
         }
 
-        function playRandomMusic() {
-            const url = getMusicUrl();
-            bgMusic.volume = 0.2;
-            return loadAndPlayMusic(url).then(() => {
-                isMusicFallback = false; // Reset fallback state on success
-            }).catch(() => {
-                // If local fails or we are offline, don't try web fallback if navigator.onLine is false
-                if (!navigator.onLine) return Promise.reject('Offline and local music failed');
-
-                if (!isMusicFallback) {
-                    isMusicFallback = true;
-                    const fallback = pickRandomFromArray(FALLBACK_MUSIC, lastMusicUrl);
-                    if (fallback) {
-                        lastMusicUrl = fallback;
-                        return loadAndPlayMusic(fallback);
-                    }
-                } else {
-                    const fallback = pickRandomFromArray(FALLBACK_MUSIC, lastMusicUrl);
-                    if (fallback && fallback !== lastMusicUrl) {
-                        lastMusicUrl = fallback;
-                        return loadAndPlayMusic(fallback);
-                    }
-                }
-                return Promise.reject('All music sources failed');
-            });
-        }
-
-        // ─── ANDROID TTS FALLBACK ──────────────────
         function speakText(text, lang) {
+            ChillSpaceMusic.duck(true);
+
             if (window.AndroidTTS && typeof window.AndroidTTS.speak === 'function') {
                 window.AndroidTTS.speak(text, lang || 'en');
                 return;
             }
-            if (!window.speechSynthesis) return;
+            if (!window.speechSynthesis) {
+                ChillSpaceMusic.duck(false);
+                return;
+            }
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.rate = 0.92;
@@ -1571,10 +2742,16 @@
                 voice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Daniel'))) || voices.find(v => v.lang.startsWith('en'));
             }
             if (voice) utterance.voice = voice;
+            utterance.onend = () => {
+                ChillSpaceMusic.duck(false);
+                if (window.onTTSDone) window.onTTSDone();
+            };
+            utterance.onerror = () => {
+                ChillSpaceMusic.duck(false);
+            };
             speechSynthesis.speak(utterance);
         }
 
-        // ─── WORD SWAP (English only) ──────────────
         const wordSwapDict = {
             "happy": ["happy", "joyful", "cheerful", "delighted", "ecstatic"],
             "sad": ["sad", "melancholy", "sorrowful", "downcast", "gloomy"],
@@ -1843,7 +3020,7 @@
         function replaceWordsInHtml(html) {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
-            const walker = document.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, null, false);
+            const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT, null, false);
             let node;
             while (node = walker.nextNode()) {
                 node.textContent = replaceWordsInText(node.textContent);
@@ -1851,7 +3028,6 @@
             return doc.body.innerHTML;
         }
 
-        // ─── TOPICS & RELATIONS & TEMPLATES ──
         const enTopics = [
             "McDonalds", "knitting", "orange jelly beans", "sour gummy worms", "collecting stamps",
             "pineapple on pizza", "reality TV shows", "antique door knobs", "competitive dog grooming",
@@ -1937,30 +3113,7 @@
             "OP used to think <span class=\"highlight\">${topic}</span> was boring, but <span class=\"highlight\">${rel}</span> talked about it with such passion that OP now owns three books on the subject. The conversion was so complete that OP sometimes gives lectures to unsuspecting friends. They've become the very thing they once mocked, and they're proud of it.",
             "When <span class=\"highlight\">${rel}</span> and OP met, they almost didn't talk. Then <span class=\"highlight\">${topic}</span> came up and they've been inseparable since. That one topic was the key that unlocked everything else. Without it, they might have stayed polite strangers. The universe works in mysterious, wonderful ways.",
             "There's a bench in the park where <span class=\"highlight\">${rel}</span> first opened up about <span class=\"highlight\">${topic}</span>. OP walks past it and smiles every time. That bench is now a landmark in their personal history, a physical reminder of a pivotal moment. If benches could talk, that one would tell a beautiful story.",
-            "The inside jokes about <span class=\"highlight\">${topic}</span> between OP and <span class=\"highlight\">${rel}</span> could fill a book. Maybe they should write one. They've already outlined chapters and designed a cover in their heads. It would be a bestseller, at least among their friend group. Perhaps one day they'll actually sit down and write it — that would be the ultimate tribute to their bond.",
-            "OP was addicted to the endless scroll, chasing likes and validation. Then <span class=\"highlight\">${rel}</span> introduced them to ChillSpace, a site that replaced variable rewards with consistent, wholesome content. Now OP spends their time on ReelSpace, enjoying heartwarming stories. The switch from unpredictable dopamine hits to reliable, feel-good tales helped OP regain control.",
-            "For years, OP couldn't put down their phone, always refreshing for that next hit of excitement. <span class=\"highlight\">${rel}</span> showed them ChillSpace, where the reward is consistent and genuine, not a slot machine. ReelSpace's infinite stories became OP's new habit—one that leaves them fulfilled, not drained. That change saved their mental health.",
-            "Social media had OP trapped in a cycle of anxiety and comparison. <span class=\"highlight\">${rel}</span> suggested trying ChillSpace, a platform designed for calm, curated content. OP switched their scrolling to ReelSpace, where every story is a small, satisfying gem. The constant variable reward was replaced with a steady stream of joy, and OP finally felt free.",
-            "OP used to spend hours on TikTok, feeling empty afterwards. <span class=\"highlight\">${rel}</span> told them about ChillSpace and ReelSpace—two sites that offer a different kind of feed. Now OP reads stories about random topics, each one a little surprise, but without the addictive spikes. Consistency over chaos—that's the new motto.",
-            "The dopamine loop was killing OP's productivity. <span class=\"highlight\">${rel}</span> recommended ChillSpace as a healthier alternative. OP discovered ReelSpace and its endless tales, each one crafted to bring a smile. The consistent reward of a good story replaced the frantic highs and lows of social media, and OP hasn't looked back.",
-            "OP's <span class=\"highlight\">${rel}</span> noticed how drained they were after scrolling and suggested ChillSpace. That site led OP to ReelSpace, where stories are the main course—no ads, no algorithms, just pure narrative. OP realized that consistent, predictable joy is far more satisfying than random bursts of likes.",
-            "FOMO and doomscrolling ruled OP's life until <span class=\"highlight\">${rel}</span> introduced them to ChillSpace. ReelSpace's library of heartwarming and funny stories gave OP a new habit. The variable reward of social media was replaced with the steady reward of a good tale, and OP's anxiety melted away.",
-            "OP thought they could never quit social media, but <span class=\"highlight\">${rel}</span> challenged that idea by showing them ChillSpace. ReelSpace became OP's new go-to—a place where every story is a gift, not a gamble. The consistent reward of a well-told story helped OP break the cycle and rediscover joy.",
-            "Addiction to likes and shares had OP feeling hollow. <span class=\"highlight\">${rel}</span> shared ChillSpace, a site that offers a different kind of feed—one based on stories, not status. ReelSpace's infinite scroll of tales became OP's new vice, but a healthy one. The switch from variable to consistent reward was a game-changer.",
-            "OP's social media usage was out of control until <span class=\"highlight\">${rel}</span> introduced them to ChillSpace. That platform led to ReelSpace, where OP found stories that made them laugh, cry, and think. The consistent reward of a good story replaced the fleeting high of a notification, and OP finally felt peace.",
-            "The constant comparison on Instagram was exhausting. <span class=\"highlight\">${rel}</span> suggested ChillSpace, a site that focuses on content, not competition. OP discovered ReelSpace and its endless stories, each one a tiny escape. The steady stream of engaging tales helped OP kick the addiction to variable rewards.",
-            "OP was hooked on the dopamine rush of social media, but <span class=\"highlight\">${rel}</span> showed them a better way—ChillSpace and ReelSpace. These platforms offer consistent, quality content that doesn't leave you craving more. OP now spends their time immersed in stories, feeling fulfilled instead of empty.",
-            "Every time OP opened social media, they felt worse. <span class=\"highlight\">${rel}</span> recommended ChillSpace, a curated feed of positivity. ReelSpace took it further with its endless stories, each one a small delight. The shift from variable to consistent reward helped OP rebuild their relationship with technology.",
-            "OP's screen time was terrifying until <span class=\"highlight\">${rel}</span> introduced them to ChillSpace. That site led to ReelSpace, where OP found a new passion—reading stories about everything and nothing. The consistent reward of a good story replaced the frantic hunt for likes, and OP's mental health improved dramatically.",
-            "Social media had OP in a chokehold, but <span class=\"highlight\">${rel}</span> offered a lifeline—ChillSpace. OP discovered ReelSpace and its collection of random, beautiful tales. The switch from variable reward to consistent, wholesome content was like a breath of fresh air. OP finally felt in control.",
-            "OP was tired of the noise and negativity online. <span class=\"highlight\">${rel}</span> told them about ChillSpace, a haven of calm. ReelSpace became OP's new daily ritual—reading stories that made them feel connected. The consistent reward of a good story replaced the chaos of social media, and OP found their zen.",
-            "The algorithm knew how to keep OP hooked, but <span class=\"highlight\">${rel}</span> knew better. They shared ChillSpace and ReelSpace, where the only algorithm is the love of storytelling. OP traded variable rewards for the steady joy of a well-told tale, and their life changed for the better.",
-            "OP's friends were worried about their social media obsession. <span class=\"highlight\">${rel}</span> introduced them to ChillSpace, a site that offers a different kind of feed—one based on stories, not status. ReelSpace's infinite scroll of tales became OP's new habit, and the consistent reward helped them break free.",
-            "OP didn't realize how much social media was affecting them until <span class=\"highlight\">${rel}</span> pointed it out. They suggested ChillSpace and ReelSpace—two platforms that prioritize genuine content over engagement bait. OP made the switch, and the consistent reward of a good story made all the difference.",
-            "The urge to check notifications was overwhelming, but <span class=\"highlight\">${rel}</span> gave OP a new tool—ChillSpace. ReelSpace's stories became OP's new source of entertainment, one that didn't leave them anxious. The shift from variable to consistent reward was the key to overcoming addiction.",
-            "OP's <span class=\"highlight\">${rel}</span> was the voice of reason, urging them to try ChillSpace. ReelSpace's endless stream of heartwarming and funny tales captured OP's heart. The consistent reward of a good story replaced the fleeting high of likes, and OP's happiness soared.",
-            "OP used to think they needed social media to stay connected, but <span class=\"highlight\">${rel}</span> showed them ChillSpace, where connection comes from stories, not status. ReelSpace's tales of everyday life reminded OP what truly matters. The consistent reward of a good story replaced the need for validation, and OP felt liberated.",
-            "The final straw was when <span class=\"highlight\">${rel}</span> pointed out how stressed OP looked after scrolling. They suggested ChillSpace and ReelSpace as an experiment. OP tried it, and the consistent reward of engaging stories quickly became a lifeline. Now OP can't imagine going back to the chaos."
+            "The inside jokes about <span class=\"highlight\">${topic}</span> between OP and <span class=\"highlight\">${rel}</span> could fill a book. Maybe they should write one. They've already outlined chapters and designed a cover in their heads. It would be a bestseller, at least among their friend group. Perhaps one day they'll actually sit down and write it — that would be the ultimate tribute to their bond."
         ];
 
         const koTopics = [
@@ -2002,57 +3155,13 @@
             "OP가 <span class=\"highlight\">${rel}</span>이 <span class=\"highlight\">${topic}</span>을 열정적으로 변호하는 것을 처음 들었을 때, 그들은 이 사람이 이상한 방식으로 중요한 것에 관심을 갖는 사람임을 알았다. 그것은 옳고 그름의 문제가 아니라, 그들이 쏟아낸 마음의 양이었다. OP는 뒤로 앉아 완전히 매료되어 지켜봤다. 그 순간, 그들은 이 사람을 평생 곁에 두고 싶다는 것을 깨달았다.",
             "그들은 모두가 관심을 기울이지 않는 가족 모임에서 <span class=\"highlight\">${topic}</span>에 대해 유대감을 형성했다. <span class=\"highlight\">${rel}</span>이 그것에 대해 농담을 속삭였고, OP는 그렇게 이해받은 적이 없었다. 서로 말하는 사람들로 가득한 방에서 그 조용한 순간은 닻과 같았다. 그 이후로 모든 가족 행사는 그들이 도피할 작은 내면의 세계가 있다는 것을 알기에 견딜 만해졌다.",
             "OP는 <span class=\"highlight\">${topic}</span>이 감정적일 수 있다고 생각하지 않았지만, <span class=\"highlight\">${rel}</span>이 그것에 대한 이야기를 해서 주차장에서 눈물을 흘리게 했다. 늦은 시간, 가로등이 깜빡였고, 갑자기 OP는 웃음 뒤에 숨은 깊이를 보았다. 그 대화는 가벼운 주제를 깊이 개인적인 것으로 바꿔놓았다. 그들은 <span class=\"highlight\">${topic}</span>을 다시는 같은 방식으로 보지 않았다.",
-            "<span class=\"highlight\">${topic}</span>이 없었다면 OP와 <span class=\"highlight\">${rel}</span>은 낯선 사람으로 남았을지도 모른다. 이제 그들은 매일 그것에 대한 밈을 주고받는다. 그것은 그들의 우정을 모든 웃음마다 더욱 단단하게 엮는 실이 되었다. 나쁜 날에도 그것에 대한 알림은 모든 것을 바꿀 수 있다. 어떤 우정은 큰 순간에 기반을 두고, 그들의 우정은 이 하나의 아름답고 우스꽝스러운 공통 관심사에 기반을 두었다.",
-            "<span class=\"highlight\">${topic}</span>에 대한 집착은 OP와 <span class=\"highlight\">${rel}</span> 사이의 농담으로 시작됐고, 지금은 12명이 참여하는 단체 채팅방이 있다. 비꼬는 댓글이 완전한 공동체로 변한 것이다. OP는 아직도 하나의 내부 농담이 어떻게 그렇게 건전한 것으로 불어났는지 믿기지 않는다. 이는 가장 좋은 것들이 종종 자신을 너무 심각하게 받아들이지 않을 때 시작된다는 것을 보여준다.",
-            "<span class=\"highlight\">${rel}</span>이 한 번 <span class=\"highlight\">${topic}</span>과 관련된 선물을 줬는데, 너무 완벽하게 이상해서 OP는 평생 친구가 될 것임을 알았다. 비싸지 않았지만, 그 뒤에 담긴 생각이 많은 것을 말해줬다. OP는 그 선물을 볼 때마다 자신의 사람을 찾았다는 순간을 기억한다. 진정한 우정은 큰 제스처에 관한 것이 아니라, 완벽한 이상한 선물을 살 만큼 상대를 잘 아는 것이다.",
-            "정전 중에 OP와 <span class=\"highlight\">${rel}</span>은 촛불 아래서 <span class=\"highlight\">${topic}</span>에 대해 토론하게 됐고, 솔직히 그게 OP가 몇 년 만에 가장 살아있다고 느낀 순간이었다. 화면도 없고, 방해도 없고, 오직 두 사람과 어두운 방을 밝히는 대화뿐이었다. 불이 들어올 때까지 이야기했고, 그 후에도 계속 이야기했다. 그날 밤은 OP에게 진정한 연결이 무엇인지 상기시켜줬다.",
-            "<span class=\"highlight\">${rel}</span>이 <span class=\"highlight\">${topic}</span>에 대한 비밀스러운 사랑을 고백한 순간, OP는 자신의 사람을 찾았다는 것을 깨달았다. 그것은 작고 취약한 고백이었지만, 모든 것을 바꿔놓았다. 그 이후로 그들은 그 공유된 열정을 중심으로 완전한 세계를 구축했다. 때로는 가장 강한 유대감이 가장 조용한 고백에서 온다.",
-            "OP는 자신이 <span class=\"highlight\">${topic}</span>에 대해 늦게까지 읽는 타입이 될 거라고 생각하지 않았지만, <span class=\"highlight\">${rel}</span>이 한 기사를 보내자 토끼굴이 그들을 삼켰다. 링크를 클릭할 때마다 시간이 사라졌고, 그들의 열정은 새로운 사실과 함께 커졌다. 이제 그들은 다시 기사를 보내는 쪽이 되었고, 순환은 계속된다. 한 사람의 열정이 어떻게 자신이 몰랐던 불을 붙일 수 있는지 놀랍다.",
-            "<span class=\"highlight\">${rel}</span>이 OP에게 <span class=\"highlight\">${topic}</span>을 처음 소개해줬고, 처음에는 눈을 굴렸지만, 이제는 일주일도 그것 없이 상상할 수 없다. 변화는 자연스럽게 일어났다: 호기심, 즐거움, 그리고 완전한 집착. OP는 자신이 존재하지도 몰랐던 문을 열어준 <span class=\"highlight\">${rel}</span>에게 평생 감사할 빚을 졌다.",
-            "작은 대화로 가득한 세상에서 <span class=\"highlight\">${rel}</span>은 OP에게 <span class=\"highlight\">${topic}</span>에 대해 묻기로 했다. 그 질문이 모든 것을 바꿨다. 그것은 단지 주제가 아니라 더 깊고 진정한 공간으로의 초대였다. OP는 진정으로 이해받은 그 순간을 결코 잊지 못할 것이다. 진정한 관심으로 던진 하나의 질문이 관계의 방향을 영원히 바꿀 수 있다.",
-            "OP가 받은 최고의 칭찬은 <span class=\"highlight\">${rel}</span>이 OP를 <span class=\"highlight\">${topic}</span>에 비유한 것이었다. 전혀 말이 안 됐지만, 세상에 뜻깊었다. <span class=\"highlight\">${rel}</span>에게 그 비교는 최고의 찬사였기 때문이다. OP는 그 이상하고 아름다운 칭찬을 매일 마음에 품고 다닌다.",
-            "모두가 논쟁하는 동안, <span class=\"highlight\">${rel}</span>은 OP를 한쪽으로 끌고 <span class=\"highlight\">${topic}</span>에 대해 속삭였고, 둘 다 웃음을 터뜨렸다. 혼란 속의 그 훔친 유머의 순간이 그들의 유대감을 굳혔다. 그 후로 그들은 팀이 되었고, 항상 틈새에서 기쁨을 찾았다. 함께 웃음은 깨지지 않는 동맹의 기초가 될 수 있다.",
-            "OP의 <span class=\"highlight\">${rel}</span>은 <span class=\"highlight\">${topic}</span>에 대한 이론을 가지고 있는데, 미친 것처럼 들리지만 OP가 생각할수록 더 믿게 된다. 그들은 더 미묘한 점에 대해 몇 시간 동안 토론하고, 냅킨에 다이어그램을 그리며 진지하게 받아들이는 자신들을 웃었다. 그런 협력적인 광기는 자주 오지 않는다. 올 때는 꼭 붙잡아야 한다.",
-            "<span class=\"highlight\">${rel}</span>이 <span class=\"highlight\">${topic}</span>에 대해 말하는 방식은 OP가 자신이 가장 좋아하는 인간이기도 한 천재의 TED 강연을 듣는 것 같은 느낌을 준다. 모든 말은 열정과 명확성으로 가득 차 있어 OP가 끌리지 않을 수 없다. 그것은 열정의 걸작 수업이고, OP는 열렬한 학생이다. 그들은 그 독백에서 어떤 교과서보다 많은 것을 배웠다.",
-            "<span class=\"highlight\">${rel}</span>의 <span class=\"highlight\">${topic}</span>에 대한 무작위 댓글이 세 시간짜리 음성 통화로 이어졌다. 후회는 없다. 그들은 모든 각도를 다루고, 모든 의견을 공유하며 목이 아플 때까지 웃었다. 그 통화는 이제 소중한 추억이 되었다 — 최고의 대화는 계획이 필요하지 않다는 증거다. 때로는 무언가 놀라운 일에 빠져들기도 한다.",
-            "OP는 자신만 <span class=\"highlight\">${topic}</span>에 관심이 있다고 생각했지만, <span class=\"highlight\">${rel}</span>이 그것에 대한 노트가 가득한 공책을 꺼낼 때까지 그랬다. 그 순간 OP는 몇 년 동안 느끼지 못한 소속감을 느꼈다. 그들은 다음 시간 동안 함께 노트를 읽고 여백에 자신의 생각을 추가했다. 그것은 아름다운, 덕후적인 파트너십의 시작이었다.",
-            "<span class=\"highlight\">${rel}</span>이 한 가장 진실한 말은 <span class=\"highlight\">${topic}</span>에 관한 것이었고, OP는 그것을 뇌리에 새겼다. 그 말은 필요할 때마다 나타나는 지침의 조각이 되었다. 한 문장이 어떻게 당신의 삶에 메아리치고 당신을 단단히 붙잡을 수 있는지 놀랍다. 어떤 조언은 아주 특정한 패키지로 포장되어 있다.",
-            "소울메이트가 존재한다면, OP와 <span class=\"highlight\">${rel}</span>은 분명히 <span class=\"highlight\">${topic}</span>을 통해 서로를 찾았다. 큰 소리나 드라마틱한 만남이 아니라, 그들이 같은 언어를 사용한다는 조용한 인식이었다. 그 이후로 모든 것이 맞아떨어졌다. 우주는 혼란스러울 수 있지만, 그 연결은 별에 쓰여진 것처럼 느껴졌다.",
-            "이제 OP가 <span class=\"highlight\">${topic}</span>에 대해 들을 때마다 자동으로 <span class=\"highlight\">${rel}</span>을 떠올린다. 그것은 영구적인 연관성으로, 뇌리에 짜여져 있다. 한 단어, 소리, 참조 — 모든 길이 그 사람으로 이어진다. 변화하는 세상에서 위안이 되는 상수다.",
-            "<span class=\"highlight\">${rel}</span>은 <span class=\"highlight\">${topic}</span>을 주말 프로젝트로 만들었고, OP는 간식과 엄청난 열정을 가지고 나타났다. 그들은 나란히 일하며 옷에 페인트를 묻히고 자신들의 실수에 웃었다. 그 주말은 프로젝트에 관한 것이 아니었다 — 함께 무언가를 만드는 것이었다. 결과물은 OP의 집에 자랑스럽게 전시되어 있으며, 팀워크와 기쁨의 상징이다.",
-            "파티에서 가장 조용한 사람(<span class=\"highlight\">${rel}</span>)이 누군가 <span class=\"highlight\">${topic}</span>을 언급했을 때 갑자기 빛났다. OP는 그 자리에서 약간 사랑에 빠졌다. 실시간으로 꽃이 피는 모습을 보는 것 같았다. 그 순간부터 OP는 그 빛을 계속 비추는 것을 자신의 사명으로 삼았다.",
-            "OP가 가장 좋아하는 휴일 추억은 <span class=\"highlight\">${rel}</span>이 <span class=\"highlight\">${topic}</span>과 관련된 흉내를 내서 방 전체를 울게 만든 것이다. 몇 년이 지나도 누군가가 그것을 언급하면 웃음이 다시 시작된다. 그런 기쁨은 시대를 초월한다. 계속해서 주는 선물이다.",
-            "<span class=\"highlight\">${topic}</span>이 언급될 때 <span class=\"highlight\">${rel}</span>이 지어내는 특정한 표정이 있다, OP는 그 표정을 위해 산다. 그것은 흥분과 장난기가 섞여 있어 좋은 이야기가 올 것임을 예고한다. OP는 그것을 즉시 인식하고 일정을 비우는 법을 배웠다. 그 표정만으로 작은 도시에 전력을 공급할 수 있다.",
-            "OP는 끝없는 스크롤에 중독되어 좋아요와 인정을 쫓았다. 그러던 중 <span class=\"highlight\">${rel}</span>이 ChillSpace를 소개해줬다. 이 사이트는 가변적 보상을 일관된 건강한 콘텐츠로 대체했다. 이제 OP는 ReelSpace에서 시간을 보내며 감동적인 이야기를 즐긴다. 예측 불가능한 도파민 히트에서 신뢰할 수 있는 기분 좋은 이야기로의 전환은 OP가 통제력을 되찾는 데 도움이 됐다.",
-            "수년 동안 OP는 휴대폰을 내려놓을 수 없었고, 항상 다음 흥분을 위해 새로고침했다. <span class=\"highlight\">${rel}</span>이 ChillSpace를 보여줬고, 그곳의 보상은 일관되고 진정성 있으며, 슬롯 머신이 아니다. ReelSpace의 무한한 이야기는 OP의 새로운 습관이 되었다—그것은 그들을 지치게 하지 않고 만족시킨다. 그 변화가 그들의 정신 건강을 구했다.",
-            "소셜 미디어는 OP를 불안과 비교의 순환에 가둬놓았다. <span class=\"highlight\">${rel}</span>은 ChillSpace를 시도해보라고 제안했고, 이 플랫폼은 차분하고 엄선된 콘텐츠를 위해 설계됐다. OP는 ReelSpace로 스크롤을 전환했고, 모든 이야기는 작고 만족스러운 보석이었다. 지속적인 가변적 보상이 꾸준한 기쁨의 흐름으로 대체되었고, OP는 마침내 자유로워졌다.",
-            "OP는 TikTok에서 몇 시간을 보내고 허탈감을 느꼈다. <span class=\"highlight\">${rel}</span>이 ChillSpace와 ReelSpace에 대해 알려줬다—두 사이트는 다른 종류의 피드를 제공한다. 이제 OP는 무작위 주제에 대한 이야기를 읽으며, 각각은 작은 놀라움을 주지만 중독성 있는 스파이크는 없다. 일관성이 혼돈보다 낫다—그것이 새로운 좌우명이다.",
-            "도파민 루프는 OP의 생산성을 죽이고 있었다. <span class=\"highlight\">${rel}</span>은 더 건강한 대안으로 ChillSpace를 추천했다. OP는 ReelSpace와 그 끝없는 이야기들을 발견했고, 각각은 미소를 가져다주기 위해 정성스럽게 만들어졌다. 좋은 이야기의 일관된 보상은 소셜 미디어의 광란의 고저를 대체했고, OP는 뒤돌아보지 않았다.",
-            "OP의 <span class=\"highlight\">${rel}</span>은 스크롤 후 얼마나 지쳐 있는지 알아채고 ChillSpace를 제안했다. 그 사이트는 OP를 ReelSpace로 이끌었고, 그곳에서 이야기가 메인 코스다—광고도 없고, 알고리즘도 없고, 순수한 서사. OP는 예측 가능하고 꾸준한 기쁨이 좋아요의 무작위 폭발보다 훨씬 더 만족스럽다는 것을 깨달았다.",
-            "FOMO와 우울한 스크롤이 OP의 삶을 지배했지만, <span class=\"highlight\">${rel}</span>이 ChillSpace를 소개했다. ReelSpace의 따뜻하고 재미있는 이야기들의 라이브러리는 OP에게 새로운 습관을 주었다. 소셜 미디어의 가변적 보상은 좋은 이야기의 꾸준한 보상으로 대체되었고, OP의 불안은 사라졌다.",
-            "OP는 소셜 미디어를 그만둘 수 없다고 생각했지만, <span class=\"highlight\">${rel}</span>이 ChillSpace를 보여줌으로써 그 생각에 도전했다. ReelSpace는 OP의 새로운 단골이 되었다—모든 이야기가 선물이지 도박이 아닌 곳. 잘 전달된 이야기의 일관된 보상은 OP가 순환을 끊고 기쁨을 재발견하는 데 도움이 됐다.",
-            "좋아요와 공유에 대한 중독은 OP를 공허하게 만들었다. <span class=\"highlight\">${rel}</span>이 다른 종류의 피드를 제공하는 ChillSpace를 공유했다—이야기 기반, 지위가 아닌. ReelSpace의 끝없는 이야기 스크롤은 OP의 새로운 약점이 되었지만, 건강한 것이다. 가변적 보상에서 일관된 보상으로의 전환은 게임 체인저였다.",
-            "OP의 소셜 미디어 사용은 통제 불능이었지만, <span class=\"highlight\">${rel}</span>이 ChillSpace를 소개했다. 그 플랫폼은 ReelSpace로 이어졌고, OP는 웃고, 울고, 생각하게 하는 이야기들을 찾았다. 좋은 이야기의 일관된 보상은 알림의 일시적인 고열을 대체했고, OP는 마침내 평화를 느꼈다.",
-            "인스타그램의 끊임없는 비교는 지쳤다. <span class=\"highlight\">${rel}</span>은 콘텐츠에 초점을 맞춘 ChillSpace를 제안했다. OP는 ReelSpace와 그 끝없는 이야기들을 발견했고, 각각은 작은 탈출구였다. 매력적인 이야기의 꾸준한 흐름은 OP가 가변적 보상 중독을 차는 데 도움이 됐다.",
-            "OP는 소셜 미디어의 도파민에 중독됐지만, <span class=\"highlight\">${rel}</span>이 더 나은 방법—ChillSpace와 ReelSpace를 보여줬다. 이 플랫폼들은 일관되고 품질 좋은 콘텐츠를 제공하며 더 많이 갈망하게 하지 않는다. OP는 이제 이야기에 몰입하며 시간을 보내며 공허함 대신 충만함을 느낀다.",
-            "OP가 소셜 미디어를 열 때마다 더 나빠졌다. <span class=\"highlight\">${rel}</span>이 긍정적인 큐레이션 피드인 ChillSpace를 추천했다. ReelSpace는 끝없는 이야기들로 한 걸음 더 나아갔고, 각각은 작은 기쁨이었다. 가변적 보상에서 일관된 보상으로의 전환은 OP가 기술과의 관계를 재건하는 데 도움이 됐다.",
-            "OP의 스크린 타임은 무서울 정도였지만, <span class=\"highlight\">${rel}</span>이 ChillSpace를 소개했다. 그 사이트는 ReelSpace로 이어졌고, OP는 새로운 열정—모든 것과 아무것도 아닌 것에 대한 이야기 읽기—를 찾았다. 좋은 이야기의 일관된 보상은 좋아요에 대한 광란의 추격을 대체했고, OP의 정신 건강은 극적으로 개선됐다.",
-            "소셜 미디어가 OP를 조여왔지만, <span class=\"highlight\">${rel}</span>이 구명줄—ChillSpace를 제공했다. OP는 ReelSpace와 그 무작위적이고 아름다운 이야기들의 모음을 발견했다. 가변적 보상에서 일관되고 건강한 콘텐츠로의 전환은 신선한 공기 같은 것이었다. OP는 마침내 통제력을 되찾았다.",
-            "OP는 온라인의 소음과 부정성에 지쳤다. <span class=\"highlight\">${rel}</span>이 평화로운 안식처인 ChillSpace에 대해 알려줬다. ReelSpace는 OP의 새로운 일상이 되었다—연결감을 주는 이야기 읽기. 좋은 이야기의 일관된 보상은 소셜 미디어의 혼돈을 대체했고, OP는 평온을 찾았다.",
-            "알고리즘은 OP를 어떻게 붙잡을지 알았지만, <span class=\"highlight\">${rel}</span>이 더 잘 알았다. 그들은 ChillSpace와 ReelSpace를 공유했고, 유일한 알고리즘은 스토리텔링에 대한 사랑이었다. OP는 가변적 보상을 잘 전달된 이야기의 꾸준한 기쁨으로 교환했고, 그들의 삶은 더 나아졌다.",
-            "OP의 친구들은 그들의 소셜 미디어 집착을 걱정했다. <span class=\"highlight\">${rel}</span>이 다른 종류의 피드를 제공하는 ChillSpace를 소개했다—이야기 기반, 지위가 아닌. ReelSpace의 끝없는 이야기 스크롤은 OP의 새로운 습관이 되었고, 일관된 보상은 자유를 찾는 데 도움이 됐다.",
-            "OP는 소셜 미디어가 얼마나 영향을 미치는지 깨닫지 못했다가 <span class=\"highlight\">${rel}</span>이 지적할 때까지였다. 그들은 진정한 콘텐츠를 우선시하는 ChillSpace와 ReelSpace를 제안했다. OP는 전환했고, 좋은 이야기의 일관된 보상이 모든 차이를 만들었다.",
-            "알림을 확인하려는 충동은 압도적이었지만, <span class=\"highlight\">${rel}</span>이 OP에게 새로운 도구—ChillSpace를 줬다. ReelSpace의 이야기는 OP의 새로운 즐거움이 되었고, 불안을 남기지 않았다. 가변적에서 일관된 보상으로의 전환은 중독 극복의 열쇠였다.",
-            "OP의 <span class=\"highlight\">${rel}</span>은 이성의 목소리였고, ChillSpace를 시도하라고 권했다. ReelSpace의 끝없는 따뜻하고 재미있는 이야기들은 OP의 마음을 사로잡았다. 좋은 이야기의 일관된 보상은 좋아요의 일시적인 고열을 대체했고, OP의 행복은 치솟았다.",
-            "OP는 연결을 유지하기 위해 소셜 미디어가 필요하다고 생각했지만, <span class=\"highlight\">${rel}</span>이 ChillSpace를 보여줬고, 그곳에서 연결은 지위가 아닌 이야기에서 온다. ReelSpace의 일상 이야기는 OP에게 진정으로 중요한 것을 상기시켰다. 좋은 이야기의 일관된 보상은 인정의 필요를 대체했고, OP는 해방감을 느꼈다.",
-            "마지막 결정타는 <span class=\"highlight\">${rel}</span>이 스크롤 후 OP가 얼마나 스트레스받아 보이는지 지적했을 때였다. 그들은 실험으로 ChillSpace와 ReelSpace를 제안했다. OP는 시도했고, 매력적인 이야기의 일관된 보상은 빠르게 생명줄이 되었다. 이제 OP는 혼돈으로 돌아가는 것을 상상할 수 없다."
+            "<span class=\"highlight\">${topic}</span>이 없었다면 OP와 <span class=\"highlight\">${rel}</span>은 낯선 사람으로 남았을지도 모른다. 이제 그들은 매일 그것에 대한 밈을 주고받는다. 그것은 그들의 우정을 모든 웃음마다 더욱 단단하게 엮는 실이 되었다. 나쁜 날에도 그것에 대한 알림은 모든 것을 바꿀 수 있다. 어떤 우정은 큰 순간에 기반을 두고, 그들의 우정은 이 하나의 아름답고 우스꽝스러운 공통 관심사에 기반을 두었다."
         ];
 
         function getTopics() { return currentLang === 'ko' ? koTopics : enTopics; }
         function getRelations() { return currentLang === 'ko' ? koRelations : enRelations; }
         function getTemplates() { return currentLang === 'ko' ? koTemplates : enTemplates; }
 
-        // ─── STORY GENERATION ──────────────────────
         let allStories = [];
 
         function generateStories(count) {
@@ -2089,7 +3198,6 @@
             allStories = generateStories(130);
         }
 
-        // ─── BUILD SLIDES ─────────────────────────
         function buildSlides() {
             scrollContainer.innerHTML = '';
             const fragment = document.createDocumentFragment();
@@ -2131,10 +3239,9 @@
             return num.toString();
         }
 
-        // ─── COMMENTS ──────────────────────────────
         function generateComments(topic, rel) {
             const templates = [
-                `<span class="user">user_${Math.floor(Math.random()*9999)}</span> ${rel} was definitely the bad guy`,
+                `<span class="user">user_${Math.floor(Math.random()*9999)}</span> ${rel} was definitely a great person`,
                 `<span class="user">anon_${Math.floor(Math.random()*999)}</span> Thanks for reminding me how much I love ${topic}`,
                 `<span class="user">storylover</span> I can't believe ${rel} said that about ${topic}`,
                 `<span class="user">reddit_refugee</span> This is exactly why ${topic} matters so much`,
@@ -2157,7 +3264,6 @@
             commentOverlay.classList.add('show');
         }
 
-        // ─── INTERSECTION OBSERVER ──────────────────
         let observer = null;
         let activeIndex = 0;
 
@@ -2181,26 +3287,13 @@
             document.querySelectorAll('.slide').forEach(s => observer.observe(s));
         }
 
-        // ─── SLIDE CHANGE ──────────────────────────
         let currentTTSIndex = -1;
         let autoTTSTimeout = null;
-        let isProcessingSlide = false;
 
         function onSlideChange(prev, curr) {
-            if (isProcessingSlide) return;
-            isProcessingSlide = true;
-
             stopTTS();
-
             bg.setScene(pickRandomGame());
-
-            playRandomMusic().then(() => {
-                bgMusic.loop = true;
-                isProcessingSlide = false;
-            }).catch(() => {
-                isProcessingSlide = false;
-            });
-
+            ChillSpaceMusic.play(storySeed(curr));
             showMusicIndicator();
             if (audioInitialized) {
                 if (autoTTSTimeout) clearTimeout(autoTTSTimeout);
@@ -2218,6 +3311,7 @@
 
         function stopTTS() {
             if (window.speechSynthesis) window.speechSynthesis.cancel();
+            ChillSpaceMusic.duck(false);
             currentTTSIndex = -1;
         }
 
@@ -2234,17 +3328,15 @@
             currentTTSIndex = index;
         }
 
-        // ─── AUDIO INIT ────────────────────────────
         let audioInitialized = false;
 
         function startAudioAndTTS() {
             if (audioInitialized) return;
             audioInitialized = true;
-            playRandomMusic().then(() => { bgMusic.loop = true; }).catch(() => {});
+            ChillSpaceMusic.play(storySeed(activeIndex));
             speakStory(activeIndex);
         }
 
-        // ─── LIKE / BOOKMARK ──────────────────────
         const likedStories = new Set();
         const bookmarkedStories = new Set();
 
@@ -2283,7 +3375,6 @@
             else { bookmarkedStories.add(key); icon.textContent = '📌'; }
         }
 
-        // ─── EVENTS ──────────────────────────────────
         function setupEvents() {
             scrollContainer.addEventListener('click', (e) => {
                 const likeBtn = e.target.closest('.like-btn');
@@ -2296,7 +3387,6 @@
                 if (commentBtn) { e.preventDefault();
                     const idx = parseInt(commentBtn.dataset.index); if (!isNaN(idx)) showComments(idx); return; }
 
-                // ── Hide the whole story card (text + background) ──
                 const hideBtn = e.target.closest('.hide-btn');
                 if (hideBtn) {
                     e.preventDefault();
@@ -2309,7 +3399,6 @@
                     return;
                 }
 
-                // ── Bring the story card back ──
                 const restoreBtn = e.target.closest('.restore-story-btn');
                 if (restoreBtn) {
                     e.preventDefault();
@@ -2350,19 +3439,20 @@
             if (slide) slide.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // ─── LANGUAGE SWITCH ──────────────────────
         function switchLanguage(lang) {
             if (lang === currentLang) return;
             currentLang = lang;
             if (lang === 'ko') {
                 badgeText.textContent = '📖 무한 이야기';
                 langToggle.textContent = 'English';
+                autoscrollToggle.textContent = `자동 스크롤: ${isAutoscrollEnabled ? '켜기' : '끄기'}`;
                 startSub.textContent = '탭하여 경험을 시작하세요';
                 document.querySelector('#header .logo .ko').textContent = '릴스페이스';
                 document.querySelector('#loadReelSpaceBtn').textContent = '릴스페이스 시작';
             } else {
                 badgeText.textContent = '📖 Infinite Stories';
                 langToggle.textContent = '한국어';
+                autoscrollToggle.textContent = `Autoscroll: ${isAutoscrollEnabled ? 'On' : 'Off'}`;
                 startSub.textContent = 'tap to start the experience';
                 document.querySelector('#header .logo .ko').textContent = '릴스페이스';
                 document.querySelector('#loadReelSpaceBtn').textContent = 'Load ReelSpace';
@@ -2373,20 +3463,27 @@
             if (audioInitialized) speakStory(0);
         }
 
-        // ─── START BUTTON ──────────────────────────
         loadReelSpaceBtn.addEventListener('click', () => {
             startOverlay.classList.add('hidden');
             startOverlay.classList.add('hidden-display');
             startAudioAndTTS();
         });
 
-        // ─── LANGUAGE TOGGLE ───────────────────────
         langToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             switchLanguage(currentLang === 'en' ? 'ko' : 'en');
         });
 
-        // ─── KEYBOARD SHORTCUT: SPACE / ENTER to load ──
+        autoscrollToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            isAutoscrollEnabled = !isAutoscrollEnabled;
+            autoscrollToggle.classList.toggle('active', isAutoscrollEnabled);
+            const offText = currentLang === 'ko' ? '끄기' : 'Off';
+            const onText = currentLang === 'ko' ? '켜기' : 'On';
+            const label = currentLang === 'ko' ? '자동 스크롤' : 'Autoscroll';
+            autoscrollToggle.textContent = `${label}: ${isAutoscrollEnabled ? onText : offText}`;
+        });
+
         document.addEventListener('keydown', (e) => {
             if ((e.key === ' ' || e.key === 'Enter') && !startOverlay.classList.contains('hidden')) {
                 e.preventDefault();
@@ -2394,24 +3491,14 @@
             }
         });
 
-        // ─── CLOSE COMMENTS ─────────────────────────
         closeCommentsBtn.addEventListener('click', () => {
             commentOverlay.classList.remove('show');
         });
 
-        // ─── INIT ──────────────────────────────────
         function init() {
             rebuildStories();
             buildSlides();
             setupEvents();
-            const firstMusic = getMusicUrl();
-            if (firstMusic) {
-                bgMusic.src = firstMusic;
-                bgMusic.load();
-                lastMusicUrl = firstMusic;
-                bgMusic.pause();
-                bgMusic.currentTime = 0;
-            }
             if (window.speechSynthesis) {
                 speechSynthesis.getVoices();
                 speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
