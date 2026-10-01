@@ -1,10 +1,8 @@
-[
-  {
+[{
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
       "package_name": "com.chillspace.app",
       "sha256_cert_fingerprints": ["62:4C:CE:C7:3A:2B:DE:48:BF:38:78:EE:7E:37:62:F1:1C:AC:66:04:13:B9:D2:D0:AE:44:31:56:BA:F9:B4:82"]
     }
-  }
-]
+  }]
