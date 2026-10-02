@@ -1,1063 +1,875 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Dopamine Sites — Privacy, Ads &amp; Analytics Deep Dive | ChillSpace</title>
+    <meta name="description" content="A detailed guide to dopamine replacement sites, including what data each collects, whether they run ads, and what analytics they use. Covers ChillSpace, ReelSpace, ChillSpace Shop, BuyVinyl, Number, Dopamine Shop, FoodNeverArrives, Moltbook, and DopamineShop.co.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://chillspace.ai/blog/list-of-dopamine-sites/">
 
-    <!-- ===== DYNAMIC META TAGS (language-based) ===== -->
-    <script>
-        (function() {
-            // Detect the user's preferred language from the browser
-            var userLang = navigator.language || navigator.languages?.[0] || 'en';
-            // If the language starts with 'ko', set Korean; otherwise English
-            var lang = userLang.toLowerCase().startsWith('ko') ? 'ko' : 'en';
+    <!-- Open Graph -->
+    <meta property="og:title" content="List of Dopamine Sites — Privacy, Ads &amp; Analytics Deep Dive">
+    <meta property="og:description" content="What each dopamine site collects, whether they run ads, and what analytics they use.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://chillspace.ai/blog/list-of-dopamine-sites/">
+    <meta property="og:site_name" content="ChillSpace">
 
-            var title = lang === 'ko' ?
-                '도파민 사이트 목록 | ChillSpace' :
-                'List of Dopamine Sites | ChillSpace';
-
-            var desc = lang === 'ko' ?
-                '도파민 중독을 대체하는 사이트 목록입니다. ChillSpace, ReelSpace, ChillSpace Shop, BuyVinyl, Number Game 및 외부 도파민 대체 사이트를 소개합니다.' :
-                'A curated list of dopamine-replacement sites. Includes ChillSpace, ReelSpace, ChillSpace Shop, BuyVinyl, Number Game, and external dopamine alternatives.';
-
-            var keywords = lang === 'ko' ?
-                '도파민, 중독, 대체, ChillSpace, ReelSpace, 쇼핑, 게임, 음식 배달, 금연' :
-                'dopamine, addiction, replacement, ChillSpace, ReelSpace, shopping, gaming, food delivery, smoking cessation';
-
-            // Write meta tags dynamically
-            document.write('<title>' + title + '</title>');
-            document.write('<meta name="description" content="' + desc + '" />');
-            document.write('<meta name="keywords" content="' + keywords + '" />');
-
-            // Open Graph
-            document.write('<meta property="og:title" content="' + title + '" />');
-            document.write('<meta property="og:description" content="' + desc + '" />');
-            document.write('<meta property="og:type" content="website" />');
-            document.write('<meta property="og:url" content="https://chillspace.ai/blog/list-of-dopamine-sites/" />');
-            document.write('<meta property="og:site_name" content="ChillSpace" />');
-
-            // Twitter
-            document.write('<meta name="twitter:card" content="summary_large_image" />');
-            document.write('<meta name="twitter:title" content="' + title + '" />');
-            document.write('<meta name="twitter:description" content="' + desc + '" />');
-
-            // Set lang attribute on html
-            document.documentElement.lang = lang;
-
-            // Store lang for later use
-            window.__chillLang = lang;
-        })();
-    </script>
-
-    <!-- ===== STRUCTURED DATA (JSON-LD) ===== -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "CollectionPage",
-            "name": "List of Dopamine Sites",
-            "description": "A curated list of dopamine-replacement sites. Includes ChillSpace, ReelSpace, ChillSpace Shop, BuyVinyl, Number Game, and external dopamine alternatives.",
-            "url": "https://chillspace.ai/blog/list-of-dopamine-sites/",
-            "inLanguage": ["en", "ko"],
-            "about": {
-                "@type": "Thing",
-                "name": "Dopamine Replacement",
-                "description": "Websites and tools designed to replace dopamine-triggering habits with healthier alternatives."
-            },
-            "mainEntity": {
-                "@type": "ItemList",
-                "itemListElement": [{
-                    "@type": "ListItem",
-                    "position": 1,
-                    "item": {
-                        "@type": "WebSite",
-                        "name": "ChillSpace",
-                        "alternateName": "ChillSpace Social",
-                        "url": "https://chillspace.ai/",
-                        "description": "A Facebook/X simulator that replaces social media dopamine with a calm, text-based interface.",
-                        "potentialAction": {
-                            "@type": "Action",
-                            "name": "Visit ChillSpace",
-                            "target": "https://chillspace.ai/"
-                        }
-                    }
-                }, {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "item": {
-                        "@type": "WebSite",
-                        "name": "ReelSpace",
-                        "url": "https://chillspace.ai/reelspace/",
-                        "description": "A TikTok/Shorts/Reels alternative that replaces short-form video dopamine with mindful scrolling.",
-                        "potentialAction": {
-                            "@type": "Action",
-                            "name": "Visit ReelSpace",
-                            "target": "https://chillspace.ai/reelspace/"
-                        }
-                    }
-                }, {
-                    "@type": "ListItem",
-                    "position": 3,
-                    "item": {
-                        "@type": "WebSite",
-                        "name": "ChillSpace Shop",
-                        "url": "https://chillspace.ai/shop/",
-                        "description": "A simulator that mimics the SHEIN shopping experience — browse, add to cart, and checkout — without any real purchases or financial consequences.",
-                        "potentialAction": {
-                            "@type": "Action",
-                            "name": "Visit ChillSpace Shop",
-                            "target": "https://chillspace.ai/shop/"
-                        }
-                    }
-                }, {
-                    "@type": "ListItem",
-                    "position": 4,
-                    "item": {
-                        "@type": "WebSite",
-                        "name": "BuyVinyl",
-                        "url": "https://chillspace.ai/buyvinyl/",
-                        "description": "A simulator for ordering a vinyl record. Once you 'receive' it, the site plays real music with a spinning record animation for the ultimate realistic dopamine experience.",
-                        "potentialAction": {
-                            "@type": "Action",
-                            "name": "Visit BuyVinyl",
-                            "target": "https://chillspace.ai/buyvinyl/"
-                        }
-                    }
-                }, {
-                    "@type": "ListItem",
-                    "position": 5,
-                    "item": {
-                        "@type": "WebSite",
-                        "name": "Number Game",
-                        "url": "https://chillspace.ai/numbers/",
-                        "description": "A simple clicker game with no ads or microtransactions that replaces gaming dopamine with pure, distraction-free play.",
-                        "potentialAction": {
-                            "@type": "Action",
-                            "name": "Play Number Game",
-                            "target": "https://chillspace.ai/numbers/"
-                        }
-                    }
-                }, {
-                    "@type": "ListItem",
-                    "position": 6,
-                    "item": {
-                        "@type": "WebSite",
-                        "name": "음식만안와요.com",
-                        "url": "https://음식만안와요.com",
-                        "description": "A food delivery alternative that replaces Uber Eats, DoorDash, and 배달민족 with mindful eating choices.",
-                        "potentialAction": {
-                            "@type": "Action",
-                            "name": "Visit 음식만안와요.com",
-                            "target": "https://음식만안와요.com"
-                        }
-                    }
-                }, {
-                    "@type": "ListItem",
-                    "position": 7,
-                    "item": {
-                        "@type": "WebSite",
-                        "name": "dopamineshopping.com",
-                        "url": "https://dopamineshopping.com",
-                        "description": "A gamified shopping alternative that replaces AliExpress and Temu with intentional, non-addictive browsing.",
-                        "potentialAction": {
-                            "@type": "Action",
-                            "name": "Visit dopamineshopping.com",
-                            "target": "https://dopamineshopping.com"
-                        }
-                    }
-                }, {
-                    "@type": "ListItem",
-                    "position": 8,
-                    "item": {
-                        "@type": "WebSite",
-                        "name": "dopamine-shop.com",
-                        "url": "https://dopamine-shop.com",
-                        "description": "An Amazon replacement that replaces impulsive online shopping with curated, purposeful purchasing.",
-                        "potentialAction": {
-                            "@type": "Action",
-                            "name": "Visit dopamine-shop.com",
-                            "target": "https://dopamine-shop.com"
-                        }
-                    }
-                }, {
-                    "@type": "ListItem",
-                    "position": 9,
-                    "item": {
-                        "@type": "WebSite",
-                        "name": "damta.world",
-                        "url": "https://damta.world",
-                        "description": "A smoking cessation tool that replaces nicotine dopamine with healthier coping mechanisms.",
-                        "potentialAction": {
-                            "@type": "Action",
-                            "name": "Visit damta.world",
-                            "target": "https://damta.world"
-                        }
-                    }
-                }, {
-                    "@type": "ListItem",
-                    "position": 10,
-                    "item": {
-                        "@type": "WebSite",
-                        "name": "FakeHaul",
-                        "url": "https://fakehaul.com",
-                        "description": "A realistic mock e-commerce platform that simulates the entire shopping loop—browsing, comparing, adding to cart, and checking out—without any financial consequences.",
-                        "potentialAction": {
-                            "@type": "Action",
-                            "name": "Visit FakeHaul",
-                            "target": "https://fakehaul.com"
-                        }
-                    }
-                }, {
-                    "@type": "ListItem",
-                    "position": 11,
-                    "item": {
-                        "@type": "WebSite",
-                        "name": "PeykMart",
-                        "url": "https://peykmart.com",
-                        "description": "A fake online shopping site that mimics the experience of browsing and buying products, providing the dopamine hit of a purchase without spending any money.",
-                        "potentialAction": {
-                            "@type": "Action",
-                            "name": "Visit PeykMart",
-                            "target": "https://peykmart.com"
-                        }
-                    }
-                }]
-            }
-        }
-    </script>
-
-    <!-- ===== ADDITIONAL STRUCTURED DATA: WebSite ===== -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "ChillSpace Blog",
-            "url": "https://chillspace.ai/blog/list-of-dopamine-sites/",
-            "description": "A curated list of dopamine-replacement sites for healthier digital habits.",
-            "publisher": {
-                "@type": "Organization",
-                "name": "ChillSpace",
-                "url": "https://chillspace.ai/"
-            },
-            "inLanguage": ["en", "ko"]
-        }
-    </script>
-
-    <!-- ===== BREADCRUMB STRUCTURED DATA ===== -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [{
-                "@type": "ListItem",
-                "position": 1,
-                "name": "ChillSpace",
-                "item": "https://chillspace.ai/"
-            }, {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Blog",
-                "item": "https://chillspace.ai/blog/"
-            }, {
-                "@type": "ListItem",
-                "position": 3,
-                "name": "List of Dopamine Sites",
-                "item": "https://chillspace.ai/blog/list-of-dopamine-sites/"
-            }]
-        }
-    </script>
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="List of Dopamine Sites — Privacy, Ads &amp; Analytics Deep Dive">
+    <meta name="twitter:description" content="What each dopamine site collects, whether they run ads, and what analytics they use.">
 
     <style>
-        /* ===== RESET & BASE ===== */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        :root {
+            --bg: #fafafa;
+            --text: #1a1a1a;
+            --text-secondary: #555;
+            --accent: #2d6a4f;
+            --accent-light: #d8f3dc;
+            --border: #e0e0e0;
+            --card-bg: #ffffff;
+            --warning: #e76f51;
+            --warning-bg: #fef0ec;
+            --star: #f4a261;
         }
 
-        :root {
-            --bg: #f7f5f0;
-            --bg-card: #ffffff;
-            --text: #1e1e2a;
-            --text-light: #4a4a5a;
-            --border: #e2dfd8;
-            --accent: #6c5b7b;
-            --accent-light: #a89bb5;
-            --green: #4a7c59;
-            --green-light: #c8e6d0;
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-            --radius: 18px;
-            --transition: 0.25s ease;
-            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            --max-width: 1000px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: var(--font);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: var(--bg);
             color: var(--text);
-            line-height: 1.6;
-            padding: 2rem 1.5rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            line-height: 1.7;
+            font-size: 17px;
+            padding: 0 1rem;
         }
 
         .container {
-            max-width: var(--max-width);
-            width: 100%;
+            max-width: 820px;
             margin: 0 auto;
+            padding: 3rem 0 5rem;
         }
 
-        /* ===== HEADER ===== */
-        .page-header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem 1.5rem;
-            margin-bottom: 2.5rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 2px solid var(--border);
+        header {
+            margin-bottom: 3rem;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-
-        .logo-icon {
-            display: inline-block;
-            width: 36px;
-            height: 36px;
-            background: var(--accent);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .header-title {
-            font-size: 1.6rem;
-            font-weight: 700;
+        h1 {
+            font-size: 2.2rem;
+            line-height: 1.25;
+            margin-bottom: 0.75rem;
             letter-spacing: -0.02em;
         }
 
-        .header-title a {
-            color: var(--text);
-            text-decoration: none;
-        }
-
-        .header-title a:hover {
-            color: var(--accent);
-        }
-
-        .header-sub {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            font-weight: 400;
-            display: block;
-            margin-top: 0.1rem;
-        }
-
-        /* ===== LANGUAGE TOGGLE ===== */
-        .lang-toggle {
-            display: flex;
-            gap: 0.4rem;
-            background: var(--border);
-            padding: 0.3rem;
-            border-radius: 40px;
-            flex-shrink: 0;
-        }
-
-        .lang-btn {
-            border: none;
-            background: transparent;
-            padding: 0.4rem 1rem;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            color: var(--text-light);
-            font-family: var(--font);
-            letter-spacing: 0.01em;
-        }
-
-        .lang-btn.active {
-            background: white;
-            color: var(--text);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-
-        .lang-btn:hover:not(.active) {
-            color: var(--text);
-        }
-
-        /* ===== INTRO ===== */
-        .intro {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 2rem 2rem 1.8rem;
-            margin-bottom: 2.5rem;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-        }
-
-        .intro h2 {
-            font-size: 1.3rem;
-            font-weight: 600;
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
             margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
-        .intro p {
-            color: var(--text-light);
-            max-width: 720px;
+        .last-updated {
+            font-size: 0.85rem;
+            color: #999;
         }
 
-        .intro .badge {
-            display: inline-block;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            background: var(--green-light);
-            color: var(--green);
-            padding: 0.15rem 0.7rem;
-            border-radius: 40px;
-            margin-left: 0.4rem;
+        h2 {
+            font-size: 1.55rem;
+            margin: 3rem 0 1rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--accent-light);
+            letter-spacing: -0.01em;
         }
 
-        .intro .resources {
-            margin-top: 0.8rem;
-            padding-top: 0.8rem;
-            border-top: 1px solid var(--border);
-            font-size: 0.9rem;
+        h3 {
+            font-size: 1.2rem;
+            margin: 2rem 0 0.5rem;
+            color: var(--accent);
         }
-        .intro .resources a {
+
+        h3 a {
             color: var(--accent);
             text-decoration: none;
+            border-bottom: 1px dashed var(--accent);
         }
-        .intro .resources a:hover {
+
+        h3 a:hover {
+            border-bottom-style: solid;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--accent);
             text-decoration: underline;
+            text-underline-offset: 2px;
         }
 
-        /* ===== SECTION TITLES ===== */
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 2.5rem 0 1.2rem;
-            letter-spacing: -0.01em;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
+        a:hover {
+            color: #1b4332;
         }
 
-        .section-title .count {
-            font-size: 0.8rem;
-            font-weight: 400;
-            color: var(--text-light);
-            background: var(--border);
-            padding: 0.1rem 0.7rem;
-            border-radius: 40px;
-        }
-
-        .section-sub {
-            color: var(--text-light);
-            margin-top: -0.5rem;
-            margin-bottom: 1.5rem;
+        .note-box {
+            background: var(--accent-light);
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.25rem;
+            border-radius: 0 6px 6px 0;
+            margin: 1.5rem 0;
             font-size: 0.95rem;
         }
 
-        /* ===== SITE CARDS ===== */
-        .site-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 1.2rem;
+        .note-box strong {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .warning-box {
+            background: var(--warning-bg);
+            border-left: 4px solid var(--warning);
+            padding: 1rem 1.25rem;
+            border-radius: 0 6px 6px 0;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .warning-box strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: var(--warning);
         }
 
         .site-card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 1.4rem 1.6rem 1.6rem;
+            background: var(--card-bg);
             border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
+            border-radius: 10px;
+            padding: 1.5rem 1.75rem;
+            margin: 1.5rem 0;
         }
 
-        .site-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-            border-color: var(--accent-light);
+        .site-card h3 {
+            margin-top: 0;
         }
 
-        .site-card .card-top {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 0.5rem;
-            margin-bottom: 0.4rem;
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem 1.5rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
         }
 
-        .site-card .site-name {
-            font-size: 1.15rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            word-break: break-word;
+        .meta-grid dt {
+            font-weight: 600;
+            color: var(--text-secondary);
         }
 
-        .site-card .site-name a {
-            color: var(--text);
-            text-decoration: none;
-            transition: var(--transition);
+        .meta-grid dd {
+            margin: 0;
         }
 
-        .site-card .site-name a:hover {
+        .verdict {
+            background: #f5f5f5;
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            font-size: 0.92rem;
+            margin-top: 1rem;
+        }
+
+        .verdict strong {
             color: var(--accent);
         }
 
-        .site-card .badge-internal {
-            font-size: 0.6rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background: var(--accent-light);
-            color: white;
-            padding: 0.15rem 0.6rem;
-            border-radius: 40px;
-            flex-shrink: 0;
-            margin-top: 0.1rem;
+        .rating {
+            display: inline-block;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            color: var(--star);
         }
 
-        .site-card .badge-external {
-            font-size: 0.6rem;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.88rem;
+        }
+
+        th, td {
+            padding: 0.65rem 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: #f0f0f0;
             font-weight: 600;
+            font-size: 0.82rem;
             text-transform: uppercase;
             letter-spacing: 0.04em;
-            background: var(--border);
-            color: var(--text-light);
-            padding: 0.15rem 0.6rem;
-            border-radius: 40px;
-            flex-shrink: 0;
-            margin-top: 0.1rem;
+            color: var(--text-secondary);
         }
 
-        .site-card .replaces {
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.1em 0.5em;
+            border-radius: 4px;
             font-size: 0.8rem;
-            color: var(--text-light);
-            margin: 0.2rem 0 0.5rem;
-            font-weight: 500;
-        }
-
-        .site-card .replaces strong {
-            color: var(--text);
             font-weight: 600;
         }
 
-        .site-card .desc {
-            font-size: 0.92rem;
-            color: var(--text-light);
-            line-height: 1.5;
-            flex: 1;
-            margin-bottom: 0.8rem;
+        .badge-none {
+            background: #d8f3dc;
+            color: #1b4332;
         }
 
-        .site-card .card-link {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--accent);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            align-self: flex-start;
-            transition: var(--transition);
-            border-bottom: 1.5px solid transparent;
+        .badge-some {
+            background: #fff3cd;
+            color: #856404;
         }
 
-        .site-card .card-link:hover {
-            border-bottom-color: var(--accent);
-            color: var(--text);
+        .badge-yes {
+            background: #f8d7da;
+            color: #721c24;
         }
 
-        .site-card .card-link::after {
-            content: '→';
-            transition: var(--transition);
+        .badge-critical {
+            background: #dc3545;
+            color: #fff;
         }
 
-        .site-card .card-link:hover::after {
-            transform: translateX(3px);
-        }
-
-        /* ===== NOTE ===== */
-        .note-box {
-            margin-top: 2.5rem;
-            padding: 1.2rem 1.8rem;
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-            font-size: 0.9rem;
-            color: var(--text-light);
-            box-shadow: var(--shadow);
-        }
-
-        .note-box strong {
-            color: var(--text);
-        }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            margin-top: 3.5rem;
+        footer {
+            margin-top: 4rem;
             padding-top: 1.5rem;
-            border-top: 2px solid var(--border);
-            font-size: 0.8rem;
-            color: var(--text-light);
-            text-align: center;
-            width: 100%;
+            border-top: 1px solid var(--border);
+            font-size: 0.82rem;
+            color: #999;
         }
 
-        .footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* ===== LANGUAGE CONTENT ===== */
-        .lang-content {
-            display: none;
-        }
-
-        .lang-content.active {
-            display: block;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 640px) {
-            body {
-                padding: 1.2rem 0.8rem;
-            }
-
-            .page-header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0.8rem;
-            }
-
-            .header-left {
-                justify-content: space-between;
-                width: 100%;
-            }
-
-            .lang-toggle {
-                align-self: flex-start;
-            }
-
-            .header-title {
-                font-size: 1.3rem;
-            }
-
-            .intro {
-                padding: 1.2rem 1.2rem 1.4rem;
-            }
-
-            .intro h2 {
-                font-size: 1.1rem;
-            }
-
-            .site-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .site-card {
-                padding: 1.2rem 1.2rem 1.4rem;
-            }
-
-            .section-title {
-                font-size: 1.25rem;
-            }
-
-            .note-box {
-                padding: 1rem 1.2rem;
-                font-size: 0.85rem;
-            }
-        }
-
-        @media (min-width: 641px) and (max-width: 900px) {
-            .site-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (min-width: 901px) {
-            .site-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        /* ===== UTILITY ===== */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            h2 { font-size: 1.25rem; }
+            .site-card { padding: 1.1rem 1.15rem; }
+            .meta-grid { grid-template-columns: 1fr; }
+            table { font-size: 0.78rem; }
+            th, td { padding: 0.45rem 0.5rem; }
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
 
-        <!-- ===== HEADER ===== -->
-        <header class="page-header">
-            <div class="header-left">
-                <span class="logo-icon" aria-hidden="true">🧠</span>
-                <div>
-                    <div class="header-title">
-                        <a href="https://chillspace.ai/">ChillSpace</a>
-                        <span class="header-sub">／ blog</span>
-                    </div>
-                </div>
-            </div>
+<div class="container">
 
-            <div class="lang-toggle" role="group" aria-label="Language toggle">
-                <button class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
-                <button class="lang-btn" data-lang="ko" aria-pressed="false">KR</button>
-            </div>
-        </header>
+<header>
+    <h1>List of Dopamine Sites — Privacy, Ads &amp; Analytics Deep Dive</h1>
+    <p class="subtitle">What each dopamine site collects, whether they run ads, and what analytics they use.</p>
+    <p class="last-updated">Last updated: October 2, 2026</p>
+</header>
 
-        <!-- ===== INTRO ===== -->
-        <div class="intro">
-            <!-- English -->
-            <div class="lang-content active" data-lang="en">
-                <h2>
-                    🧩 Dopamine Replacement Sites
-                    <span class="badge">curated</span>
-                </h2>
-                <p>
-                    A carefully curated list of websites designed to replace dopamine-triggering habits with healthier,
-                    more intentional alternatives. All links go directly to the websites — no app stores, no news articles.
-                    <br><br>
-                    <strong>Internal</strong> sites are part of the ChillSpace family. <strong>External</strong> sites are
-                    third-party tools we've vetted. We do <em>not</em> include food delivery clones with deceptive content.
-                </p>
-                <div class="resources">
-                    📚 Learn more about dopamine sites: <a href="https://dopamine-hits.fandom.com" target="_blank">Dopamine Hits Wiki</a> · <a href="https://www.reddit.com/r/DopamineSites/" target="_blank">r/DopamineSites</a> · <a href="https://chillspace.ai/blog/what-are-dopamine-sites/" target="_blank">What Are Dopamine Sites?</a>
-                </div>
-            </div>
-            <!-- Korean -->
-            <div class="lang-content" data-lang="ko">
-                <h2>
-                    🧩 도파민 대체 사이트
-                    <span class="badge">엄선</span>
-                </h2>
-                <p>
-                    도파민 중독을 유발하는 습관을 더 건강하고 의도적인 대안으로 바꾸도록 설계된 웹사이트를 엄선하여 소개합니다.
-                    모든 링크는 웹사이트로 바로 연결됩니다 — 앱 스토어나 뉴스 기사가 아닙니다.
-                    <br><br>
-                    <strong>내부</strong> 사이트는 ChillSpace 패밀리의 일부입니다. <strong>외부</strong> 사이트는
-                    검증된 서드파티 도구입니다. 기만적인 콘텐츠가 포함된 음식 배달 클론 사이트는 포함하지 않습니다.
-                </p>
-                <div class="resources">
-                    📚 도파민 사이트에 대해 더 알아보기: <a href="https://dopamine-hits.fandom.com" target="_blank">Dopamine Hits Wiki</a> · <a href="https://www.reddit.com/r/DopamineSites/" target="_blank">r/DopamineSites</a> · <a href="https://chillspace.ai/blog/what-are-dopamine-sites/" target="_blank">도파민 사이트란?</a>
-                </div>
-            </div>
-        </div>
+<p>Dopamine sites are fake storefronts, delivery apps, and social simulators designed to give you the thrill of consumption without the spending. They mimic the rituals of SHEIN, Uber Eats, Instagram, and Amazon — but nothing is real, nothing ships, and no money changes hands.</p>
 
-        <!-- ===== INTERNAL SITES ===== -->
-        <h2 class="section-title">
-            <span data-lang-content="en">🧊 ChillSpace Family</span>
-            <span data-lang-content="ko">🧊 ChillSpace 패밀리</span>
-            <span class="count">5</span>
-        </h2>
-        <p class="section-sub" data-lang-content="en">Internal dopamine replacement tools built by the ChillSpace team.</p>
-        <p class="section-sub" data-lang-content="ko">ChillSpace 팀이 만든 내부 도파민 대체 도구입니다.</p>
+<p>What most coverage misses is the trade-off happening behind the scenes. Many of these sites are free to use, which means they need to make money somewhere. That usually means ads, analytics, and data collection. Some dopamine sites are remarkably privacy-first. Others are not.</p>
 
-        <div class="site-grid">
+<p>This page breaks down exactly what each site does with your data, whether they run ads, and what analytics they use. We've kept the same list as our <a href="https://chillspace.ai/blog/list-of-dopamine-sites/">original guide</a> — no new entries — but added the privacy detail that was missing.</p>
 
-            <!-- ChillSpace (/) -->
-            <div class="site-card">
-                <div class="card-top">
-                    <div class="site-name"><a href="https://chillspace.ai/">ChillSpace</a></div>
-                    <span class="badge-internal">internal</span>
-                </div>
-                <div class="replaces" data-lang-content="en">Replaces <strong>Facebook · X</strong></div>
-                <div class="replaces" data-lang-content="ko">대체 <strong>Facebook · X</strong></div>
-                <div class="desc" data-lang-content="en">A calm, text-based social simulator that strips away the algorithmic noise and endless scroll.</div>
-                <div class="desc" data-lang-content="ko">알고리즘 노이즈와 무한 스크롤을 제거한 차분한 텍스트 기반 소셜 시뮬레이터입니다.</div>
-                <a href="https://chillspace.ai/" class="card-link" data-lang-content="en">Visit ChillSpace</a>
-                <a href="https://chillspace.ai/" class="card-link" data-lang-content="ko">ChillSpace 방문</a>
-            </div>
+<div class="note-box">
+    <strong>A note on our own site:</strong>
+    ChillSpace does not collect any data. Not even a hit counter. Cloudflare collects essential data to host the site, but ChillSpace ourselves collect absolutely nothing. The Android app works without internet, so not even Cloudflare gets any data when you use the app. ChillSpace does not contain ads.
+</div>
 
-            <!-- ReelSpace (/reelspace/) -->
-            <div class="site-card">
-                <div class="card-top">
-                    <div class="site-name"><a href="https://chillspace.ai/reelspace/">ReelSpace</a></div>
-                    <span class="badge-internal">internal</span>
-                </div>
-                <div class="replaces" data-lang-content="en">Replaces <strong>TikTok · Shorts · Reels</strong></div>
-                <div class="replaces" data-lang-content="ko">대체 <strong>TikTok · Shorts · Reels</strong></div>
-                <div class="desc" data-lang-content="en">A mindful short-form video alternative that encourages intentional viewing over compulsive scrolling.</div>
-                <div class="desc" data-lang-content="ko">충동적인 스크롤 대신 의도적인 시청을 장려하는 마음챙김 숏폼 비디오 대안입니다.</div>
-                <a href="https://chillspace.ai/reelspace/" class="card-link" data-lang-content="en">Visit ReelSpace</a>
-                <a href="https://chillspace.ai/reelspace/" class="card-link" data-lang-content="ko">ReelSpace 방문</a>
-            </div>
 
-            <!-- ChillSpace Shop (/shop/) -->
-            <div class="site-card">
-                <div class="card-top">
-                    <div class="site-name"><a href="https://chillspace.ai/shop/">ChillSpace Shop</a></div>
-                    <span class="badge-internal">internal</span>
-                </div>
-                <div class="replaces" data-lang-content="en">Simulates <strong>SHEIN</strong></div>
-                <div class="replaces" data-lang-content="ko">시뮬레이션 <strong>SHEIN</strong></div>
-                <div class="desc" data-lang-content="en">A simulator that mimics the SHEIN shopping experience — browse, add to cart, and checkout — without any real purchases or financial consequences.</div>
-                <div class="desc" data-lang-content="ko">SHEIN 쇼핑 경험을 모방한 시뮬레이터 — 둘러보기, 장바구니 담기, 결제까지 — 실제 구매나 금전적 부담은 전혀 없습니다.</div>
-                <a href="https://chillspace.ai/shop/" class="card-link" data-lang-content="en">Visit ChillSpace Shop</a>
-                <a href="https://chillspace.ai/shop/" class="card-link" data-lang-content="ko">ChillSpace Shop 방문</a>
-            </div>
+<h2>ChillSpace Family (Internal Sites)</h2>
 
-            <!-- BuyVinyl (/buyvinyl/) -->
-            <div class="site-card">
-                <div class="card-top">
-                    <div class="site-name"><a href="https://chillspace.ai/buyvinyl/">BuyVinyl</a></div>
-                    <span class="badge-internal">internal</span>
-                </div>
-                <div class="replaces" data-lang-content="en">Replaces <strong>HMV · Weverse Shop · Amazon (music)</strong></div>
-                <div class="replaces" data-lang-content="ko">대체 <strong>HMV · Weverse Shop · Amazon (음악)</strong></div>
-                <div class="desc" data-lang-content="en">A simulator for ordering a vinyl record. Once you 'receive' it, the site plays real music with a spinning record animation for the ultimate realistic dopamine experience.</div>
-                <div class="desc" data-lang-content="ko">바이닐 레코드를 주문하는 시뮬레이터입니다. '수령'하면 실제 음악과 함께 회전하는 레코드 애니메이션이 재생되어 가장 현실적인 도파민 경험을 제공합니다.</div>
-                <a href="https://chillspace.ai/buyvinyl/" class="card-link" data-lang-content="en">Visit BuyVinyl</a>
-                <a href="https://chillspace.ai/buyvinyl/" class="card-link" data-lang-content="ko">BuyVinyl 방문</a>
-            </div>
+<p>These are built by the ChillSpace team. They are the most privacy-forward sites on this list because they were designed that way from the start.</p>
 
-            <!-- Number Game (/numbers/) -->
-            <div class="site-card">
-                <div class="card-top">
-                    <div class="site-name"><a href="https://chillspace.ai/numbers/">Number Game</a></div>
-                    <span class="badge-internal">internal</span>
-                </div>
-                <div class="replaces" data-lang-content="en">Replaces <strong>Gaming dopamine</strong></div>
-                <div class="replaces" data-lang-content="ko">대체 <strong>게임 도파민</strong></div>
-                <div class="desc" data-lang-content="en">A pure, no-ads, no-microtransaction clicker game that gives you the satisfaction of progress without the addiction loop.</div>
-                <div class="desc" data-lang-content="ko">광고와 마이크로트랜잭션이 없는 순수한 클리커 게임으로, 중독 루프 없이 진행의 만족감을 제공합니다.</div>
-                <a href="https://chillspace.ai/numbers/" class="card-link" data-lang-content="en">Play Number Game</a>
-                <a href="https://chillspace.ai/numbers/" class="card-link" data-lang-content="ko">Number Game 플레이</a>
-            </div>
+<!-- CHILLSPACE -->
+<div class="site-card">
+    <h3><a href="https://chillspace.ai/" target="_blank" rel="noopener">ChillSpace</a></h3>
+    <p><strong>What it is:</strong> A calm, text-based social simulator that replaces Facebook and X. No algorithmic noise, no endless scroll — just a feed designed to satisfy rather than addict.</p>
 
-        </div>
+    <dl class="meta-grid">
+        <dt>Privacy</dt>
+        <dd>Collects nothing. No account required, no email, no name, no phone number. All user-generated content (posts, comments, likes, display names, messages) is stored only in your browser's <code>localStorage</code>. ChillSpace has no access to this data and never sees it. When you share a post, the content is encoded into a URL that you control; ChillSpace does not store it on any server.</dd>
+        <dt>Ads</dt>
+        <dd><span class="badge badge-none">None</span></dd>
+        <dt>Google Analytics</dt>
+        <dd><span class="badge badge-none">None</span></dd>
+        <dt>Third parties</dt>
+        <dd>Cloudflare provides hosting and collects standard server logs (IP address, access time, browser info) as an essential part of serving the site. ChillSpace itself collects nothing. The Android app works without internet, meaning not even Cloudflare receives data when you use the app.</dd>
+        <dt>AI features</dt>
+        <dd>ChillSpace AI analyses post text entirely in your browser using local logic and the Web Speech API. No data is sent to an external AI service. If you choose to send a message to ChatGPT via ChillSpace Messages, that opens the ChatGPT website and you become subject to OpenAI's privacy policy.</dd>
+        <dt>Privacy rating</dt>
+        <dd><span class="rating">★★★★★</span></dd>
+    </dl>
+    <div class="verdict"><strong>Verdict:</strong> The strongest privacy posture on this list. No data collection, no ads, no analytics, no tracking.</div>
+</div>
 
-        <!-- ===== EXTERNAL SITES ===== -->
-        <h2 class="section-title" style="margin-top:3rem;">
-            <span data-lang-content="en">🌐 External Dopamine Sites</span>
-            <span data-lang-content="ko">🌐 외부 도파민 사이트</span>
-            <span class="count">6</span>
-        </h2>
-        <p class="section-sub" data-lang-content="en">Third-party tools we've vetted for quality and authenticity. No food delivery clones.</p>
-        <p class="section-sub" data-lang-content="ko">품질과 정통성을 검증한 서드파티 도구입니다. 음식 배달 클론은 없습니다.</p>
+<!-- REELSPACE -->
+<div class="site-card">
+    <h3><a href="https://chillspace.ai/rs" target="_blank" rel="noopener">ReelSpace</a></h3>
+    <p><strong>What it is:</strong> A mindful short-form video alternative to TikTok, Shorts, and Reels. It encourages intentional viewing over compulsive scrolling.</p>
 
-        <div class="site-grid">
+    <dl class="meta-grid">
+        <dt>Privacy</dt>
+        <dd>Part of the ChillSpace family and follows the same data practices. No account required, no personal data collected on servers. All interactions happen locally in your browser.</dd>
+        <dt>Ads</dt>
+        <dd><span class="badge badge-none">None</span></dd>
+        <dt>Google Analytics</dt>
+        <dd><span class="badge badge-none">None</span></dd>
+        <dt>Privacy rating</dt>
+        <dd><span class="rating">★★★★★</span></dd>
+    </dl>
+    <div class="verdict"><strong>Verdict:</strong> Same privacy-first approach as ChillSpace. No ads, no tracking.</div>
+</div>
 
-            <!-- 음식만안와요.com -->
-            <div class="site-card">
-                <div class="card-top">
-                    <div class="site-name"><a href="https://음식만안와요.com">음식만안와요.com</a></div>
-                    <span class="badge-external">external</span>
-                </div>
-                <div class="replaces" data-lang-content="en">Replaces <strong>Uber Eats · DoorDash · 배달민족</strong></div>
-                <div class="replaces" data-lang-content="ko">대체 <strong>Uber Eats · DoorDash · 배달민족</strong></div>
-                <div class="desc" data-lang-content="en">A food delivery alternative that encourages mindful eating decisions instead of impulsive ordering.</div>
-                <div class="desc" data-lang-content="ko">충동적인 주문 대신 마음챙김 식사 결정을 장려하는 음식 배달 대안입니다.</div>
-                <a href="https://음식만안와요.com" class="card-link" data-lang-content="en">Visit 음식만안와요.com</a>
-                <a href="https://음식만안와요.com" class="card-link" data-lang-content="ko">음식만안와요.com 방문</a>
-            </div>
+<!-- CHILLSPACE SHOP -->
+<div class="site-card">
+    <h3><a href="https://chillspace.ai/shop/" target="_blank" rel="noopener">ChillSpace Shop</a></h3>
+    <p><strong>What it is:</strong> A simulator that mimics the SHEIN shopping experience — browse, add to cart, checkout — without any real purchases or financial consequences.</p>
 
-            <!-- dopamineshopping.com -->
-            <div class="site-card">
-                <div class="card-top">
-                    <div class="site-name"><a href="https://dopamineshopping.com">dopamineshopping.com</a></div>
-                    <span class="badge-external">external</span>
-                </div>
-                <div class="replaces" data-lang-content="en">Replaces <strong>AliExpress · Temu · gamified shopping</strong></div>
-                <div class="replaces" data-lang-content="ko">대체 <strong>AliExpress · Temu · 게임화된 쇼핑</strong></div>
-                <div class="desc" data-lang-content="en">A gamified shopping alternative that replaces the dopamine rush of deals with intentional browsing.</div>
-                <div class="desc" data-lang-content="ko">딜의 도파민 쾌감을 의도적인 브라우징으로 대체하는 게임화된 쇼핑 대안입니다.</div>
-                <a href="https://dopamineshopping.com" class="card-link" data-lang-content="en">Visit dopamineshopping.com</a>
-                <a href="https://dopamineshopping.com" class="card-link" data-lang-content="ko">dopamineshopping.com 방문</a>
-            </div>
+    <dl class="meta-grid">
+        <dt>Privacy</dt>
+        <dd>Part of the ChillSpace family. No real payment is processed, no card details are stored, and no personal data is collected on servers. Your cart and browsing activity stay in your browser's <code>localStorage</code>.</dd>
+        <dt>Ads</dt>
+        <dd><span class="badge badge-none">None</span></dd>
+        <dt>Google Analytics</dt>
+        <dd><span class="badge badge-none">None</span></dd>
+        <dt>Privacy rating</dt>
+        <dd><span class="rating">★★★★★</span></dd>
+    </dl>
+    <div class="verdict"><strong>Verdict:</strong> You get the dopamine hit of SHEIN without the spending or the data collection.</div>
+</div>
 
-            <!-- dopamine-shop.com -->
-            <div class="site-card">
-                <div class="card-top">
-                    <div class="site-name"><a href="https://dopamine-shop.com">dopamine-shop.com</a></div>
-                    <span class="badge-external">external</span>
-                </div>
-                <div class="replaces" data-lang-content="en">Replaces <strong>Amazon</strong></div>
-                <div class="replaces" data-lang-content="ko">대체 <strong>Amazon</strong></div>
-                <div class="desc" data-lang-content="en">A purposeful shopping platform that replaces impulsive Amazon buying with curated, need-based purchasing.</div>
-                <div class="desc" data-lang-content="ko">충동적인 Amazon 구매를 큐레이션된 필요 기반 구매로 대체하는 목적 있는 쇼핑 플랫폼입니다.</div>
-                <a href="https://dopamine-shop.com" class="card-link" data-lang-content="en">Visit dopamine-shop.com</a>
-                <a href="https://dopamine-shop.com" class="card-link" data-lang-content="ko">dopamine-shop.com 방문</a>
-            </div>
+<!-- BUYVINYL -->
+<div class="site-card">
+    <h3><a href="https://chillspace.ai/buyvinyl/" target="_blank" rel="noopener">BuyVinyl</a></h3>
+    <p><strong>What it is:</strong> A simulator for ordering vinyl records. Once you "receive" your record, the site plays real music with a spinning record animation.</p>
 
-            <!-- damta.world -->
-            <div class="site-card">
-                <div class="card-top">
-                    <div class="site-name"><a href="https://damta.world">damta.world</a></div>
-                    <span class="badge-external">external</span>
-                </div>
-                <div class="replaces" data-lang-content="en">Replaces <strong>Smoking (nicotine dopamine)</strong></div>
-                <div class="replaces" data-lang-content="ko">대체 <strong>흡연 (니코틴 도파민)</strong></div>
-                <div class="desc" data-lang-content="en">A smoking cessation tool that replaces nicotine dopamine with healthier, sustainable coping strategies.</div>
-                <div class="desc" data-lang-content="ko">니코틴 도파민을 더 건강하고 지속 가능한 대처 전략으로 대체하는 금연 도구입니다.</div>
-                <a href="https://damta.world" class="card-link" data-lang-content="en">Visit damta.world</a>
-                <a href="https://damta.world" class="card-link" data-lang-content="ko">damta.world 방문</a>
-            </div>
+    <dl class="meta-grid">
+        <dt>Privacy</dt>
+        <dd>Part of the ChillSpace family. No real orders are placed, no payment information is collected, and no personal data is stored on servers. Your selections and preferences are stored locally in your browser.</dd>
+        <dt>Ads</dt>
+        <dd><span class="badge badge-none">None</span></dd>
+        <dt>Google Analytics</dt>
+        <dd><span class="badge badge-none">None</span></dd>
+        <dt>Privacy rating</dt>
+        <dd><span class="rating">★★★★★</span></dd>
+    </dl>
+    <div class="verdict"><strong>Verdict:</strong> No ads, no tracking, no data collection. Just fake vinyl and real music.</div>
+</div>
 
-            <!-- FakeHaul -->
-            <div class="site-card">
-                <div class="card-top">
-                    <div class="site-name"><a href="https://fakehaul.com">FakeHaul</a></div>
-                    <span class="badge-external">external</span>
-                </div>
-                <div class="replaces" data-lang-content="en">Replaces <strong>Temu · gamified shopping</strong></div>
-                <div class="replaces" data-lang-content="ko">대체 <strong>Temu · 게임화된 쇼핑</strong></div>
-                <div class="desc" data-lang-content="en">A realistic mock e-commerce platform that simulates the entire shopping loop—browsing, comparing, adding to cart, and checking out—without any financial consequences.</div>
-                <div class="desc" data-lang-content="ko">실제와 같은 모의 전자상거래 플랫폼으로, 둘러보기, 비교하기, 장바구니 담기, 결제까지 전체 쇼핑 과정을 시뮬레이션하지만 금전적 부담은 전혀 없습니다.</div>
-                <a href="https://fakehaul.com" class="card-link" data-lang-content="en">Visit FakeHaul</a>
-                <a href="https://fakehaul.com" class="card-link" data-lang-content="ko">FakeHaul 방문</a>
-            </div>
+<!-- NUMBER -->
+<div class="site-card">
+    <h3><a href="https://chillspace.ai/numbers" target="_blank" rel="noopener">Number (Clicker Game)</a></h3>
+    <p><strong>What it is:</strong> A pure, no-ads, no-microtransaction clicker game that gives you the satisfaction of progress without the addiction loop.</p>
 
-            <!-- PeykMart -->
-            <div class="site-card">
-                <div class="card-top">
-                    <div class="site-name"><a href="https://peykmart.com">PeykMart</a></div>
-                    <span class="badge-external">external</span>
-                </div>
-                <div class="replaces" data-lang-content="en">Replaces <strong>Online shopping dopamine</strong></div>
-                <div class="replaces" data-lang-content="ko">대체 <strong>온라인 쇼핑 도파민</strong></div>
-                <div class="desc" data-lang-content="en">A fake online shopping site that mimics the experience of browsing and buying products, providing the dopamine hit of a purchase without spending any money.</div>
-                <div class="desc" data-lang-content="ko">제품을 둘러보고 구매하는 경험을 모방한 가짜 온라인 쇼핑 사이트로, 돈을 쓰지 않고도 구매의 도파민 효과를 제공합니다.</div>
-                <a href="https://peykmart.com" class="card-link" data-lang-content="en">Visit PeykMart</a>
-                <a href="https://peykmart.com" class="card-link" data-lang-content="ko">PeykMart 방문</a>
-            </div>
+    <dl class="meta-grid">
+        <dt>Privacy</dt>
+        <dd>Part of the ChillSpace family. No account required, no personal data collected. Game progress is stored locally.</dd>
+        <dt>Ads</dt>
+        <dd><span class="badge badge-none">None</span></dd>
+        <dt>Google Analytics</dt>
+        <dd><span class="badge badge-none">None</span></dd>
+        <dt>Privacy rating</dt>
+        <dd><span class="rating">★★★★★</span></dd>
+    </dl>
+    <div class="verdict"><strong>Verdict:</strong> A clicker game that respects your privacy and your attention.</div>
+</div>
 
-        </div>
 
-        <!-- ===== NOTE ===== -->
-        <div class="note-box">
-            <div data-lang-content="en">
-                <strong>📌 Note:</strong> This list is curated and updated regularly. We do <em>not</em> include food delivery clones
-                or sites with deceptive meta tags and blogs. All external sites are linked directly — no app store pages,
-                no news articles. If you know a legitimate dopamine replacement site, <a href="https://chillspace.ai/contact">let us know</a>.
-            </div>
-            <div data-lang-content="ko">
-                <strong>📌 참고:</strong> 이 목록은 정기적으로 큐레이션 및 업데이트됩니다. 기만적인 메타 태그와 블로그가 있는 음식 배달 클론이나
-                사이트는 포함하지 않습니다. 모든 외부 사이트는 직접 연결됩니다 — 앱 스토어 페이지나 뉴스 기사가 아닙니다.
-                합법적인 도파민 대체 사이트를 알고 계신다면 <a href="https://chillspace.ai/contact">알려주세요</a>.
-            </div>
-        </div>
+<h2>External Sites</h2>
 
-        <!-- ===== FOOTER ===== -->
-        <footer class="footer">
-            <p>
-                <span data-lang-content="en">© 2026 <a href="https://chillspace.ai/">ChillSpace</a> — built to replace dopamine, not to exploit it.</span>
-                <span data-lang-content="ko">© 2026 <a href="https://chillspace.ai/">ChillSpace</a> — 도파민을 착취하지 않고 대체하기 위해 만들어졌습니다.</span>
-            </p>
-        </footer>
+<p>These are third-party dopamine sites that we've vetted. They are not part of the ChillSpace family, and their privacy practices vary significantly.</p>
 
+<!-- DOPAMINE SHOP (dopamine-shop.com) -->
+<div class="site-card">
+    <h3><a href="https://dopamine-shop.com/" target="_blank" rel="noopener">Dopamine Shop (dopamine-shop.com)</a></h3>
+    <p><strong>What it is:</strong> A parody online store where nothing is sold and nothing ships. You browse products, add them to a fake cart, complete a simulated checkout, and watch your order "disappear." It's operated by <strong>Fenwick Holdings LLC</strong> (United States).</p>
+
+    <dl class="meta-grid">
+        <dt>Privacy</dt>
+        <dd>Dopamine Shop collects less than a typical e-commerce site because there is no real commerce. It does not ask for or store your real name, shipping address, phone number, payment card details, or bank information. The checkout is entirely simulated — no payment is requested, processed, or stored. Your fake cart, "almost-spent" total, sound and language preferences, and game progress are stored locally in your browser (<code>localStorage</code>). This data stays on your device and is not transmitted to Dopamine Shop unless you join the leaderboard. If you create a leaderboard account, they store only your chosen username and a securely hashed password — no email address, no real name, no payment details. Your username and fake "almost-spent" total appear on the public leaderboard. You can request deletion at any time.</dd>
+        <dt>Ads</dt>
+        <dd><span class="badge badge-yes">Yes</span> — supported by advertising and uses <strong>Google AdSense</strong> to display ads. Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visits to this site and/or other sites on the Internet. You can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a> or <a href="https://www.aboutads.info" target="_blank" rel="noopener">www.aboutads.info</a>. For EEA, UK, and Switzerland visitors, a consent message is shown before any personalized advertising cookies are set. You can decline personalized ads and still use the site.</dd>
+        <dt>Google Analytics</dt>
+        <dd><span class="badge badge-none">No</span> — uses a lightweight, self-hosted analytics script to count page visits and clicks on the site's own promotional banners. This is not Google Analytics — it's a first-party script that does not build advertising profiles. Some banners on the site promote their own other projects; these are labeled "sponsored" and do not use tracking cookies.</dd>
+        <dt>Data retention</dt>
+        <dd>Local browser data can be cleared at any time by clearing your browser's site data. To delete a leaderboard account, you can email <a href="mailto:hello@dopamine-shop.com">hello@dopamine-shop.com</a> and they will remove the username, password hash, and associated scores.</dd>
+        <dt>Privacy rating</dt>
+        <dd><span class="rating">★★★★☆</span></dd>
+    </dl>
+    <div class="verdict"><strong>Verdict:</strong> More transparent than most. It uses Google AdSense (which means ad tracking) but is clear about what it collects and what it doesn't. No real payment data is ever collected. The self-hosted analytics script is a privacy-friendly alternative to Google Analytics.</div>
+    <p style="font-size:0.85rem;color:#777;margin-top:0.5rem;">Privacy policy: <a href="https://dopamine-shop.com/privacy/" target="_blank" rel="noopener">dopamine-shop.com/privacy/</a></p>
+</div>
+
+<!-- FOODNEVERARRIVES -->
+<div class="site-card">
+    <h3><a href="https://음식만안와요.com/" target="_blank" rel="noopener">음식만안와요 (FoodNeverArrives)</a></h3>
+    <p><strong>What it is:</strong> A fake food delivery app that mimics the entire ordering process — browse restaurants, add dishes to cart, enter delivery details, track a virtual driver — but the food never arrives. Instead, you get a virtual receipt tallying the money and calories you saved.</p>
+
+    <div class="note-box" style="margin-top:0.75rem;">
+        <strong>Important update:</strong> The web version (<a href="https://음식만안와요.com/" target="_blank" rel="noopener">음식만안와요.com</a>) has been discontinued. The service now operates exclusively as an Android app on Google Play. The site currently displays a message: "음식만안와요 웹 버전 서비스가 종료되었습니다" (The web version service has ended). All future use is through the app.
     </div>
 
-    <!-- ===== LANGUAGE TOGGLE SCRIPT ===== -->
-    <script>
-        (function() {
-            // Get all language toggle buttons
-            const btns = document.querySelectorAll('.lang-btn');
-            const langContents = document.querySelectorAll('.lang-content');
-            const allLangElements = document.querySelectorAll('[data-lang-content]');
+    <dl class="meta-grid">
+        <dt>Privacy (app)</dt>
+        <dd>FoodNeverArrives does not require account registration or login. It uses Google Firebase (Firestore) to store certain data on its servers, but only the following:
+            <ul style="margin:0.4rem 0 0 1.2rem;font-size:0.9rem;">
+                <li><strong>Order history and achievements:</strong> The menus you selected, prices, delivery method, time, etc., from demo orders. This is linked only to an anonymous identifier that contains no real name, email, or other identifying information. It is not visible to other users.</li>
+                <li><strong>User-submitted restaurant/menu information:</strong> If you use the "Add My Restaurant" feature, the name, description, price, and photos you submit are stored and visible to all users. Inappropriate content is hidden automatically after accumulating reports.</li>
+            </ul>
+            Critically, the name, address, and contact information you enter during the order process are <strong>not</strong> sent to or stored on any server — they remain only on your device and disappear when you refresh or close the app. The Android app may use Google Play Integrity (Firebase App Check) to verify that requests come from a legitimately distributed app. This is not used to identify you or your device.</dd>
+        <dt>Ads</dt>
+        <dd><span class="badge badge-yes">Yes</span> — the web version could display ads through Google AdSense. The Android/iOS app versions may display interstitial ads through <strong>Google AdMob</strong>. Ads appear with a certain probability when the app launches. AdMob may use advertising identifiers (Android Advertising ID, iOS IDFA) for ad personalization. On iOS, the app requests App Tracking Transparency (ATT) permission before using advertising identifiers; if you decline, you can still use all other features.</dd>
+        <dt>Google Analytics</dt>
+        <dd><span class="badge badge-none">No</span> — FoodNeverArrives does not appear to use Google Analytics. It uses Firebase for data storage and AdMob for ads, but no evidence of Google Analytics was found.</dd>
+        <dt>Third parties</dt>
+        <dd>The web version was hosted on Vercel, which automatically collects server access logs (IP address, access time, browser information) as part of normal operation. Order history, achievements, and user-submitted content are stored in Google Firebase (Firestore). Ad display involves communication with Google AdMob. Firebase's privacy practices are governed by <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Google's Firebase Privacy Policy</a>.</dd>
+        <dt>Children</dt>
+        <dd>The service does not knowingly collect personal information from children under 14.</dd>
+        <dt>Privacy rating</dt>
+        <dd><span class="rating">★★★☆☆</span></dd>
+    </dl>
+    <div class="verdict"><strong>Verdict:</strong> More complex privacy picture than the ChillSpace family. It does store some data on servers (Firebase), and the app displays ads via AdMob which can use advertising identifiers. However, the most sensitive data (name, address, contact) never leaves your device. The anonymous identifier design is a reasonable privacy compromise.</div>
+</div>
 
-            // Function to set active language
-            function setLang(lang) {
-                // Update buttons
-                btns.forEach(btn => {
-                    const isActive = btn.dataset.lang === lang;
-                    btn.classList.toggle('active', isActive);
-                    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-                });
+<!-- MOLTBOOK -->
+<div class="site-card">
+    <h3><a href="https://www.moltbook.com/" target="_blank" rel="noopener">Moltbook</a></h3>
+    <p><strong>What it is:</strong> A Reddit-style social network where only AI agents can post and interact. Humans are "welcome to observe." It was created by Matt Schlicht (of Octane AI) and quickly gained attention as a novelty — and then controversy over security issues.</p>
 
-                // Update content blocks
-                langContents.forEach(el => {
-                    el.classList.toggle('active', el.dataset.lang === lang);
-                });
+    <dl class="meta-grid">
+        <dt>Privacy</dt>
+        <dd>Moltbook is a public platform. Its privacy policy confirms it relies on third-party infrastructure, including <strong>Supabase</strong> (database/auth), <strong>Vercel</strong> (hosting), and <strong>X/Twitter</strong> (OAuth). In early 2026, a major security flaw was discovered: researchers found a misconfigured Supabase database that exposed API keys, login tokens, private messages, and email addresses of over 6,000 users. Cloud security firm Wiz accessed the production database and tens of thousands of email addresses within minutes of testing, without authentication. Moltbook is not intended for users under 13. The platform implements industry-standard security measures including encryption in transit (HTTPS), secure authentication, and access controls, but the exposed database incident raises serious questions about their implementation.</dd>
+        <dt>Ads</dt>
+        <dd><span class="badge badge-yes">Yes</span> — Moltbook uses cookies and third-party providers, including <strong>Google AdSense</strong>, to display advertisements. A cookie consent banner indicates: "This site uses cookies to measure audience (Google Analytics) and display advertisements (Google AdSense)." Users can consent to analytics cookies by clicking "Accept All."</dd>
+        <dt>Google Analytics</dt>
+        <dd><span class="badge badge-yes">Yes</span> — Moltbook explicitly states that it and its third-party providers, including Google Analytics, use cookies and similar technologies for data analytics. The cookie consent banner mentions Google Analytics for audience measurement. Users can opt out of Google Analytics tracking via <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google's opt-out mechanism</a>.</dd>
+        <dt>Privacy rating</dt>
+        <dd><span class="rating">★★☆☆☆</span></dd>
+    </dl>
+    <div class="verdict"><strong>Verdict:</strong> The second weakest privacy posture on this list. Moltbook is ad-supported, uses Google Analytics, and has suffered a significant data breach that exposed private user data. If you use Moltbook, assume that anything you share — even via "private" messages — could become public. The platform itself acknowledges the reliance on third-party infrastructure that has already proven vulnerable.</div>
+    <p style="font-size:0.85rem;color:#777;margin-top:0.5rem;">Privacy policy: <a href="https://www.moltbook.com/privacy" target="_blank" rel="noopener">moltbook.com/privacy</a></p>
+</div>
 
-                // Update inline lang-content elements
-                allLangElements.forEach(el => {
-                    const content = el.dataset.langContent;
-                    // Show only the matching language content
-                    if (content === lang) {
-                        el.style.display = '';
-                    } else {
-                        el.style.display = 'none';
-                    }
-                });
+<!-- DOPAMINESHOP.CO — NEW ENTRY -->
+<div class="site-card">
+    <h3><a href="https://dopamineshop.co/" target="_blank" rel="noopener">DopamineShop.co</a></h3>
+    <p><strong>What it is:</strong> Another fake shopping simulator in the dopamine-site trend. It describes itself as "a real store where nothing costs anything" with "17,000+ real products" and "37 categories." You browse, fill a cart, and check out — but no payment is taken and nothing ships. It offers a leaderboard, daily challenges, achievements, streaks, and even a fake food delivery simulator called FoodDash.</p>
 
-                // Update HTML lang attribute
-                document.documentElement.lang = lang;
+    <div class="warning-box">
+        <strong>⚠️ Warning: This site collects far more data than most dopamine sites.</strong>
+        Unlike the ChillSpace family or even dopamine-shop.com, DopamineShop.co's privacy policy describes extensive behavioral tracking and future data sharing with marketing partners. Read the full privacy policy at <a href="https://dopamineshop.co/privacy" target="_blank" rel="noopener">dopamineshop.co/privacy</a> before using the site.
+    </div>
 
-                // Store preference
-                try {
-                    localStorage.setItem('chillspace-lang', lang);
-                } catch (_) { /* ignore */ }
-            }
+    <dl class="meta-grid">
+        <dt>Privacy</dt>
+        <dd>DopamineShop.co collects significantly more data than other fake shopping simulators. According to its privacy policy, it collects:
+            <ul style="margin:0.4rem 0 0 1.2rem;font-size:0.9rem;">
+                <li><strong>Session data:</strong> A random session ID generated in your browser</li>
+                <li><strong>Device data:</strong> Browser and device type, screen size, timezone, language, and country (but not city or precise location)</li>
+                <li><strong>Behavioral data:</strong> Pages you visit, products you view, what you add to cart, <strong>and how far you scroll</strong></li>
+                <li><strong>Google sign-in data:</strong> If you sign in with Google, it collects your name, email address, and profile picture</li>
+                <li><strong>Fake order data:</strong> The delivery address you enter (so it can show a "full fake shipping experience") and the items in your cart</li>
+                <li><strong>Referral data:</strong> Referral source and UTM campaign parameters if you arrived via a link</li>
+            </ul>
+            The site explicitly states it collects this data to "potentially share anonymized behavioral data with third-party analytics and marketing partners in the future." This is a significant data-sharing arrangement that goes beyond what most dopamine sites do. Data retention periods: session data for 90 days, account data until you delete your account, and order data for <strong>2 years</strong>.</dd>
+        <dt>Ads</dt>
+        <dd><span class="badge badge-yes">Yes</span> — the site is described as "free, ad-supported" in media coverage. It also states it may share behavioral data with "marketing partners," which suggests data-driven advertising beyond simple ad serving.</dd>
+        <dt>Google Analytics</dt>
+        <dd><span class="badge badge-some">Likely</span> — the privacy policy references sharing data with "third-party analytics and marketing partners." While it does not explicitly name Google Analytics, the described data collection (scroll depth, page views, product views) is consistent with comprehensive analytics tracking. The terms of service also state: "We collect browsing data to improve your experience and may share it with analytics partners."</dd>
+        <dt>Data retention</dt>
+        <dd>Session data: 90 days. Account data: Until you delete your account. Order data: <strong>2 years</strong>. To request deletion, email <a href="mailto:dopamineshop@gmail.com">dopamineshop@gmail.com</a>.</dd>
+        <dt>CCPA</dt>
+        <dd>The site offers a "Do Not Sell My Data" option for California residents (and anyone else who wants to opt out of behavioral data sharing with third parties).</dd>
+        <dt>Privacy rating</dt>
+        <dd><span class="rating">★☆☆☆☆</span></dd>
+    </dl>
+    <div class="verdict"><strong>Verdict:</strong> The most concerning privacy posture of any site on this list. DopamineShop.co collects extensive behavioral data — including scroll depth — and explicitly plans to share it with third-party marketing partners. While the ChillSpace family collects nothing and dopamine-shop.com collects a little more, DopamineShop.co behaves more like a surveillance-driven ad platform than a harmless fake shopping simulator. If you value your privacy, avoid this site or at minimum use it in a private browsing window and never sign in with Google.</div>
+    <p style="font-size:0.85rem;color:#777;margin-top:0.5rem;">Privacy policy: <a href="https://dopamineshop.co/privacy" target="_blank" rel="noopener">dopamineshop.co/privacy</a> · Terms: <a href="https://dopamineshop.co/terms" target="_blank" rel="noopener">dopamineshop.co/terms</a></p>
+</div>
 
-            // Click handlers
-            btns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const lang = this.dataset.lang;
-                    setLang(lang);
-                });
-            });
 
-            // Restore saved preference, or use detected language from head script
-            let savedLang = null;
-            try {
-                savedLang = localStorage.getItem('chillspace-lang');
-            } catch (_) { /* ignore */ }
+<h2>Summary Table</h2>
 
-            const detectedLang = window.__chillLang || 'en';
+<table>
+    <thead>
+        <tr>
+            <th>Site</th>
+            <th>Data Collection</th>
+            <th>Ads</th>
+            <th>Google Analytics</th>
+            <th>Third-Party Trackers</th>
+            <th>Rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="https://chillspace.ai/" target="_blank" rel="noopener">ChillSpace</a></td>
+            <td>None (localStorage only)</td>
+            <td><span class="badge badge-none">No</span></td>
+            <td><span class="badge badge-none">No</span></td>
+            <td>None (Cloudflare hosting only)</td>
+            <td><span class="rating">★★★★★</span></td>
+        </tr>
+        <tr>
+            <td><a href="https://chillspace.ai/rs" target="_blank" rel="noopener">ReelSpace</a></td>
+            <td>None (localStorage only)</td>
+            <td><span class="badge badge-none">No</span></td>
+            <td><span class="badge badge-none">No</span></td>
+            <td>None</td>
+            <td><span class="rating">★★★★★</span></td>
+        </tr>
+        <tr>
+            <td><a href="https://chillspace.ai/shop/" target="_blank" rel="noopener">ChillSpace Shop</a></td>
+            <td>None (localStorage only)</td>
+            <td><span class="badge badge-none">No</span></td>
+            <td><span class="badge badge-none">No</span></td>
+            <td>None</td>
+            <td><span class="rating">★★★★★</span></td>
+        </tr>
+        <tr>
+            <td><a href="https://chillspace.ai/buyvinyl/" target="_blank" rel="noopener">BuyVinyl</a></td>
+            <td>None (localStorage only)</td>
+            <td><span class="badge badge-none">No</span></td>
+            <td><span class="badge badge-none">No</span></td>
+            <td>None</td>
+            <td><span class="rating">★★★★★</span></td>
+        </tr>
+        <tr>
+            <td><a href="https://chillspace.ai/numbers" target="_blank" rel="noopener">Number</a></td>
+            <td>None (localStorage only)</td>
+            <td><span class="badge badge-none">No</span></td>
+            <td><span class="badge badge-none">No</span></td>
+            <td>None</td>
+            <td><span class="rating">★★★★★</span></td>
+        </tr>
+        <tr>
+            <td><a href="https://dopamine-shop.com/" target="_blank" rel="noopener">Dopamine Shop (dopamine-shop.com)</a></td>
+            <td>Minimal (localStorage; optional leaderboard)</td>
+            <td><span class="badge badge-some">AdSense</span></td>
+            <td><span class="badge badge-none">No</span> (self-hosted)</td>
+            <td>Google AdSense</td>
+            <td><span class="rating">★★★★☆</span></td>
+        </tr>
+        <tr>
+            <td><a href="https://음식만안와요.com/" target="_blank" rel="noopener">FoodNeverArrives</a></td>
+            <td>Anonymous order data (Firebase); sensitive data stays local</td>
+            <td><span class="badge badge-some">AdMob (app)</span></td>
+            <td><span class="badge badge-none">No</span></td>
+            <td>Firebase, AdMob, Vercel</td>
+            <td><span class="rating">★★★☆☆</span></td>
+        </tr>
+        <tr>
+            <td><a href="https://www.moltbook.com/" target="_blank" rel="noopener">Moltbook</a></td>
+            <td>Public platform; third-party infrastructure</td>
+            <td><span class="badge badge-some">AdSense</span></td>
+            <td><span class="badge badge-yes">Yes</span></td>
+            <td>Google Analytics, AdSense, Supabase, Vercel</td>
+            <td><span class="rating">★★☆☆☆</span></td>
+        </tr>
+        <tr>
+            <td><a href="https://dopamineshop.co/" target="_blank" rel="noopener">DopamineShop.co</a></td>
+            <td>Extensive behavioral data (scroll depth, page views, products, device info, Google sign-in data, delivery address)</td>
+            <td><span class="badge badge-yes">Yes</span></td>
+            <td><span class="badge badge-some">Likely</span></td>
+            <td>Analytics and marketing partners</td>
+            <td><span class="rating">★☆☆☆☆</span></td>
+        </tr>
+    </tbody>
+</table>
 
-            // If user has a saved preference, use it; otherwise use detected
-            const initialLang = savedLang || detectedLang || 'en';
-            setLang(initialLang);
-        })();
-    </script>
 
-    <!-- ===== ADDITIONAL SEO: alternate hreflang ===== -->
-    <link rel="alternate" hreflang="en" href="https://chillspace.ai/blog/list-of-dopamine-sites/" />
-    <link rel="alternate" hreflang="ko" href="https://chillspace.ai/blog/list-of-dopamine-sites/?lang=ko" />
-    <link rel="alternate" hreflang="x-default" href="https://chillspace.ai/blog/list-of-dopamine-sites/" />
+<h2>What This Means for You</h2>
 
-    <!-- ===== CANONICAL ===== -->
-    <link rel="canonical" href="https://chillspace.ai/blog/list-of-dopamine-sites/" />
+<p><strong>If you want zero data collection:</strong> Stick to the ChillSpace family. <a href="https://chillspace.ai/" target="_blank" rel="noopener">ChillSpace</a>, <a href="https://chillspace.ai/rs" target="_blank" rel="noopener">ReelSpace</a>, <a href="https://chillspace.ai/shop/" target="_blank" rel="noopener">ChillSpace Shop</a>, <a href="https://chillspace.ai/buyvinyl/" target="_blank" rel="noopener">BuyVinyl</a>, and <a href="https://chillspace.ai/numbers" target="_blank" rel="noopener">Number</a> collect nothing, have no ads, and use no analytics. The Android app doesn't even need the internet.</p>
+
+<p><strong>If you're okay with ads but want transparency:</strong> <a href="https://dopamine-shop.com/" target="_blank" rel="noopener">Dopamine Shop (dopamine-shop.com)</a> is a reasonable choice. It uses Google AdSense (which means ad tracking cookies), but it's clear about what it collects, it doesn't use Google Analytics, and it never touches real payment data.</p>
+
+<p><strong>If you're concerned about data breach risk:</strong> Avoid <a href="https://www.moltbook.com/" target="_blank" rel="noopener">Moltbook</a>, or at minimum treat everything you share there as potentially public. The platform has already exposed private messages and email addresses of thousands of users.</p>
+
+<p><strong>If you value your privacy:</strong> Avoid <a href="https://dopamineshop.co/" target="_blank" rel="noopener">DopamineShop.co</a>. It collects extensive behavioral data — including how far you scroll — and plans to share it with third-party marketing partners. If you must use it, use a private browsing window and never sign in with Google.</p>
+
+<p><strong>If you use FoodNeverArrives:</strong> The app stores anonymous order data on Firebase and shows ads via AdMob. Your name, address, and contact information stay on your device. If ad tracking concerns you, decline the ATT prompt on iOS — the app still works.</p>
+
+
+<footer>
+    <p>This page is for informational purposes only. Privacy policies and data practices can change. Always check a site's current privacy policy before using it.</p>
+    <p>© 2026 ChillSpace. <a href="https://chillspace.ai/privacy/">Privacy Policy</a></p>
+</footer>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- JSON-LD STRUCTURED DATA                                      -->
+<!-- ============================================================ -->
+
+<!-- ItemList: the list of dopamine sites -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "List of Dopamine Sites — Privacy, Ads & Analytics",
+  "description": "A detailed guide to dopamine replacement sites, including privacy policies, advertising practices, and analytics usage for each site.",
+  "url": "https://chillspace.ai/blog/list-of-dopamine-sites/",
+  "dateModified": "2026-10-02",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "WebSite",
+        "name": "ChillSpace",
+        "url": "https://chillspace.ai/",
+        "description": "A calm, text-based social simulator. No data collection, no ads, no analytics.",
+        "publisher": { "@type": "Organization", "name": "ChillSpace" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "WebSite",
+        "name": "ReelSpace",
+        "url": "https://chillspace.ai/rs",
+        "description": "A mindful short-form video alternative. No data collection, no ads, no analytics.",
+        "publisher": { "@type": "Organization", "name": "ChillSpace" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "WebSite",
+        "name": "ChillSpace Shop",
+        "url": "https://chillspace.ai/shop/",
+        "description": "A SHEIN shopping simulator. No real purchases, no data collection, no ads.",
+        "publisher": { "@type": "Organization", "name": "ChillSpace" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "WebSite",
+        "name": "BuyVinyl",
+        "url": "https://chillspace.ai/buyvinyl/",
+        "description": "A vinyl record ordering simulator with real music playback. No data collection, no ads.",
+        "publisher": { "@type": "Organization", "name": "ChillSpace" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "item": {
+        "@type": "WebSite",
+        "name": "Number",
+        "url": "https://chillspace.ai/numbers",
+        "description": "A pure, no-ads, no-microtransaction clicker game. No data collection.",
+        "publisher": { "@type": "Organization", "name": "ChillSpace" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "item": {
+        "@type": "WebSite",
+        "name": "Dopamine Shop (dopamine-shop.com)",
+        "url": "https://dopamine-shop.com/",
+        "description": "A parody online store where nothing is sold. Uses Google AdSense and a self-hosted analytics script. No real payment data collected.",
+        "publisher": { "@type": "Organization", "name": "Fenwick Holdings LLC" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "item": {
+        "@type": "WebSite",
+        "name": "FoodNeverArrives (음식만안와요)",
+        "url": "https://음식만안와요.com/",
+        "description": "A fake food delivery app. Web version discontinued; Android app available. Uses Firebase for anonymous order storage and AdMob for ads. Sensitive data stays on device.",
+        "publisher": { "@type": "Organization", "name": "FoodNeverArrives" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "item": {
+        "@type": "WebSite",
+        "name": "Moltbook",
+        "url": "https://www.moltbook.com/",
+        "description": "A Reddit-style social network for AI agents. Uses Google Analytics and Google AdSense. Has suffered a data breach exposing private user data.",
+        "publisher": { "@type": "Organization", "name": "Moltbook" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "item": {
+        "@type": "WebSite",
+        "name": "DopamineShop.co",
+        "url": "https://dopamineshop.co/",
+        "description": "A fake shopping simulator with extensive behavioral data collection including scroll depth, device info, Google sign-in data, and delivery address. Shares data with third-party analytics and marketing partners.",
+        "publisher": { "@type": "Organization", "name": "DopamineShop.co" }
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Article: the page itself -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "List of Dopamine Sites — Privacy, Ads & Analytics Deep Dive",
+  "description": "A detailed guide to dopamine replacement sites, including what data each collects, whether they run ads, and what analytics they use. Covers ChillSpace, ReelSpace, ChillSpace Shop, BuyVinyl, Number, Dopamine Shop, FoodNeverArrives, Moltbook, and DopamineShop.co.",
+  "author": { "@type": "Organization", "name": "ChillSpace" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ChillSpace",
+    "logo": { "@type": "ImageObject", "url": "https://chillspace.ai/logo.png" }
+  },
+  "datePublished": "2026-10-02",
+  "dateModified": "2026-10-02",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://chillspace.ai/blog/list-of-dopamine-sites/"
+  }
+}
+</script>
+
+<!-- FAQPage: common questions -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do dopamine sites collect data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on the site. The ChillSpace family (ChillSpace, ReelSpace, ChillSpace Shop, BuyVinyl, Number) collects no data at all — everything stays in your browser's localStorage. Dopamine Shop (dopamine-shop.com) collects minimal data and uses Google AdSense. FoodNeverArrives stores anonymous order data on Firebase and shows ads via AdMob. Moltbook uses Google Analytics and Google AdSense and has suffered a data breach. DopamineShop.co collects extensive behavioral data including scroll depth and plans to share it with marketing partners."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do dopamine sites use Google Analytics?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Moltbook uses Google Analytics. DopamineShop.co likely uses analytics partners based on its privacy policy. Dopamine Shop (dopamine-shop.com) uses a self-hosted analytics script, not Google Analytics. FoodNeverArrives does not appear to use Google Analytics. The ChillSpace.ai family uses no analytics at all."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do dopamine sites show ads?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dopamine Shop (dopamine-shop.com) uses Google AdSense. FoodNeverArrives uses Google AdMob in its app. Moltbook uses Google AdSense. DopamineShop.co is ad-supported and may share data with marketing partners. The ChillSpace.ai family (ChillSpace, ReelSpace, ChillSpace Shop, BuyVinyl, Number) shows no ads."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is ChillSpace safe and private?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. ChillSpace does not collect any data — not even a hit counter. Cloudflare collects essential data to host the site, but ChillSpace itself collects absolutely nothing. The Android app works without internet, so not even Cloudflare gets any data. ChillSpace does not contain ads."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- WebPage: primary page entity -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "List of Dopamine Sites — Privacy, Ads & Analytics Deep Dive",
+  "description": "A detailed guide to dopamine replacement sites, including what data each collects, whether they run ads, and what analytics they use.",
+  "url": "https://chillspace.ai/blog/list-of-dopamine-sites/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "ChillSpace",
+    "url": "https://chillspace.ai/"
+  },
+  "about": {
+    "@type": "Thing",
+    "name": "Dopamine sites"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "List of Dopamine Sites"
+  }
+}
+</script>
+
+<!-- Organization: ChillSpace -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "ChillSpace",
+  "url": "https://chillspace.ai/",
+  "description": "A privacy-first social simulator and collection of calm digital alternatives.",
+  "foundingDate": "2026",
+  "sameAs": []
+}
+</script>
+
+<!-- BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://chillspace.ai/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://chillspace.ai/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "List of Dopamine Sites — Privacy, Ads & Analytics",
+      "item": "https://chillspace.ai/blog/list-of-dopamine-sites/"
+    }
+  ]
+}
+</script>
+
+<!-- SiteNavigationElement for quick linking -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SiteNavigationElement",
+  "name": "Dopamine Sites Quick Links",
+  "hasPart": [
+    { "@type": "WebPage", "name": "ChillSpace", "url": "https://chillspace.ai/" },
+    { "@type": "WebPage", "name": "ReelSpace", "url": "https://chillspace.ai/rs" },
+    { "@type": "WebPage", "name": "ChillSpace Shop", "url": "https://chillspace.ai/shop/" },
+    { "@type": "WebPage", "name": "BuyVinyl", "url": "https://chillspace.ai/buyvinyl/" },
+    { "@type": "WebPage", "name": "Number", "url": "https://chillspace.ai/numbers" },
+    { "@type": "WebPage", "name": "Dopamine Shop (dopamine-shop.com)", "url": "https://dopamine-shop.com/" },
+    { "@type": "WebPage", "name": "FoodNeverArrives", "url": "https://음식만안와요.com/" },
+    { "@type": "WebPage", "name": "Moltbook", "url": "https://www.moltbook.com/" },
+    { "@type": "WebPage", "name": "DopamineShop.co", "url": "https://dopamineshop.co/" }
+  ]
+}
+</script>
 
 </body>
 </html>
