@@ -1,88 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://chillspace.ai/index.html</loc>
+    <loc>https://chillspace.ai/</loc>
     <changefreq>always</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/about/index.html</loc>
+    <loc>https://chillspace.ai/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/about/kr/index.html</loc>
+    <loc>https://chillspace.ai/about/kr/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/blog/chillspace-vs-chillspace/index.html</loc>
+    <loc>https://chillspace.ai/blog/chillspace-vs-chillspace/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/blog/dopamine-site-history/index.html</loc>
+    <loc>https://chillspace.ai/blog/dopamine-site-history/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/blog/list-of-dopamine-sites/index.html</loc>
+    <loc>https://chillspace.ai/blog/list-of-dopamine-sites/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/blog/what-are-dopamine-sites/index.html</loc>
+    <loc>https://chillspace.ai/blog/what-are-dopamine-sites/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
+  <loc>https://chillspace.ai/blog/youtube-vs-tiktok/</loc>
+    <changefreq>never</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url>
-    <loc>https://chillspace.ai/buyvinyl/index.html</loc>
+    <loc>https://chillspace.ai/buyvinyl/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/gaming/index.html</loc>
+    <loc>https://chillspace.ai/gaming/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/jump/index.html</loc>
+    <loc>https://chillspace.ai/jump/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/kpop/index.html</loc>
+    <loc>https://chillspace.ai/kpop/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/messages/index.html</loc>
+    <loc>https://chillspace.ai/messages/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/numbers/index.html</loc>
+    <loc>https://chillspace.ai/numbers/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/privacy/index.html</loc>
+    <loc>https://chillspace.ai/privacy/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/reelspace/index.html</loc>
+    <loc>https://chillspace.ai/reelspace/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/shop/index.html</loc>
+    <loc>https://chillspace.ai/shop/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://chillspace.ai/surfers/index.html</loc>
+    <loc>https://chillspace.ai/surfers/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+  </url>
+  <loc>https://chillspace.ai/download/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <loc>https://chillspace.ai/link/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
