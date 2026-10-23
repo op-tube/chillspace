@@ -1,309 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Privacy Policy · ChillSpace</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Inter:wght@400..600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #1B1730;
-            color: #F1EEFA;
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            padding: 40px 20px;
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            max-width: 780px;
-            width: 100%;
-            background: rgba(36, 31, 61, 0.85);
-            backdrop-filter: blur(4px);
-            padding: 48px 44px;
-            border-radius: 28px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        h1 {
-            font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .dot {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #7EE0C3;
-            box-shadow: 0 0 0 0 rgba(126, 224, 195, 0.5);
-            animation: breathe 2.4s ease-in-out infinite;
-            flex-shrink: 0;
-        }
-
-        @keyframes breathe {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(126, 224, 195, 0.5); }
-            50% { box-shadow: 0 0 0 8px rgba(126, 224, 195, 0); }
-        }
-
-        .subtitle {
-            color: #9089B0;
-            font-size: 15px;
-            margin-bottom: 32px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            padding-bottom: 18px;
-        }
-
-        .subtitle strong {
-            color: #F1EEFA;
-            font-weight: 600;
-        }
-
-        h2 {
-            font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
-            font-size: 20px;
-            font-weight: 600;
-            margin: 32px 0 12px;
-            color: #F1EEFA;
-            letter-spacing: -0.01em;
-        }
-
-        h2:first-of-type {
-            margin-top: 0;
-        }
-
-        p, li {
-            color: #D4CFE8;
-            font-size: 15px;
-            margin-bottom: 12px;
-        }
-
-        ul {
-            padding-left: 24px;
-            margin-bottom: 16px;
-        }
-
-        li {
-            margin-bottom: 6px;
-        }
-
-        .highlight-box {
-            background: rgba(126, 224, 195, 0.08);
-            border-left: 4px solid #7EE0C3;
-            padding: 14px 20px;
-            border-radius: 0 12px 12px 0;
-            margin: 20px 0;
-        }
-
-        .highlight-box p {
-            margin-bottom: 0;
-            color: #F1EEFA;
-            font-weight: 500;
-        }
-
-        .highlight-box strong {
-            color: #7EE0C3;
-        }
-
-        a {
-            color: #7EE0C3;
-            text-decoration: none;
-            border-bottom: 1px solid rgba(126, 224, 195, 0.25);
-            transition: border-color 0.2s;
-        }
-
-        a:hover {
-            border-color: #7EE0C3;
-        }
-
-        .divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.06);
-            margin: 32px 0 20px;
-        }
-
-        .footer-meta {
-            margin-top: 28px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-size: 13px;
-            color: #6b6488;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            padding-top: 20px;
-        }
-
-        .footer-meta .brand {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            color: #9089B0;
-            letter-spacing: -0.01em;
-        }
-
-        .footer-meta .brand span {
-            color: #7EE0C3;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #9089B0;
-            font-size: 14px;
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: color 0.2s, border-color 0.2s;
-        }
-
-        .back-link:hover {
-            color: #7EE0C3;
-            border-bottom-color: rgba(126, 224, 195, 0.3);
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 28px 20px;
-            }
-            h1 {
-                font-size: 26px;
-            }
-            .footer-meta {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1B1730">
+  <meta name="description" content="The ChillSpace privacy policy, in plain and friendly language.">
+  <title>Privacy Policy · ChillSpace</title>
+  <style>
+    :root {
+      --ink: #211b38;
+      --muted: #554b6b;
+      --glass: rgba(255,255,255,.76);
+      --line: rgba(255,255,255,.72);
+      --purple: #6a0dad;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 28px 16px 40px;
+      color: var(--ink);
+      font-family: ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(270deg, #FFD166, #FF8C42, #9B5DE5, #00BBF9, #00F5D4, #FFD166);
+      background-size: 600% 600%;
+      animation: gradientShift 25s ease infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .page { width: min(820px, 100%); margin: 0 auto; }
+    .topline {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin: 0 2px 18px; color: #24183d;
+    }
+    .brand { font-weight: 900; letter-spacing: -.04em; font-size: 1.12rem; }
+    .pill {
+      padding: 7px 11px; border: 1px solid var(--line);
+      border-radius: 999px; background: rgba(255,255,255,.35);
+      font-size: .78rem; font-weight: 750; white-space: nowrap;
+    }
+    header, section, footer {
+      border: 1px solid var(--line);
+      background: var(--glass);
+      box-shadow: 0 12px 35px rgba(47, 23, 82, .10);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 24px;
+    }
+    header { padding: clamp(24px, 6vw, 44px); margin-bottom: 16px; }
+    .eyebrow {
+      display: inline-block; padding: 6px 10px; border-radius: 999px;
+      background: linear-gradient(135deg, #FFD166, #FF8C42);
+      font-size: .76rem; font-weight: 850; letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    h1 { margin: 15px 0 10px; font-size: clamp(2.2rem, 7vw, 3.6rem); line-height: 1.02; letter-spacing: -.06em; }
+    .intro { max-width: 60ch; margin: 0; color: var(--muted); font-size: 1.05rem; line-height: 1.65; }
+    .updated { margin-top: 18px; color: #625875; font-size: .85rem; }
+    main { display: grid; gap: 14px; }
+    section { padding: clamp(20px, 4.5vw, 30px); }
+    h2 { margin: 0 0 10px; font-size: 1.22rem; letter-spacing: -.025em; }
+    p, li { color: var(--muted); line-height: 1.7; }
+    p { margin: 8px 0; }
+    ul { padding-left: 1.25rem; margin: 8px 0 0; }
+    li + li { margin-top: 6px; }
+    strong { color: var(--ink); }
+    .note {
+      border-left: 4px solid #9B5DE5;
+      padding: 12px 14px; margin-top: 14px;
+      background: rgba(155,93,229,.09); border-radius: 0 12px 12px 0;
+    }
+    a { color: #5d2693; font-weight: 750; text-underline-offset: 3px; }
+    footer { margin-top: 16px; padding: 20px; text-align: center; }
+    footer p { margin: 4px 0; font-size: .9rem; }
+    .back { display: inline-block; margin-top: 8px; }
+    @media (prefers-reduced-motion: reduce) {
+      body { animation: none; background-position: 50% 50%; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>
-            <span class="dot"></span>
-            Privacy Policy
-        </h1>
-        <div class="subtitle">
-            <strong>ChillSpace</strong> · Last updated: August 2026
-        </div>
-
-        <p>ChillSpace (the “Platform”) is built with your privacy as a core principle. This policy explains what information we collect, how we use it, and your choices across the entire site – including the main feed, posts, comments, messages, daily challenges, and AI features.</p>
-
-        <!-- ========== MAIN SITE SECTIONS ========== -->
-        <h2>1. Information we collect</h2>
-        <p>We collect very little personal information, and <strong>we never store it on our servers</strong>.</p>
-        <ul>
-            <li><strong>Local data:</strong> All user‑generated content – posts, comments, likes, your display name, messages, contacts, daily challenge progress – is stored <strong>only on your device</strong> using your browser’s <code>localStorage</code>. We do not have access to this data.</li>
-            <li><strong>No account creation:</strong> We do not require an account, and we do not collect your name, email, phone number, or any other identifier from you.</li>
-        </ul>
-
-        <p>When you create or share content (posts, comments, messages), we generate a <strong>ChillSpace link</strong> that may include the following <strong>temporary, query‑string parameters</strong>:</p>
-        <ul>
-            <li>Your chosen display name (<code>post_creator</code> or <code>sender_name</code>)</li>
-            <li>Your content (<code>post_content</code> or <code>message_content</code>)</li>
-            <li>Optional image/video links (<code>img_src</code>, <code>video_src</code>)</li>
-            <li>Timestamps or comment threads (<code>comment_creator</code>, <code>reply1_creator</code>, etc.)</li>
-        </ul>
-        <p>These parameters exist in the URL you generate to share content. Please note that when sharing links on third-party platforms, those services may process or log the URL to generate link previews.</p>
-
-        <h2>2. How we use your information</h2>
-        <ul>
-            <li><strong>To display your content:</strong> The feed shows posts and comments that you and others create – all locally generated or shared via links.</li>
-            <li><strong>To enable AI features:</strong> “ChillSpace AI” analyses post text using browser‑side logic and speaks responses using the Web Speech API (or the native Android TTS bridge in the app). No data is sent to an external AI service, except when you send a message to ChatGPT via ChillSpace Messages, which opens the ChatGPT website.</li>
-            <li><strong>To track daily challenges:</strong> Your progress (scrolls, messages, song rankings, number game completions) is stored locally to help you complete optional goals.</li>
-            <li><strong>To improve your experience:</strong> We may use local data to remember your preferences (e.g., your display name).</li>
-        </ul>
-
-        <h2>3. How messages and posts are shared</h2>
-        <p>When you share a post or send a message, the Platform:</p>
-        <ul>
-            <li>Builds a <strong>ChillSpace link</strong> that contains your content and identity.</li>
-            <li>Opens the relevant sharing method (e.g., WhatsApp, email, Instagram, ChatGPT, or a simple copy‑to‑clipboard) so you can manually send it to your chosen recipient.</li>
-        </ul>
-        <p>We do <strong>not</strong> have access to your messages or posts, nor do we store them on any server. The content is only present in the URL you share.</p>
-
-        <h2>4. Third‑party services</h2>
-        <p>The Platform integrates with the following external platforms to deliver shared content:</p>
-        <ul>
-            <li><strong>WhatsApp</strong> – when you share via WhatsApp, you are subject to WhatsApp’s privacy policy.</li>
-            <li><strong>Email</strong> – messages are sent via your default email client; we do not collect or store your email address.</li>
-            <li><strong>Instagram</strong> – when you share via Instagram Direct, you are subject to Instagram’s privacy policy.</li>
-            <li><strong>ChatGPT</strong> – when you send a message to an AI assistant, we open ChatGPT’s site with a pre‑filled prompt; you are subject to OpenAI’s privacy policy.</li>
-            <li><strong>Twitter (X)</strong> – when you share via Twitter, you are subject to Twitter’s privacy policy.</li>
-        </ul>
-        <p>We do not control these third‑party services and encourage you to review their respective privacy policies.</p>
-
-        <div class="highlight-box">
-            <p>💡 <strong>Your data stays on your device.</strong> We never see your posts, comments, or messages – they exist only in your browser and the URLs you choose to share.</p>
-        </div>
-
-        <h2>5. AI and speech synthesis</h2>
-        <p>The “ChillSpace AI” feature analyses post text entirely in your browser to generate helpful, sometimes humorous, responses. It does not send any data to a server.</p>
-        <ul>
-            <li><strong>Text‑to‑speech:</strong> When you play a story or listen to an AI response, the audio is generated by your browser’s built‑in Web Speech API (or the native TTS engine in the Android app). No audio data is transmitted externally.</li>
-            <li><strong>No AI training:</strong> We do not use your posts or comments to train any machine learning models.</li>
-        </ul>
-
-        <h2>6. Data storage and security</h2>
-        <p>All data (posts, comments, display name, contacts, messages, daily challenge progress) is stored <strong>exclusively</strong> in your browser’s <code>localStorage</code>. This data never leaves your device.</p>
-        <ul>
-            <li><code>localStorage</code> is accessible only by the same origin (chill-space.pages.dev) and cannot be read by other websites.</li>
-            <li>We do not use cookies or tracking technologies.</li>
-            <li>We do not host a central database or user accounts, meaning we never store your user-generated content on our servers. </li>
-            <li>Essential network traffic data (such as IP addresses) is processed standardly by our web hosting infrastructure (Cloudflare) strictly to load the website.</li>
-        </ul>
-
-        <h2>7. Your choices and control</h2>
-        <p>You can clear all stored data at any time by:</p>
-        <ul>
-            <li>Using your browser’s “Clear Site Data” or “Clear Storage” option.</li>
-            <li>Manually deleting the following keys from <code>localStorage</code>:
-                <ul>
-                    <li><code>cs_username</code> – your display name</li>
-                    <li><code>cs_my_channel</code> and <code>cs_my_handle</code> – your preferred contact info</li>
-                    <li><code>cs_contacts</code> – your saved contacts</li>
-                    <li><code>cs_messages</code> – your message history</li>
-                    <li><code>chillspace_daily_challenge</code> – your daily challenge progress</li>
-                    <li><code>chillspace_personalities</code> – your saved personality profiles</li>
-                </ul>
-            </li>
-        </ul>
-        <p>You may also choose not to use specific features – in which case no related data is stored.</p>
-
-        <h2>8. Children’s privacy</h2>
-        <p>The Platform is not directed at children under 13. Because all user content remains on the local device, parents or guardians can remove all stored information instantly by clearing site data in the browser settings.</p>
-
-        <h2>9. Changes to this policy</h2>
-        <p>We may update this policy occasionally. Any changes will be posted on this page with an updated “Last updated” date.</p>
-
-        <h2>10. Contact</h2>
-        <p>If you have questions or concerns about this privacy policy, please reach out at: <br>
-        <strong><a href="mailto:p.hanby@proton.me">p.hanby@proton.me</a></strong></p>
-
-        <div class="divider"></div>
-
-        <div class="footer-meta">
-            <span class="brand">🌙 <span>ChillSpace</span></span>
-            <span>v1.0 · Privacy‑first social platform</span>
-        </div>
-
-        <a href="https://chill-space.pages.dev/" class="back-link">← Return to ChillSpace</a>
+  <div class="page">
+    <div class="topline">
+      <div class="brand">ChillSpace</div>
+      <div class="pill">Your space, your data</div>
     </div>
+
+    <header>
+      <span class="eyebrow">🔒 The privacy stuff</span>
+      <h1>Your privacy.<br>Kept chill.</h1>
+      <p class="intro">We want ChillSpace to feel like a comfy corner of the internet (or not the internet, if you download the app: it works offline) — not a data vacuum. Here’s how your information is handled.</p>
+      <div class="updated">Last updated: 23 October 2026</div>
+    </header>
+
+    <main>
+      <section>
+        <h2>🌱 What stays on your device?</h2>
+        <p>ChillSpace does not require an account. Information you create in the browser — such as your display name, messages, saved friends or contacts, posts, preferences and daily-challenge progress is stored in your browser’s local storage on your device, or by the app's local data storage.</p>
+        <p>That means ChillSpace does not receive or keep that locally stored content in a central message database. If you use a different browser or device, your local content may not follow you.</p>
+      </section>
+
+      <section>
+        <h2>💬 Messages & bot replies</h2>
+        <p>Messages stay inside ChillSpace’s local experience. The Messages feature does not send your messages to WhatsApp, Instagram, email, ChatGPT or other messaging apps.</p>
+        <p>Bot replies are generated by built-in, local response logic. They are not sent to an external AI service for a reply. Your browser or device may use its own speech feature if you choose to listen to text.</p>
+        <div class="note"><strong>Our privacy promise:</strong> we don’t need to read your chats to make the bot chat back. Curious how it works? <a href="https://github.com/op-tube/chillspace">Check out our code!</div>
+      </section>
+
+      <section>
+        <h2>🌐 What the website host may see</h2>
+        <p>When your browser loads ChillSpace, the website hosting provider (Cloudflare) may process basic technical information — such as your IP address, browser details and request time — to deliver, protect and troubleshoot the site. This is different from accessing your locally stored messages.</p>
+        <p>ChillSpace’s policy is never to use advertising cookies or analytics trackers. Hosting infrastructure may still process technical connection data as part of serving the website. Don't want that? <a href="/download">Try the Android app or download the HTML!</p>
+      </section>
+        <section>
+           <h2>🥸 What they don't see</h2> 
+ <p>Your posts, comments, searches, messages, what you watch, or anything else. No HTTP requests are made when you send. All they know is that you've opened ChillSpace.</p>
+      <section>
+        <h2>📤 If you share something yourself</h2>
+        <p>ChillSpace Messages does not route messages through other apps or Ai. If you independently copy text, take a screenshot, or paste a link or content into another service, that service will handle anything you share according to its own privacy policy.</p>
+      </section>
+        <section>
+            <h2>🛜 Network requests in the ChillSpace app</h2>
+            <p>The ChillSpace app makes no network requests besides loading fonts. The app works fully in airplane mode, except for a slightly different font. In the upcoming v1.4, the fonts will be removed, meaning the entire app will not request network at all.</p>
+        </section>
+      <section>
+        <h2>🧹 You’re in control</h2>
+        <p>Your browser keeps the local data, so you can remove it by clearing the site’s or storage or browsing data in your browser settings, or clearing the app data in your device settings. Be aware this can also delete saved names, messages, friends and progress, and may not be reversible.</p>
+        <p>You can also simply stop using a feature if you don’t want to create more local data.</p>
+      </section>
+
+      <section>
+        <h2>🧸 Younger visitors</h2>
+        <p>ChillSpace is not designed for children under 13. Parents or guardians can clear locally stored site data through the browser settings on the device.</p>
+      </section>
+
+      <section>
+        <h2>🔄 Changes to this page</h2>
+        <p>If the way ChillSpace handles information changes, we’ll update this policy and the date above. The latest version should always be available on this page.</p>
+      </section>
+
+      <section>
+        <h2>💌 Questions?</h2>
+        <p>If you have a privacy question, contact the ChillSpace team at p.hanby@proton.me. Don't contact us on ChillSpace, it won't go anywhere.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p><strong>🌙 ChillSpace</strong> · Feel like social, no need for network.</p>
+      <p>Thanks for being here. Take care of your data — and yourself. ✨</p>
+      <a class="back" href="https://chillspace.ai/">← Back to ChillSpace</a>
+    </footer>
+  </div>
 </body>
 </html>
