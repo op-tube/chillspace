@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7s & 怒脸 — Variable Reward Feed</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%; overflow: hidden;
+    background: #000; color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+  }
+  .feed {
+    position: relative; width: 100%; height: 100%;
+    overflow: hidden; background: #000;
+  }
+  .post {
+    position: absolute; left: 0; width: 100%; height: 380px;
+    background: radial-gradient(ellipse at top, #1a1a2e 0%, #0a0a0a 80%);
+    overflow: hidden; will-change: transform;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .post-header {
+    position: absolute; top: 12px; left: 12px; right: 12px;
+    display: flex; align-items: center; gap: 8px; z-index: 3;
+  }
+  .avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, #f97316, #ec4899);
+    flex-shrink: 0; border: 2px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: #fff;
+  }
+  .username {
+    font-size: 13px; font-weight: 600; color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+  }
+  .username .handle { opacity: 0.85; }
+
+  /* SLOT MACHINE */
+  .slot-machine {
+    position: absolute; left: 50%; top: 46%;
+    transform: translate(-50%, -50%);
+    display: flex; gap: 10px; padding: 18px 20px;
+    background: linear-gradient(180deg, #2a1810 0%, #1a0a05 100%);
+    border-radius: 18px; border: 3px solid #d4a017;
+    box-shadow:
+      0 0 0 2px #1a0a05,
+      0 0 24px rgba(212,160,23,0.4),
+      inset 0 0 20px rgba(0,0,0,0.6);
+    z-index: 2;
+    transition: border-color 0.3s, box-shadow 0.3s, filter 0.3s;
+  }
+  .slot-machine.spinning { animation: machineShake 0.09s infinite; }
+  @keyframes machineShake {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+    25% { transform: translate(-50%, -50%) rotate(-0.6deg); }
+    75% { transform: translate(-50%, -50%) rotate(0.6deg); }
+  }
+  .slot-machine.win {
+    border-color: #ffd700;
+    box-shadow:
+      0 0 0 2px #8b0000,
+      0 0 50px rgba(255,215,0,0.95),
+      0 0 100px rgba(255,100,0,0.6),
+      inset 0 0 30px rgba(255,215,0,0.3);
+    animation: winPulse 0.6s ease-in-out infinite alternate;
+  }
+  @keyframes winPulse {
+    from { transform: translate(-50%, -50%) scale(1); }
+    to { transform: translate(-50%, -50%) scale(1.06); }
+  }
+  .slot-machine.win::before {
+    content: '';
+    position: absolute; inset: -20px;
+    border-radius: 24px;
+    background: radial-gradient(circle, rgba(255,215,0,0.5) 0%, transparent 70%);
+    animation: winFlash 0.5s ease-out;
+    pointer-events: none;
+  }
+  @keyframes winFlash {
+    0% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 0; transform: scale(1.3); }
+  }
+  .slot-machine.lose {
+    border-color: #6b0000;
+    box-shadow:
+      0 0 0 2px #1a0a05,
+      0 0 18px rgba(180,0,0,0.55),
+      inset 0 0 20px rgba(0,0,0,0.8);
+    filter: saturate(0.6) brightness(0.75);
+  }
+
+  .reel {
+    width: 64px; height: 88px;
+    background: linear-gradient(180deg, #fff 0%, #f5f5f5 50%, #ddd 100%);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
+    border: 2px solid #d4a017;
+    box-shadow:
+      inset 0 4px 8px rgba(0,0,0,0.3),
+      inset 0 -4px 8px rgba(0,0,0,0.15),
+      0 2px 6px rgba(0,0,0,0.5);
+  }
+  .reel::before, .reel::after {
+    content: ''; position: absolute; left: 0; right: 0;
+    height: 6px; z-index: 2; pointer-events: none;
+  }
+  .reel::before { top: 0; background: linear-gradient(180deg, rgba(0,0,0,0.2), transparent); }
+  .reel::after { bottom: 0; background: linear-gradient(0deg, rgba(0,0,0,0.2), transparent); }
+
+  .symbol {
+    display: inline-block; line-height: 1;
+    font-weight: 900; font-size: 52px;
+  }
+  .symbol.win-sym {
+    color: #c41e1e;
+    text-shadow: 2px 2px 0 #8b0000, -1px -1px 0 rgba(255,255,255,0.5);
+    font-family: 'Arial Black', 'PingFang SC', sans-serif;
+  }
+  .symbol.bad-sym {
+    font-size: 44px;
+    filter: saturate(0.7) brightness(0.9);
+  }
+
+  /* OUTCOME */
+  .outcome {
+    position: absolute; left: 50%; top: 46%;
+    transform: translate(-50%, calc(-50% + 92px));
+    font-weight: 800; text-align: center;
+    opacity: 0; transition: opacity 0.3s;
+    pointer-events: none; z-index: 4;
+    white-space: nowrap; letter-spacing: 0.05em;
+  }
+  .outcome.win {
+    color: #ffd700; font-size: 22px;
+    text-shadow: 0 0 12px rgba(255,215,0,0.9), 0 0 24px rgba(255,100,0,0.6);
+    opacity: 1;
+    animation: outcomeBounce 0.5s ease-out;
+  }
+  .outcome.lose {
+    color: rgba(255,255,255,0.45); font-size: 14px;
+    opacity: 1;
+  }
+  @keyframes outcomeBounce {
+    0% { transform: translate(-50%, calc(-50% + 92px)) scale(0.5); opacity: 0; }
+    60% { transform: translate(-50%, calc(-50% + 92px)) scale(1.15); opacity: 1; }
+    100% { transform: translate(-50%, calc(-50% + 92px)) scale(1); opacity: 1; }
+  }
+
+  /* BOTTOM BAR */
+  .post-bottom {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 12px;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 12px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+    z-index: 3;
+  }
+  .caption {
+    font-size: 13px; line-height: 1.4; color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+    max-width: 60%; font-weight: 500;
+  }
+  .caption .hashtag { color: #7dd3fc; }
+  .actions {
+    display: flex; flex-direction: column; gap: 14px;
+    align-items: center;
+  }
+  .action {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+  }
+  .action .icon {
+    font-size: 22px;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.8));
+  }
+  .action .count {
+    font-size: 11px; font-weight: 600; color: #fff;
+  }
+
+  .post::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%);
+    pointer-events: none; z-index: 1;
+  }
+</style>
+</head>
+<body>
+<div class="feed" id="feed"></div>
+<script>
+(function() {
+  'use strict';
+
+  var POST_HEIGHT = 380;
+  var POST_COUNT  = 5;
+  var SCROLL_SPEED = 70; // px / second
+
+  var users = [
+    '滑不动的咸鱼','深夜刷手机','刷到天荒地老','算法受害者','断网失败者',
+    '短视频难民','手停不下来','再刷5分钟','信息焦虑症','注意力碎掉',
+    '凌晨三点的我','手机依赖星人','无底洞信息流','刷到麻木','屏幕前的幽灵'
+  ];
+
+  var captions = [
+    '这个视频我刷了一百遍了还是想看','算法真的懂我吗…','不看完睡不着系列',
+    '这条刷完我就睡','笑死我了哈哈哈哈','半夜刷到这条我哭了',
+    '姐妹们这个一定要看完','点赞的人都会走运哦','最后那个太绝了',
+    '从开头爽到结尾','好想再看一遍','这条真的有毒',
+    '手怎么停不下来','下一条就一定是好的','再来一次就好了'
+  ];
+
+  var hashtags = [
+    '#刷到停不下来','#算法推荐','#又一个没睡好的夜晚','#明天再早睡',
+    '#最后一条','#真的最后一条','#再说最后一条','#晚安明天见',
+    '#看到这里算你赢','#划到天荒地老'
+  ];
+
+  // Win symbols (7s + Chinese fortune/win characters)
+  var winSymbols = ['7','7','7','福','赢','发','喜'];
+  // Bad symbols (angry faces to represent algorithm's bad-video decisions)
+  var badSymbols = ['😡','😠','🤬','👿','💢','😤'];
+
+  var WIN_CHANCE_PER_REEL = 0.5; // triple-7 chance = 12.5%
+
+  var feedEl = document.getElementById('feed');
+  var posts = [];
+
+  function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function(c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function formatCount(n) {
+    if (n >= 10000) return (n / 10000).toFixed(1) + 'w';
+    if (n >= 1000)  return (n / 1000).toFixed(1) + 'k';
+    return String(n);
+  }
+
+  function rollResult() { return { isWin: Math.random() < WIN_CHANCE_PER_REEL }; }
+
+  function setSymbol(symEl, isWin, text) {
+    symEl.textContent = text;
+    symEl.className = 'symbol ' + (isWin ? 'win-sym' : 'bad-sym');
+  }
+
+  function populatePost(el) {
+    var user = pickRandom(users);
+    el.querySelector('.username').innerHTML = '<span class="handle">@' + escapeHtml(user) + '</span>';
+    el.querySelector('.avatar').textContent = user.charAt(0);
+    var cap = pickRandom(captions);
+    var tag = pickRandom(hashtags);
+    el.querySelector('.caption').innerHTML =
+      escapeHtml(cap) + ' <span class="hashtag">' + escapeHtml(tag) + '</span>';
+    el.querySelector('.action.likes .count').textContent   = formatCount(Math.floor(Math.random() * 50000) + 100);
+    el.querySelector('.action.comments .count').textContent = formatCount(Math.floor(Math.random() * 5000) + 10);
+    el.querySelector('.action.shares .count').textContent   = formatCount(Math.floor(Math.random() * 2000) + 1);
+  }
+
+  function createPostEl() {
+    var el = document.createElement('div');
+    el.className = 'post';
+    el.innerHTML =
+      '<div class="post-header">' +
+        '<div class="avatar"></div>' +
+        '<div class="username">@user</div>' +
+      '</div>' +
+      '<div class="slot-machine">' +
+        '<div class="reel"><span class="symbol win-sym">7</span></div>' +
+        '<div class="reel"><span class="symbol bad-sym">😡</span></div>' +
+        '<div class="reel"><span class="symbol win-sym">7</span></div>' +
+      '</div>' +
+      '<div class="outcome"></div>' +
+      '<div class="post-bottom">' +
+        '<div class="caption"></div>' +
+        '<div class="actions">' +
+          '<div class="action likes"><span class="icon">❤️</span><span class="count">0</span></div>' +
+          '<div class="action comments"><span class="icon">💬</span><span class="count">0</span></div>' +
+          '<div class="action shares"><span class="icon">↗️</span><span class="count">0</span></div>' +
+        '</div>' +
+      '</div>';
+    populatePost(el);
+    return el;
+  }
+
+  // Apply a settled win/lose state immediately (used on load)
+  function applySettledState(el) {
+    var reels = el.querySelectorAll('.reel .symbol');
+    var results = [rollResult(), rollResult(), rollResult()];
+    var isWin = results[0].isWin && results[1].isWin && results[2].isWin;
+    var winSym = pickRandom(winSymbols);
+    for (var i = 0; i < reels.length; i++) {
+      var res = results[i];
+      setSymbol(reels[i], res.isWin, res.isWin ? winSym : pickRandom(badSymbols));
+    }
+    var machine = el.querySelector('.slot-machine');
+    var outcomeEl = el.querySelector('.outcome');
+    if (isWin) {
+      machine.className = 'slot-machine win';
+      outcomeEl.textContent = '大奖！🎉';
+      outcomeEl.className = 'outcome win';
+    } else {
+      machine.className = 'slot-machine lose';
+      outcomeEl.textContent = '继续滑…';
+      outcomeEl.className = 'outcome lose';
+    }
+  }
+
+  // Endless slot cycle: spin -> settle -> hold -> reset -> spin
+  async function runSlotCycle(el) {
+    var machine   = el.querySelector('.slot-machine');
+    var reels     = el.querySelectorAll('.reel .symbol');
+    var outcomeEl = el.querySelector('.outcome');
+
+    while (el.isConnected) {
+      // 1. Spin phase
+      machine.className = 'slot-machine spinning';
+      outcomeEl.className = 'outcome';
+      outcomeEl.textContent = '';
+
+      var spinStart    = performance.now();
+      var spinDuration = 900 + Math.random() * 600;
+      var flipInterval = 55;
+      var lastFlip     = 0;
+
+      await new Promise(function(resolve) {
+        function tick(now) {
+          if (!el.isConnected) { resolve(); return; }
+          if (now - spinStart < spinDuration) {
+            if (now - lastFlip >= flipInterval) {
+              for (var i = 0; i < reels.length; i++) {
+                var isWin = Math.random() < 0.5;
+                setSymbol(reels[i], isWin, isWin ? pickRandom(winSymbols) : pickRandom(badSymbols));
+              }
+              lastFlip = now;
+            }
+            requestAnimationFrame(tick);
+          } else {
+            resolve();
+          }
+        }
+        requestAnimationFrame(tick);
+      });
+
+      // 2. Settle on final result
+      var r0 = rollResult(), r1 = rollResult(), r2 = rollResult();
+      var finalResults = [r0, r1, r2];
+      var isWin = r0.isWin && r1.isWin && r2.isWin;
+      var winSym = pickRandom(winSymbols);
+      for (var j = 0; j < reels.length; j++) {
+        var res = finalResults[j];
+        setSymbol(reels[j], res.isWin, res.isWin ? winSym : pickRandom(badSymbols));
+      }
+
+      if (isWin) {
+        machine.className = 'slot-machine win';
+        outcomeEl.textContent = '大奖！🎉';
+        outcomeEl.className = 'outcome win';
+      } else {
+        machine.className = 'slot-machine lose';
+        outcomeEl.textContent = '继续滑…';
+        outcomeEl.className = 'outcome lose';
+      }
+
+      // 3. Hold result
+      await new Promise(function(r) { setTimeout(r, 1800 + Math.random() * 1800); });
+
+      // 4. Reset
+      machine.className = 'slot-machine';
+      outcomeEl.className = 'outcome';
+      outcomeEl.textContent = '';
+      await new Promise(function(r) { setTimeout(r, 400); });
+    }
+  }
+
+  // Build initial posts
+  for (var i = 0; i < POST_COUNT; i++) {
+    var el = createPostEl();
+    feedEl.appendChild(el);
+    posts.push(el);
+  }
+
+  // Initialise with settled states, then stagger the cycles
+  posts.forEach(function(el, idx) {
+    applySettledState(el);
+    setTimeout(function() { runSlotCycle(el); }, 1500 + idx * 700 + Math.random() * 500);
+  });
+
+  // Scroll animation
+  var scrollY  = 0;
+  var lastTime = performance.now();
+
+  function layout() {
+    for (var i = 0; i < posts.length; i++) {
+      posts[i].style.transform = 'translateY(' + (i * POST_HEIGHT - scrollY) + 'px)';
+    }
+  }
+
+  function animate(now) {
+    var dt = Math.min(0.05, (now - lastTime) / 1000);
+    lastTime = now;
+    scrollY += SCROLL_SPEED * dt;
+
+    while (scrollY >= POST_HEIGHT) {
+      scrollY -= POST_HEIGHT;
+      var first = posts.shift();
+      populatePost(first);
+      posts.push(first);
+    }
+
+    layout();
+    requestAnimationFrame(animate);
+  }
+
+  layout();
+  requestAnimationFrame(animate);
+})();
+</script>
+</body>
+</html>
