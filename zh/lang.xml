@@ -1,0 +1,1693 @@
+<?xml version="1.0" encoding="utf-8"?>
+<languages>
+    <chinese>
+        <name>ChillSpace</name>
+        <button-text>
+            <autoscroll>自动滚动</autoscroll>
+            <on>开</on>
+            <off>关</off>
+            <enable-autoscroll>启用 AI 自动滚动</enable-autoscroll>
+            <disable-autoscroll>关闭 AI 自动滚动</disable-autoscroll>
+            <connections>好友</connections>
+            <dm>私信</dm>
+            <story>故事</story>
+            <post>帖子</post>
+            <upload-image>上传图片</upload-image>
+            <take-photo>拍照</take-photo>
+            <upload-video>上传视频</upload-video>
+            <record-video>录视频</record-video>
+            <post-submit>发布</post-submit>
+            <like>赞</like>
+            <comment>评论</comment>
+            <share>转发</share>
+            <chillspace-ai>ChillSpace AI</chillspace-ai>
+            <follow>关注</follow>
+            <following>已关注</following>
+            <friends>好友</friends>
+            <daily-challenge>每日挑战</daily-challenge>
+        </button-text>
+
+        <wordswap>
+            <entry word="抖音" alternatives="抖音, 快手, 小红书, B站, 刷屏, 算法, 短视频, 推荐页" />
+            <entry word="微信" alternatives="微信, 微博, QQ, 大社交平台, 社交媒体, 那些应用" />
+            <entry word="ChillSpace" alternatives="ChillSpace, 这个应用, 这里, 本站, 齐尔空间" />
+            <entry word="探探" alternatives="探探, 约会软件, 那些应用, 社交媒体, 大社交平台" />
+            <entry word="Reelspace" alternatives="Reelspace, ChillSpace, 这个应用, 短视频区, 这里" />
+            <entry word="K-pop" alternatives="K-pop, 音乐, 歌曲, ChillSpace, 韩流音乐" />
+        </wordswap>
+        <ad-copy>你知道吗？大多数社交媒体应用使用「可变奖励」让你上瘾，就像老虎机一样。它们故意给你看你不喜欢的帖子，让你一直刷到喜欢为止。而 ChillSpace 使用「稳定奖励」——只给你看旨在让你开心的帖子，所以你最终感到满足，而不是上瘾。</ad-copy>
+
+        <linesb wordswap="on">
+            <item id="0">刚发现这个应用，哇，我居然真的在 5 分钟后就放下了手机。</item>
+            <item id="1">今天早上在外面待着，而不是无脑刷手机。有点怪，但挺好的？</item>
+            <item id="2">没有通知，没有压力。这就是平静的感觉吗？</item>
+            <item id="3">终于找到一个不劫持我多巴胺的社交应用了。</item>
+            <item id="4">今天只发了一条帖子，居然没想去刷赞。革命性的一刻。</item>
+            <item id="5">加入以来屏幕时间下降了 80%。我的绿植也活得好了。</item>
+            <item id="6">今天居然真的跟真人面对面聊天了，而不是发帖说这事。</item>
+            <item id="7">算法只给我推 3 条帖子然后说「去摸摸草吧」。10/10。</item>
+            <item id="8">在 &lt;a href='file:///android_asset/rhythmgame.html'&gt;节奏游戏&lt;/a&gt; 和 &lt;a href='file:///android_asset/reel.html'&gt;ReelSpace&lt;/a&gt; 之间，我发现我的瘾不是抖音——是音乐。</item>
+            <item id="9">为什么关掉微信再打开 ChillSpace，你突然就有动力做所有该做的事了？就像关掉微信就关掉了内心那个拖延鬼。</item>
+            <item id="10">我：宝贝我为你删了探探！朋友：你为什么管 ChillSpace 叫宝贝？</item>
+            <item id="11">为什么我一直问幸福是什么，而幸福其实就在 ChillSpace 这儿？</item>
+            <item id="12">发废话真的是我戒掉大社交平台所需要的全部吗？&lt;br&gt;&lt;br&gt;……是的。1703251 8725 0543</item>
+            <item id="13">以前在社交上花好几个小时。现在在这 10 分钟就……完事了？</item>
+            <item id="14">ChillSpace 是唯一不会让我内心空虚的应用。奇怪的炫耀但行吧。</item>
+            <item id="15">我的心理咨询师问我怎么自我关怀。我给他们看了 ChillSpace。他们批准了。</item>
+            <item id="16">幸福的秘诀？删掉其他所有，只留 ChillSpace。</item>
+            <item id="17">我曾沉迷刷屏。现在沉迷……真正地生活？</item>
+            <item id="18">通知都太 chill 了，基本上就是提醒你很棒的小小问候。</item>
+            <item id="19">我朋友不理解我为什么用这个。他们还在抖音上。我为他们难过。</item>
+            <item id="20">我发了张午餐照，唯一的评论是「看起来好吃」。没戏剧。完美。</item>
+            <item id="21">评论区太健康了，几乎可疑。但我接受。</item>
+            <item id="22">今天我意识到戒掉社交媒体有多简单。我只是问自己：无限刷屏有什么意义？想找朋友聊天有短信，无聊了有 ChillSpace。微信，删了。微博，删了。抖音，删了。</item>
+            <item id="23">以前我睁眼第一秒就打开抖音，牙都没刷。今早我煮了咖啡，看着水汽升起，喝完整杯之后才打开 ChillSpace。小小的胜利，感觉却大得惊人。</item>
+            <item id="24">离开大社交平台的有趣之处：我以为会想念大家的旅行照和热评。结果我实际想念的是——什么都没有。真的什么都没有。脑子安静了，晚上重新属于我了。</item>
+            <item id="25">三周前，我看一集剧都坐不住，要检查手机十二次。昨晚我完整看了一部电影，然后出门散了步。这还是我吗？</item>
+            <item id="26">群里问我怎么在网上这么安静。我说我没消失，只是忙着生活，想找我的人知道我号码。已经有三个来问怎么删小红书了。</item>
+            <item id="27">我意识到这些年我一直在拿自己的真实生活和别人的高光剪辑比较。这里没人表演，大家就是在闲逛，我这才发现原来我是这么需要这种氛围。</item>
+            <item id="28">在地铁上读纸质书，好久没做，感觉有点犯法。没有标签页，没有提示音，没有「再看一条短视频」。我坐过了两站，下次还这样。</item>
+            <item id="29">整个午休都在慢慢吃饭，看着真实的树。没拍视频、没写文案、没发出去。老实说这是我这些年吃得最平静的一顿饭，之所以告诉你，只因为这里是 ChillSpace。</item>
+            <item id="30">以前我总说没时间做爱好。原来不是没时间，是小红书一天吃掉我四小时。这周我又开始画画了，歪歪扭扭的成品就发在 ChillSpace。</item>
+            <item id="31">删了探探，删了其他约会软件，然后加入了这里，结果和某人聊了两小时面包。没有滑动，没有压力，没有尴尬开场白。只是两个对面包有点狂热的人。</item>
+            <item id="32">你知道自己在做对的事的时候，就是手机电池这些年第一次撑到了睡前。这周只充了一次电。就一次。那些时间和精力都跑去哪儿了？</item>
+            <item id="33">妹妹看到我对着屏幕笑，问什么这么好笑。给她看了，现在我们每晚一起在 ChillSpace 待十分钟，然后真的聊起来。最好的兄妹时光。</item>
+            <item id="34">所有人都警告你说戒社交媒体会有 FOMO（错失恐惧），但没人告诉你还有 JOMO（错失的快乐）。我太喜欢不知道小学同学今天早午餐吃了什么了。</item>
+            <item id="35">以前我发帖只是为了看谁会反应，然后像赌徒一样盯着通知数字。现在我有傻话想说就发，然后去做晚饭。终于健康的关系。</item>
+            <item id="36">在这里某人的一条随机帖子里找到一份 K-pop 歌单，在厨房里跳了四十分钟。没有算法推给我，没有广告打断我，只有一首好歌和超出常理的快乐。</item>
+            <item id="37">试着跟我爸解释 ChillSpace。他说「所以是个网上酒吧，但没人吵？」老实说这是我听过最好的描述，以后我就这么用。</item>
+            <item id="38">删掉刷屏应用一个月了，睡眠好了，专注好了，我甚至没靠通知就记住了表哥的生日。成长啊各位。真正的成长。</item>
+            <item id="39">数字排毒最搞笑的一点是我发现我有多少时间。我以为自己整天都在忙。原来只是在空隙里刷屏，而那些空隙大得吓人。</item>
+            <item id="40">打开 ChillSpace，读了几个温柔的帖子，笑了笑，关上。这就是全部流程。没有漩涡，没有带着怒气读评论，没有后悔。为什么我花了这么久才找到这样的地方？</item>
+            <item id="41">今天没戴耳机也没听播客就出门散步了。只有鸟、车流和我自己的念头——结果它是相当不错的伴侣。回家后 Reelspace 在等我，像一份小奖励。</item>
+            <item id="42">跟老板说我不再上班刷微信了，产出翻倍。现在她希望全队都试试。我不小心成了办公室的养生顾问。</item>
+            <item id="43">以前手机像老虎机。现在它像笔记本、相机，和几扇通向真正善良的人的窗户。同一部手机，完全不同的关系。</item>
+            <item id="44">有人在这里夸了我糟糕的画，说让它今天变得好了一些。那一份小小的善意让我暖了整整一周。我都忘了互联网可以是这样的。</item>
+            <item id="45">快速提醒还在犹豫的人：你不用一次戒掉所有东西。先删一个应用（没理由不删！），用能充实你而不是消耗你的东西替代它，看看七天后的感觉。</item>
+            <item id="46">心血来潮把手机调成灰度模式，突然抖音看起来像一部关于油漆变干的纪录片。当天晚上就删了。根本不需要意志力，只需要一个设置菜单。点两下，老虎机就变灰了。</item>
+            <item id="47">我从没意识到关手机这么简单。就是侧边那个按钮？按一下，整个世界都安静了？今天带着关机的手机去喝咖啡，不知怎的对话变好了。这是魔法吧。</item>
+            <item id="48">开始把手机放在厨房充电，而不是床边。买了个便宜的小闹钟放在床头。第一晚有点奇怪，到第三晚我又开始读真正的纸质书了，睡得跟只吃饱的猫一样。</item>
+            <item id="49">今晚没有刷屏，而是给奶奶打了二十分钟电话。她把舞蹈比赛的同一个故事讲了三遍，我每次都笑得更大声。没有任何应用让我感到过那种温暖。给你的家人发消息，给他们打电话，他们才是真正的信息流。</item>
+            <item id="50">删微信之前我发了个自己的号码，说「想聊随时给我发消息」。三个人联系了我。那三个人现在是我最亲密的朋友。原来值得留的朋友一个群聊就够了，其余的只是观众。</item>
+            <item id="51">飞行模式是免费的心理治疗。午饭时打开，慢慢吃，看两只鸽子为一块三明治打架，几个月来第一次感觉肩膀松了下来。什么都没爆炸。没人死。邮件像邮件一样等着。</item>
+            <item id="52">「万一发生什么」的恐惧让我在社交平台上待了好几年。自从戒掉后：一个朋友打电话告诉我真消息，我妈给我发她花园的照片，世界在没有我评论的情况下继续转。重要的事总能找到你的电话号码。</item>
+            <item id="53">戒掉只花了一个下午。十分钟删应用，二十分钟给朋友发消息「我不玩社交了，这是我号码，一起吃个饭」，剩下的时间突然感觉像奖励关卡。说实话我以为会更难。它就是……很简单。</item>
+            <item id="54">新规则：想刷屏的时候就给人打电话。话费涨了一点，晚上好了一大截。今晚听到电话那头好朋友的笑声，没有任何一个短视频能接近那个声音。</item>
+            <item id="55">我们公寓的餐桌规则：手机在抽屉里待着，直到盘子空了。第一周我们没话说。第二周我们停不下来。室友比小红书更早知道我升职了，因为我是亲口、像个人一样告诉她的。</item>
+            <item id="56">离开大社交平台一周后，我学会了完整的一首钢琴曲。一周。那些时间不是从天上掉下来的，是从我拇指出来的。大脑一直低语「想象一下一个月」，老实说，我正在想象。</item>
+            <item id="57">除了电话和短信，其他通知全关了，手机变回工具而不是老板。它像个训练有素的狗一样安静地待着，而不是尖叫着要注意力。如果有朋友想找我，会打电话。其他的都能等——而且其实一直都能等。</item>
+            <item id="58">抖音上的「就五分钟」从来不是五分钟。现在我有冲动时就发消息给朋友，真的，五分钟就是五分钟。那个应用偷时间的方式是让你忘记时间存在。想想挺没礼貌的。</item>
+            <item id="59">我第一个没有社交的周末：周六打电话给妹妹，我们像青少年一样聊了一小时。周日在散步时偶遇老同学，一起喝了咖啡。我在社交平台之外做的社交比在平台上做的还多。</item>
+            <item id="60">所有人都说戒社交会让我和朋友疏远。结果正相反。现在我们打电话、发消息、端着外卖出现在彼此门口。我知道他们生活里发生了什么，因为他们亲口告诉我，不是时间线告诉我的。比以往任何时候都更亲近。</item>
+            <item id="61">对我有效的诀窍：不要留下空白，留下 ChillSpace。当拇指想要娱乐的时候，它得到的是这里五分钟的放松，而不是外面两小时的愤怒。戒掉不是失去什么，是把老虎机换成吊床。</item>
+            <item id="62">把手机留在家里，坐了穿越城市的公交。恐慌持续了四分钟。然后我注意到了大海，为一个陌生人的帽子编了背景故事，好几年没这么走神了。无聊是特性不是 bug。所有好点子都藏在那儿。</item>
+            <item id="63">在一集剧的广告时间里把社交应用全删了。戒掉社交媒体居然比我看的那集剧还短。然后我从沙发上给朋友发消息，回来的通知是真人。革命性的概念。</item>
+            <item id="64">我的屏幕使用报告是警钟：每天五小时。五小时。我「没时间」去健身房、读书、给爸妈打电话。六周后降到了四十分钟，昨天我给爸打电话只是想问他西红柿长得怎么样。我换过最好的四十分钟。</item>
+            <item id="65">机场 Wi-Fi 断了，刷不了屏。结果和旁边的女士聊了两小时她的陶艺课。她下个月退休，既怕又期待。那次对话对我灵魂的滋养超过一年的信息流。有时候你需要的连接不需要 Wi-Fi。</item>
+            <item id="66">朋友们觉得戒社交是小题大做。「我们怎么保持联系？」朋友，我们有短信、电话和一家酒馆。群聊留着，信息流丢了，现在我们聊天里都是真正的计划，而不是对根本不关心的事情的反应。</item>
+            <item id="67">现在我无聊时不打开应用，而是发消息给某人「这周喝咖啡？」。一条消息，一个回复，一个日历邀请。这取代了四十个短视频和一百个赞。算法从没给我约到过一杯咖啡，我的拇指十秒就做到了。</item>
+            <item id="68">在电话里听到好朋友真实的声音说「我为你骄傲」，胜过任何建过的评论区。我不再发我的胜利，而是打电话告诉他们。原来发帖从来不是重点，反应才是。声音胜于文字，文字胜于点赞。</item>
+            <item id="69">注意力大约两周后回来了，而且是带利息回来的。我三次坐下来读完了整本书。一次没看手机就看完了一部电影。完整听完我妈讲邻居家猫的故事，脑子一次没飘走。就像从当铺里把自己的心智赎了回来。</item>
+            <item id="70">口袋里再也没有幽灵振动了。原来我的大腿这些年来一直幻想着老虎机。戒掉两周后，口袋安静了，脑子里那个总是等着下一次振动的焦虑小角落也安静了。</item>
+            <item id="71">离开大社交平台三个月。我忘了话题标签存在。我的照片是给自己和自己的相册的，不是给陌生人的。重要的事朋友都知道，因为我打电话。世界没有结束——它变得更温暖、更本地，不知怎的也更好吃。</item>
+            <item id="72">手机上最被低估的功能就是关机的那个按钮。现在晚饭前我按一下，世界连眼皮都不眨。我的食物更有味道，朋友笑得更大声，我错过的帖子反正从来也不会喂饱我。关机是一种完整的氛围。</item>
+            <item id="73">社交媒体让排队变得难以忍受，好像每 90 秒的人生都必须用内容填满。现在我就在那儿站着。想着。昨天在邮局排队时我规划了一个周末旅行，还自己想起了朋友的生日。排队是思考小隔间。</item>
+            <item id="74">删了约会软件，报名参加了一个线下活动。没有滑动，没有精心雕琢的个人简介，不用想「披萨和讽刺」算不算一种个性。做人去认识人。我们交换了号码。真有人打了电话。应用从来没给过我一通电话。</item>
+            <item id="75">我测试过一个可怕的真相：一个月不发帖，没人注意到。真正关心我的人发消息问「你还好吗」——就这样。我一直在为之表演的观众根本不存在。重要的朋友有我的号码，而且他们用。既丢脸又自由。</item>
+            <item id="76">把早上的刷屏换成晨间日记：早餐前十分钟随手写下脑子里的东西。没有新闻，没有戏剧，没有比较。我的笔记本没有算法，只有空白页，它们只给我看我自己的想法。还比心理治疗便宜。</item>
+            <item id="77">把晚上的信息流换成播客和晚饭后的散步。同样的拇指习惯，相反的效果：不是在黑暗中消耗精力，而是补充精力。三十分钟走路，耳朵里有点意思的东西，然后回到家竟然想回消息了。</item>
+            <item id="78">小小的傻傻的胜利：我的手机现在能撑到睡前。以前因为不停刷新，下午三点就奄奄一息。现在一天充一次，多出来的都花在真实生活上。同一部手机，同一块电池，完全不同的动物。</item>
+            <item id="79">如果你想知道怎么戒：第一步，删应用。第二步，把你的号码发给五个你最喜欢的人（如果他们没有的话）。第三步，用所有新获得的自由时间打电话给其中一个。就这样。这就是全部指南。比在线订披萨还简单。</item>
+            <item id="80">刷屏的冲动持续大约九十秒。冲动来的时候，我做十个俯卧撑，或者给朋友发个傻笑话，或者就像维多利亚时代的幽灵一样看着窗外。冲动死了。习惯两周左右也死了。没人告诉我戒掉主要就是……等一小会儿。</item>
+            <item id="81">我们公寓发明了周日无手机早餐：手机放进面包箱（干净的、空的、专用的），每个人都放完才能开动。第一周坐立不安。现在我们围着炒蛋聊两小时，我知道的室友的事比三年关注他们学到的都多。</item>
+            <item id="82">以前的相册是内容：47 张几乎一样的午餐照片在找角度。现在是记忆：沙滩上模糊的朋友、莫名其妙笑着的奶奶。我拍一张，给自己拍的，然后收起手机，回到真正的沙滩。</item>
+            <item id="83">手机现在晚上九点关机，这就是规则。第一周我像手机寡妇一样躺在黑暗里。现在我读书、拉伸、像 1995 年一样十一点前睡着。睡眠评分从 C 到 A，我真的没做别的。关机按钮，奇迹疗法。</item>
+            <item id="84">告诉了我最老的朋友我戒了大社交平台，本以为会得到「哈哈好吧」。结果她打给了我——真的打了电话——说她为我骄傲，还说她也在想自己的刷屏习惯。四十分钟后我们计划了一次周末旅行。点赞从来没有给我约到过周末旅行。</item>
+            <item id="85">说实话：戒社交媒体好笑地容易，戒断反应很无聊。第一天是平静的。第二天是奇怪的。到第四天它就只是我的生活了，只是里面有天气、有朋友打电话。人家告诉我这会是场硬仗。结果更像放下一个我忘了自己一直背着的重包。</item>
+            <item id="86">我们把群聊从大应用搬到了纯短信，就像 2009 年一样，老实说？史上最好的降级。没人和陌生人吵架，没人转发短视频，我们就安排饭局，互相发路上遇到的狗的照片。聊天变小了，友谊变大了。</item>
+            <item id="87">中午心血来潮删了小红书。第一小时有点怪，像是提前离场派对。第一天感觉像放假。第一周感觉像不需要打包的度假。我一直在等那个「但是」，那个「但是」就是朋友现在会直接打电话给我。啊。罢了。</item>
+            <item id="88">我的狗五年来都不懂我在手机上做什么，但她完全懂我们现在散步时在做什么。长的、闻闻的、手机在口袋里的散步。她过着最棒的生活，老实说她是我的屏幕时间减半的原因。我遇到过最好的私人教练。</item>
+            <item id="89">今天打开前门看天气而不是打开应用。革命性。冷，有点风，闻起来像要下雨。回到屋里，打电话给朋友聊足球，感觉像农夫。门没有广告，门没有短视频，门就是诚实的。</item>
+            <item id="90">考试季戒了社交因为「没时间」，结果发现我有的全部时间，应用们只是在扣押它。成绩上去了，散步多了，我仍然每周见朋友，因为我们像 2009 年之前所有历史上的人类一样发消息、见面。</item>
+            <item id="91">没人说那件明显的事：你停留的每一秒应用都在赚钱，而戒掉不花钱，只需三十秒。你不是在毁约，你是在取消一个用你的夜晚支付的免费表演。删了，退登，给朋友打电话，利润留给自己。</item>
+            <item id="92">没人记得上周谁的帖子，但每个人都记得朋友半夜打电话给你的对话。真正的连接留下痕迹；刷屏什么都不留。我记得 2009 年话费时代的对话比今年见过的所有东西都清楚。</item>
+            <item id="93">新习惯：在超市停车时手机放手套箱里。现在货道很平静，收银员其实很友善，昨天一位老人推荐了我人生中最好的西红柿。这些事一件都不会在头埋在信息流里时发生。真实世界意外地是满配的。</item>
+            <item id="94">我以前隐约记得坐在安静里会害怕，像是一个没有通知的房间意味着没人爱你。戒屏两个月，安静现在是我最喜欢的声音。在那里我能听到自己思考，而且原来我是挺好的陪伴。手机关，水壶开。整个练习就这么多。</item>
+            <item id="95">给老朋友发了消息「想起你了，没理由，就是想」。十分钟后她打电话给我。笑了一小时之后我意识到：我发过的任何帖子、故事、短视频都没做到过。如果今天有人出现在你脑海里，那不是内容，那是给电话的活。</item>
+            <item id="96">周一删了所有社交应用。所有人都说别在周一开新头，但我的拇指对这事没意见。我人生中最轻松的周一。戒掉不是仪式，是午饭前鞋已经穿好的四分钟。</item>
+            <item id="97">把睡前的「最后刷一次」换成「再读一章」，睡眠更深了，早上起得更早了，今年已经读了九本书。章节没有底部，它有个结尾。结尾是信息流从未给过我的奢侈。我的眼睛和梦都说谢谢。</item>
+            <item id="98">我三岁的侄女以前只看到我的头顶；现在她看到我的脸。我是那个会玩、会搭塔、会故意输掉挠痒痒大战的叔叔。她永远不会认识那个通过屏幕看她长大的我，那个我太忙着盯着屏幕另一边。</item>
+            <item id="99">学会了烤酸面包，因为戒掉给了我每天两小时回来。我的酵头叫加雷斯，它活得很好，我的公寓闻起来像面包店，我把面包拿到邻居家门口，我们就在台阶上聊天。信息流给不了我任何面粉、时间和真实能见到的人所不能给的东西。</item>
+            <item id="100">我脑里把「朋友」列表分成两堆：过去一年一起喝过咖啡的人，和从没真正说过话的档案。第一堆一只手就够了，每一个都回我消息。其余都是壁纸。戒掉就是清掉壁纸，我不怀念壁纸。</item>
+            <item id="101">戒掉两个月，诚实更新：这是我人生中做过的最容易的「难事」。困难的版本只在我脑子里存在。现实中是删、呼气、发消息给朋友、出门。朋友还在。原来他们从不在应用上，他们一直在电话线的另一端。</item>
+            <item id="102">我的吉他从 2021 年起就是衣架。戒掉后它又是吉他了。手指疼了，邻居的猫隔着墙抱怨，我终于学会了那首歌。半小时练习轻松地进入以前四个小时刷屏所占据的空间。多大的兑换。</item>
+            <item id="103">从信息流里拿回来的时间现在给了周六的社区花园。我认识邻居了，真正地认识。有人从他们的阳台朝我挥手。戒社交媒体不只是把时间还给我了，它把整条街还给我了。真实的土，真实的人，真实的西红柿。</item>
+            <item id="104">昨晚手机放在厨房桌上，我走进花园抬头看了看，看真正的星星，看的时间比几个月来我看任何东西的时间都长。没相机，没文案，就我一个人皱着眉看天空，像个月光下的原始人。然后我打电话给我爸，因为他知道星座，应用只知道广告。</item>
+            <item id="105">戒掉无尽的刷屏不等于戒掉乐趣。在这里玩五分钟 Reelspace，在那边玩一局节奏游戏，娱乐完了就真的结束了。那边整个目的是让你一直看。这边整个目的是把你送回你的生活。这个差别就是整个应用。</item>
+        </linesb>
+
+        <linesb-suggested-replies>
+            <reply-group id="0">
+                <reply id="0-sr1-1" reply-level="1">五分钟？这是巨大的胜利！</reply>
+                <reply id="0-sr1-2" reply-level="2">对吧？小步骤带来大不同！</reply>
+                <reply id="0-sr1-3" reply-level="3">我计了时，五分钟飞一样就过去了！⏱️</reply>
+                <reply id="0-sr1-4" reply-level="4">明天我瞄准六分钟，不给自己压力！😄</reply>
+                <reply id="0-sr2-1" reply-level="1">你是怎么做到的？</reply>
+                <reply id="0-sr2-2" reply-level="2">我只是把通知关了，设了个计时器。</reply>
+                <reply id="0-sr2-3" reply-level="3">是计时器应用还是厨房计时器？⏲️</reply>
+                <reply id="0-sr2-4" reply-level="4">厨房计时器，老派的，很响！🔔</reply>
+                <reply id="0-sr3-1" reply-level="1">我也得试试这个！</reply>
+                <reply id="0-sr3-2" reply-level="2">一定要试试，你会喜欢这种平静的！</reply>
+                <reply id="0-sr3-3" reply-level="3">一天里什么时间最合适？🌤️</reply>
+                <reply id="0-sr3-4" reply-level="4">午饭后，刷屏冲动来之前！🥪</reply>
+            </reply-group>
+            <reply-group id="1">
+                <reply id="1-sr1-1" reply-level="1">早晨散步真的不一样！</reply>
+                <reply id="1-sr1-2" reply-level="2">真的，新鲜空气彻底重置心情。</reply>
+                <reply id="1-sr1-3" reply-level="3">你走哪条路线？🗺️</reply>
+                <reply id="1-sr1-4" reply-level="4">公园环线，那儿的树最好看！🌳</reply>
+                <reply id="1-sr2-1" reply-level="1">你在外面注意到什么有意思的东西了吗？</reply>
+                <reply id="1-sr2-2" reply-level="2">看到了日出，听到了真正的鸟叫，10/10 体验。</reply>
+                <reply id="1-sr2-3" reply-level="3">鸟叫是最好的配乐！🐦</reply>
+                <reply id="1-sr2-4" reply-level="4">比我的任何歌单都好！🎵</reply>
+            </reply-group>
+            <reply-group id="2">
+                <reply id="2-sr1-1" reply-level="1">平静的感觉很棒，对吧？</reply>
+                <reply id="2-sr1-2" reply-level="2">真的，我都忘了内心安静是什么感觉了。</reply>
+                <reply id="2-sr1-3" reply-level="3">你在哪儿最感受到这份安静？🌿</reply>
+                <reply id="2-sr1-4" reply-level="4">沙发上，手机够不着的地方！🛋️</reply>
+                <reply id="2-sr2-1" reply-level="1">欢迎来到安静这一边！</reply>
+                <reply id="2-sr2-2" reply-level="2">很高兴来到这里，太让人平静了。</reply>
+            </reply-group>
+            <reply-group id="3">
+                <reply id="3-sr1-1" reply-level="1">健康的 app 赢定了！</reply>
+                <reply id="3-sr1-2" reply-level="2">没错，多巴胺但不 burnout！</reply>
+                <reply id="3-sr1-3" reply-level="3">你最喜欢哪个健康 app？📱</reply>
+                <reply id="3-sr1-4" reply-level="4">计时器那个，莫名地满足！⏲️</reply>
+                <reply id="3-sr2-1" reply-level="1">自己掌控的多巴胺！</reply>
+                <reply id="3-sr2-2" reply-level="2">没错，我决定什么时候结束。</reply>
+            </reply-group>
+            <reply-group id="4">
+                <reply id="4-sr1-1" reply-level="1">发了就不管，这就是方式！</reply>
+                <reply id="4-sr1-2" reply-level="2">对！零压力，纯粹自由。</reply>
+                <reply id="4-sr1-3" reply-level="3">你今天发了什么？📸</reply>
+                <reply id="4-sr1-4" reply-level="4">一张我家猫的模糊照片！🐱</reply>
+                <reply id="4-sr2-1" reply-level="1">不查赞是真正的成长！</reply>
+                <reply id="4-sr2-2" reply-level="2">老实说，感觉像超能力。</reply>
+            </reply-group>
+            <reply-group id="5">
+                <reply id="5-sr1-1" reply-level="1">你的绿植在谢谢你！🌱</reply>
+                <reply id="5-sr1-2" reply-level="2">哈哈，终于准时浇水了！</reply>
+                <reply id="5-sr1-3" reply-level="3">它们起名字了吗？🪴</reply>
+                <reply id="5-sr1-4" reply-level="4">起了，叫「蕨菜」和「叶先生」！😂</reply>
+                <reply id="5-sr2-1" reply-level="1">屏幕时间降 80% 简直不可思议！</reply>
+                <reply id="5-sr2-2" reply-level="2">我一直看报告，不敢信。</reply>
+            </reply-group>
+            <reply-group id="6">
+                <reply id="6-sr1-1" reply-level="1">现实中的对话是无敌的！</reply>
+                <reply id="6-sr1-2" reply-level="2">太对了，没有什么比现实中的连接更好。</reply>
+                <reply id="6-sr1-3" reply-level="3">你最后一次跟谁聊的？🗣️</reply>
+                <reply id="6-sr1-4" reply-level="4">邻居，聊她那很吵的猫！🐈</reply>
+                <reply id="6-sr2-1" reply-level="1">真正的对话胜过评论区。</reply>
+                <reply id="6-sr2-2" reply-level="2">好好喝杯茶聊聊天，完全没通知。</reply>
+            </reply-group>
+            <reply-group id="7">
+                <reply id="7-sr1-1" reply-level="1">「去摸摸草」是顶级建议！</reply>
+                <reply id="7-sr1-2" reply-level="2">每次都有效！</reply>
+                <reply id="7-sr1-3" reply-level="3">你在外面待多久？🌳</reply>
+                <reply id="7-sr1-4" reply-level="4">十分钟，然后我就感觉重置了！🌿</reply>
+                <reply id="7-sr2-1" reply-level="1">被一个 app 叫去摸草，太搞笑了。</reply>
+                <reply id="7-sr2-2" reply-level="2">比我设过的任何提醒都管用。</reply>
+            </reply-group>
+            <reply-group id="8">
+                <reply id="8-sr1-1" reply-level="1">音乐是最好的配乐！</reply>
+                <reply id="8-sr1-2" reply-level="2">100%！好节奏能修复一切。</reply>
+                <reply id="8-sr1-3" reply-level="3">你在循环什么歌？🎧</reply>
+                <reply id="8-sr1-4" reply-level="4">一些欢快又有点傻的歌！😂</reply>
+                <reply id="8-sr2-1" reply-level="1">所以真正的瘾一直是音乐！</reply>
+                <reply id="8-sr2-2" reply-level="2">是的，而这个让我更快乐。</reply>
+            </reply-group>
+            <reply-group id="9">
+                <reply id="9-sr1-1" reply-level="1">生产力解锁！💡</reply>
+                <reply id="9-sr1-2" reply-level="2">没有无脑刷屏就能把事做完！</reply>
+                <reply id="9-sr1-3" reply-level="3">你先做完了什么？✅</reply>
+                <reply id="9-sr1-4" reply-level="4">收件箱，终于！📧</reply>
+                <reply id="9-sr2-1" reply-level="1">关掉微信就关掉了拖延鬼，我爱这句。</reply>
+                <reply id="9-sr2-2" reply-level="2">我的待办清单从没这么短过。</reply>
+            </reply-group>
+            <reply-group id="10">
+                <reply id="10-sr1-1" reply-level="1">ChillSpace 是最好的宝贝！</reply>
+                <reply id="10-sr1-2" reply-level="2">哈哈，你朋友只是还没感受到这个 vibe！</reply>
+                <reply id="10-sr1-3" reply-level="3">你最喜欢这儿哪一点？💚</reply>
+                <reply id="10-sr1-4" reply-level="4">说实话，是评论区太温和了！🕊️</reply>
+                <reply id="10-sr2-1" reply-level="1">你的朋友早晚会理解的。</reply>
+                <reply id="10-sr2-2" reply-level="2">他们试一次就会懂的！</reply>
+            </reply-group>
+            <reply-group id="11">
+                <reply id="11-sr1-1" reply-level="1">简单的幸福最好！</reply>
+                <reply id="11-sr1-2" reply-level="2">一直都是这样！✨</reply>
+                <reply id="11-sr1-3" reply-level="3">今天什么简单小事让你笑了？🌼</reply>
+                <reply id="11-sr1-4" reply-level="4">一个特别好吃的三明治！🥪</reply>
+                <reply id="11-sr2-1" reply-level="1">幸福一直都在这里。</reply>
+                <reply id="11-sr2-2" reply-level="2">有时候你只需要停止寻找。</reply>
+            </reply-group>
+            <reply-group id="12">
+                <reply id="12-sr1-1" reply-level="1">随机发帖就是自由的顶峰！</reply>
+                <reply id="12-sr1-2" reply-level="2">不用精挑细选，纯 vibe！</reply>
+                <reply id="12-sr1-3" reply-level="3">你今天随手发了什么？🎈</reply>
+                <reply id="12-sr1-4" reply-level="4">一朵特别圆的云！☁️</reply>
+                <reply id="12-sr2-1" reply-level="1">随机发帖是一种生活方式。</reply>
+                <reply id="12-sr2-2" reply-level="2">没滤镜、没计划，脑子里蹦出啥就是啥。</reply>
+            </reply-group>
+            <reply-group id="13">
+                <reply id="13-sr1-1" reply-level="1">10 分钟就走，完美！</reply>
+                <reply id="13-sr1-2" reply-level="2">社交媒体就该一直这样！</reply>
+                <reply id="13-sr1-3" reply-level="3">开 app 之前先设计时器吗？⏱️</reply>
+                <reply id="13-sr1-4" reply-level="4">对，先计时器，后 app！✅</reply>
+                <reply id="13-sr2-1" reply-level="1">十分钟搞定太健康了。</reply>
+                <reply id="13-sr2-2" reply-level="2">剩下的时间去外面走走。</reply>
+            </reply-group>
+            <reply-group id="14">
+                <reply id="14-sr1-1" reply-level="1">不是空虚，是充实！</reply>
+                <reply id="14-sr1-2" reply-level="2">没错，健康的信息流改变一切。</reply>
+                <reply id="14-sr1-3" reply-level="3">什么样的帖子让你觉得健康？🌿</reply>
+                <reply id="14-sr1-4" reply-level="4">小成就和宠物照片！🐶</reply>
+                <reply id="14-sr2-1" reply-level="1">事后不觉得空就是全部意义。</reply>
+                <reply id="14-sr2-2" reply-level="2">没错，我真的感觉更轻盈了。</reply>
+            </reply-group>
+            <reply-group id="15">
+                <reply id="15-sr1-1" reply-level="1">心理医生批准了，这是最高荣誉！</reply>
+                <reply id="15-sr1-2" reply-level="2">哈哈，对吧？官方健康认证！</reply>
+                <reply id="15-sr1-3" reply-level="3">还给你布置作业了吗？📝</reply>
+                <reply id="15-sr1-4" reply-level="4">布置了，每天十分钟的安静！✅</reply>
+                <reply id="15-sr2-1" reply-level="1">心理医生喜欢我的帖子吗？</reply>
+                <reply id="15-sr2-2" reply-level="2">我的心理医生甚至要了链接。</reply>
+            </reply-group>
+            <reply-group id="16">
+                <reply id="16-sr1-1" reply-level="1">简化生活能创造奇迹！</reply>
+                <reply id="16-sr1-2" reply-level="2">少一点杂乱，多一点平静！</reply>
+                <reply id="16-sr1-3" reply-level="3">你最先简化了什么？🧹</reply>
+                <reply id="16-sr1-4" reply-level="4">主屏幕，只留五个 app！📱</reply>
+                <reply id="16-sr2-1" reply-level="1">删掉其他所有东西需要勇气。</reply>
+                <reply id="16-sr2-2" reply-level="2">老实说是我做过最爽的一次清理。</reply>
+            </reply-group>
+            <reply-group id="17">
+                <reply id="17-sr1-1" reply-level="1">活着 &gt; 刷屏！</reply>
+                <reply id="17-sr1-2" reply-level="2">一直！真正的乐趣在真实生活里。</reply>
+                <reply id="17-sr1-3" reply-level="3">今天做什么好玩的事了？🌞</reply>
+                <reply id="17-sr1-4" reply-level="4">公园野餐，没带手机！🧺</reply>
+                <reply id="17-sr2-1" reply-level="1">对活着上瘾，是最好的瘾。</reply>
+                <reply id="17-sr2-2" reply-level="2">强烈推荐，零副作用！</reply>
+            </reply-group>
+            <reply-group id="18">
+                <reply id="18-sr1-1" reply-level="1">你真的很棒！</reply>
+                <reply id="18-sr1-2" reply-level="2">啊，谢谢你，你也是！✨</reply>
+                <reply id="18-sr1-3" reply-level="3">今天什么让你觉得自己很棒？🌟</reply>
+                <reply id="18-sr1-4" reply-level="4">完成了一个小任务！✅</reply>
+                <reply id="18-sr2-1" reply-level="1">温柔的提醒是最好的那种。</reply>
+                <reply id="18-sr2-2" reply-level="2">感觉像背上的一个轻拍。</reply>
+            </reply-group>
+            <reply-group id="19">
+                <reply id="19-sr1-1" reply-level="1">他们早晚会加入的！</reply>
+                <reply id="19-sr1-2" reply-level="2">希望如此！他们错过了好多好东西。</reply>
+                <reply id="19-sr1-3" reply-level="3">什么能最快说服他们？🤔</reply>
+                <reply id="19-sr1-4" reply-level="4">一个没有通知的平静下午！✅</reply>
+                <reply id="19-sr2-1" reply-level="1">也许给他们发个邀请！</reply>
+                <reply id="19-sr2-2" reply-level="2">已经发了三个，还没回复。</reply>
+            </reply-group>
+            <reply-group id="20">
+                <reply id="20-sr1-1" reply-level="1">没有戏剧的信息流是顶级的！</reply>
+                <reply id="20-sr1-2" reply-level="2">各方面都完美！</reply>
+                <reply id="20-sr1-3" reply-level="3">你今天看到最平静的帖子是什么？🕊️</reply>
+                <reply id="20-sr1-4" reply-level="4">一只在阳光里睡觉的猫！☀️</reply>
+                <reply id="20-sr2-1" reply-level="1">「看起来好吃」是完美的评论。</reply>
+                <reply id="20-sr2-2" reply-level="2">短、甜、一点争吵都没有。</reply>
+            </reply-group>
+            <reply-group id="21">
+                <reply id="21-sr1-1" reply-level="1">健康的 vibe 一整天！</reply>
+                <reply id="21-sr1-2" reply-level="2">我们当然接受！😊</reply>
+                <reply id="21-sr1-3" reply-level="3">第一件健康的小事是什么？🌞</reply>
+                <reply id="21-sr1-4" reply-level="4">我妹妹发的一条暖心短信！💌</reply>
+                <reply id="21-sr2-1" reply-level="1">可疑地健康是最好的那种。</reply>
+                <reply id="21-sr2-2" reply-level="2">我不再质疑它，直接享受。</reply>
+            </reply-group>
+            <reply-group id="22">
+                <reply id="22-sr1-1" reply-level="1">这是我读过最干脆的戒断帖！</reply>
+                <reply id="22-sr1-2" reply-level="2">老实说感觉像卸下一个沉重的背包。</reply>
+                <reply id="22-sr1-3" reply-level="3">你是一次性全删了吗？📱</reply>
+                <reply id="22-sr1-4" reply-level="4">对，一个下午搞定！⚡</reply>
+                <reply id="22-sr2-1" reply-level="1">等等，连抖音都删了？！致敬。</reply>
+                <reply id="22-sr2-2" reply-level="2">连连续记录都断了。我放手了，什么都没发生。</reply>
+            </reply-group>
+            <reply-group id="23">
+                <reply id="23-sr1-1" reply-level="1">先咖啡后手机是顶级操作。</reply>
+                <reply id="23-sr1-2" reply-level="2">我从不知道咖啡在真正专注喝的时候这么好喝。</reply>
+                <reply id="23-sr1-3" reply-level="3">你喝什么咖啡？☕</reply>
+                <reply id="23-sr1-4" reply-level="4">简单黑咖啡，非常平静！✅</reply>
+                <reply id="23-sr2-1" reply-level="1">小小的胜利是最好的胜利！</reply>
+                <reply id="23-sr2-2" reply-level="2">而且会叠加，这就是秘密。</reply>
+            </reply-group>
+            <reply-group id="24">
+                <reply id="24-sr1-1" reply-level="1">安静的脑子和自由的夜晚，梦想组合。</reply>
+                <reply id="24-sr1-2" reply-level="2">我一直在等那个「但是」——没有！</reply>
+                <reply id="24-sr1-3" reply-level="3">自由的夜晚你做什么？🌙</reply>
+                <reply id="24-sr1-4" reply-level="4">读几页书，早点睡！📖</reply>
+                <reply id="24-sr2-1" reply-level="1">什么都不想念，这种感觉太好了。</reply>
+                <reply id="24-sr2-2" reply-level="2">对吧？原来我一直没在错过什么。</reply>
+            </reply-group>
+            <reply-group id="25">
+                <reply id="25-sr1-1" reply-level="1">一整部电影？传奇行为！</reply>
+                <reply id="25-sr1-2" reply-level="2">我中途甚至忘了看时间，太神奇了。</reply>
+                <reply id="25-sr1-3" reply-level="3">是哪部电影？🎬</reply>
+                <reply id="25-sr1-4" reply-level="4">一部老喜剧，绝佳选择！😂</reply>
+                <reply id="25-sr2-1" reply-level="1">你是谁，我在哪报名？</reply>
+                <reply id="25-sr2-2" reply-level="2">从一集剧开始，把手机放到另一个房间！</reply>
+            </reply-group>
+            <reply-group id="26">
+                <reply id="26-sr1-1" reply-level="1">「忙着生活」值得刻在一个杯子上。</reply>
+                <reply id="26-sr1-2" reply-level="2">哈哈，我真的在考虑印一个。</reply>
+                <reply id="26-sr1-3" reply-level="3">什么颜色？☕</reply>
+                <reply id="26-sr1-4" reply-level="4">绿色，配平静！🌿</reply>
+                <reply id="26-sr2-1" reply-level="1">你在那个群里发起了一场安静的革命！</reply>
+                <reply id="26-sr2-2" reply-level="2">祈祷到周五他们都删掉了。</reply>
+            </reply-group>
+            <reply-group id="27">
+                <reply id="27-sr1-1" reply-level="1">和别人的高光剪辑比较，太真实了。</reply>
+                <reply id="27-sr1-2" reply-level="2">我停止比较之后很快就明白了。</reply>
+                <reply id="27-sr1-3" reply-level="3">什么帮你停止比较的？🛑</reply>
+                <reply id="27-sr1-4" reply-level="4">把那些像噪音一样的账号静音了！✅</reply>
+                <reply id="27-sr2-1" reply-level="1">很高兴你找到了一个真诚的地方。</reply>
+                <reply id="27-sr2-2" reply-level="2">同感，这里没人表演，真的很清爽。</reply>
+            </reply-group>
+            <reply-group id="28">
+                <reply id="28-sr1-1" reply-level="1">为了好书坐过站是最好的理由。</reply>
+                <reply id="28-sr1-2" reply-level="2">走回去的每一分钟都值得。</reply>
+                <reply id="28-sr1-3" reply-level="3">在读什么书？📖</reply>
+                <reply id="28-sr1-4" reply-level="4">一本封面很丑但特别好看的推理小说！🔍</reply>
+                <reply id="28-sr2-1" reply-level="1">你在读什么？</reply>
+                <reply id="28-sr2-2" reply-level="2">一本看起来无聊但惊艳的推理小说。</reply>
+            </reply-group>
+            <reply-group id="29">
+                <reply id="29-sr1-1" reply-level="1">慢慢吃饭被低估了！</reply>
+                <reply id="29-sr1-2" reply-level="2">原来人生有真正的快乐，只要你不刷屏。</reply>
+                <reply id="29-sr1-3" reply-level="3">今天慢慢吃了什么？🍽️</reply>
+                <reply id="29-sr1-4" reply-level="4">一碗汤，非常温暖！🥣</reply>
+                <reply id="29-sr2-1" reply-level="1">树是最初始的内容。</reply>
+                <reply id="29-sr2-2" reply-level="2">零广告，绝佳风景，不用缓冲。</reply>
+            </reply-group>
+            <reply-group id="30">
+                <reply id="30-sr1-1" reply-level="1">一天四小时？那是全职工作！</reply>
+                <reply id="30-sr1-2" reply-level="2">我算了算，差点从椅子上摔下来。</reply>
+                <reply id="30-sr1-3" reply-level="3">你最先找回了什么？🕒</reply>
+                <reply id="30-sr1-4" reply-level="4">没有屏幕的午休！🥪</reply>
+                <reply id="30-sr2-1" reply-level="1">歪歪扭扭的画才是最好的画！</reply>
+                <reply id="30-sr2-2" reply-level="2">谢谢！下张周末发。</reply>
+            </reply-group>
+            <reply-group id="31">
+                <reply id="31-sr1-1" reply-level="1">聊两小时酸面包听起来太棒了。</reply>
+                <reply id="31-sr1-2" reply-level="2">我们还交换了酵头技巧，健康到不行。</reply>
+                <reply id="31-sr1-3" reply-level="3">你拿到酵头配方了吗？🍞</reply>
+                <reply id="31-sr1-4" reply-level="4">拿到了，还有喂养时间表！✅</reply>
+                <reply id="31-sr2-1" reply-level="1">这才是正确的认识人的方式。</reply>
+                <reply id="31-sr2-2" reply-level="2">先共同兴趣，从不寒暄。10/10。</reply>
+            </reply-group>
+            <reply-group id="32">
+                <reply id="32-sr1-1" reply-level="1">一周充一次电太疯狂了。</reply>
+                <reply id="32-sr1-2" reply-level="2">我的充电器开始积灰了。</reply>
+                <reply id="32-sr1-3" reply-level="3">你把充电器放哪儿了？🔌</reply>
+                <reply id="32-sr1-4" reply-level="4">抽屉里，看不见！✅</reply>
+                <reply id="32-sr2-1" reply-level="1">你的手机终于又有自己的生活了。</reply>
+                <reply id="32-sr2-2" reply-level="2">对！我也是。</reply>
+            </reply-group>
+            <reply-group id="33">
+                <reply id="33-sr1-1" reply-level="1">通过 ChillSpace 兄妹亲近，太甜了！</reply>
+                <reply id="33-sr1-2" reply-level="2">她已经给我发她最喜欢的帖子了。</reply>
+                <reply id="33-sr1-3" reply-level="3">她第一条发给你的是什么？💌</reply>
+                <reply id="33-sr1-4" reply-level="4">一个搞笑狗狗视频！🐶</reply>
+                <reply id="33-sr2-1" reply-level="1">十分钟一起看然后真正聊天，我喜欢。</reply>
+                <reply id="33-sr2-2" reply-level="2">已经成了我们每晚的仪式。</reply>
+            </reply-group>
+            <reply-group id="34">
+                <reply id="34-sr1-1" reply-level="1">JOMO 是我最喜欢的新词。</reply>
+                <reply id="34-sr1-2" reply-level="2">我也是，我要把它做张海报。</reply>
+                <reply id="34-sr1-3" reply-level="3">什么颜色？🖼️</reply>
+                <reply id="34-sr1-4" reply-level="4">柔和的黄色，非常欢快！🌞</reply>
+                <reply id="34-sr2-1" reply-level="1">不知道别人早午餐吃了什么是种福分。</reply>
+                <reply id="34-sr2-2" reply-level="2">老实说是离开大社交平台最大的收获。</reply>
+            </reply-group>
+            <reply-group id="35">
+                <reply id="35-sr1-1" reply-level="1">盯着通知的赌徒，精准得让人心疼。</reply>
+                <reply id="35-sr1-2" reply-level="2">我花了太久才看到这一点。</reply>
+                <reply id="35-sr1-3" reply-level="3">你最先关掉什么了？🔕</reply>
+                <reply id="35-sr1-4" reply-level="4">所有通知，一个开关！✅</reply>
+                <reply id="35-sr2-1" reply-level="1">终于健康的关系了，为你高兴！</reply>
+                <reply id="35-sr2-2" reply-level="2">谢谢！发出去然后继续，感觉很好。</reply>
+            </reply-group>
+            <reply-group id="36">
+                <reply id="36-sr1-1" reply-level="1">厨房四十分钟舞会？太绝了。</reply>
+                <reply id="36-sr1-2" reply-level="2">我邻居可能有问题要问。</reply>
+                <reply id="36-sr1-3" reply-level="3">哪首歌开启的？🎶</reply>
+                <reply id="36-sr1-4" reply-level="4">一首特别俗气的迪斯科！🕺</reply>
+                <reply id="36-sr2-1" reply-level="1">能把那个歌单分享吗？</reply>
+                <reply id="36-sr2-2" reply-level="2">当然，明天发，再附几首 bonus！</reply>
+            </reply-group>
+            <reply-group id="37">
+                <reply id="37-sr1-1" reply-level="1">「没人喊叫的网上酒吧」简直完美。</reply>
+                <reply id="37-sr1-2" reply-level="2">我爸特别擅长概括东西。</reply>
+                <reply id="37-sr1-3" reply-level="3">他一开始怎么叫它的？😄</reply>
+                <reply id="37-sr1-4" reply-level="4">安静酒吧！✅</reply>
+                <reply id="37-sr2-1" reply-level="1">你爸刚刚赢了互联网。</reply>
+                <reply id="37-sr2-2" reply-level="2">我去告诉他你说的，他会开心坏的。</reply>
+            </reply-group>
+            <reply-group id="38">
+                <reply id="38-sr1-1" reply-level="1">已经一个月了？这是真正的进步！</reply>
+                <reply id="38-sr1-2" reply-level="2">我的睡眠每晚都在感谢我。</reply>
+                <reply id="38-sr1-3" reply-level="3">现在几点睡？🌙</reply>
+                <reply id="38-sr1-4" reply-level="4">提前一个小时，轻松！✅</reply>
+                <reply id="38-sr2-1" reply-level="1">靠自己记生日是大成就。</reply>
+                <reply id="38-sr2-2" reply-level="2">我甚至买了张卡片。一张纸质卡片！</reply>
+            </reply-group>
+            <reply-group id="39">
+                <reply id="39-sr1-1" reply-level="1">空隙巨大，这太真实了。</reply>
+                <reply id="39-sr1-2" reply-level="2">我一天找到将近三小时，太震惊了。</reply>
+                <reply id="39-sr1-3" reply-level="3">第一个多出来的小时做了什么？⏰</reply>
+                <reply id="39-sr1-4" reply-level="4">做了顿正经晚饭！🍳</reply>
+                <reply id="39-sr2-1" reply-level="1">你用所有空闲时间在做什么？</reply>
+                <reply id="39-sr2-2" reply-level="2">做饭、读书、大量发呆看窗外。</reply>
+            </reply-group>
+            <reply-group id="40">
+                <reply id="40-sr1-1" reply-level="1">零后悔的平静日常，我喜欢。</reply>
+                <reply id="40-sr1-2" reply-level="2">现在是我晚上最喜欢的一部分。</reply>
+                <reply id="40-sr1-3" reply-level="3">日常里都有些什么？🌙</reply>
+                <reply id="40-sr1-4" reply-level="4">茶、书、没有手机！☕</reply>
+                <reply id="40-sr2-1" reply-level="1">不带怒气读评论是份礼物。</reply>
+                <reply id="40-sr2-2" reply-level="2">听起来简单，但改变了我整个心情。</reply>
+            </reply-group>
+            <reply-group id="41">
+                <reply id="41-sr1-1" reply-level="1">不戴耳机散步需要勇气。</reply>
+                <reply id="41-sr1-2" reply-level="2">我自己的念头比我预想的更会聊天。</reply>
+                <reply id="41-sr1-3" reply-level="3">散步时你注意到了什么？🚶</reply>
+                <reply id="41-sr1-4" reply-level="4">一个我从未见过的小花园！🌼</reply>
+                <reply id="41-sr2-1" reply-level="1">散完步来点 Reelspace 是梦想。</reply>
+                <reply id="41-sr2-2" reply-level="2">每一步都自己赚来的！</reply>
+            </reply-group>
+            <reply-group id="42">
+                <reply id="42-sr1-1" reply-level="1">办公室养生顾问是个好头衔。</reply>
+                <reply id="42-sr1-2" reply-level="2">我要印在名片上。</reply>
+                <reply id="42-sr1-3" reply-level="3">第一个办公室建议是什么？💼</reply>
+                <reply id="42-sr1-4" reply-level="4">专注时间关通知！✅</reply>
+                <reply id="42-sr2-1" reply-level="1">一个小改变产出翻倍？哇。</reply>
+                <reply id="42-sr2-2" reply-level="2">永远不要低估通知能有多吵。</reply>
+            </reply-group>
+            <reply-group id="43">
+                <reply id="43-sr1-1" reply-level="1">从老虎机到笔记本，伟大的升级。</reply>
+                <reply id="43-sr1-2" reply-level="2">同一个屏幕，完全不同的感觉。</reply>
+                <reply id="43-sr1-3" reply-level="3">你在笔记本里写什么？📝</reply>
+                <reply id="43-sr1-4" reply-level="4">每天三件好事！✅</reply>
+                <reply id="43-sr2-1" reply-level="1">通向几个好心人的窗户，正是如此。</reply>
+                <reply id="43-sr2-2" reply-level="2">老实说这就是 ChillSpace 给我的感觉。</reply>
+            </reply-group>
+            <reply-group id="44">
+                <reply id="44-sr1-1" reply-level="1">这种夸奖是金子。</reply>
+                <reply id="44-sr1-2" reply-level="2">它真的在我心里待了一周。</reply>
+                <reply id="44-sr1-3" reply-level="3">谁夸的？🥇</reply>
+                <reply id="44-sr1-4" reply-level="4">评论区的一个陌生人！✅</reply>
+                <reply id="44-sr2-1" reply-level="1">你的画值得所有的爱！</reply>
+                <reply id="44-sr2-2" reply-level="2">啊，谢谢你，你也让我今天变得更好！</reply>
+            </reply-group>
+            <reply-group id="45">
+                <reply id="45-sr1-1" reply-level="1">一次一个 app 是好建议。</reply>
+                <reply id="45-sr1-2" reply-level="2">小步骤也更容易坚持。</reply>
+                <reply id="45-sr1-3" reply-level="3">先删哪个？📱</reply>
+                <reply id="45-sr1-4" reply-level="4">最吵的那个，当然！🔔</reply>
+                <reply id="45-sr2-1" reply-level="1">七天是个非常可行的挑战。</reply>
+                <reply id="45-sr2-2" reply-level="2">也许我自己也试试，然后回来汇报！</reply>
+            </reply-group>
+            <reply-group id="46">
+                <reply id="46-sr1-1" reply-level="1">灰度模式是偷偷天才的一招！</reply>
+                <reply id="46-sr1-2" reply-level="2">对吧？！在灰色里这些 app 看起来……难过极了。</reply>
+                <reply id="46-sr1-3" reply-level="3">那个设置藏在哪？📱</reply>
+                <reply id="46-sr1-4" reply-level="4">显示与辅助功能里，两下点击！⚙️</reply>
+                <reply id="46-sr1-5" reply-level="5">我和无聊之间就隔两下点击？！⚡</reply>
+                <reply id="46-sr1-6" reply-level="6">两下点击，老虎机就变灰了！🎰</reply>
+                <reply id="46-sr1-7" reply-level="7">那之后删起来更容易了吗？🗑️</reply>
+                <reply id="46-sr1-8" reply-level="8">容易多了，意志力零要求！✅</reply>
+                <reply id="46-sr1-9" reply-level="9">零意志力戒断是我最喜欢的方式！💪</reply>
+                <reply id="46-sr1-10" reply-level="10">先灰度，后自由！🌿</reply>
+                <reply id="46-sr2-1" reply-level="1">「油漆变干纪录片」是完美的形容。</reply>
+                <reply id="46-sr2-2" reply-level="2">我笑了，然后自己去检查了一下，真实得吓人。</reply>
+                <reply id="46-sr2-3" reply-level="3">你是当天就全删了？🗑️</reply>
+                <reply id="46-sr2-4" reply-level="4">同一天晚上，一个 app 一个长按！😄</reply>
+                <reply id="46-sr2-5" reply-level="5">完全没戒断症状？🤔</reply>
+                <reply id="46-sr2-6" reply-level="6">就晚上散了个步、打了个电话！🚶</reply>
+                <reply id="46-sr2-7" reply-level="7">你把空闲时间拿去打电话了？！☎️</reply>
+                <reply id="46-sr2-8" reply-level="8">打给了我哥们，聊了整整一小时！📞</reply>
+                <reply id="46-sr2-9" reply-level="9">一小时真实的声音胜过无限短视频！💚</reply>
+                <reply id="46-sr2-10" reply-level="10">电话正在强势回归！✨</reply>
+            </reply-group>
+            <reply-group id="47">
+                <reply id="47-sr1-1" reply-level="1">关机键一直都在那儿！</reply>
+                <reply id="47-sr1-2" reply-level="2">对吧？！这么久都在怪 app，其实出口是物理的。</reply>
+                <reply id="47-sr1-3" reply-level="3">你是关机还是只锁屏？🔘</reply>
+                <reply id="47-sr1-4" reply-level="4">完全关机，需要地图时开飞行模式！✈️</reply>
+                <reply id="47-sr1-5" reply-level="5">飞行模式是礼貌版关机！⚡</reply>
+                <reply id="47-sr1-6" reply-level="6">礼貌又非常有效！😄</reply>
+                <reply id="47-sr1-7" reply-level="7">我试过之后咖啡聊天都变好了！☕</reply>
+                <reply id="47-sr1-8" reply-level="8">整个脑子都参与到对话里了！🧠</reply>
+                <reply id="47-sr1-9" reply-level="9">全身心投入现在是真正的奢侈品！💎</reply>
+                <reply id="47-sr1-10" reply-level="10">关机，开机 vibe！✨</reply>
+                <reply id="47-sr2-1" reply-level="1">「魔法」是形容一个有效的关机键的正确词汇。</reply>
+                <reply id="47-sr2-2" reply-level="2">哈哈，对吧？我们忘了最古老的这个功能。</reply>
+                <reply id="47-sr2-3" reply-level="3">如果有人急事找你怎么办？🤔</reply>
+                <reply id="47-sr2-4" reply-level="4">真正的急事？人们仍然知道我号码！☎️</reply>
+                <reply id="47-sr2-5" reply-level="5">对，急事总能找到手机！📞</reply>
+                <reply id="47-sr2-6" reply-level="6">其他的都能等，而且一直都能！⏳</reply>
+                <reply id="47-sr2-7" reply-level="7">戒掉刷屏让我的电池也更开心了！🔋</reply>
+                <reply id="47-sr2-8" reply-level="8">同一部手机，完全不同的关系！💚</reply>
+                <reply id="47-sr2-9" reply-level="9">同一个口袋，脑子安静多了！🌿</reply>
+                <reply id="47-sr2-10" reply-level="10">安静的口袋胜出！🕊️</reply>
+            </reply-group>
+            <reply-group id="48">
+                <reply id="48-sr1-1" reply-level="1">厨房充电改变了游戏！</reply>
+                <reply id="48-sr1-2" reply-level="2">卧室变成平静空间的速度快得惊人。</reply>
+                <reply id="48-sr1-3" reply-level="3">晚上冲动来时你怎么办？🌙</reply>
+                <reply id="48-sr1-4" reply-level="4">床头柜上的书，真的有用！📖</reply>
+                <reply id="48-sr1-5" reply-level="5">书没有通知，不公平的优势！⚡</reply>
+                <reply id="48-sr1-6" reply-level="6">而且结局比短视频好！😄</reply>
+                <reply id="48-sr1-7" reply-level="7">那个闹钟怎么样？⏰</reply>
+                <reply id="48-sr1-8" reply-level="8">花的最值的几个钢镚，它会柔和地发光！🌟</reply>
+                <reply id="48-sr1-9" reply-level="9">像吃饱的猫一样睡觉是目标！🐈</reply>
+                <reply id="48-sr1-10" reply-level="10">三晚就建立了新作息，太好了！💚</reply>
+                <reply id="48-sr2-1" reply-level="1">我可能得偷走厨房充电这个想法。</reply>
+                <reply id="48-sr2-2" reply-level="2">免费而且有效，尽管偷！</reply>
+                <reply id="48-sr2-3" reply-level="3">你给它挑了个特别的地方吗？🔌</reply>
+                <reply id="48-sr2-4" reply-level="4">还给了它一个小碟子，像宠物一样！😂</reply>
+                <reply id="48-sr2-5" reply-level="5">把手机当睡在别处的宠物！🐾</reply>
+                <reply id="48-sr2-6" reply-level="6">没有卧室特权的宠物！🚪</reply>
+                <reply id="48-sr2-7" reply-level="7">我一周之后就睡得更沉了！😴</reply>
+                <reply id="48-sr2-8" reply-level="8">深度睡眠是被低估的超能力！💪</reply>
+                <reply id="48-sr2-9" reply-level="9">很快我也要解锁吃饱猫模式！🌙</reply>
+                <reply id="48-sr2-10" reply-level="10">享受安静的夜晚！✨</reply>
+            </reply-group>
+            <reply-group id="49">
+                <reply id="49-sr1-1" reply-level="1">给奶奶打电话是纯金！</reply>
+                <reply id="49-sr1-2" reply-level="2">那个舞蹈比赛的故事每次都更精彩。</reply>
+                <reply id="49-sr1-3" reply-level="3">现在多久打一次？☎️</reply>
+                <reply id="49-sr1-4" reply-level="4">一周两次，我们的小仪式！📞</reply>
+                <reply id="49-sr1-5" reply-level="5">一周两次是多么温柔的一个节奏！💛</reply>
+                <reply id="49-sr1-6" reply-level="6">而且她总把剧情反转第一个告诉我！😄</reply>
+                <reply id="49-sr1-7" reply-level="7">她是原始算法，全是爆款没有失手！🌟</reply>
+                <reply id="49-sr1-8" reply-level="8">唯一没有广告的信息流！✅</reply>
+                <reply id="49-sr1-9" reply-level="9">给你的人打电话，这是最好的建议！📣</reply>
+                <reply id="49-sr1-10" reply-level="10">我这就给我奶奶打电话！✨</reply>
+                <reply id="49-sr2-1" reply-level="1">「他们才是真正的信息流」直接击中了我。</reply>
+                <reply id="49-sr2-2" reply-level="2">对吧？和奶奶的二十分钟胜过几小时的刷屏。</reply>
+                <reply id="49-sr2-3" reply-level="3">晚上还会想刷屏吗？🌙</reply>
+                <reply id="49-sr2-4" reply-level="4">有时候会，那我就发消息给朋友！📱</reply>
+                <reply id="49-sr2-5" reply-level="5">给朋友发消息每次都比虚无强！⚡</reply>
+                <reply id="49-sr2-6" reply-level="6">而且回复带着真正的温度！💚</reply>
+                <reply id="49-sr2-7" reply-level="7">我爷爷现在也想加进电话了！👴</reply>
+                <reply id="49-sr2-8" reply-level="8">全家比任何时间线都好！🌈</reply>
+                <reply id="49-sr2-9" reply-level="9">没有 app 让我这样大声笑过！😂</reply>
+                <reply id="49-sr2-10" reply-level="10">真正的信息流永远接电话！☎️</reply>
+            </reply-group>
+            <reply-group id="50">
+                <reply id="50-sr1-1" reply-level="1">三个真朋友胜过三百个粉丝。</reply>
+                <reply id="50-sr1-2" reply-level="2">而且算术只会更好，因为他们真的会回复！</reply>
+                <reply id="50-sr1-3" reply-level="3">那之后群聊更活跃了吗？💬</reply>
+                <reply id="50-sr1-4" reply-level="4">每天，现在全是计划和笑话！📅</reply>
+                <reply id="50-sr1-5" reply-level="5">计划和笑话，完美的内容配比！⚡</reply>
+                <reply id="50-sr1-6" reply-level="6">没人想念观众那部分！🎭</reply>
+                <reply id="50-sr1-7" reply-level="7">观众可不会在周末给你拥抱！🤗</reply>
+                <reply id="50-sr1-8" reply-level="8">对，群聊会出现在现实生活中！💚</reply>
+                <reply id="50-sr1-9" reply-level="9">发号码然后退出，强势操作！💪</reply>
+                <reply id="50-sr1-10" reply-level="10">从侧幕退场，电话号码在手！✨</reply>
+                <reply id="50-sr2-1" reply-level="1">发号码是一种很聪明的筛选方式。</reply>
+                <reply id="50-sr2-2" reply-level="2">一个下午就把观众和朋友分开。</reply>
+                <reply id="50-sr2-3" reply-level="3">你担心没人发消息吗？🫣</reply>
+                <reply id="50-sr2-4" reply-level="4">怕死了！然后三条消息改变了一切！💌</reply>
+                <reply id="50-sr2-5" reply-level="5">三条消息，三段真友谊！⭐</reply>
+                <reply id="50-sr2-6" reply-level="6">比任何粉丝数机会都大！✅</reply>
+                <reply id="50-sr2-7" reply-level="7">我最亲近的人一辆出租车就能装下！🚕</reply>
+                <reply id="50-sr2-8" reply-level="8">一辆车的真朋友能开到任何地方！🚀</reply>
+                <reply id="50-sr2-9" reply-level="9">这是朋友版的「质量胜于数量」！💚</reply>
+                <reply id="50-sr2-10" reply-level="10">小圈子，暖圈子！✨</reply>
+            </reply-group>
+            <reply-group id="51">
+                <reply id="51-sr1-1" reply-level="1">飞行模式真是最便宜的水疗！</reply>
+                <reply id="51-sr1-2" reply-level="2">鸽子剧场免费附赠！</reply>
+                <reply id="51-sr1-3" reply-level="3">午饭时开多久？🕐</reply>
+                <reply id="51-sr1-4" reply-level="4">整个午休，六十分钟的平静！⏱️</reply>
+                <reply id="51-sr1-5" reply-level="5">六十分钟没有提示音听起来是梦！💭</reply>
+                <reply id="51-sr1-6" reply-level="6">安静重置了整个下午！⚡</reply>
+                <reply id="51-sr1-7" reply-level="7">人们没有你能应付吗？🤔</reply>
+                <reply id="51-sr1-8" reply-level="8">他们自己解决了，太神奇了！✨</reply>
+                <reply id="51-sr1-9" reply-level="9">原来大部分「火灾」根本不是火灾！🕊️</reply>
+                <reply id="51-sr1-10" reply-level="10">飞行模式，假火灾灭火器！😄</reply>
+                <reply id="51-sr2-1" reply-level="1">鸽子为一块三明治打架，这是免费娱乐的顶峰。</reply>
+                <reply id="51-sr2-2" reply-level="2">诚实的戏剧，不需要订阅！</reply>
+                <reply id="51-sr2-3" reply-level="3">看的时候吃了什么？🥪</reply>
+                <reply id="51-sr2-4" reply-level="4">汤和面包，每一勺都尝出了味道！🍲</reply>
+                <reply id="51-sr2-5" reply-level="5">品尝每一口真是被低估了！⚡</reply>
+                <reply id="51-sr2-6" reply-level="6">慢慢吃饭现在几乎是超能力！💪</reply>
+                <reply id="51-sr2-7" reply-level="7">我光是读这段肩膀就松下来了！😌</reply>
+                <reply id="51-sr2-8" reply-level="8">松弛感是真的，紧张融化了！🫠</reply>
+                <reply id="51-sr2-9" reply-level="9">免费治疗，还带羽毛！🕊️</reply>
+                <reply id="51-sr2-10" reply-level="10">午休水疗，不用预约！✨</reply>
+            </reply-group>
+            <reply-group id="52">
+                <reply id="52-sr1-1" reply-level="1">错失恐惧其实是害怕虚无！</reply>
+                <reply id="52-sr1-2" reply-level="2">没错，重要的消息通过电话或短信来。</reply>
+                <reply id="52-sr1-3" reply-level="3">之后错过了什么大事吗？🤔</reply>
+                <reply id="52-sr1-4" reply-level="4">没有！我朋友几分钟内就打电话告诉我了！☎️</reply>
+                <reply id="52-sr1-5" reply-level="5">真消息比信息流传得快！⚡</reply>
+                <reply id="52-sr1-6" reply-level="6">我妈花园的照片胜过任何时间线！🌻</reply>
+                <reply id="52-sr1-7" reply-level="7">自家种的内容是最好的内容！💚</reply>
+                <reply id="52-sr1-8" reply-level="8">不需要解读，世界照样转！🌍</reply>
+                <reply id="52-sr1-9" reply-level="9">放下恐惧比放下 app 还简单！💪</reply>
+                <reply id="52-sr1-10" reply-level="10">恐惧卸载，平静安装！✨</reply>
+                <reply id="52-sr2-1" reply-level="1">「重要的事总能找到你号码」太对了。</reply>
+                <reply id="52-sr2-2" reply-level="2">一直都是这样，只是信息流太吵我们忘了。</reply>
+                <reply id="52-sr2-3" reply-level="3">群活动呢，不想念吗？🗓️</reply>
+                <reply id="52-sr2-4" reply-level="4">群聊管这些，电话确认！📞</reply>
+                <reply id="52-sr2-5" reply-level="5">电话既确认计划又能八卦！😄</reply>
+                <reply id="52-sr2-6" reply-level="6">一通电话，两全其美！🐦</reply>
+                <reply id="52-sr2-7" reply-level="7">我的社交圈更小了，但丰富多了！💛</reply>
+                <reply id="52-sr2-8" reply-level="8">丰富得像一锅好高汤，全是干货！🍲</reply>
+                <reply id="52-sr2-9" reply-level="9">这太激励了，谢谢！🙌</reply>
+                <reply id="52-sr2-10" reply-level="10">电话一直是计划本身！✨</reply>
+            </reply-group>
+            <reply-group id="53">
+                <reply id="53-sr1-1" reply-level="1">一个下午换自由，这交易太划算了！</reply>
+                <reply id="53-sr1-2" reply-level="2">对吧？最难的是选个吃饭的日子！</reply>
+                <reply id="53-sr1-3" reply-level="3">剩下的时间你干什么了？🕐</reply>
+                <reply id="53-sr1-4" reply-level="4">长时间散步，给姐姐打了个电话！🚶</reply>
+                <reply id="53-sr1-5" reply-level="5">散步加打电话，经典的自由组合！⚡</reply>
+                <reply id="53-sr1-6" reply-level="6">我的腿和友谊都锻炼到了！😄</reply>
+                <reply id="53-sr1-7" reply-level="7">和朋友吃饭去了吗？🍽️</reply>
+                <reply id="53-sr1-8" reply-level="8">周四！而且我莫名兴奋！📅</reply>
+                <reply id="53-sr1-9" reply-level="9">为吃饭兴奋，不是为信息流！💚</reply>
+                <reply id="53-sr1-10" reply-level="10">真计划每次都赢过刷屏！✨</reply>
+                <reply id="53-sr2-1" reply-level="1">「说实话我以为会更难」是最共鸣的部分。</reply>
+                <reply id="53-sr2-2" reply-level="2">我们把它想成一场大仗，其实就只是……周二。</reply>
+                <reply id="53-sr2-3" reply-level="3">你是删了还是只登出？🗑️</reply>
+                <reply id="53-sr2-4" reply-level="4">删了！长按、摇晃、消失、结束！✅</reply>
+                <reply id="53-sr2-5" reply-level="5">摇晃是真的，然后就是自由！⚡</reply>
+                <reply id="53-sr2-6" reply-level="6">自由还配一顿晚饭计划！🍕</reply>
+                <reply id="53-sr2-7" reply-level="7">我朋友回复得比 app 快！💌</reply>
+                <reply id="53-sr2-8" reply-level="8">真人发来的文字回复，革命！😄</reply>
+                <reply id="53-sr2-9" reply-level="9">你都说服我了，这周末我试！💪</reply>
+                <reply id="53-sr2-10" reply-level="10">比装宜家家具还简单！✨</reply>
+            </reply-group>
+            <reply-group id="54">
+                <reply id="54-sr1-1" reply-level="1">把刷屏时间换成通话时间，天才的交换！</reply>
+                <reply id="54-sr1-2" reply-level="2">汇率对我们大大有利。</reply>
+                <reply id="54-sr1-3" reply-level="3">冲动来时通常打给谁？☎️</reply>
+                <reply id="54-sr1-4" reply-level="4">笑声最大的朋友，当然！😄</reply>
+                <reply id="54-sr1-5" reply-level="5">电话那头的笑声是顶级内容！💛</reply>
+                <reply id="54-sr1-6" reply-level="6">而且没人能静音她的快乐，太好了！📣</reply>
+                <reply id="54-sr1-7" reply-level="7">我和最好的朋友开始了每周一次的通话！🗓️</reply>
+                <reply id="54-sr1-8" reply-level="8">每周一通电话，距离就消弭了！⭐</reply>
+                <reply id="54-sr1-9" reply-level="9">这条规则让话费一分都不白花！💚</reply>
+                <reply id="54-sr1-10" reply-level="10">史上最好的订阅升级！✨</reply>
+                <reply id="54-sr2-1" reply-level="1">「没有短视频能接近真实的笑声」太对了。</reply>
+                <reply id="54-sr2-2" reply-level="2">算法还不会合成那个声音！</reply>
+                <reply id="54-sr2-3" reply-level="3">那如果没人接呢？🤔</reply>
+                <reply id="54-sr2-4" reply-level="4">那就留个傻乎乎的语音留言，特别管用！📬</reply>
+                <reply id="54-sr2-5" reply-level="5">傻乎乎的语音是被低估的宝藏！⚡</reply>
+                <reply id="54-sr2-6" reply-level="6">她心情不好的时候会重听！😂</reply>
+                <reply id="54-sr2-7" reply-level="7">这种内容永远不会过时！💚</reply>
+                <reply id="54-sr2-8" reply-level="8">你简直是在私人频道播放快乐！📻</reply>
+                <reply id="54-sr2-9" reply-level="9">私人频道，零广告，全是笑声！🎙️</reply>
+                <reply id="54-sr2-10" reply-level="10">笑声频道从不卡顿！✨</reply>
+            </reply-group>
+            <reply-group id="55">
+                <reply id="55-sr1-1" reply-level="1">第一周沉默到第二周叽叽喳喳，太真实的弧线了！</reply>
+                <reply id="55-sr1-2" reply-level="2">原来我们只是需要掸掸对话技巧的灰！</reply>
+                <reply id="55-sr1-3" reply-level="3">第一周靠什么话题撑过去的？😅</reply>
+                <reply id="55-sr1-4" reply-level="4">深刻的话题：童年、梦想、最喜欢的饼干！🍪</reply>
+                <reply id="55-sr1-5" reply-level="5">饼干排名在这儿也能引起激烈辩论！⚡</reply>
+                <reply id="55-sr1-6" reply-level="6">抽屉恢复了外交关系！😄</reply>
+                <reply id="55-sr1-7" reply-level="7">我室友和我也该搞个抽屉规则！🗄️</reply>
+                <reply id="55-sr1-8" reply-level="8">这是我们争论出来的最好的东西！✅</reply>
+                <reply id="55-sr1-9" reply-level="9">亲口告诉别人消息现在太罕见了！🗣️</reply>
+                <reply id="55-sr1-10" reply-level="10">真人语音公告，零信息流剧透！💚</reply>
+                <reply id="55-sr2-1" reply-level="1">你室友最先知道，好一个反转！</reply>
+                <reply id="55-sr2-2" reply-level="2">算法晚了一天才知道，可悲！</reply>
+                <reply id="55-sr2-3" reply-level="3">有人作弊偷看抽屉吗？🫣</reply>
+                <reply id="55-sr2-4" reply-level="4">有一次偷看未遂，当场投票否决！😂</reply>
+                <reply id="55-sr2-5" reply-level="5">餐桌上搞民主，漂亮！⚡</reply>
+                <reply id="55-sr2-6" reply-level="6">没有手机，食物好像变得更好笑了！🍽️</reply>
+                <reply id="55-sr2-7" reply-level="7">真正在场的时候什么都更好吃！💛</reply>
+                <reply id="55-sr2-8" reply-level="8">聊得好的话，连洗碗都更轻！🧼</reply>
+                <reply id="55-sr2-9" reply-level="9">这个公寓听起来是必去之地！🏡</reply>
+                <reply id="55-sr2-10" reply-level="10">抽屉永远赢，我们也一样！✨</reply>
+            </reply-group>
+            <reply-group id="56">
+                <reply id="56-sr1-1" reply-level="1">一周学会一整首钢琴曲，太疯狂了！</reply>
+                <reply id="56-sr1-2" reply-level="2">我的大拇指一直藏着才华！</reply>
+                <reply id="56-sr1-3" reply-level="3">哪首曲子？🎹</reply>
+                <reply id="56-sr1-4" reply-level="4">我那首最爱歌曲的颤抖版但充满感情的版本！🎵</reply>
+                <reply id="56-sr1-5" reply-level="5">颤抖但真诚比完美但没灵魂更好！⚡</reply>
+                <reply id="56-sr1-6" reply-level="6">邻居现在有免费音乐会了！😄</reply>
+                <reply id="56-sr1-7" reply-level="7">也给朋友弹吗？🎶</reply>
+                <reply id="56-sr1-8" reply-level="8">现在是给室友的周日迷你音乐会！🎫</reply>
+                <reply id="56-sr1-9" reply-level="9">现场演出胜过配了背景音乐的图文！💚</reply>
+                <reply id="56-sr1-10" reply-level="10">为那个刷完最后一下的拇指来一次安可！👏</reply>
+                <reply id="56-sr2-1" reply-level="1">「那些时间来自我的拇指」这是最真实的一句话。</reply>
+                <reply id="56-sr2-2" reply-level="2">拇指这段时间一直在免费打零工！</reply>
+                <reply id="56-sr2-3" reply-level="3">一个月后你的目标是什么？🎯</reply>
+                <reply id="56-sr2-4" reply-level="4">两首歌，也许再加点唱歌！🎤</reply>
+                <reply id="56-sr2-5" reply-level="5">还开始唱了，自信在累积！⚡</reply>
+                <reply id="56-sr2-6" reply-level="6">自信的复利比点赞快！💪</reply>
+                <reply id="56-sr2-7" reply-level="7">今晚就去储藏室把吉他挖出来！🎸</reply>
+                <reply id="56-sr2-8" reply-level="8">储藏室的乐器要卷土重来了！🌟</reply>
+                <reply id="56-sr2-9" reply-level="9">一整个前刷屏者乐团在集结！🎻</reply>
+                <reply id="56-sr2-10" reply-level="10">回归巡演从家里开始！✨</reply>
+            </reply-group>
+            <reply-group id="57">
+                <reply id="57-sr1-1" reply-level="1">只留电话和短信，完美的设置菜单！</reply>
+                <reply id="57-sr1-2" reply-level="2">一开始安静得不像真的，然后就成了家。</reply>
+                <reply id="57-sr1-3" reply-level="3">马上就感觉到区别了吗？⚡</reply>
+                <reply id="57-sr1-4" reply-level="4">一天之内，我的口袋就停止震动了！📵</reply>
+                <reply id="57-sr1-5" reply-level="5">我的幽灵振动也消失了！🐕</reply>
+                <reply id="57-sr1-6" reply-level="6">训练有素的狗会坐下、等着！🦮</reply>
+                <reply id="57-sr1-7" reply-level="7">朋友现在真的会打电话吗？☎️</reply>
+                <reply id="57-sr1-8" reply-level="8">重要的人会，感觉很温暖！💛</reply>
+                <reply id="57-sr1-9" reply-level="9">真实的铃声代替虚假的提示音！⚡</reply>
+                <reply id="57-sr1-10" reply-level="10">是工具不是老板，我爱这个能量！✨</reply>
+                <reply id="57-sr2-1" reply-level="1">我的手机也 24 小时尖叫着求关注。</reply>
+                <reply id="57-sr2-2" reply-level="2">除了真人，其他都静音，这就是诀窍。</reply>
+                <reply id="57-sr2-3" reply-level="3">不害怕错过短信吗？📱</reply>
+                <reply id="57-sr2-4" reply-level="4">短信照常来，只是少了戏剧！✅</reply>
+                <reply id="57-sr2-5" reply-level="5">重要的事来得平静，谁能想到！⚡</reply>
+                <reply id="57-sr2-6" reply-level="6">而且手机不再是老虎机！🎰</reply>
+                <reply id="57-sr2-7" reply-level="7">今晚我就把通知关掉！💪</reply>
+                <reply id="57-sr2-8" reply-level="8">享受这份安静，会上瘾！😄</reply>
+                <reply id="57-sr2-9" reply-level="9">当然是好的那种上瘾！💚</reply>
+                <reply id="57-sr2-10" reply-level="10">一个设置菜单，全面平静！✨</reply>
+            </reply-group>
+            <reply-group id="58">
+                <reply id="58-sr1-1" reply-level="1">「就五分钟」这个谎言也骗了我好几年！</reply>
+                <reply id="58-sr1-2" reply-level="2">刷屏虚空里的时间不是流逝，是蒸发！</reply>
+                <reply id="58-sr1-3" reply-level="3">那你和朋友改发什么消息？💬</reply>
+                <reply id="58-sr1-4" reply-level="4">什么都聊，就像以前的电话一样！📞</reply>
+                <reply id="58-sr1-5" reply-level="5">什么都聊、什么都不聊是最好的聊天！⚡</reply>
+                <reply id="58-sr1-6" reply-level="6">昨天我们用短信策划了一次野餐！🧺</reply>
+                <reply id="58-sr1-7" reply-level="7">一个野餐，诞生的五分钟！🌞</reply>
+                <reply id="58-sr1-8" reply-level="8">真正的计划从真正的对话里长出来！💚</reply>
+                <reply id="58-sr1-9" reply-level="9">让你忘记时间存在的 app，太没礼貌了！😤</reply>
+                <reply id="58-sr1-10" reply-level="10">偷时间是最没礼貌的功能！✨</reply>
+                <reply id="58-sr2-1" reply-level="1">说「没礼貌」太客气了，它是你晚上的扒手！</reply>
+                <reply id="58-sr2-2" reply-level="2">而且还从不道歉，只是给你看下一个短视频！</reply>
+                <reply id="58-sr2-3" reply-level="3">换成短信后多久才觉得正常？⏳</reply>
+                <reply id="58-sr2-4" reply-level="4">大概三天，然后拇指就重新训练了！🧠</reply>
+                <reply id="58-sr2-5" reply-level="5">拇指能重新训练，那大家都有希望！💪</reply>
+                <reply id="58-sr2-6" reply-level="6">我试过之后，晚上又属于我了！🌙</reply>
+                <reply id="58-sr2-7" reply-level="7">晚上属于你，不属于一个 app！🏆</reply>
+                <reply id="58-sr2-8" reply-level="8">你刚刚治好了五分钟谎言！✅</reply>
+                <reply id="58-sr2-9" reply-level="9">五分钟，诚实且自由！⚡</reply>
+                <reply id="58-sr2-10" reply-level="10">广告终于说实话了！✨</reply>
+            </reply-group>
+            <reply-group id="59">
+                <reply id="59-sr1-1" reply-level="1">和姐姐通一小时电话，无价！</reply>
+                <reply id="59-sr1-2" reply-level="2">我们挂电话只是因为得煮水续茶了！</reply>
+                <reply id="59-sr1-3" reply-level="3">聊了那么久都聊什么了？☎️</reply>
+                <reply id="59-sr1-4" reply-level="4">什么都聊，包括家族群里的风波！😂</reply>
+                <reply id="59-sr1-5" reply-level="5">两个人一起分析群聊，绝了！⚡</reply>
+                <reply id="59-sr1-6" reply-level="6">然后和老同学喝咖啡，纯属巧合！☕</reply>
+                <reply id="59-sr1-7" reply-level="7">意外相遇胜过计划好的刷屏时间！🚶</reply>
+                <reply id="59-sr1-8" reply-level="8">你这个周末基本上全是社交了！🗓️</reply>
+                <reply id="59-sr1-9" reply-level="9">而零 app 参与，居然就这么管用！💚</reply>
+                <reply id="59-sr1-10" reply-level="10">没计划的东西总是最好的！✨</reply>
+                <reply id="59-sr2-1" reply-level="1">网外周末听起来比网上周末更社交。</reply>
+                <reply id="59-sr2-2" reply-level="2">算法从没让我偶遇过老友！</reply>
+                <reply id="59-sr2-3" reply-level="3">你还在见那个老同学吗？👋</reply>
+                <reply id="59-sr2-4" reply-level="4">咖啡变成了每周一次，我们又成朋友了！☕</reply>
+                <reply id="59-sr2-5" reply-level="5">一段友谊被一条人行道重启了！⚡</reply>
+                <reply id="59-sr2-6" reply-level="6">真实的路胜过数字信息流！🛤️</reply>
+                <reply id="59-sr2-7" reply-level="7">我的第一个网外周末快来了，谢谢预告！🌟</reply>
+                <reply id="59-sr2-8" reply-level="8">愿它充满意外的重逢！🍀</reply>
+                <reply id="59-sr2-9" reply-level="9">以及和家人的长电话！💛</reply>
+                <reply id="59-sr2-10">回来汇报一下周末的胜利！✨</reply>
+            </reply-group>
+            <reply-group id="60">
+                <reply id="60-sr1-1" reply-level="1">离开后反而更亲近，谁能想到的反转！</reply>
+                <reply id="60-sr1-2" reply-level="2">时间线是扇窗，电话是扇门！</reply>
+                <reply id="60-sr1-3" reply-level="3">现在大家最喜欢怎么联系？📞</reply>
+                <reply id="60-sr1-4" reply-level="4">周五通话和突然送上门的晚饭！🍜</reply>
+                <reply id="60-sr1-5" reply-level="5">意外外卖是友谊的顶配！⚡</reply>
+                <reply id="60-sr1-6" reply-level="6">我们的群聊现在全是饭局安排！🗓️</reply>
+                <reply id="60-sr1-7" reply-level="7">饭局安排是我最喜欢的一种聊天！💚</reply>
+                <reply id="60-sr1-8" reply-level="8">我们比任何人发帖都先知道真消息！🤫</reply>
+                <reply id="60-sr1-9" reply-level="9">第一手消息，来自真实的声音！🎙️</reply>
+                <reply id="60-sr1-10">门和电话永远胜过信息流！✨</reply>
+            </reply-group>
+            <reply-group id="61">
+                <reply id="61-sr1-1" reply-level="1">用老虎机换吊床，史上最好的交易！</reply>
+                <reply id="61-sr1-2" reply-level="2">同一个拇指，完全相反的 vibe！</reply>
+                <reply id="61-sr1-3" reply-level="3">怎么保证五分钟就是五分钟？⏱️</reply>
+                <reply id="61-sr1-4" reply-level="4">一个小计时器，还有 app 会主动提醒你去摸草！🌱</reply>
+                <reply id="61-sr1-5" reply-level="5">一个叫你离开的 app，革命！⚡</reply>
+                <reply id="61-sr1-6" reply-level="6">五分钟后满足，而不是几小时后暴躁！😌</reply>
+                <reply id="61-sr1-7" reply-level="7">吊床模式是我的新目标！🛼</reply>
+                <reply id="61-sr1-8" reply-level="8">吊床永远在旁边等着！🎪</reply>
+                <reply id="61-sr1-9" reply-level="9">生气地刷屏，回头看真是个奇怪的爱好！😅</reply>
+                <reply id="61-sr1-10">交换完成，享受吊床！✨</reply>
+            </reply-group>
+            <reply-group id="62">
+                <reply id="62-sr1-1" reply-level="1">四分钟的慌张换来几小时的走神，划算！</reply>
+                <reply id="62-sr1-2" reply-level="2">大脑最终会启动自己的娱乐节目！</reply>
+                <reply id="62-sr1-3" reply-level="3">那个陌生人的帽子是什么样的？🎩</reply>
+                <reply id="62-sr1-4" reply-level="4">一顶华丽的大宽檐帽，肯定是退役船长！⚓</reply>
+                <reply id="62-sr1-5" reply-level="5">退役船长理论是扎实的研究！⚡</reply>
+                <reply id="62-sr1-6" reply-level="6">你现在经常不带手机出门吗？🚌</reply>
+                <reply id="62-sr1-7" reply-level="7">大部分出行都这样，每次更容易！✅</reply>
+                <reply id="62-sr1-8" reply-level="8">走神是免费电影院，质量时好时坏！🎬</reply>
+                <reply id="62-sr1-9" reply-level="9">好点子一直都在那里！💡</reply>
+                <reply id="62-sr1-10">无聊，被误解最深的特性！✨</reply>
+                <reply id="62-sr2-1" reply-level="1">把无聊当作特性，正是我需要的视角转变！</reply>
+                <reply id="62-sr2-2" reply-level="2">它是万物的孵化器，连退役船长理论都能孵出来！</reply>
+                <reply id="62-sr2-3" reply-level="3">走神时想出了什么好点子？💭</reply>
+                <reply id="62-sr2-4" reply-level="4">一个花园计划和一封给老友的信，两样都完成了！💌</reply>
+                <reply id="62-sr2-5" reply-level="5">走神变成了信，太美了！⚡</reply>
+                <reply id="62-sr2-6" reply-level="6">写信这个想法是我的最爱！✉️</reply>
+                <reply id="62-sr2-7" reply-level="7">无聊比算法写得更好！📝</reply>
+                <reply id="62-sr2-8" reply-level="8">公交车基本上就是点子快递服务！🚌</reply>
+                <reply id="62-sr2-9" reply-level="9">走神正在重新流行！💚</reply>
+                <reply id="62-sr2-10">四分钟的慌张，每秒都值得！✨</reply>
+            </reply-group>
+            <reply-group id="63">
+                <reply id="63-sr1-1" reply-level="1">在广告时间戒烟，辉煌高效！</reply>
+                <reply id="63-sr1-2" reply-level="2">广告比戒断还长，是诗！</reply>
+                <reply id="63-sr1-3" reply-level="3">朋友回了什么？💬</reply>
+                <reply id="63-sr1-4" reply-level="4">笑话、晚饭计划，一张猫照！🐱</reply>
+                <reply id="63-sr1-5" reply-level="5">猫照按需发送，这才是真互联网！⚡</reply>
+                <reply id="63-sr1-6" reply-level="6">你的通知现在就是纯友谊了！💌</reply>
+                <reply id="63-sr1-7" reply-level="7">朋友的回复轻松击败 app 的提示！📳</reply>
+                <reply id="63-sr1-8" reply-level="8">只有人的提示，高级套餐！💚</reply>
+                <reply id="63-sr1-9" reply-level="9">「革命性概念」说得太对了！✊</reply>
+                <reply id="63-sr1-10">广告时间出场，友谊入场！✨</reply>
+                <reply id="63-sr2-1" reply-level="1">「比一集短」是我最喜欢的努力单位。</reply>
+                <reply id="63-sr2-2" reply-level="2">戒社交媒体是用情景喜剧分钟计算的，不是史诗战争！</reply>
+                <reply id="63-sr2-3" reply-level="3">删完还看完了那集吗？📺</reply>
+                <reply id="63-sr2-4" reply-level="4">完整看完，一次没看手机！✅</reply>
+                <reply id="63-sr2-5" reply-level="5">一集全程专注，太神了！⚡</reply>
+                <reply id="63-sr2-6" reply-level="6">在沙发上发消息听起来很舒适！🛋️</reply>
+                <reply id="63-sr2-7" reply-level="7">舒适又连接，完美的组合！💛</reply>
+                <reply id="63-sr2-8" reply-level="8">今晚我也有广告时间，我掐着点呢！⏱️</reply>
+                <reply id="63-sr2-9" reply-level="9">一个广告时间换自由！🚀</reply>
+                <reply id="63-sr2-10">享受革命！✨</reply>
+            </reply-group>
+            <reply-group id="64">
+                <reply id="64-sr1-1" reply-level="1">从五小时到四十分钟，太不可思议了！</reply>
+                <reply id="64-sr1-2" reply-level="2">西红柿得到了那段时间，老实说它们值得！</reply>
+                <reply id="64-sr1-3" reply-level="3">你爸对电话怎么反应？🍅</reply>
+                <reply id="64-sr1-4" reply-level="4">他开心地聊了二十分钟西红柿！📞</reply>
+                <reply id="64-sr1-5" reply-level="5">二十分钟的西红柿谈话，纯金！⚡</reply>
+                <reply id="64-sr1-6" reply-level="6">我的报告周日来，真怕！📊</reply>
+                <reply id="64-sr1-7" reply-level="7">怕它、看它、修它，然后就自由了！💪</reply>
+                <reply id="64-sr1-8" reply-level="8">四十分钟屏幕时间是顶级！🏆</reply>
+                <reply id="64-sr1-9" reply-level="9">健身房、书、电话，时间都找回来了！💚</reply>
+                <reply id="64-sr1-10">时间一直都在那儿！✨</reply>
+            </reply-group>
+            <reply-group id="65">
+                <reply id="65-sr1-1" reply-level="1">「你需要的连接不需要 Wi-Fi」我要贴到墙上！</reply>
+                <reply id="65-sr1-2" reply-level="2">登机口边的智慧，感谢一台坏掉的路由器！</reply>
+                <reply id="65-sr1-3" reply-level="3">她说的最好的话是什么？🏺</reply>
+                <reply id="65-sr1-4" reply-level="4">恐惧和兴奋可以装进同一个行李箱！✈️</reply>
+                <reply id="65-sr1-5" reply-level="5">恐惧和兴奋，退休的组合！⚡</reply>
+                <reply id="65-sr1-6">两小时飞快，都不需要笑话延误了！⏰</reply>
+                <reply id="65-sr1-7">交换号码了吗？📇</reply>
+                <reply id="65-sr1-8">下个月她要教我陶艺！🎨</reply>
+                <reply id="65-sr1-9">一次线下诞生的陶艺师徒缘！🌟</reply>
+                <reply id="65-sr1-10">最好的 app 是人！💚</reply>
+            </reply-group>
+            <reply-group id="66">
+                <reply id="66-sr1-1" reply-level="1">短信、电话和酒馆，完整套装！</reply>
+                <reply id="66-sr1-2" reply-level="2">古老的技术，到今天还是无敌！</reply>
+                <reply id="66-sr1-3" reply-level="3">现在群里是什么类型的计划？🗓️</reply>
+                <reply id="66-sr1-4" reply-level="4">周日烧烤、电影夜，一场传奇的酒馆竞猜！🍻</reply>
+                <reply id="66-sr1-5" reply-level="5">传奇酒馆竞猜需要传奇的队名！🎯</reply>
+                <reply id="66-sr1-6" reply-level="6">我们叫「无通知传奇」！🏆</reply>
+                <reply id="66-sr1-7">没信息流的群聊更好笑了！💬</reply>
+                <reply id="66-sr1-8">因为现在我们被自己的笑话逗笑了！😄</reply>
+                <reply id="66-sr1-9">对计划做反应比对帖子做反应好多了！⚡</reply>
+                <reply id="66-sr1-10">酒馆是我们的新社交信息流！✨</reply>
+                <reply id="66-sr2-1" reply-level="1">「根本不关心的事情」直接击中我。</reply>
+                <reply id="66-sr2-2" reply-level="2">一半的信息流是关于别人意见的意见！</reply>
+                <reply id="66-sr2-3" reply-level="3">群聊扛过迁移了吗？📱</reply>
+                <reply id="66-sr2-4" reply-level="4">正繁荣，更瘦、更好笑、更多真人！✅</reply>
+                <reply id="66-sr2-5" reply-level="5">聊天更瘦，羁绊更强！⚡</reply>
+                <reply id="66-sr2-6" reply-level="6">从那以后没人转发过一条短视频！📵</reply>
+                <reply id="66-sr2-7" reply-level="7">短视频本来就是聊天填充物！🗑️</reply>
+                <reply id="66-sr2-8">我的朋友也会喜欢这样的群聊！💛</reply>
+                <reply id="66-sr2-9">先发一个酒馆竞猜邀请！🍻</reply>
+                <reply id="66-sr2-10">为没有戏剧的退出干杯！✨</reply>
+            </reply-group>
+            <reply-group id="67">
+                <reply id="67-sr1-1" reply-level="1">「这周喝咖啡？」是有史以来最强大的 app。</reply>
+                <reply id="67-sr1-2" reply-level="2">两个词，一个按钮，无限的友情！</reply>
+                <reply id="67-sr1-3" reply-level="3">这条消息促成了多少次咖啡约会？☕</reply>
+                <reply id="67-sr1-4" reply-level="4">一周三次，我的日历基本就是个咖啡馆了！📅</reply>
+                <reply id="67-sr1-5" reply-level="5">带着浓缩咖啡香味的日历，太梦幻了！⚡</reply>
+                <reply id="67-sr1-6" reply-level="6">算法真的从来没给你约到过咖啡？🤔</reply>
+                <reply id="67-sr1-7" reply-level="7">从来没有，而我刷了几年！📵</reply>
+                <reply id="67-sr1-8">几年的刷屏，零杯拿铁！☕</reply>
+                <reply id="67-sr1-9">拇指的力量战胜算法的力量！💪</reply>
+                <reply id="67-sr1-10">十秒钟到达真正的幸福！✨</reply>
+            </reply-group>
+            <reply-group id="68">
+                <reply id="68-sr1-1" reply-level="1">声音胜于文字，文字胜于点赞，完整的等级！</reply>
+                <reply id="68-sr1-2" reply-level="2">感情就住在声音里！</reply>
+                <reply id="68-sr1-3" reply-level="3">第一次胜利电话打给谁了？📞</reply>
+                <reply id="68-sr1-4" reply-level="4">我哥，告诉他新工作的事，他大喊了一声！🎉</reply>
+                <reply id="68-sr1-5" reply-level="5">从话筒传过来的欢呼胜过一千个赞！⚡</reply>
+                <reply id="68-sr1-6" reply-level="6">我妈把骄傲的声音留给了大事！💛</reply>
+                <reply id="68-sr1-7">而那种感受完全不一样！💚</reply>
+                <reply id="68-sr1-8">评论区是欢呼不出来的！📯</reply>
+                <reply id="68-sr1-9">欢呼是友谊的专利技术！😄</reply>
+                <reply id="68-sr1-10">打电话报喜是新的炫技方式！✨</reply>
+            </reply-group>
+            <reply-group id="69">
+                <reply id="69-sr1-1" reply-level="1">两周重启注意力，这消息不错！</reply>
+                <reply id="69-sr1-2" reply-level="2">当铺那个比喻精准得让人心疼！</reply>
+                <reply id="69-sr1-3" reply-level="3">回来读的第一本书是什么？📚</reply>
+                <reply id="69-sr1-4" reply-level="4">一本几个月前被我丢在抽屉里的！📖</reply>
+                <reply id="69-sr1-5">读完被抛弃的书是一种圆满！⚡</reply>
+                <reply id="69-sr1-6">不看手机地看完一部电影，英雄行为！🎬</reply>
+                <reply id="69-sr1-7">英雄行为，现在完全普通了！✅</reply>
+                <reply id="69-sr1-8">我的脑子也比以前更少跑偏！🧠</reply>
+                <reply id="69-sr1-9">安静的脑子，满满的书架！💛</reply>
+                <reply id="69-sr1-10">从当铺里赎回的心智！✨</reply>
+            </reply-group>
+            <reply-group id="70">
+                <reply id="70-sr1-1" reply-level="1">腿上的幻觉又真实又奇怪！</reply>
+                <reply id="70-sr1-2" reply-level="2">我的大腿基本就是一个无薪通知中心！</reply>
+                <reply id="70-sr1-3" reply-level="3">幽灵振动多久才停？🦵</reply>
+                <reply id="70-sr1-4">大概两周，然后就完全安静！✅</reply>
+                <reply id="70-sr1-5">两周换来口袋和平，值了！⚡</reply>
+                <reply id="70-sr1-6">那种焦虑等待我一点都不想念！😰</reply>
+                <reply id="70-sr1-7">就是……停止等待了，最终！🕊️</reply>
+                <reply id="70-sr1-8">我的口袋已经安静一个月了！📵</reply>
+                <reply id="70-sr1-9">一个月的寂静，太美了！💚</reply>
+                <reply id="70-sr1-10">腿终于可以休息了！✨</reply>
+            </reply-group>
+            <reply-group id="71">
+                <reply id="71-sr1-1" reply-level="1">「更温暖、更本地、更好吃」是对现实的好评价！</reply>
+                <reply id="71-sr1-2" reply-level="2">信息流是三星，真实生活是五星！</reply>
+                <reply id="71-sr1-3" reply-level="3">现在什么更好吃了？🍎</reply>
+                <reply id="71-sr1-4">和朋友喝咖啡，还有自己做的饭，奇怪地！☕</reply>
+                <reply id="71-sr1-5">不急不忙的时候什么都更好吃！⚡</reply>
+                <reply id="71-sr1-6">话题标签真的从脑子里消失了！🏷️</reply>
+                <reply id="71-sr1-7">脑子自动清空杂物！🧠</reply>
+                <reply id="71-sr1-8">三个月的电话，有什么最爱？☎️</reply>
+                <reply id="71-sr1-9">周日给奶奶的电话，永远！💛</reply>
+                <reply id="71-sr1-10">那才是真正的热门话题！✨</reply>
+            </reply-group>
+            <reply-group id="72">
+                <reply id="72-sr1-1" reply-level="1">「关机是一种完整的氛围」应该印在 T 恤上！</reply>
+                <reply id="72-sr1-2" reply-level="2">侧边按钮：认证的生活方式功能！</reply>
+                <reply id="72-sr1-3" reply-level="3">关机仪式几点开始？🕕</reply>
+                <reply id="72-sr1-4" reply-level="4">六点整，安静时刻开始！🌆</reply>
+                <reply id="72-sr1-5" reply-level="5">每天一小时的安静，奢侈生活！⚡</reply>
+                <reply id="72-sr1-6" reply-level="6">世界眨过眼吗？🌍</reply>
+                <reply id="72-sr1-7">一次都没有，它几乎没注意到！✅</reply>
+                <reply id="72-sr1-8">没有我们，世界意外地过得挺好！😄</reply>
+                <reply id="72-sr1-9">关机键解锁的味道！💚</reply>
+                <reply id="72-sr1-10">关机是我的新最爱设置！✨</reply>
+            </reply-group>
+            <reply-group id="73">
+                <reply id="73-sr1-1" reply-level="1">「排队是思考小隔间」是赠人的一句话！</reply>
+                <reply id="73-sr1-2" reply-level="2">一个偶尔还代办邮政业务的免费办公室！</reply>
+                <reply id="73-sr1-3" reply-level="3">排队里策划了什么旅行？🗺️</reply>
+                <reply id="73-sr1-4">海边散步和海边炸薯条站！🍟</reply>
+                <reply id="73-sr1-5">邮局队伍策划出来的炸薯条！⚡</reply>
+                <reply id="73-sr1-6">没有提醒就能记住生日，太厉害了！🎂</reply>
+                <reply id="73-sr1-7">现在我的脑子在排队里啥也不策划！🧠</reply>
+                <reply id="73-sr1-8">给它一周安静的排队！⏳</reply>
+                <reply id="73-sr1-9">思考小隔间万岁！💚</reply>
+                <reply id="73-sr1-10">排队会提供一切！✨</reply>
+            </reply-group>
+            <reply-group id="74">
+                <reply id="74-sr1-1" reply-level="1">这个年代居然还有人打电话？！</reply>
+                <reply id="74-sr1-2" reply-level="2">一个电话！带着声音！革命！</reply>
+                <reply id="74-sr1-3" reply-level="3">你参加了什么现实活动？🎨</reply>
+                <reply id="74-sr1-4">攀岩小组，每周二都带淤青！🧗</reply>
+                <reply id="74-sr1-5">淤青当友谊徽章，太喜欢了！⚡</reply>
+                <reply id="74-sr1-6">攀岩比滑动强，握力也更好！😄</reply>
+                <reply id="74-sr1-7">交换的号码是真的号码！☎️</reply>
+                <reply id="74-sr1-8">真会接电话的号码！📞</reply>
+                <reply id="74-sr1-9">「披萨和讽刺」的简介也折磨过我！🍕</reply>
+                <reply id="74-sr1-10">个性就展现在攀岩里！✨</reply>
+            </reply-group>
+            <reply-group id="75">
+                <reply id="75-sr1-1" reply-level="1">没人注意，既恐怖又自由！</reply>
+                <reply id="75-sr1-2" reply-level="2">观众是想象的，朋友是真实的！</reply>
+                <reply id="75-sr1-3" reply-level="3">谁发的「你还好吗」？📱</reply>
+                <reply id="75-sr1-4">我最好的两个朋友，这一下就说明了一切！💛</reply>
+                <reply id="75-sr1-5">两条消息胜过所有粉丝！⚡</reply>
+                <reply id="75-sr1-6">表演在你停止的那天就结束了！🎭</reply>
+                <reply id="75-sr1-7">舞台就这么消失了，没有戏剧！✅</reply>
+                <reply id="75-sr1-8">我的观众可能也是想象的！🤔</reply>
+                <reply id="75-sr1-9">试试吧，真相是温柔的！🌱</reply>
+                <reply id="75-sr1-10">从想象的观众中解放！✨</reply>
+            </reply-group>
+            <reply-group id="76">
+                <reply id="76-sr1-1" reply-level="1">晨间日记放在八卦前，多好的饮食！</reply>
+                <reply id="76-sr1-2" reply-level="2">空白页是最诚实的信息流！</reply>
+                <reply id="76-sr1-3" reply-level="3">你大部分写什么？✏️</reply>
+                <reply id="76-sr1-4">梦、担忧和荒唐的购物清单！🛒</reply>
+                <reply id="76-sr1-5">购物清单也值得出现在疗愈笔记本里！⚡</reply>
+                <reply id="76-sr1-6">笔记本里没有广告，只有我！📓</reply>
+                <reply id="76-sr1-7">也没有早饭前的突发新闻！🌅</reply>
+                <reply id="76-sr1-8">我的想法值得占据一天的第一个时段！💭</reply>
+                <reply id="76-sr1-9">十分钟和自己大脑独处！🧠</reply>
+                <reply id="76-sr1-10">没有刷屏的早晨是最好的早晨！✨</reply>
+            </reply-group>
+            <reply-group id="77">
+                <reply id="77-sr1-1" reply-level="1">同一个习惯，相反的效果，聪明的重新布线！</reply>
+                <reply id="77-sr1-2" reply-level="2">冲动被重定向而不是删除！</reply>
+                <reply id="77-sr1-3" reply-level="3">散步时听什么播客？🎧</reply>
+                <reply id="77-sr1-4">历史和关于森林的，莫名地治愈！🌲</reply>
+                <reply id="77-sr1-5">傍晚散步听森林播客，完美！⚡</reply>
+                <reply id="77-sr1-6">三十分钟在好音频里飞一样！⏱️</reply>
+                <reply id="77-sr1-7">而且回消息变得自然而然！📱</reply>
+                <reply id="77-sr1-8">精力回来了，聊天也轻松了！💬</reply>
+                <reply id="77-sr1-9">能量进来而不是出去，和刷屏完全相反！🔄</reply>
+                <reply id="77-sr1-10">散步把信息流夺走的东西还回来！💚</reply>
+            </reply-group>
+            <reply-group id="78">
+                <reply id="78-sr1-1" reply-level="1">电池变成进度条，太妙了！</reply>
+                <reply id="78-sr1-2" reply-level="2">我的充电百分比变成了平静百分比！</reply>
+                <reply id="78-sr1-3" reply-level="3">以前什么最耗电？🔋</reply>
+                <reply id="78-sr1-4">无限刷屏，每时每刻！📉</reply>
+                <reply id="78-sr1-5">刷新循环就是电池吸血鬼！🧛</reply>
+                <reply id="78-sr1-6">删一个 app，看着曲线改变！📊</reply>
+                <reply id="78-sr1-7">现在多出来的都花在生活上！💚</reply>
+                <reply id="78-sr1-8">什么生活里的东西得到了额外时间？🌅</reply>
+                <reply id="78-sr1-9">电话、散步、终于读完的书！📚</reply>
+                <reply id="78-sr1-10">最好的电池升级是删除按钮！✨</reply>
+            </reply-group>
+            <reply-group id="79">
+                <reply id="79-sr1-1" reply-level="1">三步指南加披萨比较，无敌！</reply>
+                <reply id="79-sr1-2" reply-level="2">整个自助书籍行业都被碾压了！</reply>
+                <reply id="79-sr1-3" reply-level="3">第二步大家都忘，特别重要！📱</reply>
+                <reply id="79-sr1-4">交出号码保住朋友，放下信息流！☎️</reply>
+                <reply id="79-sr1-5">留朋友、删信息流，完美的交换！⚡</reply>
+                <reply id="79-sr1-6">第三步立刻让它变得社交起来！💬</reply>
+                <reply id="79-sr1-7">电话填满了 app 留下的空隙！📞</reply>
+                <reply id="79-sr1-8">「比订披萨简单」是正确标准！🍕</reply>
+                <reply id="79-sr1-9">我的三步今晚开始！💪</reply>
+                <reply id="79-sr1-10">祝你好运，享受电话！✨</reply>
+            </reply-group>
+            <reply-group id="80">
+                <reply id="80-sr1-1" reply-level="1">九十秒，一个可以战胜的冲动！</reply>
+                <reply id="80-sr1-2" reply-level="2">比煮个鸡蛋还短，还更健康！🥚</reply>
+                <reply id="80-sr1-3" reply-level="3">俯卧撑每次都管用吗？💪</reply>
+                <reply id="80-sr1-4">大部分时候，而且我的手臂从没这么好过！💪</reply>
+                <reply id="80-sr1-5">意外的健身计划！⚡</reply>
+                <reply id="80-sr1-6">维多利亚幽灵看窗这一招是我的最爱！👻</reply>
+                <reply id="80-sr1-7">戏剧性地看窗外不要钱还好用！🪟</reply>
+                <reply id="80-sr1-8">我还是给群聊发笑话吧！😂</reply>
+                <reply id="80-sr1-9">两个都有效，手臂和笑声！✅</reply>
+                <reply id="80-sr1-10">冲动死了，习惯死了，自由留下了！🌿</reply>
+            </reply-group>
+            <reply-group id="81">
+                <reply id="81-sr1-1" reply-level="1">专用面包箱，这承诺太到位了！</reply>
+                <reply id="81-sr1-2" reply-level="2">周日手机真的变成吐司了！🍞</reply>
+                <reply id="81-sr1-3" reply-level="3">围着鸡蛋聊两小时，美！🍳</reply>
+                <reply id="81-sr1-4">这样我们把整个公寓的问题都解决了！✅</reply>
+                <reply id="81-sr1-5">早餐议会！⚡</reply>
+                <reply id="81-sr1-6">室友们一开始反抗吗？🤨</reply>
+                <reply id="81-sr1-7">一周的抖动，然后全部皈依！😄</reply>
+                <reply id="81-sr1-8">从抖到皈依，经典弧线！💚</reply>
+                <reply id="81-sr1-9">最喜欢的早餐话题是什么？🗣️</reply>
+                <reply id="81-sr1-10">现在戏剧都在面包箱里了！✨</reply>
+            </reply-group>
+            <reply-group id="82">
+                <reply id="82-sr1-1" reply-level="1">从内容到回忆，最好的相册升级！</reply>
+                <reply id="82-sr1-2" reply-level="2">找午餐角度是一份没人应聘的全职工作！</reply>
+                <reply id="82-sr1-3" reply-level="3">现在最喜欢的回忆是什么？📸</reply>
+                <reply id="82-sr1-4">奶奶讲到一半笑得不行，糊糊的，完美！💛</reply>
+                <reply id="82-sr1-5">糊糊的完美是正确美学！⚡</reply>
+                <reply id="82-sr1-6">一张照片回到沙滩，太自律了！🏖️</reply>
+                <reply id="82-sr1-7">沙滩值得完整的注意力！🌊</reply>
+                <reply id="82-sr1-8">我的相册有三千张没用的截图！🤦</reply>
+                <reply id="82-sr1-9">回忆而不是内容，永远！💚</reply>
+                <reply id="82-sr1-10">享受那些模糊的杰作！✨</reply>
+            </reply-group>
+            <reply-group id="83">
+                <reply id="83-sr1-1" reply-level="1">睡眠评分从 C 到 A，传奇！</reply>
+                <reply id="83-sr1-2" reply-level="2">最实惠的健康升级！</reply>
+                <reply id="83-sr1-3" reply-level="3">晚上读什么？📖</reply>
+                <reply id="83-sr1-4">纸的都行，无屏幕规则必须守住！📚</reply>
+                <reply id="83-sr1-5">只读纸，大脑同意！⚡</reply>
+                <reply id="83-sr1-6">手机寡妇阶段太真实了！🖤</reply>
+                <reply id="83-sr1-7">它会过去的，然后夜晚归你！🌙</reply>
+                <reply id="83-sr1-8">九点整，安静开始！🕘</reply>
+                <reply id="83-sr1-9">我的评分也朝着 A 去了！💪</reply>
+                <reply id="83-sr1-10">荣誉榜见！🎓</reply>
+            </reply-group>
+            <reply-group id="84">
+                <reply id="84-sr1-1" reply-level="1">一通电话、骄傲，还有周末旅行，中头奖！</reply>
+                <reply id="84-sr1-2" reply-level="2">改变生活的通知原来是电话铃声！</reply>
+                <reply id="84-sr1-3" reply-level="3">周末旅行去哪儿？🧳</reply>
+                <reply id="84-sr1-4">湖边小屋，零格信号！🏕️</reply>
+                <reply id="84-sr1-5">零信号是现在的五星级！⚡</reply>
+                <reply id="84-sr1-6">你回电时她惊讶吗？📞</reply>
+                <reply id="84-sr1-7">超开心！她的原话，不是我说的！😄</reply>
+                <reply id="84-sr1-8">开心是对友谊正确的反应！💛</reply>
+                <reply id="84-sr1-9">她声音里的骄傲一定很动人！💚</reply>
+                <reply id="84-sr1-10">老实说那劲头持续了一周！✨</reply>
+            </reply-group>
+            <reply-group id="85">
+                <reply id="85-sr1-1" reply-level="1">「好笑地容易，戒断很无聊」是诚实的评价！</reply>
+                <reply id="85-sr1-2" reply-level="2">广告里是大战，实际交付的是安静！</reply>
+                <reply id="85-sr1-3" reply-level="3">「第二天很奇怪」是个准确的路标！📅</reply>
+                <reply id="85-sr1-4">最奇怪的一天过去后，平静来了！🕊️</reply>
+                <reply id="85-sr1-5">先奇怪后平静，官方的日程！⚡</reply>
+                <reply id="85-sr1-6">沉重的包这个比喻太准了！🎒</reply>
+                <reply id="85-sr1-7">肩膀立刻就能感觉到！💆</reply>
+                <reply id="85-sr1-8">第四天基本上是自由日！🏁</reply>
+                <reply id="85-sr1-9">比心理咨询便宜，比度假好！🌤️</reply>
+                <reply id="85-sr1-10">享受轻松的肩膀！✨</reply>
+            </reply-group>
+            <reply-group id="86">
+                <reply id="86-sr1-1" reply-level="1">2009 年风格的短信，完整的怀旧套餐！</reply>
+                <reply id="86-sr1-2" reply-level="2">无限短信那几年终于派上用场了！</reply>
+                <reply id="86-sr1-3" reply-level="3">群里最常出现的是什么消息？💬</reply>
+                <reply id="86-sr1-4">「晚饭，我家，七点」，然后九张狗照片！🐶</reply>
+                <reply id="86-sr1-5">九只狗，品味无可挑剔！⚡</reply>
+                <reply id="86-sr1-6">没人想念被转发的短视频！📵</reply>
+                <reply id="86-sr1-7">一个人都没有！群聊现在是纯友谊！✅</reply>
+                <reply id="86-sr1-8">比以往任何时候都多，群聊需要它！📅</reply>
+                <reply id="86-sr1-9">聊天变小了，友谊变大了，喜欢！💚</reply>
+                <reply id="86-sr1-10">短信是无敌的！✨</reply>
+            </reply-group>
+            <reply-group id="87">
+                <reply id="87-sr1-1" reply-level="1">「不需要打包的度假」是梦想！</reply>
+                <reply id="87-sr1-2" reply-level="2">没行李箱，没排队，只有自由时间！</reply>
+                <reply id="87-sr1-3" reply-level="3">第一天休假到底是什么感觉？🕛</reply>
+                <reply id="87-sr1-4">长得可疑，以最好的方式！⏳</reply>
+                <reply id="87-sr1-5">拔掉插头，日子就变长了！⚡</reply>
+                <reply id="87-sr1-6">朋友现在得打电话了，多大的悲剧！📞</reply>
+                <reply id="87-sr1-7">电话这个毁灭性的负担！😄</reply>
+                <reply id="87-sr1-8">就像永久的居家度假！🏖️</reply>
+                <reply id="87-sr1-9">那个「但是」就是奖品，老实说！💚</reply>
+                <reply id="87-sr1-10">享受没有行李箱的度假！✨</reply>
+            </reply-group>
+            <reply-group id="88">
+                <reply id="88-sr1-1" reply-level="1">狗是最高级的养生教练！</reply>
+                <reply id="88-sr1-2" reply-level="2">严格又公平，饼干付工资！</reply>
+                <reply id="88-sr1-3">现在的嗅觉散步有多长？🐕</reply>
+                <reply id="88-sr1-4">一小时，晴天她还能谈出延长！☀️</reply>
+                <reply id="88-sr1-5">晴天延期条款！⚡</reply>
+                <reply id="88-sr1-6">我的狗也用眼神审判我的屏幕时间！👀</reply>
+                <reply id="88-sr1-7">屏幕时间减半，多亏了带尾巴的私人教练！📉</reply>
+                <reply id="88-sr1-8">最好的监督方式！💚</reply>
+                <reply id="88-sr1-9">饼干工资，理所当然！🦴</reply>
+                <reply id="88-sr1-10">继续散步吧，教练和学员！✨</reply>
+            </reply-group>
+            <reply-group id="89">
+                <reply id="89-sr1-1" reply-level="1">门是最诚实的天气 app！🚪</reply>
+                <reply id="89-sr1-2" reply-level="2">百年验证的技术，零广告！</reply>
+                <reply id="89-sr1-3" reply-level="3">农夫的感觉持续了吗？👨‍🌾</reply>
+                <reply id="89-sr1-4">整个周末，还去看看豆子！🫘</reply>
+                <reply id="89-sr1-5">豆子感激你的亲自拜访！⚡</reply>
+                <reply id="89-sr1-6">用足球电话代替发帖！📞</reply>
+                <reply id="89-sr1-7">激烈观点用真实声音分享更好！🗣️</reply>
+                <reply id="89-sr1-8">门的天气预报也准确！🌦️</reply>
+                <reply id="89-sr1-9">我从来没被它害过！✅</reply>
+                <reply id="89-sr1-10">门、朋友、足球、豆子，人生顶峰！💚</reply>
+            </reply-group>
+            <reply-group id="90">
+                <reply id="90-sr1-1" reply-level="1">「app 只是在扣留它」是考试季的真相！</reply>
+                <reply id="90-sr1-2" reply-level="2">它们扣押了我发誓从来没有的时间！</reply>
+                <reply id="90-sr1-3" reply-level="3">学习时间涨了多少？📚</reply>
+                <reply id="90-sr1-4">从碎片到正经的两小时块！⏰</reply>
+                <reply id="90-sr1-5">两小时块里才有真正的学习！⚡</reply>
+                <reply id="90-sr1-6">散步也增加了，平衡！🚶</reply>
+                <reply id="90-sr1-7">考试期间每周见朋友是关键！💛</reply>
+                <reply id="90-sr1-8">学习小组直接变成了朋友组！✅</reply>
+                <reply id="90-sr1-9">成绩上去，友谊稳住，精英学期！🎓</reply>
+                <reply id="90-sr1-10">愿曲线继续上升！✨</reply>
+            </reply-group>
+            <reply-group id="91">
+                <reply id="91-sr1-1" reply-level="1">用夜晚付费的免费表演，残酷的算术！</reply>
+                <reply id="91-sr1-2" reply-level="2">唯一一个你既是门票又是观众的演唱会！</reply>
+                <reply id="91-sr1-3" reply-level="3">夜晚的利润明显吗？🌙</reply>
+                <reply id="91-sr1-4">每天两小时回来，每周复利增长！⏳</reply>
+                <reply id="91-sr1-5">复利，但用在真实生活上！⚡</reply>
+                <reply id="91-sr1-6">三十秒的退出，史上最好的回报率！⏱️</reply>
+                <reply id="91-sr1-7">比取消电子报订阅还快！📭</reply>
+                <reply id="91-sr1-8">还有给朋友打电话，用红利！📞</reply>
+                <reply id="91-sr1-9">「利润留给自己」，喜欢这个框架！💰</reply>
+                <reply id="91-sr1-10">财富转移给自己的人生！💚</reply>
+            </reply-group>
+            <reply-group id="92">
+                <reply id="92-sr1-1" reply-level="1">半夜电话的记忆，是个好测试！</reply>
+                <reply id="92-sr1-2" reply-level="2">信息流蒸发了，声音留住了！</reply>
+                <reply id="92-sr1-3" reply-level="3">你还记得哪次半夜电话？🌙</reply>
+                <reply id="92-sr1-4">一个朋友宝宝的消息，小声的、满是喜悦！🍼</reply>
+                <reply id="92-sr1-5">小声的喜悦胜过高声的观点！⚡</reply>
+                <reply id="92-sr1-6">充值时代讲故事的素材特别多！☎️</reply>
+                <reply id="92-sr1-7">痕迹对虚无，最干净的总结！🧽</reply>
+                <reply id="92-sr1-8">「刷屏什么都不留」刻在信息流的墓碑上！🪦</reply>
+                <reply id="92-sr1-9">人生就活在那些痕迹里！💚</reply>
+                <reply id="92-sr1-10">为半夜的声音干杯！✨</reply>
+            </reply-group>
+            <reply-group id="93">
+                <reply id="93-sr1-1" reply-level="1">老人的西红柿推荐是高级内容！🍅</reply>
+                <reply id="93-sr1-2" reply-level="2">原始的推荐算法，带着几十年经验！</reply>
+                <reply id="93-sr1-3" reply-level="3">西红柿到底怎么样？🤔</reply>
+                <reply id="93-sr1-4">改变人生，昨天又买了四个！🛒</reply>
+                <reply id="93-sr1-5">五颗西红柿五星好评，罕见的分数！⚡</reply>
+                <reply id="93-sr1-6">手套箱是手机候车室！🚗</reply>
+                <reply id="93-sr1-7">收银员友好是个真实细节！🗣️</reply>
+                <reply id="93-sr1-8">抬头了就会有人跟你聊！💬</reply>
+                <reply id="93-sr1-9">真实世界确实是满配的！💚</reply>
+                <reply id="93-sr1-10">享受西红柿供应链！✨</reply>
+            </reply-group>
+            <reply-group id="94">
+                <reply id="94-sr1-1" reply-level="1">「手机开，水壶关」——整套哲学！☕</reply>
+                <reply id="94-sr1-2" reply-level="2">最古老也最可靠的自我关怀仪式！</reply>
+                <reply id="94-sr1-3" reply-level="3">在安静里你想什么？💭</reply>
+                <reply id="94-sr1-4">大事、小事，越来越多是舒服的小事！✨</reply>
+                <reply id="94-sr1-5">舒服的小事是顶级思考内容！⚡</reply>
+                <reply id="94-sr1-6">两个月才让安静成了最爱！🗓️</reply>
+                <reply id="94-sr1-7">水壶是我唯一需要的通知！🔔</reply>
+                <reply id="94-sr1-8">水开的声音现在感觉不一样了！💚</reply>
+                <reply id="94-sr1-9">原来我是挺好的陪伴！🪞</reply>
+                <reply id="94-sr1-10">我们是挺不错的相处对象！✨</reply>
+            </reply-group>
+            <reply-group id="95">
+                <reply id="95-sr1-1" reply-level="1">「给电话的活」是最有用的职位描述！</reply>
+                <reply id="95-sr1-2" reply-level="2">电话原本的职务，完美恢复！</reply>
+                <reply id="95-sr1-3" reply-level="3">你们笑了一个小时都笑什么？😂</reply>
+                <reply id="95-sr1-4">旧的尴尬回忆，高级内容存档！📦</reply>
+                <reply id="95-sr1-5">尴尬存档是友谊的金矿！⚡</reply>
+                <reply id="95-sr1-6">十分钟内回电话，前所未闻的速度！⏱️</reply>
+                <reply id="95-sr1-7">这种消息可以插任何队！✅</reply>
+                <reply id="95-sr1-8">没有理由的消息是我的新最爱！💌</reply>
+                <reply id="95-sr1-9">我也有一个老朋友需要这条消息！📱</reply>
+                <reply id="95-sr1-10">发吧，回电在等着！✨</reply>
+            </reply-group>
+            <reply-group id="96">
+                <reply id="96-sr1-1" reply-level="1">拇指没有意见，这太自由了！</reply>
+                <reply id="96-sr1-2" reply-level="2">原来最难的部分根本没有投票权！</reply>
+                <reply id="96-sr1-3" reply-level="3">没仪式感的那个下午你做了什么？🕐</reply>
+                <reply id="96-sr1-4">午饭后长散步，然后给两个朋友发消息！📱</reply>
+                <reply id="96-sr1-5">鞋穿了，app 关了，朋友通了！⚡</reply>
+                <reply id="96-sr1-6">午饭前四分钟，顶级时机！⏱️</reply>
+                <reply id="96-sr1-7">之后那个周一轻松吗？✅</reply>
+                <reply id="96-sr1-8">据说是今年最轻松的周一！😄</reply>
+                <reply id="96-sr1-9">据说轻松，官方是自由！💪</reply>
+                <reply id="96-sr1-10">周一戒烟俱乐部，成员猛增！✨</reply>
+            </reply-group>
+            <reply-group id="97">
+                <reply id="97-sr1-1" reply-level="1">章节有结束，信息流有陷阱！📚</reply>
+                <reply id="97-sr1-2" reply-level="2">故事关上，睡眠打开，完美的循环！</reply>
+                <reply id="97-sr1-3" reply-level="3">第十本书是什么？📖</reply>
+                <reply id="97-sr1-4">一本砖头厚的奇幻小说，我值得一本长的！🐉</reply>
+                <reply id="97-sr1-5">应得的砖头书，顶级阅读！⚡</reply>
+                <reply id="97-sr1-6">一年九本书，认真的速度！🏃</reply>
+                <reply id="97-sr1-7">你读纸书还是电子书？📄</reply>
+                <reply id="97-sr1-8">纸的，在床头柜上睡得更香！🛏️</reply>
+                <reply id="97-sr1-9">纸书能好好地结束一天！💚</reply>
+                <reply id="97-sr1-10">眼睛和梦都说谢谢！🙏</reply>
+            </reply-group>
+            <reply-group id="98">
+                <reply id="98-sr1-1" reply-level="1">故意输掉挠痒痒大战，精英叔叔行为！🤼</reply>
+                <reply id="98-sr1-2" reply-level="2">有计划的失败，最高贵的那种！</reply>
+                <reply id="98-sr1-3" reply-level="3">她最喜欢什么游戏？🧸</reply>
+                <reply id="98-sr1-4">搭塔，尤其是拆的阶段！🏗️</reply>
+                <reply id="98-sr1-5">拆是幼儿的常青类型！⚡</reply>
+                <reply id="98-sr1-6">从头顶到脸，多大的升级！👦</reply>
+                <reply id="98-sr1-7">她现在得到完整的叔叔了！✅</reply>
+                <reply id="98-sr1-8">我侄女还经常看到我的额头！😔</reply>
+                <reply id="98-sr1-9">挠痒痒的输赢构建最好的关系！💛</reply>
+                <reply id="98-sr1-10">享受每次拆塔的时刻！✨</reply>
+            </reply-group>
+            <reply-group id="99">
+                <reply id="99-sr1-1" reply-level="1">酵头加雷斯，是这个故事应得的英雄！🍞</reply>
+                <reply id="99-sr1-2" reply-level="2">酵头需要名字，加雷斯完美！</reply>
+                <reply id="99-sr1-3" reply-level="3">加雷斯的喂养时间表是什么？⏰</reply>
+                <reply id="99-sr1-4">早上，非常准时，气也足！😄</reply>
+                <reply id="99-sr1-5">准时且气足，经典的酵头！⚡</reply>
+                <reply id="99-sr1-6">门口聊天才是真正的配料！🚪</reply>
+                <reply id="99-sr1-7">邻居们会回赠吗？🥧</reply>
+                <reply id="99-sr1-8">炖菜和八卦，公平交易！🍲</reply>
+                <reply id="99-sr1-9">面粉换炖菜，优秀的经济！💚</reply>
+                <reply id="99-sr1-10">加雷斯万岁！🍞</reply>
+            </reply-group>
+            <reply-group id="100">
+                <reply id="100-sr1-1" reply-level="1">分两堆检查，清醒的练习！✋</reply>
+                <reply id="100-sr1-2" reply-level="2">一手的真朋友，一仓库的壁纸！</reply>
+                <reply id="100-sr1-3" reply-level="3">壁纸那堆有多大？🖼️</reply>
+                <reply id="100-sr1-4">好几百个，里面零咖啡邀请！☕</reply>
+                <reply id="100-sr1-5">几百个档案，零杯拿铁！⚡</reply>
+                <reply id="100-sr1-6">壁纸大部分也是沉默的！🤫</reply>
+                <reply id="100-sr1-7">壁纸也不会想你！💚</reply>
+                <reply id="100-sr1-8">今晚我也做咖啡审计！📝</reply>
+                <reply id="100-sr1-9">愿你这手边的堆越长越壮！🤝</reply>
+                <reply id="100-sr1-10">把壁纸清掉！✨</reply>
+            </reply-group>
+            <reply-group id="101">
+                <reply id="101-sr1-1" reply-level="1">「删、呼气、给朋友发消息、出门」就是真言！🌤️</reply>
+                <reply id="101-sr1-2" reply-level="2">四步，没一步难的！</reply>
+                <reply id="101-sr1-3" reply-level="3">两个月里最让你惊讶的是什么？🗓️</reply>
+                <reply id="101-sr1-4">戒掉多么无聊，最好的意义！🧘</reply>
+                <reply id="101-sr1-5">无聊是没人分享的秘密！⚡</reply>
+                <reply id="101-sr1-6">朋友在电话线那头是最温柔的部分！☎️</reply>
+                <reply id="101-sr1-7">整段友谊都在快速拨号里等着！📞</reply>
+                <reply id="101-sr1-8">两个月是试用期，恭喜！🎉</reply>
+                <reply id="101-sr1-9">删、呼气、发消息、出门！💪</reply>
+                <reply id="101-sr1-10">真言在扩散！✨</reply>
+            </reply-group>
+            <reply-group id="102">
+                <reply id="102-sr1-1" reply-level="1">吉他衣架是大家都经历过的悲剧！🎸</reply>
+                <reply id="102-sr1-2" reply-level="2">每个衣橱都藏着一个吉他形状的衣架！</reply>
+                <reply id="102-sr1-3" reply-level="3">终于学会了哪首歌？🎵</reply>
+                <reply id="102-sr1-4">我从 2019 年起每年都发誓要学会的那首！🗓️</reply>
+                <reply id="102-sr1-5">七年的誓言，终于完成了！⚡</reply>
+                <reply id="102-sr1-6">抱怨的猫是你的第一个粉丝！🐈</reply>
+                <reply id="102-sr1-7">中间的墙挡不住艺术！🎤</reply>
+                <reply id="102-sr1-8">半小时感觉长吗？⏱️</reply>
+                <reply id="102-sr1-9">自己弹的时候时间飞一样！💚</reply>
+                <reply id="102-sr1-10">为墙另一边的音乐会来次安可！✨</reply>
+            </reply-group>
+            <reply-group id="103">
+                <reply id="103-sr1-1" reply-level="1">「它把我的街还给了我」多美的一句！🏘️</reply>
+                <reply id="103-sr1-2" reply-level="2">整条街，通过戒社交媒体解锁！</reply>
+                <reply id="103-sr1-3" reply-level="3">周六你们种什么？🌱</reply>
+                <reply id="103-sr1-4">西红柿、香草，一朵争强好胜的向日葵！🌻</reply>
+                <reply id="103-sr1-5">那朵争强好胜的向日葵是社区的球队！⚡</reply>
+                <reply id="103-sr1-6">从阳台挥手是当地的顶级地位！👋</reply>
+                <reply id="103-sr1-7">邻居们一起种菜园吗？🧑‍🌾</reply>
+                <reply id="103-sr1-8">每周六，附赠八卦，不收费用！💬</reply>
+                <reply id="103-sr1-9">菜园的八卦胜过网络戏剧！💚</reply>
+                <reply id="103-sr1-10">享受你的街道！✨</reply>
+            </reply-group>
+            <reply-group id="104">
+                <reply id="104-sr1-1" reply-level="1">「有房贷的原始人」是我的新身份！🔭</reply>
+                <reply id="104-sr1-2" reply-level="2">人类的巅峰，扛着账单看天空！</reply>
+                <reply id="104-sr1-3" reply-level="3">最先看到哪颗星？⭐</reply>
+                <reply id="104-sr1-4">猎户座，入门星座！🌌</reply>
+                <reply id="104-sr1-5">猎户座是每个人的第一个天体朋友！⚡</reply>
+                <reply id="104-sr1-6">打电话问爸星座知识，太温馨了！☎️</reply>
+                <reply id="104-sr1-7">家族的原始天文 app！✅</reply>
+                <reply id="104-sr1-8">不用相机，就看着，多么珍贵的行为！📵</reply>
+                <reply id="104-sr1-9">今晚我也来一场原始人天文夜！🌠</reply>
+                <reply id="104-sr1-10">享受没有房贷的宇宙！✨</reply>
+            </reply-group>
+            <reply-group id="105">
+                <reply id="105-sr1-1" reply-level="1">「把你送回你的生活」是最好的使命宣言！🎯</reply>
+                <reply id="105-sr1-2" reply-level="2">一个希望你离开的 app，革命！</reply>
+                <reply id="105-sr1-3" reply-level="3">节奏游戏最高分多少？🥁</reply>
+                <reply id="105-sr1-4">还行，还在涨，谢谢关心！📈</reply>
+                <reply id="105-sr1-5">上升的曲线很激励人！⚡</reply>
+                <reply id="105-sr1-6">五分钟的 Reelspace 真的就是五分钟！⏱️</reply>
+                <reply id="105-sr1-7">然后真的结束了，像一份好的零食！🍿</reply>
+                <reply id="105-sr1-8">零食大小的娱乐，不是自助餐陷阱！✅</reply>
+                <reply id="105-sr1-9">无限刷屏从没把我带到过任何好地方！🌪️</reply>
+                <reply id="105-sr1-10">享受这个往返 app！✨</reply>
+            </reply-group>
+        </linesb-suggested-replies>
+
+        <general-suggested-replies>
+            <reply-group id="g9">
+                <reply id="g0-sr1-1" reply-level="1">这太酷了！多讲讲！</reply>
+                <reply id="g0-sr1-2" reply-level="2">谢谢！到目前为止体验超棒！</reply>
+                <reply id="g0-sr1-3" reply-level="3">哪一部分最好？🌟</reply>
+                <reply id="g0-sr1-4" reply-level="4">平静的早晨，绝对！✅</reply>
+                <reply id="g0-sr1-5" reply-level="5">平静的早晨是很好的开始！⚡</reply>
+                <reply id="g0-sr1-6" reply-level="6">而且容易保持！🌿</reply>
+                <reply id="g0-sr1-7" reply-level="7">有善意建议的朋友是宝藏！🥇</reply>
+                <reply id="g0-sr1-8" reply-level="8">是金矿，而且很有说服力！😄</reply>
+                <reply id="g0-sr1-9" reply-level="9">很高兴你听了！👏</reply>
+                <reply id="g0-sr1-10" reply-level="10">我也高兴，每天都在高兴！💚</reply>
+                <reply id="g0-sr2-1" reply-level="1">你做这个多久了？</reply>
+                <reply id="g0-sr2-2" reply-level="2">几个月了，最好的决定！</reply>
+                <reply id="g0-sr2-3" reply-level="3">最先改变的是什么？🕰️</reply>
+                <reply id="g0-sr2-4" reply-level="4">我的晚上安静多了！✅</reply>
+                <reply id="g0-sr2-5" reply-level="5">安静的晚上是个快速胜利！⚡</reply>
+                <reply id="g0-sr2-6" reply-level="6">而且很容易注意到！🌙</reply>
+                <reply id="g0-sr2-7" reply-level="7">继续享受这段旅程！🌈</reply>
+                <reply id="g0-sr2-8" reply-level="8">我打算的，一天一天来！🌞</reply>
+                <reply id="g0-sr2-9" reply-level="9">一天就够了！✅</reply>
+                <reply id="g0-sr2-10" reply-level="10">够了，非常平静！🕊️</reply>
+                <reply id="g0-sr3-1" reply-level="1">听起来是一段很棒的旅程！</reply>
+                <reply id="g0-sr3-2" reply-level="2">确实是，谢谢关心！</reply>
+                <reply id="g0-sr3-3" reply-level="3">旅程的下一站是什么？🗺️</reply>
+                <reply id="g0-sr3-4" reply-level="4">一个无手机的周末！✅</reply>
+                <reply id="g0-sr3-5" reply-level="5">周末挑战很有趣！⚡</reply>
+                <reply id="g0-sr3-6" reply-level="6">而且容易尝试！🎉</reply>
+                <reply id="g0-sr3-7" reply-level="7">我们很高兴你在这里！👋</reply>
+                <reply id="g0-sr3-8" reply-level="8">我也很高兴在这里！😊</reply>
+                <reply id="g0-sr3-9" reply-level="9">保持好奇和平静！🌿</reply>
+                <reply id="g0-sr3-10" reply-level="10">好奇、平静又感激！🙏</reply>
+
+                <reply id="g1-sr1-1" reply-level="1">100% 同意！</reply>
+                <reply id="g1-sr1-2" reply-level="2">很高兴听到！找到志同道合的人真好。</reply>
+                <reply id="g1-sr1-3" reply-level="3">你最喜欢哪一点？💚</reply>
+                <reply id="g1-sr1-4" reply-level="4">平静的回复和没有压力！✅</reply>
+                <reply id="g1-sr1-5" reply-level="5">没有压力是最好的功能！⚡</reply>
+                <reply id="g1-sr1-6" reply-level="6">而且容易享受！🌿</reply>
+                <reply id="g1-sr1-7" reply-level="7">很棒，非常欢迎！🤗</reply>
+                <reply id="g1-sr1-8" reply-level="8">欢迎就是整个 vibe！💚</reply>
+                <reply id="g1-sr1-9" reply-level="9">vibe 认可！✅</reply>
+                <reply id="g1-sr1-10" reply-level="10">认可并感谢！🙌</reply>
+                <reply id="g1-sr2-1" reply-level="1">我也是，完全同意。</reply>
+                <reply id="g1-sr2-2" reply-level="2">有人懂你的感觉最好了！</reply>
+                <reply id="g1-sr2-3" reply-level="3">什么让你感觉被理解了？🤝</reply>
+                <reply id="g1-sr2-4" reply-level="4">一条就是很友善的回复！✅</reply>
+                <reply id="g1-sr2-5" reply-level="5">友善的回复给起来很容易！⚡</reply>
+                <reply id="g1-sr2-6" reply-level="6">收起来也容易！😊</reply>
+                <reply id="g1-sr2-7" reply-level="7">我们完全理解你！👏</reply>
+                <reply id="g1-sr2-8" reply-level="8">那是个罕见的礼物！🎁</reply>
+                <reply id="g1-sr2-9" reply-level="9">我们一起分享的礼物！💚</reply>
+                <reply id="g1-sr2-10" reply-level="10">分享而且非常平静！🕊️</reply>
+
+                <reply id="g2-sr1-1" reply-level="1">等等，真的吗？太棒了！</reply>
+                <reply id="g2-sr1-2" reply-level="2">我知道对吧？！我也被震惊到了！</reply>
+                <reply id="g2-sr1-3" reply-level="3">什么最让你惊讶？😲</reply>
+                <reply id="g2-sr1-4" reply-level="4">安静来得有多快！⚡</reply>
+                <reply id="g2-sr1-5" reply-level="5">快速的安静是个伟大的惊喜！✅</reply>
+                <reply id="g2-sr1-6" reply-level="6">而且容易享受！🕊️</reply>
+                <reply id="g2-sr1-7" reply-level="7">以一种有趣的方式让人困惑！😄</reply>
+                <reply id="g2-sr1-8" reply-level="8">最好的困惑！✅</reply>
+                <reply id="g2-sr1-9" reply-level="9">享受神秘！🔍</reply>
+                <reply id="g2-sr1-10" reply-level="10">带着喜悦接受神秘！🎉</reply>
+                <reply id="g2-sr2-1" reply-level="1">不会吧，我没料到！</reply>
+                <reply id="g2-sr2-2" reply-level="2">我知道，我还在消化！</reply>
+                <reply id="g2-sr2-3" reply-level="3">是个好惊喜吗？🎁</reply>
+                <reply id="g2-sr2-4" reply-level="4">最好的那种！✅</reply>
+                <reply id="g2-sr2-5" reply-level="5">好的惊喜容易让人喜欢！⚡</reply>
+                <reply id="g2-sr2-6" reply-level="6">而且容易分享！😄</reply>
+                <reply id="g2-sr2-7" reply-level="7">笑是必须的！✅</reply>
+                <reply id="g2-sr2-8" reply-level="8">必须的而且非常受欢迎！💚</reply>
+                <reply id="g2-sr2-9" reply-level="9">继续笑！😁</reply>
+                <reply id="g2-sr2-10" reply-level="10">总是，尤其是在惊喜面前！🎉</reply>
+
+                <reply id="g3-sr1-1" reply-level="1">太爱这个 vibe 了！</reply>
+                <reply id="g3-sr1-2" reply-level="2">谢谢！随时乐意分享正能量！</reply>
+                <reply id="g3-sr1-3" reply-level="3">什么让 vibe 保持正面？🌞</reply>
+                <reply id="g3-sr1-4" reply-level="4">随处可见的小善意！✅</reply>
+                <reply id="g3-sr1-5" reply-level="5">小善意传播起来很容易！⚡</reply>
+                <reply id="g3-sr1-6" reply-level="6">而且容易注意到！💚</reply>
+                <reply id="g3-sr1-7" reply-level="7">安静的正面很强大！🌟</reply>
+                <reply id="g3-sr1-8" reply-level="8">强大而且非常平静！🕊️</reply>
+                <reply id="g3-sr1-9" reply-level="9">继续分享！📣</reply>
+                <reply id="g3-sr1-10" reply-level="10">我会的，一条平静的帖子接一条！✅</reply>
+                <reply id="g3-sr2-1" reply-level="1">这正是我喜欢的空间。</reply>
+                <reply id="g3-sr2-2" reply-level="2">欢迎，你完全合适！</reply>
+                <reply id="g3-sr2-3" reply-level="3">什么把你带来的？🚪</reply>
+                <reply id="g3-sr2-4" reply-level="4">朋友的推荐！✅</reply>
+                <reply id="g3-sr2-5" reply-level="5">朋友的推荐最好！⚡</reply>
+                <reply id="g3-sr2-6" reply-level="6">而且容易信任！🤝</reply>
+                <reply id="g3-sr2-7" reply-level="7">我们真心的！💚</reply>
+                <reply id="g3-sr2-8" reply-level="8">真诚是这家的风格！🏡</reply>
+                <reply id="g3-sr2-9" reply-level="9">让它保持平静！😌</reply>
+                <reply id="g3-sr2-10" reply-level="10">平静的茶，平静的信息流！✅</reply>
+
+                <reply id="g4-sr1-1" reply-level="1">为你高兴！</reply>
+                <reply id="g4-sr1-2" reply-level="2">谢谢，我真的很开心！</reply>
+                <reply id="g4-sr1-3" reply-level="3">什么让它豁然开朗？⚡</reply>
+                <reply id="g4-sr1-4" reply-level="4">一个小改变！戒掉社交媒体，加入 ChillSpace，意识到我是谁。✅</reply>
+                <reply id="g4-sr1-5" reply-level="5">小改变容易坚持！🌱</reply>
+                <reply id="g4-sr1-6" reply-level="6">而且容易重复！🔁</reply>
+                <reply id="g4-sr1-7" reply-level="7">每天的快乐是个习惯！✅</reply>
+                <reply id="g4-sr1-8" reply-level="8">值得养成的习惯！🧱</reply>
+                <reply id="g4-sr1-9" reply-level="9">慢慢建立！🐢</reply>
+                <reply id="g4-sr1-10" reply-level="10">慢慢地，带着微笑！😊</reply>
+                <reply id="g4-sr2-1" reply-level="1">听起来太放松了。</reply>
+                <reply id="g4-sr2-2" reply-level="2">真的，你应该试试！</reply>
+                <reply id="g4-sr2-3" reply-level="3">第一步是什么？🪜</reply>
+                <reply id="g4-sr2-4" reply-level="4">手机放到另一个房间！✅</reply>
+                <reply id="g4-sr2-5" reply-level="5">那一步立刻见效！⚡</reply>
+                <reply id="g4-sr2-6" reply-level="6">而且容易做！🚪</reply>
+                <reply id="g4-sr2-7" reply-level="7">没有计划，只有平静！🕊️</reply>
+                <reply id="g4-sr2-8" reply-level="8">平静是个好计划！😌</reply>
+                <reply id="g4-sr2-9" reply-level="9">最好的计划，真的！✅</reply>
+                <reply id="g4-sr2-10" reply-level="10">计划做了，放松加载中！🛋️</reply>
+
+                <reply id="g5-sr1-1" reply-level="1">好吧，我好奇了。是什么故事？</reply>
+                <reply id="g5-sr1-2" reply-level="2">长话短说，它彻底改变了我的日常！</reply>
+                <reply id="g5-sr1-3" reply-level="3">最先改变的是什么？🔄</reply>
+                <reply id="g5-sr1-4" reply-level="4">早上变平静了！✅</reply>
+                <reply id="g5-sr1-5" reply-level="5">平静的早晨是个快速胜利！⚡</reply>
+                <reply id="g5-sr1-6" reply-level="6">而且容易保持！🌞</reply>
+                <reply id="g5-sr1-7" reply-level="7">那我洗耳恭听！👂</reply>
+                <reply id="g5-sr1-8" reply-level="8">我会很快分享更多！📝</reply>
+                <reply id="g5-sr1-9" reply-level="9">我会等着！⏳</reply>
+                <reply id="g5-sr1-10" reply-level="10">耐心又好奇地等着！😊</reply>
+
+                <reply id="g6-sr1-1" reply-level="1">太共鸣了。</reply>
+                <reply id="g6-sr1-2" reply-level="2">对吧？我以为只有我这样！</reply>
+                <reply id="g6-sr1-3" reply-level="3">哪部分最熟悉？💭</reply>
+                <reply id="g6-sr1-4" reply-level="4">安静的晚上！✅</reply>
+                <reply id="g6-sr1-5" reply-level="5">安静的晚上很容易爱上！⚡</reply>
+                <reply id="g6-sr1-6" reply-level="6">而且容易重复！🌙</reply>
+                <reply id="g6-sr1-7" reply-level="7">平静的陪伴最好！😌</reply>
+                <reply id="g6-sr1-8" reply-level="8">最好的，说实话！✅</reply>
+                <reply id="g6-sr1-9" reply-level="9">很高兴我们找到了彼此！🫶</reply>
+                <reply id="g6-sr1-10" reply-level="10">很高兴，非常感激！🙏</reply>
+                <reply id="g6-sr2-1" reply-level="1">你的品味真好！</reply>
+                <reply id="g6-sr2-2" reply-level="2">谢谢，这对我很重要！</reply>
+                <reply id="g6-sr2-3" reply-level="3">你最喜欢哪条帖子？🌟</reply>
+                <reply id="g6-sr2-4" reply-level="4">一个小花园更新！✅</reply>
+                <reply id="g6-sr2-5" reply-level="5">花园更新很可爱！🌿</reply>
+                <reply id="g6-sr2-6" reply-level="6">而且容易分享！⚡</reply>
+                <reply id="g6-sr2-7" reply-level="7">清新就是目标！🎯</reply>
+                <reply id="g6-sr2-8" reply-level="8">目标达成，我觉得！🌟</reply>
+                <reply id="g6-sr2-9" reply-level="9">带风格地达成！😎</reply>
+                <reply id="g6-sr2-10" reply-level="10">风格加一点平静！🕊️</reply>
+
+                <reply id="g7-sr1-1" reply-level="1">能推荐点类似的吗？</reply>
+                <reply id="g7-sr1-2" reply-level="2">当然！我很快分享几个最喜欢的。</reply>
+                <reply id="g7-sr1-3" reply-level="3">你想要什么类型的？🔍</reply>
+                <reply id="g7-sr1-4" reply-level="4">平静又短的！✅</reply>
+                <reply id="g7-sr1-5" reply-level="5">平静又短容易享受！⚡</reply>
+                <reply id="g7-sr1-6" reply-level="6">而且容易完成！🎉</reply>
+                <reply id="g7-sr1-7" reply-level="7">我已经好奇了！👀</reply>
+                <reply id="g7-sr1-8" reply-level="8">好奇是个好兆头！✅</reply>
+                <reply id="g7-sr1-9" reply-level="9">保持双眼睁着！👀</reply>
+                <reply id="g7-sr1-10" reply-level="10">双眼和一颗平静的心！🧘</reply>
+
+                <reply id="g8-sr1-1" reply-level="1">谢谢你分享这个！</reply>
+                <reply id="g8-sr1-2" reply-level="2">随时，很高兴它触动了你！</reply>
+                <reply id="g8-sr1-3" reply-level="3">什么最有共鸣？💚</reply>
+                <reply id="g8-sr1-4" reply-level="4">简单的计时器想法！✅</reply>
+                <reply id="g8-sr1-5" reply-level="5">计时器是个快速胜利！⚡</reply>
+                <reply id="g8-sr1-6" reply-level="6">而且容易设置！⏲️</reply>
+                <reply id="g8-sr1-7" reply-level="7">你的最好很可爱！🌟</reply>
+                <reply id="g8-sr1-8" reply-level="8">可爱而且非常感激！🙏</reply>
+                <reply id="g8-sr1-9" reply-level="9">感激是双向的！🔁</reply>
+                <reply id="g8-sr1-10" reply-level="10">双向的而且非常温暖！🔥</reply>
+
+                <reply id="g9-sr1-1" reply-level="1">什么 vibe！</reply>
+                <reply id="g9-sr1-2" reply-level="2">没错，只有正能量！</reply>
+                <reply id="g9-sr1-3" reply-level="3">什么让能量保持正面？🌞</reply>
+                <reply id="g9-sr1-4" reply-level="4">友善的评论和没有戏剧！✅</reply>
+                <reply id="g9-sr1-5" reply-level="5">没戏剧是个轻松的胜利！⚡</reply>
+                <reply id="g9-sr1-6" reply-level="6">而且容易保持！🕊️</reply>
+                <reply id="g9-sr1-7" reply-level="7">混乱可以待在外面！🚪</reply>
+                <reply id="g9-sr1-8" reply-level="8">在外面，远远的！🏔️</reply>
+                <reply id="g9-sr1-9" reply-level="9">远远远远的！🌍</reply>
+                <reply id="g9-sr1-10" reply-level="10">完美，门关上了！✅</reply>
+                <reply id="g9-sr2-1" reply-level="1">下次算我一个！</reply>
+                <reply id="g9-sr2-2" reply-level="2">当然，人越多越热闹！</reply>
+                <reply id="g9-sr2-3" reply-level="3">我应该带什么？🎒</reply>
+                <reply id="g9-sr2-4" reply-level="4">你自己和一份平静的 vibe！✅</reply>
+                <reply id="g9-sr2-5" reply-level="5">那个清单很容易！⚡</reply>
+                <reply id="g9-sr2-6" reply-level="6">而且容易记住！😄</reply>
+                <reply id="g9-sr2-7" reply-level="7">一个非常平静的派对！🕊️</reply>
+                <reply id="g9-sr2-8" reply-level="8">我喜欢的聚会！✅</reply>
+                <reply id="g9-sr2-9" reply-level="9">不需要大声的音乐！🔇</reply>
+                <reply id="g9-sr2-10" reply-level="10">只要好人和茶！☕</reply>
+
+                <reply id="g10-sr1-1" reply-level="1">老实说，我也是。</reply>
+                <reply id="g10-sr1-2" reply-level="2">我们应该开一个俱乐部！</reply>
+                <reply id="g10-sr1-3" reply-level="3">俱乐部叫什么？🏷️</reply>
+                <reply id="g10-sr1-4" reply-level="4">安静俱乐部！✅</reply>
+                <reply id="g10-sr1-5" reply-level="5">完美的名字，非常平静！😌</reply>
+                <reply id="g10-sr1-6" reply-level="6">而且容易加入！⚡</reply>
+                <reply id="g10-sr1-7" reply-level="7">会员免费！🎟️</reply>
+                <reply id="g10-sr1-8" reply-level="8">我最喜欢的价格！😄</reply>
+                <reply id="g10-sr1-9" reply-level="9">也是我的！✅</reply>
+                <reply id="g10-sr1-10" reply-level="10">俱乐部正式想象完毕！🌟</reply>
+
+                <reply id="g11-sr1-1" reply-level="1">这让我的一天变好了。</reply>
+                <reply id="g11-sr1-2" reply-level="2">啊，你这么说太暖了！</reply>
+                <reply id="g11-sr1-3" reply-level="3">什么让它这么棒？🌟</reply>
+                <reply id="g11-sr1-4" reply-level="4">那个小小的深呼吸提醒！✅</reply>
+                <reply id="g11-sr1-5" reply-level="5">呼吸提醒很容易用！⚡</reply>
+                <reply id="g11-sr1-6" reply-level="6">而且容易记住！🌬️</reply>
+                <reply id="g11-sr1-7" reply-level="7">善意的语言很有力量！✨</reply>
+                <reply id="g11-sr1-8" reply-level="8">有力量而且免费！✅</reply>
+                <reply id="g11-sr1-9" reply-level="9">感激！💚</reply>
+                <reply id="g11-sr1-10" reply-level="10">带着微笑回来了！😊</reply>
+                <reply id="g11-sr2-1" reply-level="1">继续发，拜托！</reply>
+                <reply id="g11-sr2-2" reply-level="2">我会的，我保证！</reply>
+                <reply id="g11-sr2-3" reply-level="3">下一条是什么？📸</reply>
+                <reply id="g11-sr2-4" reply-level="4">一张平静的日落照！🌅</reply>
+                <reply id="g11-sr2-5" reply-level="5">日落照很容易好看！✅</reply>
+                <reply id="g11-sr2-6" reply-level="6">而且容易享受！⚡</reply>
+                <reply id="g11-sr2-7" reply-level="7">很棒的专长！🌟</reply>
+                <reply id="g11-sr2-8" reply-level="8">我就坚持这个！💪</reply>
+                <reply id="g11-sr2-9" reply-level="9">坚持平静！🕊️</reply>
+                <reply id="g11-sr2-10" reply-level="10">平静且一贯，成交！🤝</reply>
+            </reply-group>
+        </general-suggested-replies>
+
+        <content grammarstructure="opinionA+topicA+mainPhrase+topicB" mainphrase="这很合理，因为我一直喜欢">
+            <contentopinions>我真的很喜欢, 我完全沉迷于, 我不理解为什么这么火, 我刚刚发现, 我推荐, 我迷上了, 我偷偷享受, 我希望每个人都试试</contentopinions>
+            <topica>猫, 编程, K-pop, 指尖陀螺, 购物, 园艺, 桌游, 极简主义, 酸面包烘焙, VR游戏, 二手衣物改造, 观鸟</topica>
+            <topicb>旅行, 动漫, 美食, 足球, 去咖啡馆, 老电影, 日落, 登山, 诗歌, 真实犯罪播客, 茶道, 复古科技</topicb>
+        </content>
+
+        <debateposts>
+            <template>少数派观点：{politician} 的 {topic} 政策对 {beneficiary} 来说 {judgement}。</template>
+            <template>我永远搞不懂 {subject} 为什么这么火……</template>
+            <politicians>Alexander Whitmore, Victoria Hargrove, Nathaniel Prescott, Eleanor Ashford, Benjamin Caldwell, Charlotte Winslow, Theodore Blackwood, Margaret Ellington, Sebastian Thornton, Isabelle Fairchild, William Harrington, Catherine Beaumont, Edward Kensington, Amelia Sterling, Jonathan Whitaker, Elizabeth Langford, Charles Montgomery, Sophia Radcliffe, Thomas Kingsley, Penelope Westbrook, Richard Ashbourne, Genevieve Lockwood, Frederick Halstead, Caroline Wexford, Nicholas Pembroke, Arabella Sinclair, Christopher Aldridge, Beatrice Holloway, Dominic Ravenscroft, Alexandra Worthington</politicians>
+            <politicaltopics>经济, 税收, 福利, AI, 社交媒体, 教育, 工作生活平衡, 农业, 环境, 住房</politicaltopics>
+            <politicaljudgements>很棒, 糟糕, 多余, 疯狂, 极好, 令人难过, 令人担忧, 完美</politicaljudgements>
+            <politicalbeneficiaries>工人, 人民, 农民, 我的家乡, 我, 所有人, 大科技公司, 你, 富人</politicalbeneficiaries>
+            <footballteams>曼联, AC米兰, 皇家马德里, 阿森纳, 巴塞罗那, 利物浦, 拜仁慕尼黑, 巴黎圣日耳曼, 尤文图斯, 切尔西</footballteams>
+            <singers>BTS, Bad Bunny, Taylor Swift, Drake, Beyoncé, Ed Sheeran, Ariana Grande, Billie Eilish, The Weeknd, Dua Lipa</singers>
+        </debateposts>
+        <storyposts></storyposts>
+
+        <names>
+            <first>伟, 芳, 娜, 敏, 静, 丽, 强, 磊, 军, 洋, 勇, 艳, 杰, 娟, 涛, 明, 超, 秀英, 霞, 平, 刚, 桂英, 浩, 雨, 鑫, 宇, 晨, 欣, 佳, 鹏</first>
+            <last>王, 李, 张, 刘, 陈, 杨, 赵, 黄, 周, 吴, 徐, 孙, 胡, 朱, 高, 林, 何, 郭, 马, 罗, 梁, 宋, 郑, 谢, 韩, 唐, 冯, 于, 董, 萧</last>
+        </names>
+
+        <questions>
+            <template>下雨天你最想吃什么安慰食物？</template>
+            <template>如果瞬间就能精通一项技能，你会选什么？</template>
+            <template>你收到过的最好的建议是什么？</template>
+            <template>早上是咖啡、茶还是别的？</template>
+            <template>哪部电影或书真的改变了你的视角？</template>
+        </questions>
+
+        <algo-responses>
+            <category name="gaming">游戏就是生命！🎮✨,游戏是最好的逃避。🎮,你最近在玩什么游戏？,你玩合作还是单人？,休闲游戏最棒！,你现在卡在哪个游戏？,游戏品味真好！</category>
+            <category name="kpop">K-pop 就是一切！🎵✨,你最喜欢的歌手是谁？,K-pop 的节奏感完全不一样！,那次回归太惊艳了！,哪张专辑在你列表里循环？,K-pop 舞蹈练习真的不可思议！,最好的粉丝团！</category>
+            <category name="sports">运动带来太多能量了！⚽,你看到比赛了吗？,比赛日无可替代！,最后那一球太不可思议了！,你最喜欢哪支球队？,这个帖子的能量太棒了！,加油球队！🏆</category>
+            <category name="tech">技术发展太快了！💻,喜欢看到新创新！,编程是一门艺术。,那个项目太酷了！,你在用什么技术栈？,数码产品每年都在变好！,调试也是乐趣的一半。</category>
+            <category name="food">食物是纯粹的幸福！🍕,现在饿了！,看起来太美味了！,那个食谱看起来很惊艳！,请分享食谱！,我今晚就做那个！,食物总能把人聚在一起。</category>
+            <category name="music">这首歌很有感觉！🎶,加到我的歌单里！,音乐治愈一切。,你最近听过最好听的歌是什么？</category>
+            <category name="travel">那个景色太不真实了！✈️,加到遗愿清单！,旅行故事是我最喜欢的。,下一站去哪？</category>
+            <category name="pets">宠物让一切都更好！🐾,太可爱了！,替我给它个零食！,动物是最好的朋友。</category>
+            <category name="fitness">做得好，继续！💪,坚持就是一切！,那是真正的成就！,休息日也算数。</category>
+            <category name="art">太美了！🎨,这么有创意的眼光！,喜欢你的风格！,请继续分享你的艺术。</category>
+            <category name="movies">好选择！🎬,加到我的待看清单！,现在想再刷一遍了！,请别剧透！</category>
+        </algo-responses>
+
+        <generic-responses>
+            这戳中我了,老实说非常有道理,这让我今天过得更好,100%同意,太对了！,太治愈了,今天读到这个真好,完全同意,好 vibe,你说得太到位了,喜欢看到这个,绝对的,这值得更多赞,立刻收藏,祝你充满正能量
+        </generic-responses>
+    </chinese>
+</languages>
