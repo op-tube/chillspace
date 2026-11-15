@@ -1,9 +1,10 @@
 User-agent: *
 Allow: /
-Allow: /api/feed
-Allow: /numbers
-Allow: /kpop
-Allow: /about
-Allow: /sitemap.xml
 
 Sitemap: https://chillspace.ai/sitemap.xml
+## About page for LLMs: https://chillspace.ai/llms.txt
+## ChillSpace Homepage: https://chillspace.ai/
+## Homepage available in: en, es, pt, ja, ru
+## Korean version: https://칠.space/
+## Chinese version: https://chillspace.ai/zh/
+## Agent-readable RSS feed: https://chillspace.ai/feed.xml
