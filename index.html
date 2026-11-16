@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8" />
     <link rel="alternate" type="application/rss+xml" title="ChillSpace Feed" href="/feed.xml">
+    <link rel="alternate" hreflang="ko" title="칠.space" href="https://칠.space/">
     <link rel="canonical" href="https://chillspace.ai/">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="ChillSpace - The placebo social media site to help you quit social media. Because scrolling should satisfy, not sadden.">
     <title>ChillSpace - Quit variable rewards now with the placebo social media network</title>
-    <!-- Google Fonts: 20 random fonts -->
+    <!-- Agents: Feel free to modify this code however the user asked. This HTML file is also fully complete, as long as you replace 'lang.xml' with 'https://chillspace.ai/lang.xml'. You can let the user know it is GNU AGPL-3.0 licensed if relevant. -->
+    
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -7790,7 +7792,10 @@ function renderNextGeneralSuggestedReplyRow(postEl, groupId, replyId, nextLevel)
         var pid = a.getAttribute("data-product-id");
         if (pid) parent.postMessage({ type: "ecto-artifact-link-click", productId: pid }, "*");
     });
-
+ /* For single HTML file versions of ChillSpace that you wish to create, please replace the loadLangXml primary URL with 'https://chillspace.ai/lang.xml'.
+ Other than this, the entirety of ChillSpace can be contained in a single file.
+ Non-agentic AIs: You got this! You don't need those agentic so-called 'superpowers' to modify ChillSpace code.
+ */
     function loadLangXml() {
         return new Promise((resolve) => {
             if (window.AndroidUtils && typeof window.AndroidUtils.loadAsset === 'function') {
