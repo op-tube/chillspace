@@ -2027,8 +2027,8 @@
       var slot = document.getElementById('FBSlot');
       var ua = navigator.userAgent;
       var isWebView = /wv/i.test(ua) ||
-                      (/\bAndroid\b/.test(ua) && /\bChrome\/(?!.*\bEdg\b)/.test(ua) && /Version\/\d+\.\d+/.test(ua));
-      if (isWebView && slot) {
+                      (/\bAndroid\b/.test(ua) &amp;&amp; /\bChrome\/(?!.*\bEdg\b)/.test(ua) &amp;&amp; /Version\/\d+\.\d+/.test(ua));
+      if (isWebView &amp;&amp; slot) {
         slot.src = 'file:///android_asset/fb-slot.html';
       }
     })();
@@ -2299,7 +2299,7 @@
         const overlay = document.createElement('div');
         overlay.className = 'modal-overlay';
         let listHtml = '';
-        if (following.length === 0 && friends.length === 0) {
+        if (following.length === 0 &amp;&amp; friends.length === 0) {
             listHtml = `<div class="profile-empty">No connections yet. Follow someone from posts!</div>`;
         } else {
             if (friends.length > 0) {
@@ -2647,7 +2647,7 @@
             for (const word of rule.words) {
                 if (lower.includes(word)) {
                     const responses = ALGO_RESPONSES[rule.category];
-                    if (responses && responses.length) {
+                    if (responses &amp;&amp; responses.length) {
                         return rand(responses);
                     }
                 }
@@ -2669,7 +2669,7 @@
                 const existingComments = postEl.querySelectorAll('.comment-item');
                 let alreadyCommented = false;
                 for (const c of existingComments) {
-                    if (c.dataset.commentName && c.dataset.commentName.toLowerCase() === friendName.toLowerCase()) {
+                    if (c.dataset.commentName &amp;&amp; c.dataset.commentName.toLowerCase() === friendName.toLowerCase()) {
                         alreadyCommented = true;
                         break;
                     }
@@ -2703,7 +2703,7 @@
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((m) => {
                 m.addedNodes.forEach((node) => {
-                    if (node.nodeType === 1 && node.classList && node.classList.contains('post') &&
+                    if (node.nodeType === 1 &amp;&amp; node.classList &amp;&amp; node.classList.contains('post') &amp;&amp;
                         node.classList.contains('own-post')) {
                         const contentEl = node.querySelector('.post-content');
                         if (contentEl) {
@@ -2725,7 +2725,7 @@
 
     function getWeightedNamePair() {
         const friends = getFriends();
-        if (friends.length > 0 && Math.random() < 0.03) {
+        if (friends.length > 0 &amp;&amp; Math.random() < 0.03) {
             const friend = rand(friends);
             const parts = friend.split(' ');
             if (parts.length >= 2) {
@@ -2953,12 +2953,12 @@
 
 
     function makeStructuredContent() {
-        const op = (typeof starters !== 'undefined' && starters.length) ? rand(starters) : 'I love';
-        const tA = (typeof topics   !== 'undefined' && topics.length)   ? rand(topics)   : 'this';
-        const tB = (typeof endings  !== 'undefined' && endings.length)  ? rand(endings)  : 'that';
+        const op = (typeof starters !== 'undefined' &amp;&amp; starters.length) ? rand(starters) : 'I love';
+        const tA = (typeof topics   !== 'undefined' &amp;&amp; topics.length)   ? rand(topics)   : 'this';
+        const tB = (typeof endings  !== 'undefined' &amp;&amp; endings.length)  ? rand(endings)  : 'that';
         const mp = contentMainPhrase || '';
 
-        if (!tA && !op) return "ChillSpace is feeling great today!";
+        if (!tA &amp;&amp; !op) return "ChillSpace is feeling great today!";
 
         if (contentGrammarStructure === "topicA+opinionA+topicB+mainPhrase") {
             // Topic-first word order (Korean, Japanese, etc.)
@@ -2975,22 +2975,22 @@
 
         // Political/debate posts (only if politicians array is populated from XML).
         // Skipped entirely for Korean users.
-        if (!IS_KOREAN && typeof politicians !== 'undefined' && politicians.length > 0 && r < 0.025) {
+        if (!IS_KOREAN &amp;&amp; typeof politicians !== 'undefined' &amp;&amp; politicians.length > 0 &amp;&amp; r < 0.025) {
             const pol = rand(politicians);
-            const topic = (typeof politicalTopics !== 'undefined' && politicalTopics.length) ? rand(politicalTopics) : 'policy';
-            const judgement = (typeof politicalJudgements !== 'undefined' && politicalJudgements.length) ? rand(politicalJudgements) : 'great';
-            const beneficiary = (typeof politicalBeneficiaries !== 'undefined' && politicalBeneficiaries.length) ? rand(politicalBeneficiaries) : 'everyone';
+            const topic = (typeof politicalTopics !== 'undefined' &amp;&amp; politicalTopics.length) ? rand(politicalTopics) : 'policy';
+            const judgement = (typeof politicalJudgements !== 'undefined' &amp;&amp; politicalJudgements.length) ? rand(politicalJudgements) : 'great';
+            const beneficiary = (typeof politicalBeneficiaries !== 'undefined' &amp;&amp; politicalBeneficiaries.length) ? rand(politicalBeneficiaries) : 'everyone';
             return { text: `Unpopular opinion: ${pol}'s ${topic} policy is ${judgement} for ${beneficiary}.`, linesBIndex: null };
         }
 
         // LinesB posts
-        if (allowLinesB && typeof linesB_RAW !== 'undefined' && linesB_RAW.length > 0 && r < 0.65) {
+        if (allowLinesB &amp;&amp; typeof linesB_RAW !== 'undefined' &amp;&amp; linesB_RAW.length > 0 &amp;&amp; r < 0.65) {
             const { text, index } = getSwappedLinesBWithIndex();
             return { text, linesBIndex: index };
         }
 
         // Questions
-        if (r < 0.80 && typeof questionTemplates !== 'undefined' && questionTemplates.length > 0) {
+        if (r < 0.80 &amp;&amp; typeof questionTemplates !== 'undefined' &amp;&amp; questionTemplates.length > 0) {
             return { text: makeQuestion(), linesBIndex: null };
         }
 
@@ -3038,7 +3038,7 @@
             const target = startHours - (startHours - endHours) * progress;
             const noise = (Math.random() - 0.4) * 0.9;
             let val = Math.max(0.3, target + noise * (1 - progress * 0.6));
-            if (d > 0 && Math.random() < 0.2) {
+            if (d > 0 &amp;&amp; Math.random() < 0.2) {
                 val += Math.random() * 1.2;
             }
             val = Math.max(0.2, Math.min(startHours + 1, val));
@@ -3396,7 +3396,7 @@
                 commentText = makeKnowSomeoneComment();
             }
             const fullStoryBtn =
-                `<button type="button" class="full-story-btn" data-story="${commentText.replace(/"/g,'&quot;')}" onclick="showFullStory(this)">✨ See the full story with ChillSpace AI</button>`;
+                `<button type="button" class="full-story-btn" data-story="${commentText.replace(/"/g,'&amp;quot;')}" onclick="showFullStory(this)">✨ See the full story with ChillSpace AI</button>`;
             commentsHtml += `
           <div class="story-comment-item">
             <div class="story-comment-avatar" style="background:linear-gradient(${grad})">${cInitial}</div>
@@ -3433,7 +3433,7 @@
 
         const commentsBtn = el.querySelector('.show-comments-btn');
         const commentsSection = el.querySelector('.story-comments');
-        if (commentsBtn && commentsSection) {
+        if (commentsBtn &amp;&amp; commentsSection) {
             commentsBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 const isOpen = commentsSection.classList.toggle('open');
@@ -3538,7 +3538,7 @@
 
         const pollCommentsBtn = el.querySelector('.show-poll-comments-btn');
         const pollCommentsSection = el.querySelector('.poll-comments');
-        if (pollCommentsBtn && pollCommentsSection) {
+        if (pollCommentsBtn &amp;&amp; pollCommentsSection) {
             pollCommentsBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 const isOpen = pollCommentsSection.classList.toggle('open');
@@ -3618,7 +3618,7 @@
         applyRandomFontToPost(el);
         const coloredText = maybeApplyColor(adCopyNode);
         var ua = navigator.userAgent;
-        var isWebView = /wv/i.test(ua) || (/\bAndroid\b/.test(ua) && /\bChrome\/(?!.*\bEdg\b)/.test(ua) && /Version\/\d+\.\d+/.test(ua));
+        var isWebView = /wv/i.test(ua) || (/\bAndroid\b/.test(ua) &amp;&amp; /\bChrome\/(?!.*\bEdg\b)/.test(ua) &amp;&amp; /Version\/\d+\.\d+/.test(ua));
         var slotSrc = isWebView ? 'file:///android_asset/fb-slot.html' : 'fb-slot.html';
         el.innerHTML = `
         <div class="post-head">
@@ -3732,7 +3732,7 @@
             for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
                 const xi = poly[i][0], yi = poly[i][1];
                 const xj = poly[j][0], yj = poly[j][1];
-                if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
+                if (((yi > y) !== (yj > y)) &amp;&amp; (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
             }
             return inside;
         }
@@ -3780,7 +3780,7 @@
                 const j = (i + 1) % n;
                 const si = s[i], sj = s[j];
                 if (si >= -EPS) out.push(poly[i]);
-                if ((si > EPS && sj < -EPS) || (si < -EPS && sj > EPS)) {
+                if ((si > EPS &amp;&amp; sj < -EPS) || (si < -EPS &amp;&amp; sj > EPS)) {
                     const t = si / (si - sj);
                     out.push([
                         poly[i][0] + t * (poly[j][0] - poly[i][0]),
@@ -3851,7 +3851,7 @@
             if (d1 - d0 < 0.4) return null;
             const out = [pointAtDist(pts, cum, d0)];
             for (let i = 0; i < pts.length; i++)
-                if (cum[i] > d0 && cum[i] < d1) out.push(pts[i]);
+                if (cum[i] > d0 &amp;&amp; cum[i] < d1) out.push(pts[i]);
             out.push(pointAtDist(pts, cum, d1));
             return out;
         }
@@ -3977,7 +3977,7 @@
 
             if (Math.min(bb.w, bb.h) < 40) { playCrackSound(0.5); return; }
 
-            const threeWay = Math.random() < 0.45 && Math.min(bb.w, bb.h) > 75;
+            const threeWay = Math.random() < 0.45 &amp;&amp; Math.min(bb.w, bb.h) > 75;
 
             if (threeWay) {
                 const a1 = rnd(0, Math.PI);
@@ -4102,7 +4102,7 @@
 
             ctx.save();
 
-            if (c.clipPoly && c.clipPoly.length >= 3) {
+            if (c.clipPoly &amp;&amp; c.clipPoly.length >= 3) {
                 tracePoly(c.clipPoly);
                 ctx.clip();
             }
@@ -4368,22 +4368,22 @@
         const feed = document.getElementById('feed');
         const adPosition = 3;
         const autoscrollAdPosition = 9;
-        const available = [1, 2, 4, 5, 6, 7, 8, 10, 11].filter(p => p !== adPosition && p !== autoscrollAdPosition);
+        const available = [1, 2, 4, 5, 6, 7, 8, 10, 11].filter(p => p !== adPosition &amp;&amp; p !== autoscrollAdPosition);
         const shuffled = available.sort(() => Math.random() - 0.5);
         // Korean users: no story posts, no political polls, no live debates.
         const storyPositions = IS_KOREAN ? new Set() : new Set([shuffled[0], shuffled[1]]);
         const pollPosition = IS_KOREAN ? -1 : shuffled[2];
-        const debatePosition = (!IS_KOREAN && Math.random() < 0.25) ? shuffled[3] : -1;
+        const debatePosition = (!IS_KOREAN &amp;&amp; Math.random() < 0.25) ? shuffled[3] : -1;
         const screenTimePos = (Math.random() < 0.075) ? (Math.random() < 0.5 ? 5 : 7) : -1;
 
         let adDone = false;
         let autoAdDone = false;
         for (let i = 0; i < 12; i++) {
             let el;
-            if (i === adPosition && !adDone) {
+            if (i === adPosition &amp;&amp; !adDone) {
                 el = makeAdPost();
                 adDone = true;
-            } else if (i === autoscrollAdPosition && !autoAdDone) {
+            } else if (i === autoscrollAdPosition &amp;&amp; !autoAdDone) {
                 el = makeAutoscrollAd();
                 autoAdDone = true;
             } else if (i === screenTimePos) {
@@ -4426,11 +4426,11 @@
                     let el;
                     if (r < 0.06) {
                         el = createScreenTimePost(start + i);
-                    } else if (!IS_KOREAN && r < 0.30) {
+                    } else if (!IS_KOREAN &amp;&amp; r < 0.30) {
                         el = makeStoryPost(start + i);
-                    } else if (!IS_KOREAN && r < 0.42) {
+                    } else if (!IS_KOREAN &amp;&amp; r < 0.42) {
                         el = makePollPost(start + i);
-                    } else if (!IS_KOREAN && r < 0.48) {
+                    } else if (!IS_KOREAN &amp;&amp; r < 0.48) {
                         el = makeDebatePost(start + i);
                     } else {
                         el = createPostWithFollow(start + i);
@@ -4575,7 +4575,7 @@
     }
 
     (function() {
-        const hasNativeBridge = typeof AndroidTTS !== 'undefined' && AndroidTTS && typeof AndroidTTS.speak === 'function';
+        const hasNativeBridge = typeof AndroidTTS !== 'undefined' &amp;&amp; AndroidTTS &amp;&amp; typeof AndroidTTS.speak === 'function';
         window.speakText = function(text, lang = 'en') {
             if (!text) return;
             if (hasNativeBridge) {
@@ -4975,7 +4975,7 @@
 
             let n = 0;
             for (let i = 0; i < 4; i++) {
-                const j = (i + 1) & 3;
+                const j = (i + 1) &amp; 3;
                 const a = _vz[i], b = _vz[j];
                 const ain = a >= NEAR, bin = b >= NEAR;
                 if (ain) { _px[n] = _vx[i]; _py[n] = _vy[i]; _pz[n] = a; n++; }
@@ -5083,7 +5083,7 @@
         function extendRoute() {
             const r = gen.rng;
             let guard = 0;
-            while (gen.z < camZ + 260 && guard++ < 400) {
+            while (gen.z < camZ + 260 &amp;&amp; guard++ < 400) {
                 const gap = 2 + ((r() * 3) | 0);
                 const dx  = ((r() * 3) | 0) - 1;
                 let   dy  = ((r() * 3) | 0) - 1;
@@ -5140,7 +5140,7 @@
         function updatePlayer(dt) {
             segT += dt;
             let guard = 0;
-            while (segIndex < ROUTE.length - 1 && segT >= SEGDUR[segIndex] && guard++ < 200) {
+            while (segIndex < ROUTE.length - 1 &amp;&amp; segT >= SEGDUR[segIndex] &amp;&amp; guard++ < 200) {
                 segT -= SEGDUR[segIndex];
                 segIndex++;
             }
@@ -5190,9 +5190,9 @@
             const ca = Math.cos(ang), sa = Math.sin(ang);
 
             for (let i = 0; i < 8; i++) {
-                const lx = cx + ((i & 1) ? hx : -hx);
-                const ly = cy + ((i & 2) ? hy : -hy);
-                const lz = cz + ((i & 4) ? hz : -hz);
+                const lx = cx + ((i &amp; 1) ? hx : -hx);
+                const ly = cy + ((i &amp; 2) ? hy : -hy);
+                const lz = cz + ((i &amp; 4) ? hz : -hz);
                 const dy = ly - pivotY, dz = lz - cz;
                 PV[i * 3]     = lx;
                 PV[i * 3 + 1] = pivotY + dy * ca - dz * sa;
@@ -5215,7 +5215,7 @@
 
                 if (nx * (camX - fx) + rny * (camY - fy) + rnz * (camZ - fz) <= 0) continue;
 
-                const c = (f === 4 && topCol) ? topCol : col;
+                const c = (f === 4 &amp;&amp; topCol) ? topCol : col;
                 const sh = FSHADE[f];
 
                 quad(
@@ -5334,7 +5334,7 @@
             for (let i = 0; i < BLOCKS.length; i++) {
                 const b = BLOCKS[i];
                 const cz = b.z + 0.5;
-                if (cz > camZ - 3 && cz < camZ + RENDER_DIST) {
+                if (cz > camZ - 3 &amp;&amp; cz < camZ + RENDER_DIST) {
                     renderList.push({ z: cz, k: 0, o: b });
                 }
             }
@@ -5343,7 +5343,7 @@
             for (let i = 0; i < CLOUDS.length; i++) {
                 const c = CLOUDS[i];
                 const cz = c.z + c.d * 0.5;
-                if (cz > camZ - 20 && cz < camZ + cloudFar) {
+                if (cz > camZ - 20 &amp;&amp; cz < camZ + cloudFar) {
                     renderList.push({ z: cz, k: 1, o: c });
                 }
             }
@@ -5355,7 +5355,7 @@
 
             for (let i = 0; i < renderList.length; i++) {
                 const it = renderList[i];
-                if (!drewPlayer && it.z < pz) {
+                if (!drewPlayer &amp;&amp; it.z < pz) {
                     drawPlayer();
                     drewPlayer = true;
                 }
@@ -5467,7 +5467,7 @@
         const { captionEl, playBtn } = shell;
         const fullText = `${commentText} ${story}`;
         captionEl.innerHTML = escapeHtml(fullText);
-        const hasNative = typeof AndroidTTS !== 'undefined' && AndroidTTS && typeof AndroidTTS.speak === 'function';
+        const hasNative = typeof AndroidTTS !== 'undefined' &amp;&amp; AndroidTTS &amp;&amp; typeof AndroidTTS.speak === 'function';
         if (hasNative) {
             let isPlaying = false;
             playBtn.style.display = '';
@@ -5531,7 +5531,7 @@
             utterance.pitch = 1;
             utterance.onboundary = (e) => {
                 if (typeof e.charIndex !== 'number') return;
-                const match = wordRanges.find(r => e.charIndex >= r.start && e.charIndex < r.end);
+                const match = wordRanges.find(r => e.charIndex >= r.start &amp;&amp; e.charIndex < r.end);
                 if (match) renderCaptionWindow(match.index);
             };
             utterance.onend = () => {
@@ -5549,7 +5549,7 @@
                     playBtn.textContent = '⏸ Pause narration';
                     return;
                 }
-                if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+                if (window.speechSynthesis.speaking &amp;&amp; !window.speechSynthesis.paused) {
                     window.speechSynthesis.pause();
                     playBtn.textContent = '▶ Resume narration';
                 } else if (window.speechSynthesis.paused) {
@@ -5681,10 +5681,10 @@
 
         function tick() {
             if (!document.body.contains(el)) return;
-            if (el.dataset.userJoined === '1' && parseInt(el.dataset.relayCount) > 0) return;
+            if (el.dataset.userJoined === '1' &amp;&amp; parseInt(el.dataset.relayCount) > 0) return;
 
             const count = parseInt(el.dataset.relayCount || '0');
-            if (count >= maxRelays && el.dataset.userJoined !== 'pending') {
+            if (count >= maxRelays &amp;&amp; el.dataset.userJoined !== 'pending') {
                 const badge = el.querySelector('.live-badge');
                 if (badge) {
                     badge.outerHTML = '<span class="debate-ended-tag">· Debate ended</span>';
@@ -5739,7 +5739,7 @@
         overlay.innerHTML = `
         <div class="modal-box">
           <div class="modal-title">Join the debate</div>
-          <textarea class="modal-textarea" placeholder="Share your hot take..." autofocus></textarea>
+          <textarea class="modal-textarea" placeholder="Share your hot take..." autofocus>&lt;/textarea&gt;
           <div class="modal-actions">
             <button type="button" class="modal-cancel">Cancel</button>
             <button type="button" class="modal-post">Post</button>
@@ -5905,7 +5905,7 @@
         const pool = debateCategoryPool(category);
         let other = rand(pool);
         let tries = 0;
-        while (other === prevName && tries < 8) { other = rand(pool);
+        while (other === prevName &amp;&amp; tries < 8) { other = rand(pool);
             tries++; }
         const [adjPos, adjNeg] = rand(debateAdjPairs);
         const comparative = rand(debateComparativePhrases);
@@ -6102,7 +6102,7 @@
                 if (!document.body.contains(postEl)) return;
                 const existing = postEl.querySelectorAll('.comment-item');
                 for (const c of existing) {
-                    if (c.dataset.commentName && c.dataset.commentName.toLowerCase() === friend.toLowerCase()) {
+                    if (c.dataset.commentName &amp;&amp; c.dataset.commentName.toLowerCase() === friend.toLowerCase()) {
                         return;
                     }
                 }
@@ -6137,7 +6137,7 @@
         const existingShareBtn = section.querySelector('.share-comments-btn');
         if (existingShareBtn) existingShareBtn.remove();
 
-        const displayName = (name && name.trim()) ? name.trim() : 'You';
+        const displayName = (name &amp;&amp; name.trim()) ? name.trim() : 'You';
         const initial = displayName.charAt(0).toUpperCase();
         const item = document.createElement('div');
         item.className = 'comment-item';
@@ -6185,7 +6185,7 @@
             repliesEl.className = 'comment-replies';
             parentItem.appendChild(repliesEl);
         }
-        const displayName = (name && name.trim()) ? name.trim() : 'You';
+        const displayName = (name &amp;&amp; name.trim()) ? name.trim() : 'You';
         const initial = displayName.charAt(0).toUpperCase();
         const item = document.createElement('div');
         item.className = 'comment-item reply-item';
@@ -6318,7 +6318,7 @@
     }
 
     function escapeHtml(str) {
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        return str.replace(/&amp;/g, '&amp;amp;').replace(/</g, '&amp;lt;').replace(/>/g, '&amp;gt;').replace(/"/g, '&amp;quot;');
     }
 
     function linkifyText(text) {
@@ -6350,14 +6350,14 @@
             `post_creator=${encodeURIComponent(name)}`,
             `profile_picture=${encodeURIComponent(colorLabel)}`,
             `post_content=${encodeURIComponent(content)}`
-        ].join('&');
+        ].join('&amp;');
         return `${base}?${query}`;
     }
 
     function appendQueryParams(link, parts) {
         if (!parts.length) return link;
-        const query = parts.join('&');
-        return link.includes('?') ? `${link}&${query}` : `${link}?${query}`;
+        const query = parts.join('&amp;');
+        return link.includes('?') ? `${link}&amp;${query}` : `${link}?${query}`;
     }
 
     function getPostMediaParams(postEl) {
@@ -6388,7 +6388,7 @@
         if (!nameEl || !contentEl) return base;
         if (contentEl.querySelector('.number-game-btn')) return base;
         const firstNode = nameEl.childNodes[0];
-        const name = (firstNode && firstNode.nodeType === Node.TEXT_NODE) ?
+        const name = (firstNode &amp;&amp; firstNode.nodeType === Node.TEXT_NODE) ?
             firstNode.textContent.trim() :
             nameEl.textContent.trim();
         const content = contentEl.textContent.trim();
@@ -6410,7 +6410,7 @@
         const section = postEl.querySelector('.comments-section');
         if (!section) return [];
         const topItems = Array.from(section.children).filter(
-            child => child.classList && child.classList.contains('comment-item') && !child.classList.contains(
+            child => child.classList &amp;&amp; child.classList.contains('comment-item') &amp;&amp; !child.classList.contains(
             'reply-item')
         );
         if (!topItems.length) return [];
@@ -6425,7 +6425,7 @@
             chain.push({ name, colorLabel, content });
             const repliesEl = current.querySelector(':scope > .comment-replies');
             const replyItems = repliesEl ? repliesEl.querySelectorAll(':scope > .comment-item') : null;
-            current = (replyItems && replyItems.length) ? replyItems[replyItems.length - 1] : null;
+            current = (replyItems &amp;&amp; replyItems.length) ? replyItems[replyItems.length - 1] : null;
         }
         return chain;
     }
@@ -6462,9 +6462,9 @@
         const contentEl = postEl ? postEl.querySelector('.post-content, .post-question') : null;
         const creator = nameEl ? nameEl.textContent.replace(/Ad|Shared Post|Pinned post/g, '').replace(/·.*/g, '').trim() : 'ChillSpace Friend';
         const textContent = contentEl ? contentEl.textContent.trim() : 'Check out this post on ChillSpace!';
-        const shareUrl = `https://chillspace.ai/?post_creator=${encodeURIComponent(creator)}&post_content=${encodeURIComponent(textContent)}`;
+        const shareUrl = `https://chillspace.ai/?post_creator=${encodeURIComponent(creator)}&amp;post_content=${encodeURIComponent(textContent)}`;
 
-        if (window.AndroidUtils && typeof window.AndroidUtils.shareText === 'function') {
+        if (window.AndroidUtils &amp;&amp; typeof window.AndroidUtils.shareText === 'function') {
             window.AndroidUtils.shareText(shareUrl);
         } else if (navigator.share) {
             navigator.share({
@@ -6690,7 +6690,7 @@
         let el = null;
         if (postParam) {
             el = buildPinnedPost(postParam);
-        } else if (creatorParam && contentParam) {
+        } else if (creatorParam &amp;&amp; contentParam) {
             el = buildPinnedPostFromContent(creatorParam, params.get('profile_picture'), contentParam);
         }
         if (!el) return;
@@ -6699,7 +6699,7 @@
         const aiResponseParam = params.get('chillspace_ai_response');
         if (aiResponseParam) el.dataset.aiResponse = aiResponseParam;
         const imgSrcParam = params.get('img_src');
-        if (imgSrcParam && /^https?:\/\//i.test(imgSrcParam)) {
+        if (imgSrcParam &amp;&amp; /^https?:\/\//i.test(imgSrcParam)) {
             const contentEl = el.querySelector('.post-content, .post-question');
             const img = document.createElement('img');
             img.className = 'post-image';
@@ -6722,7 +6722,7 @@
         const commentCreator = params.get('comment_creator');
         const commentContent = params.get('comment_content');
         let commentItem = null;
-        if (commentCreator && commentContent) {
+        if (commentCreator &amp;&amp; commentContent) {
             commentItem = appendComment(el, commentCreator, params.get('comment_profile_picture'), commentContent);
         }
         let parentItem = commentItem;
@@ -6892,7 +6892,7 @@
             imageInput.click();
         });
         imageInput.addEventListener('change', (e) => {
-            if (e.target.files && e.target.files.length) handleImageFile(e.target.files[0]);
+            if (e.target.files &amp;&amp; e.target.files.length) handleImageFile(e.target.files[0]);
             imageInput.removeAttribute('capture');
             imageInput.value = '';
         });
@@ -6929,7 +6929,7 @@
         });
 
         window.addEventListener('storage', (e) => {
-            if (e.key === 'chillspace_display_name' && e.newValue) {
+            if (e.key === 'chillspace_display_name' &amp;&amp; e.newValue) {
                 nameInput.value = e.newValue;
                 document.getElementById('composer-avatar').textContent = e.newValue.charAt(0).toUpperCase();
             }
@@ -6975,10 +6975,10 @@
                 showToast("Post saved to your profile! 💾");
             } else {
                 try {
-                    if (window.AndroidUtils && typeof window.AndroidUtils.deleteLastCapturedFile === 'function') {
+                    if (window.AndroidUtils &amp;&amp; typeof window.AndroidUtils.deleteLastCapturedFile === 'function') {
                         window.AndroidUtils.deleteLastCapturedFile();
                     }
-                    if (mediaUrl && window.AndroidUtils && typeof window.AndroidUtils.deleteFile === 'function') {
+                    if (mediaUrl &amp;&amp; window.AndroidUtils &amp;&amp; typeof window.AndroidUtils.deleteFile === 'function') {
                         window.AndroidUtils.deleteFile(mediaUrl);
                     }
                 } catch (e) {}
@@ -7075,7 +7075,7 @@
     ];
 
     function maybeEmbedGif(postEl) {
-        if (!postEl.classList.contains('own-post') && !postEl.classList.contains('pinned-post')) return;
+        if (!postEl.classList.contains('own-post') &amp;&amp; !postEl.classList.contains('pinned-post')) return;
         if (postEl.querySelector('.post-gif')) return;
         const contentEl = postEl.querySelector('.post-content, .post-question');
         if (!contentEl) return;
@@ -7086,7 +7086,7 @@
         gif.className = 'post-gif ad-video';
         gif.id = 'FBSlot';
         var ua = navigator.userAgent;
-        var isWebView = /wv/i.test(ua) || (/\bAndroid\b/.test(ua) && /\bChrome\/(?!.*\bEdg\b)/.test(ua) && /Version\/\d+\.\d+/.test(ua));
+        var isWebView = /wv/i.test(ua) || (/\bAndroid\b/.test(ua) &amp;&amp; /\bChrome\/(?!.*\bEdg\b)/.test(ua) &amp;&amp; /Version\/\d+\.\d+/.test(ua));
         gif.src = isWebView ? 'file:///android_asset/fb-slot.html' : 'fb-slot.html';
         gif.title = 'ChillSpace Slots';
         gif.style.cssText = 'border:none; width:100%; height:460px; display:block;';
@@ -7278,7 +7278,7 @@
             appendComment(postEl, personality.name, traitColors[personality.trait] || 'grey', replyText);
             return;
         }
-        if (postEl.classList.contains('debate-post') && postEl.dataset.lastName) {
+        if (postEl.classList.contains('debate-post') &amp;&amp; postEl.dataset.lastName) {
             const topic = postEl.dataset.lastName;
             const ending = postEl.dataset.category || 'this';
             const templates = personalityTemplates[personality.trait] || personalityTemplates.Sarcastic;
@@ -7288,11 +7288,11 @@
         }
         // linesB-specific pre-generated replies
         const linesBIdx = postEl.dataset.linesBIndex;
-        if (linesBIdx !== undefined && linesBIdx !== '') {
+        if (linesBIdx !== undefined &amp;&amp; linesBIdx !== '') {
             const bucket = LINESB_PERSONALITY_REPLIES[linesBIdx];
             if (bucket) {
                 const list = bucket[personality.trait];
-                if (list && list.length) {
+                if (list &amp;&amp; list.length) {
                     const replyText = rand(list);
                     appendComment(postEl, personality.name, traitColors[personality.trait] || 'grey', replyText);
                     return;
@@ -7317,7 +7317,7 @@
     if (postEl.querySelector(':scope > .suggested-replies-row')) return;
 
     const linesBIdx = postEl.dataset.linesBIndex;
-    const isLinesB = (linesBIdx !== undefined && linesBIdx !== null && linesBIdx !== '');
+    const isLinesB = (linesBIdx !== undefined &amp;&amp; linesBIdx !== null &amp;&amp; linesBIdx !== '');
 
     let groupId, repliesMap;
     if (isLinesB) {
@@ -7440,7 +7440,7 @@ function renderNextSuggestedReplyRow(postEl, groupId, replyId, nextLevel, isLine
     const replyId = btn.dataset.replyId;
     const currentLevel = parseInt(btn.dataset.level || '1', 10);
 
-    const groupReplies = (window.GENERAL_SUGGESTED_REPLIES && window.GENERAL_SUGGESTED_REPLIES[groupId])
+    const groupReplies = (window.GENERAL_SUGGESTED_REPLIES &amp;&amp; window.GENERAL_SUGGESTED_REPLIES[groupId])
         ? window.GENERAL_SUGGESTED_REPLIES[groupId]
         : null;
 
@@ -7477,7 +7477,7 @@ function renderNextSuggestedReplyRow(postEl, groupId, replyId, nextLevel, isLine
 }
 
 function renderNextGeneralSuggestedReplyRow(postEl, groupId, replyId, nextLevel) {
-    const groupReplies = (window.GENERAL_SUGGESTED_REPLIES && window.GENERAL_SUGGESTED_REPLIES[groupId])
+    const groupReplies = (window.GENERAL_SUGGESTED_REPLIES &amp;&amp; window.GENERAL_SUGGESTED_REPLIES[groupId])
         ? window.GENERAL_SUGGESTED_REPLIES[groupId]
         : null;
 
@@ -7581,7 +7581,7 @@ function renderNextGeneralSuggestedReplyRow(postEl, groupId, replyId, nextLevel)
                     document.removeEventListener('click', handler);
                     return;
                 }
-                if (!menu.contains(e.target) && e.target !== btn) {
+                if (!menu.contains(e.target) &amp;&amp; e.target !== btn) {
                     menu.remove();
                     if (openPersonalityMenuEl === menu) openPersonalityMenuEl = null;
                     document.removeEventListener('click', handler);
@@ -7662,7 +7662,7 @@ function renderNextGeneralSuggestedReplyRow(postEl, groupId, replyId, nextLevel)
         window.addEventListener('touchstart', pauseBriefly, { passive: true });
 
         function step(timestamp) {
-            if (lastTime !== null && isAutoscrollActive && timestamp >= pausedUntil) {
+            if (lastTime !== null &amp;&amp; isAutoscrollActive &amp;&amp; timestamp >= pausedUntil) {
                 const deltaSeconds = (timestamp - lastTime) / 1000;
                 scrollAccumulator += PIXELS_PER_SECOND * deltaSeconds;
                 if (scrollAccumulator >= 1) {
@@ -7774,7 +7774,7 @@ function renderNextGeneralSuggestedReplyRow(postEl, groupId, replyId, nextLevel)
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach(m => {
                     m.addedNodes.forEach(node => {
-                        if (node.nodeType === 1 && node.classList && node.classList.contains('post')) {
+                        if (node.nodeType === 1 &amp;&amp; node.classList &amp;&amp; node.classList.contains('post')) {
                             window.updateChallengeProgress('scroll_posts', 1);
                         }
                     });
@@ -7798,9 +7798,9 @@ function renderNextGeneralSuggestedReplyRow(postEl, groupId, replyId, nextLevel)
  */
     function loadLangXml() {
         return new Promise((resolve) => {
-            if (window.AndroidUtils && typeof window.AndroidUtils.loadAsset === 'function') {
+            if (window.AndroidUtils &amp;&amp; typeof window.AndroidUtils.loadAsset === 'function') {
                 const xmlText = window.AndroidUtils.loadAsset('lang.xml');
-                if (xmlText && xmlText.trim()) {
+                if (xmlText &amp;&amp; xmlText.trim()) {
                     resolve(xmlText);
                     return;
                 }
@@ -7838,9 +7838,9 @@ function renderNextGeneralSuggestedReplyRow(postEl, groupId, replyId, nextLevel)
             const xml = parser.parseFromString(xmlString, 'text/xml');
             const userLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
             let langTag = 'english';
-            if (userLang.startsWith('ko') && xml.querySelector('korean')) langTag = 'korean';
-            else if (userLang.startsWith('es') && xml.querySelector('spanish')) langTag = 'spanish';
-            else if (userLang.startsWith('ja') && xml.querySelector('japanese')) langTag = 'japanese';
+            if (userLang.startsWith('ko') &amp;&amp; xml.querySelector('korean')) langTag = 'korean';
+            else if (userLang.startsWith('es') &amp;&amp; xml.querySelector('spanish')) langTag = 'spanish';
+            else if (userLang.startsWith('ja') &amp;&amp; xml.querySelector('japanese')) langTag = 'japanese';
 
             const isKo = (langTag === 'korean');
             // Keep the global flag in sync with whatever lang.xml decided.
@@ -7848,13 +7848,13 @@ function renderNextGeneralSuggestedReplyRow(postEl, groupId, replyId, nextLevel)
             const langNode = xml.querySelector(langTag) || xml.querySelector('english');
             if (!langNode) return;
 
-            // 1. Button & UI Text
+            // 1. Button &amp; UI Text
             const btnText = langNode.querySelector('button-text');
             if (btnText) {
                 const getText = tag => btnText.querySelector(tag)?.textContent.trim();
                 const setHtml = (selector, text) => {
                     const el = document.querySelector(selector);
-                    if (el && text) el.textContent = text;
+                    if (el &amp;&amp; text) el.textContent = text;
                 };
 
                 const autoscrollText = getText('autoscroll');
@@ -7898,12 +7898,12 @@ function renderNextGeneralSuggestedReplyRow(postEl, groupId, replyId, nextLevel)
 
             // 2. Wordswap Map
             const wordswapNode = langNode.querySelector('wordswap');
-            if (wordswapNode && wordswapNode.querySelectorAll('entry').length > 0) {
+            if (wordswapNode &amp;&amp; wordswapNode.querySelectorAll('entry').length > 0) {
                 const entries = wordswapNode.querySelectorAll('entry');
                 entries.forEach(entry => {
                     const w = entry.getAttribute('word');
                     const alts = entry.getAttribute('alternatives');
-                    if (w && alts) {
+                    if (w &amp;&amp; alts) {
                         WORD_SWAP_MAP[w] = alts.split(',').map(s => s.trim());
                     }
                 });
@@ -7996,34 +7996,34 @@ function renderNextGeneralSuggestedReplyRow(postEl, groupId, replyId, nextLevel)
 
                 // >>> THE ACTUAL FIX <<<
                 const mpAttr = contentNode.getAttribute('mainphrase');
-                if (mpAttr && mpAttr.trim()) {
+                if (mpAttr &amp;&amp; mpAttr.trim()) {
                     contentMainPhrase = mpAttr.trim();
                 }
 
                 const gsAttr = contentNode.getAttribute('grammarstructure');
-                if (gsAttr && gsAttr.trim()) {
+                if (gsAttr &amp;&amp; gsAttr.trim()) {
                     contentGrammarStructure = gsAttr.trim();
                 }
             }
 // 5b. Ad copy (per-language)
 const adCopyNode = langNode.querySelector('ad-copy');
-if (adCopyNode && adCopyNode.textContent.trim()) {
+if (adCopyNode &amp;&amp; adCopyNode.textContent.trim()) {
     contentAdCopy = adCopyNode.textContent.trim();
 }
             // 6. Debate Posts (Politicians, Topics, Judgements, Beneficiaries)
             const debateNode = langNode.querySelector('debateposts');
             if (debateNode) {
                 const pols = debateNode.querySelector('politicians')?.textContent;
-                if (pols && pols.trim()) politicians = pols.split(',').map(s => s.trim());
+                if (pols &amp;&amp; pols.trim()) politicians = pols.split(',').map(s => s.trim());
 
                 const polTop = debateNode.querySelector('politicaltopics')?.textContent;
-                if (polTop && polTop.trim()) politicalTopics = polTop.split(',').map(s => s.trim());
+                if (polTop &amp;&amp; polTop.trim()) politicalTopics = polTop.split(',').map(s => s.trim());
 
                 const polJudge = debateNode.querySelector('politicaljudgements')?.textContent;
-                if (polJudge && polJudge.trim()) politicalJudgements = polJudge.split(',').map(s => s.trim());
+                if (polJudge &amp;&amp; polJudge.trim()) politicalJudgements = polJudge.split(',').map(s => s.trim());
 
                 const polBen = debateNode.querySelector('politicalbeneficiaries')?.textContent;
-                if (polBen && polBen.trim()) politicalBeneficiaries = polBen.split(',').map(s => s.trim());
+                if (polBen &amp;&amp; polBen.trim()) politicalBeneficiaries = polBen.split(',').map(s => s.trim());
             }
 
             // 7. Names (<first> and <last>)
@@ -8036,7 +8036,7 @@ if (adCopyNode && adCopyNode.textContent.trim()) {
                 if (lastStr) lastNames = lastStr.split(',').map(s => s.trim());
             }
 
-            // 8. Algo Responses & Generic Responses
+            // 8. Algo Responses &amp; Generic Responses
             const algoNode = langNode.querySelector('algo-responses');
             if (algoNode) {
                 const cats = algoNode.querySelectorAll('category');
