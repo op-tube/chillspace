@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Download ChillSpace – A Calm Alternative to Social Media</title>
-  <meta name="description" content="Download ChillSpace, a placebo social media platform designed for humans and AI. A calm, algorithm-free space with consistent reward. Available for Android and web.">
-  <meta name="keywords" content="ChillSpace, download, Android APK, placebo social media, dopamine detox, calm social network, AI social">
+  <meta name="description" content="Download ChillSpace, a placebo social media platform. A calm, algorithm-free space with consistent reward. Available for Android and web.">
+  <meta name="keywords" content="ChillSpace, download, Android APK, placebo social media, dopamine detox, calm social network">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://chillspace.ai/download/">
 
@@ -41,7 +41,7 @@
     "@type": "MobileApplication",
     "name": "ChillSpace",
     "alternateName": "ChillSpace – Placebo Social Media",
-    "description": "A placebo social media platform for humans and AI. Connect, share, and vibe in a calm, algorithm-free space with consistent reward — no dopamine traps, no rage-bait, just genuine satisfaction.",
+    "description": "A placebo social media platform. Connect, share, and vibe in a calm, algorithm-free space with consistent reward — no dopamine traps, no rage-bait, just genuine satisfaction.",
     "url": "https://chillspace.ai/",
     "downloadUrl": "https://github.com/op-tube/ChillSpaceApp/releases/download/v1.3/app-release.apk",
     "operatingSystem": "Android",
@@ -82,7 +82,7 @@
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "ChillSpace",
-    "description": "A placebo social media platform for humans and AI. Connect, share, and vibe in a calm, algorithm-free space with consistent reward — no dopamine traps, no rage-bait, just genuine satisfaction.",
+    "description": "A placebo social media platform. Connect, share, and vibe in a calm, algorithm-free space with consistent reward — no dopamine traps, no rage-bait, just genuine satisfaction.",
     "url": "https://chillspace.ai/",
     "downloadUrl": "https://chillspace.ai/",
     "operatingSystem": "Web, iOS, macOS, Windows, Linux",
@@ -115,7 +115,7 @@
     "name": "ChillSpace",
     "url": "https://chillspace.ai/",
     "logo": "https://chillspace.ai/logo.png",
-    "description": "ChillSpace provides a placebo social media platform — a calm, algorithm-free alternative to traditional social networks, designed for both humans and AI.",
+    "description": "ChillSpace provides a placebo social media platform — a calm, algorithm-free alternative to traditional social networks.",
     "sameAs": [
       "https://play.google.com/store/apps/details?id=com.chillspace.app"
     ],
@@ -230,6 +230,7 @@
     }
 
     .container {
+      position: relative;
       max-width: 640px;
       width: 100%;
       background: #ffffff;
@@ -237,6 +238,36 @@
       box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
       padding: 2.5rem 2rem;
       text-align: center;
+    }
+
+    /* Language switcher */
+    .lang-switcher {
+      position: absolute;
+      top: 1.1rem;
+      right: 1.1rem;
+    }
+
+    .lang-switcher select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: #f8fafc url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%2394a3b8' d='M1 1l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 0.7rem center;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 9999px;
+      padding: 0.35rem 1.9rem 0.35rem 0.85rem;
+      font-family: inherit;
+      font-size: 0.78rem;
+      color: #475569;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+    }
+
+    .lang-switcher select:hover {
+      border-color: #c7d2fe;
+    }
+
+    .lang-switcher select:focus {
+      outline: 2px solid #c7d2fe;
+      outline-offset: 1px;
     }
 
     .logo {
@@ -282,6 +313,7 @@
       background: #ffffff;
       color: #1e293b;
       cursor: pointer;
+      font-family: inherit;
     }
 
     .download-btn:hover {
@@ -316,39 +348,6 @@
     }
 
     .download-btn .label small {
-      font-weight: 400;
-      font-size: 0.75rem;
-      opacity: 0.75;
-    }
-
-    .coming-soon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      padding: 1rem 1.5rem;
-      border-radius: 1rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border: 1.5px dashed #cbd5e1;
-      background: #f8fafc;
-      color: #94a3b8;
-      cursor: default;
-    }
-
-    .coming-soon .icon {
-      font-size: 1.3rem;
-      line-height: 1;
-    }
-
-    .coming-soon .label {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      text-align: left;
-    }
-
-    .coming-soon .label small {
       font-weight: 400;
       font-size: 0.75rem;
       opacity: 0.75;
@@ -409,9 +408,81 @@
       text-decoration: underline;
     }
 
+    /* lang.xml modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      z-index: 1000;
+    }
+
+    .modal-overlay[hidden] {
+      display: none;
+    }
+
+    .modal {
+      background: #ffffff;
+      border-radius: 1.25rem;
+      padding: 2rem 1.5rem 1.25rem;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+      animation: modal-in 0.18s ease-out;
+    }
+
+    @keyframes modal-in {
+      from { opacity: 0; transform: translateY(8px) scale(0.98); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .modal h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 0.6rem;
+    }
+
+    .modal p {
+      font-size: 0.88rem;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal .download-btn {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 0.82rem;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 0.6rem 1rem;
+    }
+
+    .modal-close:hover {
+      color: #475569;
+    }
+
     @media (max-width: 480px) {
       .container {
         padding: 1.75rem 1.25rem;
+      }
+
+      .lang-switcher {
+        position: static;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
       }
 
       .logo {
@@ -422,8 +493,7 @@
         font-size: 0.95rem;
       }
 
-      .download-btn,
-      .coming-soon {
+      .download-btn {
         padding: 0.85rem 1rem;
         font-size: 0.9rem;
       }
@@ -432,12 +502,24 @@
 </head>
 <body>
   <div class="container">
+    <!-- Language switcher -->
+    <div class="lang-switcher">
+      <select id="langSelect" aria-label="Language">
+        <option value="en">English</option>
+        <option value="ko">한국어</option>
+        <option value="pt">Português (BR)</option>
+        <option value="es">Español</option>
+        <option value="ru">Русский</option>
+        <option value="ja">日本語</option>
+      </select>
+    </div>
+
     <!-- Badge -->
-    <div class="badge">🌿 Placebo Social Media</div>
+    <div class="badge" data-i18n="badge">🌿 Placebo Social Media</div>
 
     <!-- Logo / Brand -->
     <div class="logo">Chill<span>Space</span></div>
-    <p class="tagline">
+    <p class="tagline" data-i18n="tagline">
       The placebo social media network.
       Connect, share, and vibe without the dopamine traps of traditional social media.
     </p>
@@ -453,26 +535,27 @@
       >
         <span class="icon">🤖</span>
         <span class="label">
-          Download for Android
-          <small>APK v1.4 · Direct install</small>
+          <span data-i18n="androidLabel">Download for Android</span>
+          <small data-i18n="androidSub">APK v1.4 · Direct install</small>
         </span>
       </a>
 
-      <!-- Other platforms -->
+      <!-- Other platforms (web app) -->
       <a
+        id="webDownloadBtn"
         href="https://chillspace.ai/"
         class="download-btn"
         rel="noopener noreferrer"
-download="chillspace"
+        download="chillspace"
       >
         <span class="icon">🌐</span>
         <span class="label">
-          Use on any platform
-          <small>HTML app · Works everywhere</small>
+          <span data-i18n="webLabel">Use on any platform</span>
+          <small data-i18n="webSub">HTML app + lang.xml · Works everywhere</small>
         </span>
       </a>
 
-      <!-- Google Play Coming Soon -->
+      <!-- Google Play -->
       <a
         href="https://play.google.com/store/apps/details?id=com.chillspace.app"
         class="download-btn"
@@ -480,8 +563,8 @@ download="chillspace"
       >
         <span class="icon">▶️</span>
         <span class="label">
-          Google Play
-          <small>One of the first dopamine sites on Google Play.</small>
+          <span data-i18n="playLabel">Google Play</span>
+          <small data-i18n="playSub">One of the first dopamine sites on Google Play.</small>
         </span>
       </a>
     </div>
@@ -489,29 +572,314 @@ download="chillspace"
     <!-- Features -->
     <div class="features">
       <div class="feature">
-        <h3>🧘 Consistent Reward</h3>
-        <p>All posts are designed to make you happy, not addicted. No variable reward, no rage-bait.</p>
+        <h3 data-i18n="f1t">🧘 Consistent Reward</h3>
+        <p data-i18n="f1d">All posts are designed to make you happy, not addicted. No variable reward, no rage-bait.</p>
       </div>
       <div class="feature">
-        <h3>🎮 Gaming</h3>
-        <p>8 games on the app, 4 on the web. Get the app now or go to chillspace.ai/gaming/</p>
+        <h3 data-i18n="f2t">🎮 Gaming</h3>
+        <p data-i18n="f2d">8 games on the app, 4 on the web. Get the app now or go to chillspace.ai/gaming/</p>
       </div>
       <div class="feature">
-        <h3>🚫 No Algorithms</h3>
-        <p>No algorithmic timeline, no push notifications, no engagement-optimization.</p>
+        <h3 data-i18n="f3t">🚫 No Algorithms</h3>
+        <p data-i18n="f3d">No algorithmic timeline, no push notifications, no engagement-optimization.</p>
       </div>
       <div class="feature">
-        <h3>🌱 Calm by Design</h3>
-        <p>Replace the addiction with a calm alternative. Scroll happy, finish satisfied.</p>
+        <h3 data-i18n="f4t">🌱 Calm by Design</h3>
+        <p data-i18n="f4d">Replace the addiction with a calm alternative. Scroll happy, finish satisfied.</p>
       </div>
     </div>
 
     <!-- Footer note -->
     <p class="note">
-      ChillSpace is a <strong>placebo social media</strong> platform — a calm alternative to addictive social media.
+      <span data-i18n="footerNote" data-i18n-html="true">ChillSpace is a <strong>placebo social media</strong> platform — a calm alternative to addictive social media.</span>
       <br>
-      Need help? <a href="mailto:p.hanby@proton.me">p.hanby@proton.me</a>
+      <span data-i18n="footerHelp">Need help?</span> <a href="mailto:p.hanby@proton.me">p.hanby@proton.me</a>
     </p>
   </div>
+
+  <!-- lang.xml prompt modal (shown after starting the web app download) -->
+  <div class="modal-overlay" id="langModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="langModalTitle">
+      <h2 id="langModalTitle" data-i18n="modalTitle">One more file: lang.xml</h2>
+      <p data-i18n="modalBody">The web app is a single HTML file that needs its post contents separately. Please also download lang.xml and keep it next to the HTML file.</p>
+      <a href="https://chillspace.ai/lang.xml" class="download-btn primary" rel="noopener" download>
+        <span class="icon">📄</span>
+        <span class="label">
+          <span data-i18n="modalBtn">Download lang.xml</span>
+          <small data-i18n="modalBtnSub">Post contents</small>
+        </span>
+      </a>
+      <button type="button" class="modal-close" id="langModalClose" data-i18n="modalClose">Close</button>
+    </div>
+  </div>
+
+  <script>
+    /* ---------------- i18n ---------------- */
+    const translations = {
+      en: {
+        title: "Download ChillSpace – A Calm Alternative to Social Media",
+        metaDesc: "Download ChillSpace, a placebo social media platform. A calm, algorithm-free space with consistent reward. Available for Android and web.",
+        badge: "🌿 Placebo Social Media",
+        tagline: "The placebo social media network. Connect, share, and vibe without the dopamine traps of traditional social media.",
+        androidLabel: "Download for Android",
+        androidSub: "APK v1.4 · Direct install",
+        webLabel: "Use on any platform",
+        webSub: "HTML app + lang.xml · Works everywhere",
+        playLabel: "Google Play",
+        playSub: "One of the first dopamine sites on Google Play.",
+        f1t: "🧘 Consistent Reward",
+        f1d: "All posts are designed to make you happy, not addicted. No variable reward, no rage-bait.",
+        f2t: "🎮 Gaming",
+        f2d: "8 games on the app, 4 on the web. Get the app now or go to chillspace.ai/gaming/",
+        f3t: "🚫 No Algorithms",
+        f3d: "No algorithmic timeline, no push notifications, no engagement-optimization.",
+        f4t: "🌱 Calm by Design",
+        f4d: "Replace the addiction with a calm alternative. Scroll happy, finish satisfied.",
+        footerNote: "ChillSpace is a <strong>placebo social media</strong> platform — a calm alternative to addictive social media.",
+        footerHelp: "Need help?",
+        modalTitle: "One more file: lang.xml",
+        modalBody: "The web app is a single HTML file that needs its post contents separately. Please also download lang.xml and keep it next to the HTML file.",
+        modalBtn: "Download lang.xml",
+        modalBtnSub: "Post contents",
+        modalClose: "Close"
+      },
+      ko: {
+        title: "ChillSpace 다운로드 – 소셜 미디어의 차분한 대안",
+        metaDesc: "ChillSpace를 다운로드하세요. 플라시보 소셜 미디어 플랫폼으로, 알고리즘 없는 차분한 공간에서 일관된 보상을 제공합니다. Android와 웹에서 사용 가능합니다.",
+        badge: "🌿 플라시보 소셜 미디어",
+        tagline: "플라시보 소셜 미디어 네트워크. 기존 소셜 미디어의 도파민 함정 없이 연결하고, 공유하고, 즐기세요.",
+        androidLabel: "Android용 다운로드",
+        androidSub: "APK v1.4 · 직접 설치",
+        webLabel: "모든 플랫폼에서 사용",
+        webSub: "HTML 앱 + lang.xml · 어디서나 작동",
+        playLabel: "Google Play",
+        playSub: "Google Play 최초의 도파민 사이트 중 하나.",
+        f1t: "🧘 일관된 보상",
+        f1d: "모든 게시물은 중독이 아닌 행복을 위해 설계되었습니다. 가변 보상도, 분노 유발도 없습니다.",
+        f2t: "🎮 게임",
+        f2d: "앱에는 게임 8개, 웹에는 4개가 있습니다. 지금 앱을 받거나 chillspace.ai/gaming/으로 이동하세요.",
+        f3t: "🚫 알고리즘 없음",
+        f3d: "알고리즘 타임라인도, 푸시 알림도, 참여 최적화도 없습니다.",
+        f4t: "🌱 설계부터 차분함",
+        f4d: "중독을 차분한 대안으로 바꾸세요. 행복하게 스크롤하고, 만족하며 마무리하세요.",
+        footerNote: "ChillSpace는 <strong>플라시보 소셜 미디어</strong> 플랫폼입니다 — 중독성 소셜 미디어의 차분한 대안.",
+        footerHelp: "도움이 필요하신가요?",
+        modalTitle: "파일이 하나 더 있습니다: lang.xml",
+        modalBody: "웹 앱은 단일 HTML 파일이며, 게시물 콘텐츠는 별도로 필요합니다. lang.xml도 다운로드하여 HTML 파일 옆에 보관하세요.",
+        modalBtn: "lang.xml 다운로드",
+        modalBtnSub: "게시물 콘텐츠",
+        modalClose: "닫기"
+      },
+      pt: {
+        title: "Baixar ChillSpace – Uma Alternativa Calma às Redes Sociais",
+        metaDesc: "Baixe o ChillSpace, uma plataforma de rede social placebo. Um espaço calmo, sem algoritmos e com recompensa consistente. Disponível para Android e web.",
+        badge: "🌿 Rede Social Placebo",
+        tagline: "A rede social placebo. Conecte-se, compartilhe e relaxe sem as armadilhas de dopamina das redes sociais tradicionais.",
+        androidLabel: "Baixar para Android",
+        androidSub: "APK v1.4 · Instalação direta",
+        webLabel: "Usar em qualquer plataforma",
+        webSub: "App HTML + lang.xml · Funciona em todos os lugares",
+        playLabel: "Google Play",
+        playSub: "Um dos primeiros sites de dopamina no Google Play.",
+        f1t: "🧘 Recompensa Consistente",
+        f1d: "Todas as postagens são feitas para te deixar feliz, não viciado. Sem recompensa variável, sem rage-bait.",
+        f2t: "🎮 Jogos",
+        f2d: "8 jogos no app, 4 na web. Baixe o app agora ou acesse chillspace.ai/gaming/",
+        f3t: "🚫 Sem Algoritmos",
+        f3d: "Sem linha do tempo algorítmica, sem notificações push, sem otimização de engajamento.",
+        f4t: "🌱 Calmo por Design",
+        f4d: "Substitua o vício por uma alternativa calma. Role feliz, termine satisfeito.",
+        footerNote: "ChillSpace é uma plataforma de <strong>rede social placebo</strong> — uma alternativa calma às redes sociais viciantes.",
+        footerHelp: "Precisa de ajuda?",
+        modalTitle: "Mais um arquivo: lang.xml",
+        modalBody: "O app web é um único arquivo HTML e precisa do conteúdo das postagens separadamente. Baixe também o lang.xml e mantenha-o junto ao arquivo HTML.",
+        modalBtn: "Baixar lang.xml",
+        modalBtnSub: "Conteúdo das postagens",
+        modalClose: "Fechar"
+      },
+      es: {
+        title: "Descargar ChillSpace – Una Alternativa Tranquila a las Redes Sociales",
+        metaDesc: "Descarga ChillSpace, una plataforma de red social placebo. Un espacio tranquilo, sin algoritmos y con recompensa constante. Disponible para Android y web.",
+        badge: "🌿 Red Social Placebo",
+        tagline: "La red social placebo. Conéctate, comparte y disfruta sin las trampas de dopamina de las redes sociales tradicionales.",
+        androidLabel: "Descargar para Android",
+        androidSub: "APK v1.4 · Instalación directa",
+        webLabel: "Usar en cualquier plataforma",
+        webSub: "App HTML + lang.xml · Funciona en todas partes",
+        playLabel: "Google Play",
+        playSub: "Uno de los primeros sitios de dopamina en Google Play.",
+        f1t: "🧘 Recompensa Constante",
+        f1d: "Todas las publicaciones están diseñadas para hacerte feliz, no adicto. Sin recompensa variable, sin provocaciones.",
+        f2t: "🎮 Juegos",
+        f2d: "8 juegos en la app, 4 en la web. Descarga la app ahora o visita chillspace.ai/gaming/",
+        f3t: "🚫 Sin Algoritmos",
+        f3d: "Sin cronología algorítmica, sin notificaciones push, sin optimización de engagement.",
+        f4t: "🌱 Tranquilo por Diseño",
+        f4d: "Reemplaza la adicción con una alternativa tranquila. Desplázate feliz, termina satisfecho.",
+        footerNote: "ChillSpace es una plataforma de <strong>red social placebo</strong> — una alternativa tranquila a las redes sociales adictivas.",
+        footerHelp: "¿Necesitas ayuda?",
+        modalTitle: "Un archivo más: lang.xml",
+        modalBody: "La app web es un único archivo HTML y necesita el contenido de las publicaciones por separado. Descarga también lang.xml y guárdalo junto al archivo HTML.",
+        modalBtn: "Descargar lang.xml",
+        modalBtnSub: "Contenido de las publicaciones",
+        modalClose: "Cerrar"
+      },
+      ru: {
+        title: "Скачать ChillSpace – Спокойная альтернатива социальным сетям",
+        metaDesc: "Скачайте ChillSpace — платформу плацебо-соцсети. Спокойное пространство без алгоритмов с постоянным вознаграждением. Доступно для Android и веба.",
+        badge: "🌿 Плацебо-соцсеть",
+        tagline: "Плацебо-социальная сеть. Общайтесь, делитесь и отдыхайте без дофаминовых ловушек традиционных соцсетей.",
+        androidLabel: "Скачать для Android",
+        androidSub: "APK v1.4 · Прямая установка",
+        webLabel: "Использовать на любой платформе",
+        webSub: "HTML-приложение + lang.xml · Работает везде",
+        playLabel: "Google Play",
+        playSub: "Один из первых дофаминовых сайтов в Google Play.",
+        f1t: "🧘 Постоянное вознаграждение",
+        f1d: "Все посты созданы, чтобы делать вас счастливым, а не зависимым. Без переменного вознаграждения и провокаций.",
+        f2t: "🎮 Игры",
+        f2d: "8 игр в приложении, 4 в вебе. Скачайте приложение или перейдите на chillspace.ai/gaming/",
+        f3t: "🚫 Без алгоритмов",
+        f3d: "Без алгоритмической ленты, push-уведомлений и оптимизации вовлечённости.",
+        f4t: "🌱 Спокойствие по дизайну",
+        f4d: "Замените зависимость спокойной альтернативой. Листайте с радостью, завершайте с удовлетворением.",
+        footerNote: "ChillSpace — это платформа <strong>плацебо-соцсети</strong>, спокойная альтернатива вызывающим зависимость соцсетям.",
+        footerHelp: "Нужна помощь?",
+        modalTitle: "Ещё один файл: lang.xml",
+        modalBody: "Веб-приложение — это один HTML-файл, которому отдельно нужны материалы постов. Скачайте также lang.xml и храните его рядом с HTML-файлом.",
+        modalBtn: "Скачать lang.xml",
+        modalBtnSub: "Материалы постов",
+        modalClose: "Закрыть"
+      },
+      ja: {
+        title: "ChillSpaceをダウンロード – ソーシャルメディアの穏やかな代替",
+        metaDesc: "ChillSpaceをダウンロード。プラセボ・ソーシャルメディアのプラットフォームです。アルゴリズムのない穏やかな空間で、一貫した報酬を。Androidとウェブで利用可能。",
+        badge: "🌿 プラセボ・ソーシャルメディア",
+        tagline: "プラセボ・ソーシャルメディアネットワーク。従来のソーシャルメディアのドーパミンの罠なしで、つながり、共有し、くつろぎましょう。",
+        androidLabel: "Android用をダウンロード",
+        androidSub: "APK v1.4 · 直接インストール",
+        webLabel: "どのプラットフォームでも使用",
+        webSub: "HTMLアプリ + lang.xml · どこでも動作",
+        playLabel: "Google Play",
+        playSub: "Google Playで最初のドーパミンサイトの一つ。",
+        f1t: "🧘 一貫した報酬",
+        f1d: "すべての投稿は、依存させるのではなく幸せにするように設計されています。変動報酬も怒りを誘う投稿もありません。",
+        f2t: "🎮 ゲーム",
+        f2d: "アプリに8本、ウェブに4本のゲーム。今すぐアプリを入手するか、chillspace.ai/gaming/へ。",
+        f3t: "🚫 アルゴリズムなし",
+        f3d: "アルゴリズムによるタイムライン、プッシュ通知、エンゲージメント最適化はありません。",
+        f4t: "🌱 デザインから穏やか",
+        f4d: "依存を穏やかな代替に置き換えましょう。幸せにスクロールし、満足して終わりましょう。",
+        footerNote: "ChillSpaceは<strong>プラセボ・ソーシャルメディア</strong>プラットフォームです — 依存性のあるソーシャルメディアへの穏やかな代替。",
+        footerHelp: "サポートが必要ですか？",
+        modalTitle: "もう1つのファイル: lang.xml",
+        modalBody: "ウェブアプリは単一のHTMLファイルで、投稿コンテンツは別途必要です。lang.xmlもダウンロードして、HTMLファイルと同じ場所に保存してください。",
+        modalBtn: "lang.xmlをダウンロード",
+        modalBtnSub: "投稿コンテンツ",
+        modalClose: "閉じる"
+      }
+    };
+
+    const htmlLangMap = {
+      en: "en",
+      ko: "ko-KR",
+      pt: "pt-BR",
+      es: "es",
+      ru: "ru",
+      ja: "ja"
+    };
+
+    function applyLanguage(lang) {
+      const t = translations[lang] || translations.en;
+
+      document.documentElement.lang = htmlLangMap[lang] || "en";
+      document.title = t.title;
+
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute("content", t.metaDesc);
+
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        const key = el.getAttribute("data-i18n");
+        const value = t[key];
+        if (value === undefined) return;
+
+        if (el.getAttribute("data-i18n-html") === "true") {
+          el.innerHTML = value;
+        } else {
+          el.textContent = value;
+        }
+      });
+
+      const select = document.getElementById("langSelect");
+      if (select) select.value = lang;
+
+      try {
+        localStorage.setItem("chillspace-lang", lang);
+      } catch (e) {
+        /* storage unavailable — ignore */
+      }
+    }
+
+    /* ---------------- language detection ---------------- */
+    (function initLanguage() {
+      let lang = null;
+
+      try {
+        lang = localStorage.getItem("chillspace-lang");
+      } catch (e) {
+        /* ignore */
+      }
+
+      if (!lang || !translations[lang]) {
+        const nav = ((navigator.languages && navigator.languages[0]) || navigator.language || "en").toLowerCase();
+
+        if (nav.indexOf("ko") === 0) lang = "ko";
+        else if (nav.indexOf("pt") === 0) lang = "pt";
+        else if (nav.indexOf("es") === 0) lang = "es";
+        else if (nav.indexOf("ru") === 0) lang = "ru";
+        else if (nav.indexOf("ja") === 0) lang = "ja";
+        else lang = "en";
+      }
+
+      applyLanguage(lang);
+    })();
+
+    document.getElementById("langSelect").addEventListener("change", function (e) {
+      applyLanguage(e.target.value);
+    });
+
+    /* ---------------- lang.xml prompt for web app downloaders ---------------- */
+    const webDownloadBtn = document.getElementById("webDownloadBtn");
+    const langModal = document.getElementById("langModal");
+    const langModalClose = document.getElementById("langModalClose");
+    const langXmlLink = langModal.querySelector("a.download-btn");
+
+    webDownloadBtn.addEventListener("click", function () {
+      // Let the HTML app download start, then prompt for lang.xml.
+      setTimeout(function () {
+        langModal.hidden = false;
+        langXmlLink.focus();
+      }, 600);
+    });
+
+    function closeLangModal() {
+      langModal.hidden = true;
+    }
+
+    langModalClose.addEventListener("click", closeLangModal);
+
+    langModal.addEventListener("click", function (e) {
+      if (e.target === langModal) closeLangModal();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !langModal.hidden) closeLangModal();
+    });
+
+    langXmlLink.addEventListener("click", function () {
+      // Download starts; close the prompt shortly after.
+      setTimeout(closeLangModal, 300);
+    });
+  </script>
 </body>
 </html>
